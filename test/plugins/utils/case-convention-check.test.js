@@ -118,6 +118,29 @@ describe('case convention regex tests', function() {
     });
   });
 
+  describe('k8s upper camel case tests', function() {
+    const convention = 'k8s_upper_camel_case';
+    it('ApiVersion is k8s Upper camel case', function() {
+      const string = 'ApiVersion';
+      expect(checkCase(string, convention)).toEqual(true);
+    });
+
+    it('HostPID is k8s Upper camel case', function() {
+      const string = 'HostPID';
+      expect(checkCase(string, convention)).toEqual(true);
+    });
+
+    it('apiVersion is NOT k8s upper camel case', function() {
+      const string = 'apiVersion';
+      expect(checkCase(string, convention)).toEqual(false);
+    });
+
+    it('IsGIFOrJPEG is k8s Upper camel case', function() {
+      const string = 'IsGIFOrJPEG';
+      expect(checkCase(string, convention)).toEqual(true);
+    });
+  });
+
   describe('lower dash case tests', function() {
     const convention = 'lower_dash_case';
     it('sha1 is lower dash case', function() {
