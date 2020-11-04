@@ -27,11 +27,25 @@ module.exports = (string, convention) => {
     case 'upper_snake_case':
       return upperSnakeCase.test(string);
 
+    case 'all_snake_case':
+      if (upperSnakeCase.test(string)) {
+        return true;
+      } else {
+        return lowerSnakeCase.test(string);
+      }
+
     case 'upper_camel_case':
       return upperCamelCase.test(string);
 
     case 'lower_camel_case':
       return lowerCamelCase.test(string);
+
+    case 'all_camel_case':
+      if (upperCamelCase.test(string)) {
+        return true;
+      } else {
+        return lowerCamelCase.test(string);
+      }
 
     case 'k8s_camel_case':
       return k8sCamelCase.test(string);
@@ -39,11 +53,25 @@ module.exports = (string, convention) => {
     case 'k8s_upper_camel_case':
         return k8sUpperCamelCase.test(string);
 
+    case 'k8s_all_camel_case':
+      if (k8sUpperCamelCase.test(string)) {
+        return true;
+      } else {
+        return k8sCamelCase.test(string);
+      }
+
     case 'lower_dash_case':
       return lowerDashCase.test(string);
 
     case 'upper_dash_case':
       return upperDashCase.test(string);
+
+    case 'all_dash_case':
+      if (lowerDashCase.test(string)) {
+        return true;
+      } else {
+        return upperDashCase.test(string);
+      }
 
     default:
       // this should never happen, the convention is validated in the config processor
