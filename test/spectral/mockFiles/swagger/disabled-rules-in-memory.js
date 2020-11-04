@@ -3,7 +3,11 @@ module.exports = {
   info: {
     version: '1.0.0',
     title: 'Swagger Petstore',
-    termsOfService: 'http://swagger.io/terms/'
+    termsOfService: 'http://swagger.io/terms/',
+    contact: {
+    	email: 'test@test.com',
+    	name: 'toto'
+    }
   },
   host: 'petstore.swagger.io',
   basePath: '/v2',

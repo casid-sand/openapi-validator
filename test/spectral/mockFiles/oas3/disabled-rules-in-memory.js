@@ -1,6 +1,6 @@
 module.exports = {
   openapi: '3.0.0',
-  info: { version: '1.0.0', title: 'Swagger Petstore' },
+  info: { version: '1.0.0', contact: {name: 'toto', email: 'toto@test.com'}, title: 'Swagger Petstore' },
   servers: [{ url: 'http://petstore.swagger.io/v1' }],
   tags: [
     { name: 'pets', description: 'A pet' },

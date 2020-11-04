@@ -190,14 +190,14 @@ describe('cli tool - test option handling', function() {
     expect(outputObject.error).toEqual(true);
 
     // {"line": 59, "message": "operationIds must be unique", "path": "paths./pet.put.operationId"
-    expect(outputObject['errors']['operation-ids'][0]['line']).toEqual(59);
+    expect(outputObject['errors']['operation-ids'][0]['line']).toEqual(60);
     expect(outputObject['errors']['operation-ids'][0]['message']).toEqual(
       'operationIds must be unique'
     );
 
     // {"operations-shared": [{"line": 36, "message": "Operations must have a non-empty `operationId`.", "path": "paths./pet.post.operationId"},
     expect(outputObject['warnings']['operations-shared'][0]['line']).toEqual(
-      36
+      37
     );
     expect(outputObject['warnings']['operations-shared'][0]['message']).toEqual(
       'Operations must have a non-empty `operationId`.'
@@ -253,7 +253,7 @@ describe('cli tool - test option handling', function() {
         }
       }
     });
-    expect(warningCount).toEqual(3); // without the config this value is 5
+    expect(warningCount).toEqual(4); // without the config this value is 5
     expect(errorCount).toEqual(3); // without the config this value is 0
   });
 

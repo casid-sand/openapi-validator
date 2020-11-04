@@ -4,7 +4,11 @@
     "title": "Trailing comma Testcase (Test)",
     "description": "API doc with trailing commas",
     "version": "1.0.0",
-    "termsOfService": "No guarantees :)"
+    "termsOfService": "No guarantees :)",
+    "contact": {
+    	"name": "toto",
+    	"email": "toto@test.com"
+    }
   },
   "schemes": [
     "https"

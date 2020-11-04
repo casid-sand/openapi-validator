@@ -202,7 +202,7 @@ describe('cli tool - test error handling', function() {
     expect(exitCode).toEqual(1);
     expect(capturedText.length).toEqual(29);
     expect(capturedText[0].trim()).toEqual(
-      '[Error] Trailing comma on line 36 of file ./test/cli-validator/mockFiles/trailing-comma.json.'
+      '[Error] Trailing comma on line 40 of file ./test/cli-validator/mockFiles/trailing-comma.json.'
     );
     expect(capturedText[4]).toContain(
       'Parameter objects must have a `description` field.'

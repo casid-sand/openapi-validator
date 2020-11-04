@@ -2,6 +2,8 @@ openapi: 3.0.0
 info:
   version: 1.0.0
   title: main
+  contact:
+    email: toto@test.com
 paths:
   /example:
     get:

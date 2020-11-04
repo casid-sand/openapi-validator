@@ -1,9 +1,9 @@
 {
-  "name": "ibm-openapi-validator",
+  "name": "sand-ibm-openapi-validator",
   "description": "Configurable and extensible validator/linter for OpenAPI documents",
-  "version": "0.31.1",
+  "version": "0.32.0",
   "main": "src/lib/index.js",
-  "repository": "https://github.com/IBM/openapi-validator",
+  "repository": "https://github.com/mikymikymike/openapi-validator.git",
   "license": "Apache-2.0",
   "scripts": {
     "link": "npm install -g",

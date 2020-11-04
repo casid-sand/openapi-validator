@@ -2,6 +2,9 @@ swagger: "2.0"
 info:
   version: "1.0.0"
   title: "Swagger Petstore"
+  contact:
+    email: test@test.com
+    name: toto
   termsOfService: "http://swagger.io/terms/"
 host: "petstore.swagger.io"
 basePath: "/v2"

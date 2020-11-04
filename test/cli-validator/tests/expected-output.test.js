@@ -70,22 +70,22 @@ describe('cli tool - test expected output - Swagger 2', function() {
     //   example output would be [ 'Line', ':', '59' ]
 
     // errors
-    expect(capturedText[4].match(/\S+/g)[2]).toEqual('31');
-    expect(capturedText[8].match(/\S+/g)[2]).toEqual('54');
-    expect(capturedText[12].match(/\S+/g)[2]).toEqual('59');
-    expect(capturedText[16].match(/\S+/g)[2]).toEqual('108');
-    expect(capturedText[20].match(/\S+/g)[2]).toEqual('172');
+    expect(capturedText[4].match(/\S+/g)[2]).toEqual('32');
+    expect(capturedText[8].match(/\S+/g)[2]).toEqual('55');
+    expect(capturedText[12].match(/\S+/g)[2]).toEqual('60');
+    expect(capturedText[16].match(/\S+/g)[2]).toEqual('109');
+    expect(capturedText[20].match(/\S+/g)[2]).toEqual('173');
 
     // warnings
-    expect(capturedText[25].match(/\S+/g)[2]).toEqual('36');
-    expect(capturedText[29].match(/\S+/g)[2]).toEqual('59');
-    expect(capturedText[33].match(/\S+/g)[2]).toEqual('15');
-    expect(capturedText[37].match(/\S+/g)[2]).toEqual('15');
-    expect(capturedText[41].match(/\S+/g)[2]).toEqual('197');
-    expect(capturedText[45].match(/\S+/g)[2]).toEqual('108');
-    expect(capturedText[49].match(/\S+/g)[2]).toEqual('131');
-    expect(capturedText[53].match(/\S+/g)[2]).toEqual('134');
-    expect(capturedText[57].match(/\S+/g)[2]).toEqual('126');
+    expect(capturedText[25].match(/\S+/g)[2]).toEqual('37');
+    expect(capturedText[29].match(/\S+/g)[2]).toEqual('60');
+    expect(capturedText[33].match(/\S+/g)[2]).toEqual('16');
+    expect(capturedText[37].match(/\S+/g)[2]).toEqual('16');
+    expect(capturedText[41].match(/\S+/g)[2]).toEqual('198');
+    expect(capturedText[45].match(/\S+/g)[2]).toEqual('109');
+    expect(capturedText[49].match(/\S+/g)[2]).toEqual('132');
+    expect(capturedText[53].match(/\S+/g)[2]).toEqual('135');
+    expect(capturedText[57].match(/\S+/g)[2]).toEqual('127');
   });
 
   it('should return exit code of 0 if there are only warnings', async function() {

@@ -1,6 +1,9 @@
 swagger: '2.0'
 info:
   version: 1.0.0
+  contact:
+    email: test@test.com
+    name: toto
   title: 'some title with <script>alert("You are Hacked");</script> eval('
 paths:
   /pet:

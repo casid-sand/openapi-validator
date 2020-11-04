@@ -2,6 +2,9 @@ openapi: "3.0.0"
 info:
   version: 1.0.0
   title: Swagger Petstore
+  contact:
+    email: test@test.com
+    name: toto
 servers:
   - url: http://petstore.swagger.io/v1
 tags:
