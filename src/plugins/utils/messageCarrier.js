@@ -36,7 +36,7 @@ module.exports = class MessageCarrier {
       this._messages[status].push({
         path: path,
         message: message,
-        type: type, /*structural, semantic, convention, definition*/
+        type: type, /*structural, semantic, convention, documentation*/
         rule: rule
       });
     }

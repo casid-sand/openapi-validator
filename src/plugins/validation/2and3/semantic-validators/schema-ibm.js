@@ -357,10 +357,12 @@ function generateDescriptionWarnings(
   const hasDescription =
     schema.description && schema.description.toString().trim().length;
   if (isTopLevelSchema && !hasDescription) {
-    messages.addMessage(
+    messages.addTypedMessage(
       contextPath,
       'Schema must have a non-empty description.',
-      config.no_schema_description
+      config.no_schema_description,
+      'documentation',
+      'D19.15'
     );
   }
 
@@ -381,10 +383,12 @@ function generateDescriptionWarnings(
     const hasDescription =
       property.description && property.description.toString().trim().length;
     if (!hasDescription) {
-      messages.addMessage(
+      messages.addTypedMessage(
         path,
         'Schema properties must have a description with content in it.',
-        config.no_property_description
+        config.no_property_description,
+        'documentation',
+        'D19.15'
       );
     } else {
       // if the property does have a description, "Avoid describing a model as a 'JSON object' since this will be incorrect for some SDKs."

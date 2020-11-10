@@ -1,0 +1,1259 @@
+swagger: '2.0'
+info:
+  title: SW API RH
+  description: SW API RH permet de récupérer les informations RH d'un administré quelque soit son SIRH d'origine (ARHMONIE, CONCERTO, ORCHESTRA ou RHAPSODIE).
+  version: 1.0.0
+  contact:
+    name: API Support
+host: rec-sourceweb.intradef.gouv.fr
+schemes:
+  - https
+paths:
+  /administres:
+    get:
+      summary: Recherche de dossiers d'administrés correspondant aux critères
+      description: Ce service permet d'obtenir la liste d'identifiants des dossiers satisfaisant les critères de recherche.
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: nom
+          in: query
+          type: string
+          description: Nom à rechercher parmis les dossiers d'administrés.
+        - name: prenom
+          in: query
+          type: string
+          description: Prénom à rechercher parmis les dossiers d'administrés.
+        - name: dateNaissance
+          in: query
+          type: string
+          format: date
+          description: Date de naissance au format AAAA-MM-JJ à rechercher parmis les dossiers d'administrés.
+        - name: debutPeriodeModification
+          in: query
+          type: string
+          format: date
+          description: Date minimale au format AAAA-MM-JJ de modification du dossier d'administré.
+        - name: finPeriodeModification
+          in: query
+          type: string
+          format: date
+          description: Date maximale au format AAAA-MM-JJ de modification du dossier d'administré.
+      responses:
+        '200':
+          description: Succès
+          schema:
+            $ref: '#/definitions/SearchAdministresResponse'
+  /administres/{id}:
+    get:
+      summary: Obtention des informations disponible pour un dossier d'administré
+      description: Ce service permet d'obtenir les informations courantes et historiques issues des SIRH (ARHMONIE, CONCERTO, ORCHESTRA, RHAPSODIE) correspondant au dossier demandé.
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          description: L'identifiant peut être le Numéro d'Identifiant Défense (NID) ou le matricule SAP préfixé du SIRH d'origine (XXXYYYYYYY avec XXX étant le trigramme du SIRH ARH/CTO/OCA/RHA et YYYYYYY le matricule SAP).
+      responses:
+        '200':
+          description: Succès
+          schema:
+            $ref: '#/definitions/AdministreResponse'
+        '404':
+          description: Administré non trouvé
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /export-administres:
+    get:
+      summary: Réalise un dump des informations des dossiers d'administrés
+      description: Ce service permet de produire un fichier dont le contenu sera les informations courantes et historiques des dossiers satisfaisant les critères de recherche. Le fichier dont l'URL d'accès est communiqué en retour d'appel au service est mis à disposition le lendemain à 8h.
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: nom
+          in: query
+          required: false
+          type: string
+          description: Nom à rechercher parmis les dossiers d'administrés.
+        - name: prenom
+          in: query
+          type: string
+          description: Prénom à rechercher parmis les dossiers d'administrés.
+        - name: dateNaissance
+          in: query
+          type: string
+          format: date
+          description: Date de naissance au format AAAA-MM-JJ à rechercher parmis les dossiers d'administrés.
+        - name: debutPeriodeModification
+          in: query
+          type: string
+          format: date
+          description: Date minimale au format AAAA-MM-JJ de modification du dossier d'administré.
+        - name: finPeriodeModification
+          in: query
+          type: string
+          format: date
+          description: Date maximale au format AAAA-MM-JJ de modification du dossier d'administré.
+      responses:
+        '202':
+          description: Traitement accepté
+          schema:
+            $ref: '#/definitions/DumpAdministresResponse'
+definitions:
+  SearchAdministresResponse:
+    type: object
+    description: Liste des identifiants des dossiers satisfaisants les critères de recherche.
+    properties:
+      administres:
+        type: array
+        items:
+          type: object
+          properties:
+            sirh:
+              type: string
+              description: Trigramme SIRH d'origine du dossier
+              enum:
+                - ARH
+                - CTO
+                - OCA
+                - RHA
+            idSap:
+              type: string
+              description: Identifiant SAP de l'agent au sein de son système d'informations « RH »
+            nid:
+              type: string
+              description: Numéro d'Identifiant Défense de l'administré (si militaire)
+            idBspp:
+              type: string
+              description: Identifiant utilisé au sein de la Brigade de Sapeur Pompier de Paris. Cet identifiant est présent uniquement si l'administré appartient à la brigade.
+            idLegion:
+              type: string
+              description: Identifiant utilisé au sein de la Légion Etrangère. Cet identifiant est présent uniquement si l'administré appartient au groupe.
+            nia:
+              type: string
+              description: Numéro d'Identification Air. Cet identifiant est présent uniquement si l'administré appartient au corps de l'Armée de l'Air.
+            idMarine:
+              type: string
+              description: Identifiant Marine. Cet identifiant est présent uniquement si l'administré appartient au corps de la Marine Nationale.
+          required:
+          - sirh
+          - matricule
+          - nid
+  DumpAdministresResponse:
+    type: object
+    description: Le retour consiste en une URL d'accès au fichier contenant les informations des dossiers. La structure du fichier est une collection dont chaque élément représente un administré de structure identique à AdministreResponse
+    properties:
+      url:
+        type: string
+    required: 
+    - url
+  AdministreResponse:
+    type: object
+    properties:
+      administres:
+          type: object
+          properties:
+            Identification:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateDebut:
+                    type: string
+                    format: date
+                    description: Date de début de validité de l'occurrence
+                  dateFin:
+                    type: string
+                    format: date
+                    description: Date de fin de validité de l'occurrence
+                  idSap:
+                    type: string
+                    description: Identifiant SAP de l'agent au sein de son système d'informations « RH »
+                  nss:
+                    type: string
+                    description: Identifiant unique des ressortissants français
+                  gradeArmee:
+                    type: string
+                    description: Libellé du grade statutaire de l'administré
+                  gradeSgm:
+                    type: string
+                    description: Grade Statut Général des Militaires commun aux Armées
+                  nom: 
+                    type: string
+                    description: Nom de naissance de l'administré
+                  prenom:
+                    type: string
+                    description: Prénom de l'administré
+                  sexe:
+                    type: string
+                    description: Sexe de l'administré
+                  nid:
+                    type: string
+                    description: Numéro d'Identifiant Défense de l'administré (si militaire)
+                  dateNaissance:
+                    type: string
+                    format: date
+                    description: Date de naissance de l'administré
+                  communeNaissance:
+                    type: string
+                    description: Commune de naissance de l'administré
+                  pays:
+                    type: string
+                    description: Pays de naissance de l'administré
+                  nationalite:
+                    type: string
+                    description: Nationalité de l'administré
+                  categoriePersonnel:
+                    type: string
+                    description: La catégorie de personnel est un équivalent de celle de la fonction publique, mais dérivée pour caractériser si un administré est « Officier » ; « Sous-Officier » ou « Militaire du Rang »
+                  sirh:
+                    type: string
+                    description: Trigramme SIRH d'origine du dossier
+                    enum:
+                      - ARH
+                      - CTO
+                      - OCA
+                      - RHA
+                  idBspp:
+                    type: string
+                    description: Numéro d'identification spécifique aux administrés de la Brigade des Sapeurs-Pompiers de Paris
+                  idLegion:
+                    type: string
+                    description: Numéro d'identification spécifique aux administrés de la Légion étrangère
+                  idMarine:
+                    type: string
+                    description: Numéro matricule Marine spécifique aux administrés appartenant à cette Armée
+                  nia:
+                    type: string
+                    description: Numéro d'identification de l'Armée de l'Air spécifique aux administrés appartenant à cette Armée
+            SituationDeFamille:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateDebut:
+                    type: string
+                    format: date
+                    description: Date de début de validité de l'occurrence
+                  dateFin:
+                    type: string
+                    format: date
+                    description: Date de fin de validité de l'occurrence
+                  dateSituationMatrimo:
+                    type: string
+                    format: date
+                    description: Date de la dernière occurrence de la situation familiale
+                  situationMatrimo:
+                    type: string
+                    format: date
+                    description: Situation qui caractérise la relation de l'administré vis-à-vis d'un éventuel conjoint
+                  nbEnfants:
+                    type: integer
+                    description: Nombres d'enfants déclarés par l'administré
+                  agePlusJeuneEnfant:
+                    type: integer
+                    description: Âge en année du plus jeune enfant déclaré par l'administré, calculé à la date du jour
+                  ageEnfantPlusAge:
+                    type: integer
+                    description: Âge en année de l'enfant le plus âgé déclaré par l'administré, calculé à la date du jour
+                  nbEnfantsACharge:
+                    type: integer
+                    description: Nombre d'enfants déclarés à charge fiscale par l'administré
+                  nbEnfantsAChargePF:
+                    type: integer
+                    description: Nombre d'enfants associé au bénéfice d'une prestation familiale par l'administré
+            Conjoint:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateDebut:
+                    type: string
+                    format: date
+                    description: Date de début de validité de l'occurrence
+                  dateFin:
+                    type: string
+                    format: date
+                    description: Date de fin de validité de l'occurrence
+                  relation:
+                    type: string
+                    description: Nature du lien avec l'administré. Il s'agit du type de parenté entre ce membre de famille et l'administré, par exemple « 1 » pour désigner le conjoint ; « 2 » pour désigner l'enfant ou encore « 9 » pour la personne à charge
+                  dateDebutRelation:
+                    type: string
+                    format: date
+                    description: Date de début de validité du lien entre cette personne et l'administré
+                  dateFinRelation:
+                    type: string
+                    format: date
+                    description: Date de fin de validité du lien entre cette personne et l'administré
+                  typeDeConjoint:
+                    type: string
+                    description: Désignation du type de conjoint. Par exemple « Conjoint » ; « Ex-conjoint » ou encore « Conjoint séparé »
+                  rang:
+                    type: integer
+                    description: Rang de la personne en relation avec l'administré
+                  nom:
+                    type: string
+                    description: Nom d'état civil de la personne en relation avec l'administré
+                  nomUsage:
+                    type: string
+                    description: Nom d'usage de la personne en relation avec l'administré
+                  prenom:
+                    type: string
+                    description: Prénom de la personne en relation avec l'administré
+                  sexe:
+                    type: string
+                    description: Sexe de la personne en relation avec l'administré
+                  nid:
+                    type: string
+                    description: Numéro d'Identifiant Défense de la personne en relation avec l'administré (si personnel militaire)
+                  dateNaissance:
+                    type: string
+                    format: date
+                    description: Date de naissance de la personne en relation avec l'administré
+                  lieuNaissance:
+                    type: string
+                    description: Commune de naissance de la personne en relation avec l'administré
+                  paysNaissance:
+                    type: string
+                    description: Pays de naissance de la personne en relation avec l'administré
+                  nationalite:
+                    type: string
+                    description: Nationalité principale de la personne en relation avec l'administré
+                  dateSituationMatrimo:
+                    type: string
+                    format: date
+                    description: Date de la dernière occurrence de la situation familiale
+                  situationMatrimo:
+                    type: string
+                    format: date
+                    description: Situation qui caractérise la relation de la personne vis-à-vis de l'administré
+                  nss:
+                    type: string
+                    description: Identifiant unique des ressortissants français
+                  dateDeces:
+                    type: string
+                    format: date
+                    description: Date de décès de la personne en relation avec l'administré
+                  lieuDeces:
+                    type: string
+                    description: Lieu de décès de la personne en relation avec l'administré
+                  typeEmployeur:
+                    type: string
+                    description: Donnée permettant de déterminer pour quel type d'employeur travaille le conjoint de l'administré
+                  remunerationBruteAnnuelle:
+                    type: string
+                    description: Montant de la rémunération brute totale annuelle du conjoint(e)
+                  soldeBrutMensuelle:
+                    type: string
+                    description: Montant de la rémunération brute totale mensuelle du conjoint(e)
+                  indemniteFraisCorse:
+                    type: string
+                    description: Indicateur de perception indemnité frais de transport en Corse
+                  majorationsFamiliales:
+                    type: string
+                    description: Indicateur de perception des majorations familiales à l'étranger par le conjoint
+                  indemniteMetropole:
+                    type: string
+                    description: Indicateur de perception par le conjoint de l'indemnité d'installation métropole
+                  indemniteOM:
+                    type: string
+                    description: Indicateur de perception indemnité de départ OM
+                  indemniteINSDOM:
+                    type: string
+                    description: Indicateur indiquant si la personne est un agent bénéficiaire des majorations familiales INSDOM
+                  indemniteEloignement:
+                    type: string
+                    description: Indicateur de perception de l'indemnité d'éloignement par le conjoint
+                  perceptionSUFA:
+                    type: string
+                    description: Indicateur de perception du SUFA par ex ou nouveau conjoint
+            Enfant:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateDebut:
+                    type: string
+                    format: date
+                    description: Date de début de validité de l'occurrence
+                  dateFin:
+                    type: string
+                    format: date
+                    description: Date de fin de validité de l'occurrence
+                  relation:
+                    type: string
+                    description: Nature du lien avec l'administré. Il s'agit du type de parenté entre ce membre de famille et l'administré, par exemple « 1 » pour désigner le conjoint ; « 2 » pour désigner l'enfant ou encore « 9 » pour la personne à charge
+                  nom:
+                    type: string
+                    description: Nom d'état civil de l'enfant
+                  prenom:
+                    type: string
+                    description: Premier prénom de l'enfant
+                  sexe:
+                    type: string
+                    description: Genre de l'enfant
+                  dateNaissance:
+                    type: string
+                    format: date
+                    description: Date de naissance de l'enfant
+                  lieuNaissance:
+                    type: string
+                    description: Commune de naissance de l'enfant
+                  paysNaissance:
+                    type: string
+                    description: Pays de naissance de l'enfant
+                  nationalite:
+                    type: string
+                    description: Nationalité principale de l'enfant
+                  filiation:
+                    type: string
+                    description: Lien de filiation
+                  dateDebutFiliation:
+                    type: string
+                    format: date
+                    description: Date de début de lien de filiation
+                  dateFinFiliation:
+                    type: string
+                    format: date
+                    description: Date de fin du lien de filiation
+                  arriveeEnfant:
+                    type: string
+                    format: date
+                    description: Date d'arrivée de l'enfant ou de la personne au foyer
+                  dateDebutCertificatScolaire:
+                    type: string
+                    format: date
+                    description: Date de début de certificat de scolarité
+                  dateFinCertificatScolaire:
+                    type: string
+                    format: date
+                    description: Date de fin de certificat de scolarité
+                  chargePFAgent:
+                    type: string
+                    description: Marqueur indiquant le bénéficiaire des prestations familiales perçues au titre de cet enfant, ici l’agent
+                  chargePFConjoint:
+                    type: string
+                    description: Marqueur indiquant le bénéficiaire des prestations familiales perçues au titre de cet enfant, ici le conjoint
+                  chargePFTiersPersonne:
+                    type: string
+                    description: Marqueur indiquant le bénéficiaire des prestations familiales perçues au titre de cet enfant, ici une tierce personne
+                  prestaFamilialeAnterieure:
+                    type: string
+                    description: Indicateur de perception de prestations familiale antérieure
+                  chargeFiscaleAgent:
+                    type: string
+                    description: Marqueur précisant le rattachement fiscal de l'enfant auprès de l’agent
+                  chargeFiscaleConjoint:
+                    type: string
+                    description: Marqueur précisant le rattachement fiscal de l'enfant auprès du conjoint
+                  chargeFiscaleTiersPersonne:
+                    type: string
+                    description: Marqueur précisant le rattachement fiscal de l'enfant auprès d’une tierce personne
+                  allocataireSFT: 
+                    type: string
+                    description: Indicateur agent désigné comme allocataire du SFT
+                  droitASF:
+                    type: string
+                    description: Condition d'ouverture de droit à l'ASF
+                  situation:
+                    type: string
+                    description: Situation de l'enfant
+                  tutelle:
+                    type: string
+                    description: Indicateur précisant si l'enfant est placé sous tutelle
+                  residenceAlternee:
+                    type: string
+                    description: Indicateur enfant en résidence alternée
+                  handicap:
+                    type: string
+                    description: Indicateur précisant si l'enfant est handicapé
+                  aideFinanciereASANDIC:
+                    type: string
+                    description: Indicateur précisant que le conjoint est bénéficiaire de l’ASANDIC
+                  aideFinanciereASATUDE:
+                    type: string
+                    description: Indicateur précisant que le conjoint est bénéficiaire de l’ASATUDE
+                  dateDeces:
+                    type: string
+                    format: date
+                    description: Date de décès d'une personne
+                  lieuDeces:
+                    type: string
+                    description: Lieu de décès d'une personne
+                  decesGuerre:
+                    type: string
+                    description: Décès pour fait de guerre
+            Adresses:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateDebut:
+                    type: string
+                    format: date
+                    description: Date de début de validité de l'occurrence
+                  dateFin:
+                    type: string
+                    format: date
+                    description: Date de fin de validité de l'occurrence
+                  type:
+                    type: string
+                    description: Type de logement (1, fisc, ...)
+                  categorie:
+                    type: string
+                    description: Catégorie d'adresse dédui de la traduction du type de logement (Principale, Fiscale, Congés, ...)
+                  numeroEtVoie:
+                    type: string
+                    description: Numéro et voie de l'adresse
+                  complement:
+                    type: string
+                    description: zone complémentaire de l'adresse
+                  info:
+                    type: string
+                    description: zone optionnelle de localisation. Zone "Chez" des SIRH
+                  codePostal:
+                    type: string
+                    description: Code postal de l'adresse
+                  commune:
+                    type: string
+                    description: Commune de l'adresse
+                  region:
+                    type: string
+                    description: Région de l'adresse
+                  localisation:
+                    type: string
+                    description: Ce champ est renseigné uniquement lorsque l'adresse déclarée se trouve dans un DOM ou un TOM (en cas de saisie de certains DOM et TOM, ce champ permet de détailler le DOM ou le TOM saisi)
+                  pays:
+                    type: string
+                    description: Pays de l'adresse
+                  codeINSEE:
+                    type: string
+                    description: Nomenclature du code officiel des zones géographiques
+                  telephoneFixe:
+                    type: string
+                    description: Téléphone principal (fixe ou portable), tel que déclaré par l'administré
+                  typeLogement:
+                    type: string
+                    description: Type du logement occupé
+            MoyensDeContact:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateDebut:
+                    type: string
+                    format: date
+                    description: Date de début de validité de l'occurrence
+                  dateFin:
+                    type: string
+                    format: date
+                    description: Date de fin de validité de l'occurrence
+                  telephonePortable:
+                    type: string
+                    description: Numéro de téléphone personnel de l'administré
+                  adressePersonnelle:
+                    type: string
+                    description: Adresse internet personnelle de l'administré
+            Contrat:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateDebut:
+                    type: string
+                    format: date
+                    description: Date de début de validité de l'occurrence
+                  dateFin:
+                    type: string
+                    format: date
+                    description: Date de fin de validité de l'occurrence
+                  categorieSourceWeb:
+                    type: string
+                    description: Catégorie de contrat source web
+                  categorieSirh:
+                    type: string
+                    description: Catégorie de contrat SIRH
+                  decisionNonRenouvellement:
+                    type: string
+                    description: Décision de non renouvellement du contrat
+                  propositionRenouvellement:
+                    type: string
+                    description: Proposition de renouvellement
+            Affectations:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateDebut:
+                    type: string
+                    format: date
+                    description: Date de début de validité de l'occurrence
+                  dateFin:
+                    type: string
+                    format: date
+                    description: Date de fin de validité de l'occurrence
+                  oa:
+                    type: string
+                    description: Organisme d'administration
+                  nbMutationsACR:
+                    type: integer
+                    description: Nombre de mutations ACR
+                  dateAffectationFE:
+                    type: string
+                    format: date
+                    description: Date de début d'affectation dans la FE
+                  fe:
+                    type: string
+                    description: Formation d'emploi d'affectation
+                  droitChangement:
+                    type: string
+                    description: Droit à changement de résidence (ACR/SCR)
+                  dateAffectationPoste:
+                    type: string
+                    format: date
+                    description: Date de début d'affectation sur le poste
+                  fonction:
+                    type: string
+                    description: Fonction occupée
+                  poste:
+                    type: string
+                    description: Poste occupé
+                  uniteStructurelle:
+                    type: string
+                    description: Unité structurelle terminale d'affectation
+            Habilitation:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateDebut:
+                    type: string
+                    format: date
+                    description: Date de début de validité de l'occurrence
+                  dateFin:
+                    type: string
+                    format: date
+                    description: Date de fin de validité de l'occurrence
+                  type:
+                    type: string
+                    description: Type d'habilitation
+                  niveau: 
+                    type: string
+                    description: Niveau d'habilitation
+            MICM:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateDebut:
+                    type: string
+                    format: date
+                    description: Date de début de validité de l'occurrence
+                  dateFin:
+                    type: string
+                    format: date
+                    description: Date de fin de validité de l'occurrence
+                  dateDebutPaiement:
+                    type: string
+                    format: date
+                    description: Date de début de paiement de la MICM
+                  dateFinPaiement:
+                    type: string
+                    format: date
+                    description: Date de fin de paiement de la MICM
+                  dateDebutOccupationLogement:
+                    type: string
+                    format: date
+                    description: Date de début d'occupation du logement
+                  dateFinOccupationLogement:
+                    type: string
+                    format: date
+                    description: Date de fin d'occupation du logement
+                  conditionLogement:
+                    type: string
+                    description: Condition de logement
+                  nbPersonnesACharge:
+                    type: integer
+                    description: Nombre de personnes à charge
+                  locataire:
+                    type: string
+                    description: Locataire (Droit MICM pour CTO)
+                  dateDemandeLogementMilitaire:
+                    type: string
+                    format: date
+                    description: Date de demande de logement militaire
+                  dateArriveeGarnison:
+                    type: string
+                    format: date
+                    description: Date d'arrivée dans la garnison
+                  affectationSCR:
+                    type: string
+                    description: Indicateur précisant si l'administré est affecté SCR
+                  beneficeTauxICM:
+                    type: string
+                    description: Bénéfice d'un taux particulier de l'ICM
+                  dateDebutNeutralisation:
+                    type: string
+                    format: date
+                    description: Date de début de neutralisation de la dégressivité de la MICM
+                  dateFinNeutralisation:
+                    type: string
+                    format: date
+                    description: Date de fin de neutralisation MICM
+                  motifMaintien:
+                    type: string
+                    description: Motif de maintien MICM
+                  dateDebutMaintien:
+                    type: string
+                    format: date
+                    description: Date de début du maintien de la MICM
+                  dateFinMaintien:
+                    type: string
+                    format: date
+                    description: Date de fin du maintien de la MICM
+                  montantLoyer:
+                    type: number  	
+                    format: float
+                    description: Montant du loyer
+                  montantCristallise:
+                    type: number  	
+                    format: float
+                    description: Montant cristallisé indemnité logement
+                  montantAidesLogement:
+                    type: number  	
+                    format: float
+                    description: Montant des aides au logement
+                  dateArriveePerimetre:
+                    type: string
+                    format: date
+                    description: Date arrivée périmètre MICM
+                  dateDemande:
+                    type: string
+                    format: date
+                    description: Date de demande MICM
+                  dateDepartDroit:
+                    type: string
+                    format: date
+                    description: Date de départ droit MICM
+                  logementGratuit:
+                    type: string
+                    description: Indicateur précisant si le logement est fourni gratuitement
+            TRAJ:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateDebut:
+                    type: string
+                    format: date
+                    description: Date de début de validité de l'occurrence
+                  dateFin:
+                    type: string
+                    format: date
+                    description: Date de fin de validité de l'occurrence
+                  typeRemboursement:
+                    type: string
+                    description: Type de remboursement
+                  typeAbonnement:
+                    type: string
+                    description: Type d'abonnement
+                  modeTransport:
+                    type: string
+                    description: Mode de transport
+                  zonesValidite:
+                    type: string
+                    description: Zones de validité
+                  montantAbonnement:
+                    type: number
+                    format: float
+                    description: Montant de l'abonnement
+            FormationCivile:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateDebut:
+                    type: string
+                    format: date
+                    description: Date de début de validité de l'occurrence
+                  dateFin:
+                    type: string
+                    format: date
+                    description: Date de fin de validité de l'occurrence
+                  anneeObtention:
+                    type: string
+                    description: Année d'obtention
+                  typeDiplome:
+                    type: string
+                    description: Type de diplôme civil
+            FormationMilitaire:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateDebut:
+                    type: string
+                    format: date
+                    description: Date de début de validité de l'occurrence
+                  dateFin:
+                    type: string
+                    format: date
+                    description: Date de fin de validité de l'occurrence
+                  anneeObtention:
+                    type: string
+                    description: Année d'obtention
+                  typeDiplome:
+                    type: string
+                    description: Type de diplôme militaire
+                  note:
+                    type: number
+                    format: float
+                    description: Note
+                  classement:
+                    type: number
+                    format: float
+                    description: Classement
+            Langues:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateDebut:
+                    type: string
+                    format: date
+                    description: Date de début de validité de l'occurrence
+                  dateFin:
+                    type: string
+                    format: date
+                    description: Date de fin de validité de l'occurrence
+                  anneePLS:
+                    type: string
+                    format: date
+                    description: Année du PLS
+                  languePLS:
+                    type: string
+                    description: Langue du PLS
+                  niveauPLS:
+                    type: string
+                    description: Niveau du PLS
+            PilotageConduite:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateDebut:
+                    type: string
+                    format: date
+                    description: Date de début de validité de l'occurrence
+                  dateFin:
+                    type: string
+                    format: date
+                    description: Date de fin de validité de l'occurrence
+                  anneeObtention:
+                    type: string
+                    description: Année d'obtention
+                  type:
+                    type: string
+                    description: Type de pilotage / conduite
+            Activite:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateDebut:
+                    type: string
+                    format: date
+                    description: Date de début de validité de l'occurrence
+                  dateFin:
+                    type: string
+                    format: date
+                    description: Date de fin de validité de l'occurrence
+                  aptitudeOPEX:
+                    type: string
+                    description: Aptitude OPEX
+                  dateCertificatMedical:
+                    type: string
+                    format: date
+                    description: Date du certificat médical
+                  type:
+                    type: string
+                    description: Type de mission
+                  nom:
+                    type: string
+                    description: Nom de la mission
+                  pays:
+                    type: string
+                    description: Pays de la mission
+                  duree:
+                    type: string
+                    description: Durée de la mission
+            Grades:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateDebut:
+                    type: string
+                    format: date
+                    description: Date de début de validité de l'occurrence
+                  dateFin:
+                    type: string
+                    format: date
+                    description: Date de fin de validité de l'occurrence
+                  datePromotion:
+                    type: string
+                    format: date
+                    description: Date de promotion
+                  grade:
+                    type: string
+                    description: Grade
+                  ageAdministre:
+                    type: integer
+                    description: Âge de l'administré
+            FormationContinue:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateDebut:
+                    type: string
+                    format: date
+                    description: Date de début de validité de l'occurrence
+                  dateFin:
+                    type: string
+                    format: date
+                    description: Date de fin de validité de l'occurrence
+                  perceptionIndemnite:
+                    type: string
+                    description: Perception de l'indemnité journalière de stage
+            Blessures:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateDebut:
+                    type: string
+                    format: date
+                    description: Date de début de validité de l'occurrence
+                  dateFin:
+                    type: string
+                    format: date
+                    description: Date de fin de validité de l'occurrence
+                  guerre:
+                    type: string
+                    description: Blessé de guerre
+                  service:
+                    type: string
+                    description: Blessé en service
+            Demandes:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateDebut:
+                    type: string
+                    format: date
+                    description: Date de début de validité de l'occurrence
+                  dateFin:
+                    type: string
+                    format: date
+                    description: Date de fin de validité de l'occurrence
+                  dateDepotDemande:
+                    type: string
+                    format: date
+                    description: Date de dépôt de la demande
+                  type:
+                    type: string
+                    description: Type de la demande
+                  statut:
+                    type: string
+                    description: Statut de la demande
+                  libelle:
+                    type: string
+                    description: Libellé de la demande
+            Decisions:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateDebut:
+                    type: string
+                    format: date
+                    description: Date de début de validité de l'occurrence
+                  dateFin:
+                    type: string
+                    format: date
+                    description: Date de fin de validité de l'occurrence
+                  type:
+                    type: string
+                    description: Type de décision
+                  dateEffet:
+                    type: string
+                    format: date
+                    description: Date de prise d'effet de la décision
+                  statut:
+                    type: string
+                    description: Statut de la décision
+            Chancellerie:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateDebut:
+                    type: string
+                    format: date
+                    description: Date de début de validité de l'occurrence
+                  dateFin:
+                    type: string
+                    format: date
+                    description: Date de fin de validité de l'occurrence
+                  origine:
+                    type: string
+                    description: Origine
+                  positionStatutaire:
+                    type: string
+                    description: Position statutaire
+                  situationAdministrative:
+                    type: string
+                    description: Situation administrative
+            Notation:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateDebut:
+                    type: string
+                    format: date
+                    description: Date de début de validité de l'occurrence
+                  dateFin:
+                    type: string
+                    format: date
+                    description: Date de fin de validité de l'occurrence
+                  qualite:
+                    type: string
+                    description: Qualité des services rendus (QSR)
+                  aptitude:
+                    type: string
+                    description: Aptitude à assumer des responsabilités d'un niveau immédiatement supérieure
+                  iris:
+                    type: string
+                    description: IRIs
+            Recompenses:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateDebut:
+                    type: string
+                    format: date
+                    description: Date de début de validité de l'occurrence
+                  dateFin:
+                    type: string
+                    format: date
+                    description: Date de fin de validité de l'occurrence
+                  anneeObtention:
+                    type: string
+                    format: date
+                    description: Année d'obtention
+                  niveau:
+                    type: string
+                    description: Niveau de récompense
+            ArretDeTravail:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateDebut:
+                    type: string
+                    format: date
+                    description: Date de début de validité de l'occurrence
+                  dateFin:
+                    type: string
+                    format: date
+                    description: Date de fin de validité de l'occurrence
+                  type:
+                    type: string
+                    description: Type d'arrêt de travail
+                  numeroIdentification:
+                    type: string
+                    description: Numéro d'identification de l'arrêt
+                  nbJours:
+                    type: integer
+                    description: Nombre de jours calendaires de l'arrêt de travail
+                  motif:
+                    type: string
+                    description: Motif de l'arrêt
+                  adresseConge:
+                    type: string
+                    description: Adresse de congé
+                  renouvellement:
+                    type: string
+                    description: Initial/Renouvellement
+                  arretPrecedent:
+                    type: string
+                    description: Identification de l'arrêt précédent
+                  document:
+                    type: string
+                    description: Document de l'arrêt maladie
+                  dateAccident:
+                    type: string
+                    format: date
+                    description: Date d'accident
+                  hopitalMilitaire:
+                    type: string
+                    description: Nom de l'hôpital militaire
+                  hopitalCivil:
+                    type: string
+                    description: Nom de l'hôpital civil
+                  adresseHopitalCivil:
+                    type: string
+                    description: Numéro et voie de l'adresse de l'hôpital civil
+                  codePostalHopitalCivil:
+                    type: string
+                    description: Code postal de l'adresse de l'hôpital civil
+                  villeHopitalCivil:
+                    type: string
+                    description: Ville de l'adresse de l'hôpital civil
+                  paysHopitalCivil:
+                    type: string
+                    description: Pays de l'adresse de l'hôpital civil
+                  nbJoursPremierArret:
+                    type: integer
+                    description: Nombre de jours d'arrêt au premier jour de l'arrêt
+                  nbJoursDernierArret:
+                    type: integer
+                    description: Nombre de jours d'arrêt au dernier jour de l'arrêt
+                  etatPathologique:
+                    type: string
+                    description: Indicateur état pathologique
+            CongesPaternite:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateDebut:
+                    type: string
+                    format: date
+                    description: Date de début de validité de l'occurrence
+                  dateFin:
+                    type: string
+                    format: date
+                    description: Date de fin de validité de l'occurrence
+                  dateDepot:
+                    type: string
+                    format: date
+                    description: Date de dépôt de la demande
+                  acteNaissance:
+                    type: string
+                    description: Acte de naissance
+                  dateActeNaissance:
+                    type: string
+                    format: date
+                    description: Date de l'acte de naissance
+                  categorie:
+                    type: string
+                    description: Catégorie de paternité
+                  saisieLibre:
+                    type: string
+                    description: Zone de saisie libre
+                  adresse:
+                    type: string
+                    description: Adresse de l'administré pendant le congé
+                  autoriteCompetente:
+                    type: string
+                    description: Grade, nom, prénom, qualité de l'autorité compétente signant la demande
+                  responsableHierarchique:
+                    type: string
+                    description: Courriel responsable hiérarchique
+                  datePrevueAccouchement:
+                    type: string
+                    format: date
+                    description: Date prévue d'accouchement
+                  numeroChrono:
+                    type: string
+                    description: Numéro chrono
+                  dateDebutValidite:
+                    type: string
+                    description: Date de début de validité de la décision
+            CongesMaternite:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateDebut:
+                    type: string
+                    format: date
+                    description: Date de début de validité de l'occurrence
+                  dateFin:
+                    type: string
+                    format: date
+                    description: Date de fin de validité de l'occurrence
+                  dateDepotDemande:
+                    type: string
+                    format: date
+                    description: Date de dépôt de la demande de congé maternité
+                  dateCertificat:
+                    type: string
+                    format: date
+                    description: Date du certificat médical
+                  datePrevueAccouchement:
+                    type: string
+                    format: date
+                    description: Date prévue d'accouchement
+                  categorie:
+                    type: string
+                    description: Catégorie de maternité
+                  commentaire:
+                    type: string
+                    description: Commentaire
+                  adresse:
+                    type: string
+                    description: Adresse de l'administré pendant la grossesse
+                  certificatMedical:
+                    type: string
+                    description: Certificat médical
+                  dateSignature:
+                    type: string
+                    format: date
+                    description: Date de signature
+                  dureeCongePrenatal:
+                    type: string
+                    description: Durée du congé prénatal
+                  dureeCongePostnatal:
+                    type: string
+                    description: Durée du congé postnatal
+                  dateDeclaration:
+                    type: string
+                    format: date
+                    description: Date de déclaration de la maternité à l'employeur
+                  dateDebutValidite:
+                    type: string
+                    format: date
+                    description: Date de début de validité de la décision
+                  numeroChrono:
+                    type: string
+                    description: Numéro chrono
+  ErrorResponse:
+    type: object
+    properties:
+      error:
+        type: object
+        properties:
+          code:
+            type: integer
+            description: Le code d'erreur
+          message:
+            type: string
+            description: Description de l'erreur
+        required:
+        - message
+        - code

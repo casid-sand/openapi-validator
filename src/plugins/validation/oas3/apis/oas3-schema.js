@@ -56,7 +56,7 @@ module.exports = {
     },
     Info: {
       type: 'object',
-      required: ['title', 'version'],
+      required: ['title', 'version', 'contact'],
       properties: {
         title: {
           type: 'string'
@@ -85,6 +85,7 @@ module.exports = {
     },
     Contact: {
       type: 'object',
+      required: ['email'],
       properties: {
         name: {
           type: 'string'
