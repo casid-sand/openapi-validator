@@ -78,6 +78,12 @@ module.exports = function print(
         console.log(chalk[color](`  Message :   ${problem.message}`));
         console.log(chalk[color](`  Path    :   ${path.join('.')}`));
         console.log(chalk[color](`  Line    :   ${lineNumber}`));
+        if (problem.type) {
+            console.log(chalk[color](`  Type :      ${problem.type}`));
+        }
+        if (problem.rule) {
+            console.log(chalk[color](`  Rule :      ${problem.rule}`));
+        }
         console.log();
       });
     });

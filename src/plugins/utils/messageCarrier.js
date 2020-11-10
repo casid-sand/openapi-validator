@@ -24,8 +24,20 @@ module.exports = class MessageCarrier {
   addMessage(path, message, status) {
     if (this._messages[status]) {
       this._messages[status].push({
-        path,
-        message
+        path: path,
+        message: message
+      });
+    }
+  }
+
+  // status should be 'off', 'error', or 'warning'
+  addTypedMessage(path, message, status, type=null, rule=null) {
+    if (this._messages[status]) {
+      this._messages[status].push({
+        path: path,
+        message: message,
+        type: type,
+        rule: rule
       });
     }
   }
@@ -33,9 +45,9 @@ module.exports = class MessageCarrier {
   addMessageWithAuthId(path, message, authId, status) {
     if (this._messages[status]) {
       this._messages[status].push({
-        path,
-        message,
-        authId
+        path: path,
+        message: message,
+        aithId: authId
       });
     }
   }

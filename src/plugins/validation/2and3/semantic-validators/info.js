@@ -18,7 +18,8 @@ module.exports.validate = function({ jsSpec }) {
     messages.addMessage(
       ['info'],
       'API definition must have an `info` object',
-      'error'
+      'error',
+      'structural'
     );
   } else {
     const title = jsSpec.info.title;
@@ -37,10 +38,12 @@ module.exports.validate = function({ jsSpec }) {
     }
     
     if (!hasVersion) {
-      messages.addMessage(
+      messages.addTypedMessage(
         ['info', 'version'],
         '`info` object must have a string-type `version` field',
-        'error'
+        'error',
+        'structural',
+        'CTMO.Regle-11'
       );
       }
       
@@ -49,10 +52,12 @@ module.exports.validate = function({ jsSpec }) {
     const hasContact = contact && typeof contact === 'object';
       
     if (!hasContact) {
-          messages.addMessage(
+          messages.addTypedMessage(
             ['info', 'contact'],
             '`info` object must have a `contact` object',
-            'error'
+            'error',
+            'structural',
+            'CTMO.STANDARD-CODAGE-22'
           );
     } else {
       const contactName = contact.name;
