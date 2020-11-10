@@ -494,10 +494,12 @@ function checkPropNamesCaseConvention(
 
       const isCorrectCase = checkCase(propName, caseConventionValue);
       if (!isCorrectCase) {
-        messages.addMessage(
+        messages.addTypedMessage(
           contextPath.concat(['properties', propName]),
           `Property names must follow case convention: ${caseConventionValue}`,
-          checkStatus
+          checkStatus,
+          'convention',
+          'CTMO.STANDARD-CODAGE-19'
         );
       }
     }
@@ -515,7 +517,7 @@ function checkEnumValues(schema, contextPath, config, messages) {
       const checkStatus = config.snake_case_only || 'off';
       if (checkStatus.match('error|warning')) {
         if (!checkCase(enumValue, 'lower_snake_case')) {
-          messages.addMessage(
+          messages.addTypedMessage(
             contextPath.concat(['enum', i.toString()]),
             'Enum values must be lower snake case.',
             checkStatus
@@ -554,7 +556,9 @@ function checkEnumCaseConvention(
           messages.addMessage(
             contextPath.concat(['enum', i.toString()]),
             `Enum values must follow case convention: ${caseConventionValue}`,
-            checkStatus
+            checkStatus,
+            'convention',
+             'CTMO.STANDARD-CODAGE-19'
           );
         }
       }

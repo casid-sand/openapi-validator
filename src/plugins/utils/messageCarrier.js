@@ -36,7 +36,7 @@ module.exports = class MessageCarrier {
       this._messages[status].push({
         path: path,
         message: message,
-        type: type,
+        type: type, /*structural, semantic, convention, definition*/
         rule: rule
       });
     }
@@ -47,7 +47,7 @@ module.exports = class MessageCarrier {
       this._messages[status].push({
         path: path,
         message: message,
-        aithId: authId
+        authId: authId
       });
     }
   }

@@ -208,10 +208,12 @@ module.exports.validate = function({ resolvedSpec }, config) {
                 }
                 const isCorrectCase = checkCase(segment, caseConvention);
                 if (!isCorrectCase) {
-                messages.addMessage(
+                messages.addTypedMessage(
                     ['paths', pathName],
                     `Path segments must follow case convention: ${caseConvention}`,
-                    checkStatusPath
+                    checkStatusPath,
+                    'convention',
+                    'CTMO.STANDARD-CODAGE-09/10'
                 );
                 }
             });

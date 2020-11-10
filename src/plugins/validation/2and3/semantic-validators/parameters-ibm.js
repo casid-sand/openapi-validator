@@ -54,10 +54,12 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
               .every(v => v);
 
           if (!isCorrectCase) {
-            messages.addMessage(
+            messages.addTypedMessage(
               path,
               `Parameter names must follow case convention: ${caseConvention}`,
-              checkStatus
+              checkStatus,
+              'convention',
+              'CTMO.STANDARD-CODAGE-19'
             );
           }
         }

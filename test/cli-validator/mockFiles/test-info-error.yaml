@@ -16,7 +16,7 @@ tags:
     url: "http://swagger.io"
 schemes:
 - "http"
-path:
+paths:
   /pet:
     post:
       tags:
@@ -74,7 +74,7 @@ path:
       - petstore_auth:
         - "write:pets"
         - "read:pets"
-  /pet/find_by_status:
+  /pet/find-by-status:
     get:
       tags:
       - "pet"
@@ -103,12 +103,64 @@ path:
           description: "successful operation"
           schema:
             $ref: "#/definitions/InlineResponse200"
-        400:
-          description: "Invalid status value"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
+  /pet/findByStatus:
+    get:
+      tags:
+      - "pet"
+      summary: "Finds Pets by status"
+      description: "Multiple status values can be provided with comma separated strings"
+      operationId: "list_pets_by_status"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "my_Status"
+        in: "query"
+        description: "Status values that need to be considered for filter"
+        required: true
+        type: "array"
+        items:
+          type: "string"
+          enum:
+          - "available"
+          - "pending"
+          - "sold"
+          default: "available"
+        collectionFormat: "multi"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/InlineResponse200"
+  /pet/TESTIMPORT:
+    get:
+      tags:
+      - "pet"
+      summary: "Finds Pets by status"
+      description: "Multiple status values can be provided with comma separated strings"
+      operationId: "list_pets_by_status"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "Status"
+        in: "query"
+        description: "Status values that need to be considered for filter"
+        required: true
+        type: "array"
+        items:
+          type: "string"
+          enum:
+          - "available"
+          - "pending"
+          - "sold"
+          default: "available"
+        collectionFormat: "multi"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/InlineResponse200"
 securityDefinitions:
   petstore_auth:
     type: "oauth2"
@@ -122,7 +174,7 @@ definitions:
     type: "object"
     description: "string"
     properties:
-      pets:
+      Pets:
         type: "array"
         description: "list of pets"
         items:
