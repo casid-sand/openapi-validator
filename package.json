@@ -1,5 +1,5 @@
 {
-  "name": "sand-ibm-openapi-validator",
+  "name": "sand-openapi-validator",
   "description": "Configurable and extensible validator/linter for OpenAPI documents",
   "version": "0.32.0",
   "main": "src/lib/index.js",
