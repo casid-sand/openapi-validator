@@ -5,11 +5,11 @@ const { getCapturedText } = require('.');
 
     const program = {};
     let exitcode;
-    program.args = ['./test/cli-validator/mockFiles/clean.yml'];
-    //program.default_mode = true;
+    program.args = ['./test/cli-validator/mockFiles/err-and-warn.yaml'];
+    program.default_mode = true;
 
-    /*console.log('Validation de clean.yml');
-    exitCode = commandLineValidator(program);*/
+    console.log('Validation de clean.yml');
+    exitCode = commandLineValidator(program);
 
     /*program.args = ['./test/cli-validator/mockFiles/err-and-warn.yaml'];
     program.default_mode = true;
@@ -23,7 +23,7 @@ const { getCapturedText } = require('.');
     exitCode = commandLineValidator(program);*/
     
     //Validation Swagger
-    program.args = ['./test/test-utils/mockFiles/swagger-to-validate.yaml'];
+    /*program.args = ['./test/test-utils/mockFiles/swagger-to-validate.yaml'];
     program.config = './test/test-utils/mockFiles/validateConfig.yaml';
     //program.errors_only = true;
     program.report_statistics = true;
@@ -32,5 +32,5 @@ const { getCapturedText } = require('.');
     //program.default_mode = true;
 
     console.log('Validation de swagger-to-validate.yaml');
-    exitCode = commandLineValidator(program);
+    exitCode = commandLineValidator(program);*/
 

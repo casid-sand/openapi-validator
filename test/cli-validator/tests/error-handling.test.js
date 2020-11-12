@@ -200,7 +200,7 @@ describe('cli tool - test error handling', function() {
     const capturedText = getCapturedText(consoleSpy.mock.calls);
 
     expect(exitCode).toEqual(1);
-    expect(capturedText.length).toEqual(29);
+    expect(capturedText.length).toEqual(33);
     expect(capturedText[0].trim()).toEqual(
       '[Error] Trailing comma on line 40 of file ./test/cli-validator/mockFiles/trailing-comma.json.'
     );
