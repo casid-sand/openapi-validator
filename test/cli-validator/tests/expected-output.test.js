@@ -77,15 +77,15 @@ describe('cli tool - test expected output - Swagger 2', function() {
     expect(capturedText[20].match(/\S+/g)[2]).toEqual('173');
 
     // warnings
-    expect(capturedText[25].match(/\S+/g)[2]).toEqual('37');
-    expect(capturedText[29].match(/\S+/g)[2]).toEqual('60');
-    expect(capturedText[33].match(/\S+/g)[2]).toEqual('16');
-    expect(capturedText[37].match(/\S+/g)[2]).toEqual('16');
-    expect(capturedText[41].match(/\S+/g)[2]).toEqual('198');
-    expect(capturedText[45].match(/\S+/g)[2]).toEqual('109');
-    expect(capturedText[49].match(/\S+/g)[2]).toEqual('132');
-    expect(capturedText[53].match(/\S+/g)[2]).toEqual('135');
-    expect(capturedText[57].match(/\S+/g)[2]).toEqual('127');
+    expect(capturedText[27].match(/\S+/g)[2]).toEqual('37');
+    expect(capturedText[31].match(/\S+/g)[2]).toEqual('60');
+    expect(capturedText[35].match(/\S+/g)[2]).toEqual('16');
+    expect(capturedText[39].match(/\S+/g)[2]).toEqual('16');
+    expect(capturedText[43].match(/\S+/g)[2]).toEqual('198');
+    expect(capturedText[47].match(/\S+/g)[2]).toEqual('109');
+    expect(capturedText[51].match(/\S+/g)[2]).toEqual('132');
+    expect(capturedText[55].match(/\S+/g)[2]).toEqual('135');
+    expect(capturedText[59].match(/\S+/g)[2]).toEqual('127');
   });
 
   it('should return exit code of 0 if there are only warnings', async function() {
