@@ -1118,7 +1118,7 @@ paths:
     - name: x-source
       in: header
       $ref: '#/components/parameters/x-source'
-  /contacturgences/{id}:
+  /contacturgence/{id}:
     get:
       tags:
       - contact urgences

@@ -16,6 +16,9 @@
 // Assertation 6:
 // Paths cannot have literal query strings in them.
 
+// Assertation 6:
+// Paths parts should end with an "s"
+
 const each = require('lodash/each');
 const findIndex = require('lodash/findIndex');
 const isObject = require('lodash/isObject');
@@ -47,17 +50,28 @@ module.exports.validate = function({ resolvedSpec }) {
         }
 
         pathName.split('/').map(substr => {
-        // Assertation 5
-        if (
-            templateRegex.test(substr) &&
-            substr.replace(templateRegex, '').length > 0
-        ) {
-            messages.addMessage(
-            `paths.${pathName}`,
-            'Partial path templating is not allowed.',
-            'error'
-            );
-        }
+            // Assertation 5
+            if (
+                templateRegex.test(substr) &&
+                substr.replace(templateRegex, '').length > 0
+            ) {
+                messages.addMessage(
+                `paths.${pathName}`,
+                'Partial path templating is not allowed.',
+                'error'
+                );
+            }
+
+            // Assertation 7
+            if (substr.length > 0 && substr.charAt(substr.length-1) != "}" && substr.charAt(substr.length-1).toLowerCase() != "s") {
+                messages.addTypedMessage(
+                `paths.${pathName}`,
+                `Ressources in paths should end with an s ('${substr}').`,
+                'warning',
+                'convention',
+                'CTMO.STANDARD-CODAGE-03'
+                );
+            }
         });
 
         // Assertation 6

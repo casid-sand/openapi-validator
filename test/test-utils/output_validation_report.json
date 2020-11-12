@@ -1,6 +1,6 @@
 {
   "filename": "./test/test-utils/mockFiles/swagger-to-validate.yaml",
-  "scanDate": "2020-11-12 15:17:41",
+  "scanDate": "2020-11-12 19:51:29",
   "errors": [
     {
       "message": "`info` object must have a `contact` object",
@@ -419,42 +419,42 @@
     },
     {
       "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./contacturgences/{id}.get",
+      "path": "paths./contacturgence/{id}.get",
       "line": 1122,
       "type": "",
       "rule": "standard"
     },
     {
       "message": "Operation tags should be defined in global tags.",
-      "path": "paths./contacturgences/{id}.get.tags.0",
+      "path": "paths./contacturgence/{id}.get.tags.0",
       "line": 1124,
       "type": "",
       "rule": "standard"
     },
     {
       "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./contacturgences/{id}.put",
+      "path": "paths./contacturgence/{id}.put",
       "line": 1167,
       "type": "",
       "rule": "standard"
     },
     {
       "message": "Operation tags should be defined in global tags.",
-      "path": "paths./contacturgences/{id}.put.tags.0",
+      "path": "paths./contacturgence/{id}.put.tags.0",
       "line": 1169,
       "type": "",
       "rule": "standard"
     },
     {
       "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./contacturgences/{id}.delete",
+      "path": "paths./contacturgence/{id}.delete",
       "line": 1218,
       "type": "",
       "rule": "standard"
     },
     {
       "message": "Operation tags should be defined in global tags.",
-      "path": "paths./contacturgences/{id}.delete.tags.0",
+      "path": "paths./contacturgence/{id}.delete.tags.0",
       "line": 1220,
       "type": "",
       "rule": "standard"
@@ -1567,21 +1567,21 @@
     },
     {
       "message": "Parameter objects must have a `description` field.",
-      "path": "paths./contacturgences/{id}.get.parameters.0",
+      "path": "paths./contacturgence/{id}.get.parameters.0",
       "line": 1127,
       "type": "documentation",
       "rule": "D19.15"
     },
     {
       "message": "Parameter objects must have a `description` field.",
-      "path": "paths./contacturgences/{id}.put.parameters.0",
+      "path": "paths./contacturgence/{id}.put.parameters.0",
       "line": 1172,
       "type": "documentation",
       "rule": "D19.15"
     },
     {
       "message": "Parameter objects must have a `description` field.",
-      "path": "paths./contacturgences/{id}.delete.parameters.0",
+      "path": "paths./contacturgence/{id}.delete.parameters.0",
       "line": 1223,
       "type": "documentation",
       "rule": "D19.15"
@@ -2490,6 +2490,104 @@
       "rule": "D19.15"
     },
     {
+      "message": "Ressources in paths should end with an s ('contacturgence').",
+      "path": "paths./contacturgence/{id}",
+      "line": 1121,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-03"
+    },
+    {
+      "message": "Ressources in paths should end with an s ('recherche').",
+      "path": "paths./contrats/recherche",
+      "line": 1801,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-03"
+    },
+    {
+      "message": "Ressources in paths should end with an s ('recherche').",
+      "path": "paths./permis/recherche",
+      "line": 2599,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-03"
+    },
+    {
+      "message": "Ressources in paths should end with an s ('recherche').",
+      "path": "paths./personnels/recherche",
+      "line": 3388,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-03"
+    },
+    {
+      "message": "Ressources in paths should end with an s ('liste').",
+      "path": "paths./qualifications/liste",
+      "line": 3863,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-03"
+    },
+    {
+      "message": "Ressources in paths should end with an s ('recherche').",
+      "path": "paths./qualifications/recherche",
+      "line": 3952,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-03"
+    },
+    {
+      "message": "Ressources in paths should end with an s ('sante').",
+      "path": "paths./sante/{id}",
+      "line": 4081,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-03"
+    },
+    {
+      "message": "Ressources in paths should end with an s ('sante').",
+      "path": "paths./sante",
+      "line": 4263,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-03"
+    },
+    {
+      "message": "Ressources in paths should end with an s ('sante').",
+      "path": "paths./sante/recherche",
+      "line": 4423,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-03"
+    },
+    {
+      "message": "Ressources in paths should end with an s ('recherche').",
+      "path": "paths./sante/recherche",
+      "line": 4423,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-03"
+    },
+    {
+      "message": "Ressources in paths should end with an s ('securitesociale').",
+      "path": "paths./securitesociale/{id}",
+      "line": 4521,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-03"
+    },
+    {
+      "message": "Ressources in paths should end with an s ('securitesociale').",
+      "path": "paths./securitesociale",
+      "line": 4703,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-03"
+    },
+    {
+      "message": "Ressources in paths should end with an s ('sncf').",
+      "path": "paths./sncf/{id}",
+      "line": 4853,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-03"
+    },
+    {
+      "message": "Ressources in paths should end with an s ('sncf').",
+      "path": "paths./sncf",
+      "line": 5035,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-03"
+    },
+    {
       "message": "Response schemas should be defined with a named ref.",
       "path": "paths./armes.get.responses.200.content.application/json.schema",
       "line": 255,
@@ -2840,12 +2938,18 @@
       "Arrays MUST NOT be returned as the top-level structure in a response body.": 27
     },
     "warnings": {
-      "total": 376,
+      "total": 390,
       "OpenAPI object should have non-empty `tags` array.": 1,
       "Operation `description` must be present and non-empty string.": 87,
       "Operation tags should be defined in global tags.": 87,
       "Operations with non-form request bodies should set a name with the x-codegen-request-body-name annotation.": 6,
       "Parameter objects must have a `description` field.": 146,
+      "Ressources in paths should end with an s ('contacturgence').": 1,
+      "Ressources in paths should end with an s ('recherche').": 5,
+      "Ressources in paths should end with an s ('liste').": 1,
+      "Ressources in paths should end with an s ('sante').": 3,
+      "Ressources in paths should end with an s ('securitesociale').": 2,
+      "Ressources in paths should end with an s ('sncf').": 2,
       "Response schemas should be defined with a named ref.": 27,
       "Schema must have a non-empty description.": 20,
       "Property has inconsistent type": 2
@@ -2861,7 +2965,13 @@
         "Property has inconsistent type": 2
       },
       "convention": {
-        "total": 0
+        "total": 14,
+        "Ressources in paths should end with an s ('contacturgence').": 1,
+        "Ressources in paths should end with an s ('recherche').": 5,
+        "Ressources in paths should end with an s ('liste').": 1,
+        "Ressources in paths should end with an s ('sante').": 3,
+        "Ressources in paths should end with an s ('securitesociale').": 2,
+        "Ressources in paths should end with an s ('sncf').": 2
       },
       "documentation": {
         "total": 166,
@@ -2896,6 +3006,15 @@
         "total": 166,
         "Parameter objects must have a `description` field.": 146,
         "Schema must have a non-empty description.": 20
+      },
+      "CTMO.STANDARD-CODAGE-03": {
+        "total": 14,
+        "Ressources in paths should end with an s ('contacturgence').": 1,
+        "Ressources in paths should end with an s ('recherche').": 5,
+        "Ressources in paths should end with an s ('liste').": 1,
+        "Ressources in paths should end with an s ('sante').": 3,
+        "Ressources in paths should end with an s ('securitesociale').": 2,
+        "Ressources in paths should end with an s ('sncf').": 2
       }
     }
   },
