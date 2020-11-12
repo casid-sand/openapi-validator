@@ -47,6 +47,9 @@ program
   .option(
     '--debug',
     'enable debugging output'
+  )
+ .option(
+    '-o, --output <file>', 'path to output file to create with report'
   );
 
 /* prettier-ignore */

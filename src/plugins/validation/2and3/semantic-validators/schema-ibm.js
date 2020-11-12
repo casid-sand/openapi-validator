@@ -602,16 +602,18 @@ function checkProperties(
           // First property that appeared in API def, should only print once.
           if (!propertiesToCompare[key].printed) {
             propertiesToCompare[key].printed = true;
-            messages.addMessage(
+            messages.addTypedMessage(
               propertiesToCompare[key].path,
               `Property has inconsistent type: ${key}.`,
-              configOption
+              configOption,
+              'semantic'
             );
           }
-          messages.addMessage(
+          messages.addTypedMessage(
             contextPath.concat(['properties', key]).join('.'),
             `Property has inconsistent type: ${key}.`,
-            configOption
+            configOption,
+            'semantic'
           );
         }
       } else {

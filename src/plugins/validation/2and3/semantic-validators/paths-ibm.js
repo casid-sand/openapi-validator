@@ -161,10 +161,11 @@ module.exports.validate = function({ resolvedSpec }, config) {
                     const index = pathObj[op].parameters.findIndex(
                     p => p.name === parameter
                     );
-                    messages.addMessage(
+                    messages.addTypedMessage(
                     ['paths', pathName, op, 'parameters', `${index}`],
                     'Common path parameters should be defined on path object',
-                    checkStatus
+                    checkStatus,
+                    'convention'
                     );
                 });
                 }

@@ -30,6 +30,7 @@
     "jsonschema": "^1.2.4",
     "lodash": "^4.17.19",
     "matcher": "^1.1.1",
+    "node-datetime": "^2.1.2",
     "pad": "^2.2.1",
     "require-all": "^3.0.0",
     "semver": "^5.5.1",

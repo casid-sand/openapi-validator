@@ -24,7 +24,9 @@ module.exports.validate = function({ jsSpec, resolvedSpec }, config) {
         messages.addMessage(
           [...path, 'description'],
           'Items with a description must have content in it.',
-          config.no_empty_descriptions
+          config.no_empty_descriptions,
+          'documentation',
+          'D19.15'
         );
       }
 

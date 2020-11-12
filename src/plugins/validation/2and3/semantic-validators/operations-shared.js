@@ -54,10 +54,11 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
       // check for operations that have a $ref property
       // these are illegal in the spec
       if (hasRefProperty(jsSpec, ['paths', pathKey, opKey])) {
-        messages.addMessage(
+        messages.addTypedMessage(
           `paths.${pathKey}.${opKey}.$ref`,
           '$ref found in illegal location',
-          'error'
+          'error',
+          'structural'
         );
       }
 
@@ -73,10 +74,11 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
         // it also will favor complaining about parameters later in the spec, which
         // makes more sense to the user.
         if (paramIndex !== nameAndInComboIndex) {
-          messages.addMessage(
+          messages.addTypedMessage(
             `paths.${pathKey}.${opKey}.parameters[${paramIndex}]`,
             "Operation parameters must have unique 'name' + 'in' properties",
-            'error'
+            'error',
+            'structural'
           );
         }
       });
@@ -92,10 +94,11 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
                 (content.schema.type === 'array' || content.schema.items);
 
               if (isArray) {
-                messages.addMessage(
+                messages.addTypedMessage(
                   `paths.${pathKey}.${opKey}.responses.${name}.content.${contentType}.schema`,
                   'Arrays MUST NOT be returned as the top-level structure in a response body.',
-                  checkStatusArrRes
+                  checkStatusArrRes,
+                  'structural'
                 );
               }
             });
@@ -105,10 +108,11 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
               (response.schema.type === 'array' || response.schema.items);
 
             if (isArray) {
-              messages.addMessage(
+              messages.addTypedMessage(
                 `paths.${pathKey}.${opKey}.responses.${name}.schema`,
                 'Arrays MUST NOT be returned as the top-level structure in a response body.',
-                checkStatusArrRes
+                checkStatusArrRes,
+                'structural'
               );
             }
           }
@@ -120,10 +124,11 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
         op.operationId.length > 0 &&
         !!op.operationId.toString().trim();
       if (!hasOperationId) {
-        messages.addMessage(
+        messages.addTypedMessage(
           `paths.${pathKey}.${opKey}.operationId`,
           'Operations must have a non-empty `operationId`.',
-          config.no_operation_id
+          config.no_operation_id,
+          'structural'
         );
       } else {
         // check operationId for case convention
@@ -131,10 +136,11 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
         const caseConvention = config.operation_id_case_convention[1];
         const isCorrectCase = checkCase(op.operationId, caseConvention);
         if (!isCorrectCase) {
-          messages.addMessage(
+          messages.addTypedMessage(
             `paths.${pathKey}.${opKey}.operationId`,
             `operationIds must follow case convention: ${caseConvention}`,
-            checkStatus
+            checkStatus,
+            'convention'
           );
         }
       }
@@ -142,10 +148,11 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
       if (hasOperationTags && hasGlobalTags) {
         for (let i = 0, len = op.tags.length; i < len; i++) {
           if (!resolvedTags.includes(op.tags[i])) {
-            messages.addMessage(
+            messages.addTypedMessage(
               `paths.${pathKey}.${opKey}.tags`,
               'tag is not defined at the global level: ' + op.tags[i],
-              config.undefined_tag
+              config.undefined_tag,
+              'structural'
             );
           } else {
             unusedTags.delete(op.tags[i]);
@@ -156,10 +163,11 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
       const hasSummary =
         op.summary && op.summary.length > 0 && !!op.summary.toString().trim();
       if (!hasSummary) {
-        messages.addMessage(
+        messages.addTypedMessage(
           `paths.${pathKey}.${opKey}.summary`,
           'Operations must have a non-empty `summary` field.',
-          config.no_summary
+          config.no_summary,
+          'documentation'
         );
       }
 
@@ -177,10 +185,11 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
               }
             } else {
               if (param.required) {
-                messages.addMessage(
+                messages.addTypedMessage(
                   `paths.${pathKey}.${opKey}.parameters[${indx}]`,
                   'Required parameters should appear before optional parameters.',
-                  checkStatusParamOrder
+                  checkStatusParamOrder,
+                  'convention'
                 );
               }
             }
@@ -191,10 +200,11 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
   });
 
   unusedTags.forEach(tagName => {
-    messages.addMessage(
+    messages.addTypedMessage(
       `tags`,
       `A tag is defined but never used: ${tagName}`,
-      config.unused_tag
+      config.unused_tag,
+      'convention'
     );
   });
 

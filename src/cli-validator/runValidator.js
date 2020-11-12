@@ -7,6 +7,7 @@ const last = require('lodash/last');
 const chalkPackage = require('chalk');
 const jsonValidator = require('json-dup-key-validator');
 const globby = require('globby');
+const exportReportFile = require('./utils/exportReportFile');
 const ext = require('./utils/fileExtensionValidator');
 const config = require('./utils/processConfiguration');
 const buildSwaggerObject = require('./utils/buildSwaggerObject');
@@ -42,6 +43,8 @@ const processInput = async function(program) {
   const debug = !!program.debug;
 
   const configFileOverride = program.config;
+
+  const outputReportFile = program.output;
 
   const limitsFileOverride = program.limits;
 
@@ -279,7 +282,18 @@ const processInput = async function(program) {
       results.warning = false;
     }
 
-    if (jsonOutput) {
+    if (outputReportFile) {
+        exportReportFile(
+          results,
+          chalk,
+          outputReportFile,
+          printValidators,
+          reportingStats,
+          originalFile,
+          validFile,
+          errorsOnly
+        );
+    } else if (jsonOutput) {
       printJson(results, originalFile, errorsOnly);
     } else {
       if (results.error || results.warning) {

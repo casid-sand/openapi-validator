@@ -96,10 +96,11 @@ module.exports.validate = function({ jsSpec }, config) {
           successResponses.length === 1 && successResponses[0] === '204';
 
         if (!hasLocalProduces && !hasGlobalProduces && !onlyHas204) {
-          messages.addMessage(
+          messages.addTypedMessage(
             `paths.${pathKey}.${opKey}.produces`,
             'Operations must have a non-empty `produces` field.',
-            config.no_produces
+            config.no_produces,
+            'convention'
           );
         }
       }

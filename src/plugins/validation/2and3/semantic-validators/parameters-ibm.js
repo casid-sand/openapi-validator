@@ -30,10 +30,12 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
       const hasDescription = !!obj.description;
 
       if (!hasDescription && !isRef) {
-        messages.addMessage(
+        messages.addTypedMessage(
           path,
           'Parameter objects must have a `description` field.',
-          config.no_parameter_description
+          config.no_parameter_description,
+          'documentation',
+          'D19.15'
         );
       }
 
