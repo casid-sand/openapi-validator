@@ -32,13 +32,19 @@
       "missing_path_parameter": "error",
       "duplicate_path_parameter": "off",
       "snake_case_only": "off",
+      "alternate_resources_and_identifiers": "error",
+      "non_resources_part": "warning",
+      "max_path_levels": [
+        "warning",
+        6
+      ],
       "paths_case_convention": [
         "error",
         "lower_snake_case"
       ]
     },
     "responses": {
-      "inline_response_schema": "warning"
+      "inline_response_schema": "off"
     },
     "security_definitions": {
       "unused_security_schemes": "warning",
@@ -84,7 +90,7 @@
   "oas3": {
     "operations": {
       "no_request_body_content": "error",
-      "no_request_body_name": "warning"
+      "no_request_body_name": "off"
     },
     "parameters": {
       "no_in_property": "error",

@@ -5,6 +5,7 @@ const each = require('lodash/each');
 const pad = require('pad');
 const printError = require('./printError');
 const dateTime = require('node-datetime');
+const getVersion = require('./getOpenApiVersion');
 
 // get line-number-producing, 'magic' code from Swagger Editor
 const getLineNumberForPath = require(__dirname + '/../../plugins/ast/ast')
@@ -19,6 +20,7 @@ module.exports = function exportReportFile(
   reportingStats,
   originalFile,
   originalFileName,
+  swaggerObject,
   errorsOnly
 ) {
   const types = errorsOnly ? ['errors'] : ['errors', 'warnings'];
@@ -29,16 +31,41 @@ module.exports = function exportReportFile(
   const jsonReport = {
     filename: originalFileName,
     scanDate: formattedDate,
-    errors: []
   }
+
+  if (swaggerObject) {
+    if (swaggerObject.jsSpec) {
+        const version = getVersion(swaggerObject.jsSpec);
+        jsonReport.versionFormat = version;
+    }
+    const info = swaggerObject.jsSpec.info;
+    const hasInfo = info && typeof info === 'object';
+    if (hasInfo) {
+        const title = swaggerObject.jsSpec.info.title;
+        const hasTitle =
+            typeof title === 'string' && title.toString().trim().length > 0;
+        const version = swaggerObject.jsSpec.info.version;
+        const hasVersion =
+            typeof version === 'string' && version.toString().trim().length > 0;
+
+        if (hasTitle) {
+            jsonReport.titleAPI = title;
+        }
+        if (hasTitle) {
+            jsonReport.versionAPI = version;
+        }
+    }
+  } 
+
+  jsonReport.errors = [];
 
   if (!errorsOnly) {
       jsonReport.warnings = [];
   }
   if (reportingStats) {
       jsonReport.stats = [];
-      jsonReport.statsByType = [];
-      jsonReport.statsByRule = [];
+      jsonReport.stats.statsDetailedByType = [];
+      jsonReport.stats.statsDetailedByRule = [];
   }
 
   // define an object template in the case that statistics reporting is turned on
@@ -175,8 +202,8 @@ module.exports = function exportReportFile(
   // print the stats here, if applicable
   if (reportingStats && (stats.errors.total || stats.warnings.total)) {
     jsonReport.stats = stats;
-    jsonReport.stats.statsByType = typedStats;
-    jsonReport.stats.statsByRule = rulesStats;
+    jsonReport.stats.statsDetailedByType = typedStats;
+    jsonReport.stats.statsDetailedByRule = rulesStats;
   }
 
   const writeFile = util.promisify(fs.writeFile);

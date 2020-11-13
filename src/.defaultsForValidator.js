@@ -46,6 +46,12 @@ const defaults = {
       'missing_path_parameter': 'error',
       'duplicate_path_parameter': 'warning',
       'snake_case_only': 'off',
+      'alternate_resources_and_identifiers': 'off',
+      'non_resources_part': 'off',
+      'max_path_levels': [
+        'off',
+        6
+      ],
       'paths_case_convention': ['error', 'lower_snake_case']
     },
     'responses': {

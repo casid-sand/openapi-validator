@@ -291,6 +291,7 @@ const processInput = async function(program) {
           reportingStats,
           originalFile,
           validFile,
+          swagger,
           errorsOnly
         );
     } else if (jsonOutput) {

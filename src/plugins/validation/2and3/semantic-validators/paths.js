@@ -16,8 +16,16 @@
 // Assertation 6:
 // Paths cannot have literal query strings in them.
 
-// Assertation 6:
+// Assertation 7:
 // Paths parts should end with an "s"
+
+// Assertation 8:
+// Resources and identifier must be alternated in path
+// NB : version is excluded
+
+// Assertation 9:
+// Path must contains 6 depths max (alternating resources and identifier Assertion 8).
+// NB : version is excluded
 
 const each = require('lodash/each');
 const findIndex = require('lodash/findIndex');
@@ -25,9 +33,13 @@ const isObject = require('lodash/isObject');
 const MessageCarrier = require('../../../utils/messageCarrier');
 
 const templateRegex = /\{(.*?)\}/g;
+const versionRegex = /^v(ersion)?(\d+\.)?(\d+\.)?(\d+)$/;
+const parameterRegex = /^{.*}$/;
 
-module.exports.validate = function({ resolvedSpec }) {
+module.exports.validate = function({ resolvedSpec }, config) {
   const messages = new MessageCarrier();
+
+  config = config.paths;
 
   const paths = resolvedSpec.paths;
   const hasPaths = paths && typeof paths === 'object';
@@ -49,7 +61,13 @@ module.exports.validate = function({ resolvedSpec }) {
         return;
         }
 
+        let resourcesMalFormed = '';
+        let resourcesAlternated = true;
+        let depthPath = 0;
+        let numberOfLevels = 0;
         pathName.split('/').map(substr => {
+            depthPath += 1;
+            
             // Assertation 5
             if (
                 templateRegex.test(substr) &&
@@ -62,17 +80,68 @@ module.exports.validate = function({ resolvedSpec }) {
                 );
             }
 
-            // Assertation 7
-            if (substr.length > 0 && substr.charAt(substr.length-1) != "}" && substr.charAt(substr.length-1).toLowerCase() != "s") {
-                messages.addTypedMessage(
-                `paths.${pathName}`,
-                `Ressources in paths should end with an s ('${substr}').`,
-                'warning',
-                'convention',
-                'CTMO.STANDARD-CODAGE-03'
-                );
+            //check if root path (number 2) is the version
+            if (depthPath > 1) {
+                if (! (depthPath == 2 && versionRegex.test(substr.toLowerCase()))) {
+                    numberOfLevels += 1;
+
+                    // Assertation 7
+                    if (substr.length > 0 && !parameterRegex.test(substr) && substr.charAt(substr.length-1).toLowerCase() != "s") {
+                        if (resourcesMalFormed == '') {
+                            resourcesMalFormed = `'${substr}'`;
+
+                        } else {
+                            resourcesMalFormed = `${resourcesMalFormed}, '${substr}'`;
+                        }
+                    }
+
+                    //Assertion 9
+                    //even number must levels must be parameters, and odd must be resources
+                    if ( (numberOfLevels % 2 == 0) != parameterRegex.test(substr) ) {
+                        resourcesAlternated = false;
+                    }
+                }   
             }
         });
+
+        const checkResourcesPlural = config.non_resources_part
+        if (resourcesMalFormed != '' && checkResourcesPlural != 'off') {
+            messages.addTypedMessage(
+                `paths.${pathName}`,
+                `Resources in paths should end with an 's' : ${resourcesMalFormed}.`,
+                checkResourcesPlural,
+                'convention',
+                'CTMO.STANDARD-CODAGE-03'
+            );
+        }
+
+        // Assertation 8
+        let checkPathDepth = 'off';
+        let maxPathDepth = 0;
+        if (config.max_path_levels) {
+            checkPathDepth = config.max_path_levels[0];
+            maxPathDepth = config.max_path_levels[1];
+        }
+        if (numberOfLevels > maxPathDepth && checkPathDepth != 'off') {
+            messages.addTypedMessage(
+                `paths.${pathName}`,
+                `Path must contain 6 depths maximum (3 levels alternating resource and identifier).`,
+                checkPathDepth,
+                'convention',
+                'CTMO.STANDARD-CODAGE-05'
+            );
+        }
+
+        const checkResourcesAlternated = config.alternate_resources_and_identifiers
+        if (!resourcesAlternated && checkResourcesAlternated != 'off') {
+            messages.addTypedMessage(
+                `paths.${pathName}`,
+                `Path must alternate resource type and identifier (eg 'resource/{id}/subresource/{id}').`,
+                checkResourcesAlternated,
+                'convention',
+                'CTMO.STANDARD-CODAGE-04'
+            );
+        }
 
         // Assertation 6
         if (pathName.indexOf('?') > -1) {

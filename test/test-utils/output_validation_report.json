@@ -1,3023 +1,1090 @@
 {
   "filename": "./test/test-utils/mockFiles/swagger-to-validate.yaml",
-  "scanDate": "2020-11-12 19:51:29",
+  "scanDate": "2020-11-13 15:35:32",
+  "versionFormat": "2",
+  "titleAPI": "DS API V1",
+  "versionAPI": "v1",
   "errors": [
     {
-      "message": "`info` object must have a `contact` object",
-      "path": "info.contact",
-      "line": 2,
-      "type": "structural",
-      "rule": "CTMO.STANDARD-CODAGE-22"
-    },
-    {
-      "message": "Arrays MUST NOT be returned as the top-level structure in a response body.",
-      "path": "paths./armes.get.responses.200.content.application/json.schema",
-      "line": 255,
-      "type": "structural",
+      "message": "`example` property type should be object",
+      "path": "definitions.Procedure.properties.types_de_champ.items.properties.options.example",
+      "line": 349,
+      "type": "",
       "rule": "standard"
     },
     {
-      "message": "Arrays MUST NOT be returned as the top-level structure in a response body.",
-      "path": "paths./badges.get.responses.200.content.application/json.schema",
-      "line": 587,
-      "type": "structural",
+      "message": "`example` property type should be object",
+      "path": "definitions.TypesDeChamp.items.properties.options.example",
+      "line": 356,
+      "type": "",
       "rule": "standard"
     },
     {
-      "message": "Arrays MUST NOT be returned as the top-level structure in a response body.",
-      "path": "paths./batchimports.post.responses.200.content.application/json.schema",
-      "line": 720,
-      "type": "structural",
+      "message": "`example` property type should be object",
+      "path": "definitions.TypeDeChamp.properties.options.example",
+      "line": 446,
+      "type": "",
       "rule": "standard"
     },
     {
-      "message": "Arrays MUST NOT be returned as the top-level structure in a response body.",
-      "path": "paths./batchimports/permissions.post.responses.200.content.application/json.schema",
-      "line": 810,
-      "type": "structural",
+      "message": "`example` property type should be object",
+      "path": "definitions.EnveloppeProcedure.properties.types_de_champ.items.properties.options.example",
+      "line": 486,
+      "type": "",
       "rule": "standard"
     },
     {
-      "message": "Arrays MUST NOT be returned as the top-level structure in a response body.",
-      "path": "paths./batchimports/contrats.post.responses.200.content.application/json.schema",
-      "line": 899,
-      "type": "structural",
+      "message": "`example` property type should be object",
+      "path": "definitions.EnveloppeProcedure.properties.types_de_champ_private.items.properties.options.example",
+      "line": 488,
+      "type": "",
       "rule": "standard"
     },
     {
-      "message": "Arrays MUST NOT be returned as the top-level structure in a response body.",
-      "path": "paths./batchimports/contacts.post.responses.200.content.application/json.schema",
-      "line": 988,
-      "type": "structural",
+      "message": "`example` property should be equal to one of the allowed values: accepte_pre_instructeur, refuse_pre_instructeur, sans_suite_pre_instructeur. Did you mean refuse_pre_instructeur?",
+      "path": "definitions.wrapper_dossier.properties.dossier.properties.statut_pre_instructeur.example",
+      "line": 641,
+      "type": "",
       "rule": "standard"
     },
     {
-      "message": "Arrays MUST NOT be returned as the top-level structure in a response body.",
-      "path": "paths./batchimports/qualifications.post.responses.200.content.application/json.schema",
-      "line": 1077,
-      "type": "structural",
+      "message": "`example` property type should be object",
+      "path": "definitions.wrapper_dossier.properties.types_de_champ.items.properties.options.example",
+      "line": 643,
+      "type": "",
       "rule": "standard"
     },
     {
-      "message": "Arrays MUST NOT be returned as the top-level structure in a response body.",
-      "path": "paths./contacturgences.get.responses.200.content.application/json.schema",
-      "line": 1371,
-      "type": "structural",
+      "message": "`example` property type should be object",
+      "path": "definitions.wrapper_dossier.properties.types_de_champ_private.items.properties.options.example",
+      "line": 645,
+      "type": "",
       "rule": "standard"
     },
     {
-      "message": "Arrays MUST NOT be returned as the top-level structure in a response body.",
-      "path": "paths./contrats.get.responses.200.content.application/json.schema",
-      "line": 1713,
-      "type": "structural",
-      "rule": "standard"
-    },
-    {
-      "message": "Arrays MUST NOT be returned as the top-level structure in a response body.",
-      "path": "paths./contrats/recherche.get.responses.200.content.application/json.schema",
-      "line": 1859,
-      "type": "structural",
-      "rule": "standard"
-    },
-    {
-      "message": "Arrays MUST NOT be returned as the top-level structure in a response body.",
-      "path": "paths./passeports.get.responses.200.content.application/json.schema",
-      "line": 2159,
-      "type": "structural",
-      "rule": "standard"
-    },
-    {
-      "message": "Arrays MUST NOT be returned as the top-level structure in a response body.",
-      "path": "paths./permis.get.responses.200.content.application/json.schema",
-      "line": 2511,
-      "type": "structural",
-      "rule": "standard"
-    },
-    {
-      "message": "Arrays MUST NOT be returned as the top-level structure in a response body.",
-      "path": "paths./permis/recherche.get.responses.200.content.application/json.schema",
-      "line": 2664,
-      "type": "structural",
-      "rule": "standard"
-    },
-    {
-      "message": "Arrays MUST NOT be returned as the top-level structure in a response body.",
-      "path": "paths./permissions.get.responses.200.content.application/json.schema",
-      "line": 2953,
-      "type": "structural",
-      "rule": "standard"
-    },
-    {
-      "message": "Arrays MUST NOT be returned as the top-level structure in a response body.",
-      "path": "paths./personnels.get.responses.200.content.application/json.schema",
-      "line": 3300,
-      "type": "structural",
-      "rule": "standard"
-    },
-    {
-      "message": "Arrays MUST NOT be returned as the top-level structure in a response body.",
-      "path": "paths./personnels/recherche.get.responses.200.content.application/json.schema",
-      "line": 3447,
-      "type": "structural",
-      "rule": "standard"
-    },
-    {
-      "message": "Arrays MUST NOT be returned as the top-level structure in a response body.",
-      "path": "paths./qualifications.get.responses.200.content.application/json.schema",
-      "line": 3775,
-      "type": "structural",
-      "rule": "standard"
-    },
-    {
-      "message": "Arrays MUST NOT be returned as the top-level structure in a response body.",
-      "path": "paths./qualifications/liste.post.responses.200.content.application/json.schema",
-      "line": 3908,
-      "type": "structural",
-      "rule": "standard"
-    },
-    {
-      "message": "Arrays MUST NOT be returned as the top-level structure in a response body.",
-      "path": "paths./qualifications/recherche.get.responses.200.content.application/json.schema",
-      "line": 4036,
-      "type": "structural",
-      "rule": "standard"
-    },
-    {
-      "message": "Arrays MUST NOT be returned as the top-level structure in a response body.",
-      "path": "paths./sante.get.responses.200.content.application/json.schema",
-      "line": 4335,
-      "type": "structural",
-      "rule": "standard"
-    },
-    {
-      "message": "Arrays MUST NOT be returned as the top-level structure in a response body.",
-      "path": "paths./sante/recherche.get.responses.200.content.application/json.schema",
-      "line": 4476,
-      "type": "structural",
-      "rule": "standard"
-    },
-    {
-      "message": "Arrays MUST NOT be returned as the top-level structure in a response body.",
-      "path": "paths./securitesociale.get.responses.200.content.application/json.schema",
-      "line": 4765,
-      "type": "structural",
-      "rule": "standard"
-    },
-    {
-      "message": "Arrays MUST NOT be returned as the top-level structure in a response body.",
-      "path": "paths./sncf.get.responses.200.content.application/json.schema",
-      "line": 5103,
-      "type": "structural",
-      "rule": "standard"
-    },
-    {
-      "message": "Arrays MUST NOT be returned as the top-level structure in a response body.",
-      "path": "paths./tailles.get.responses.200.content.application/json.schema",
-      "line": 5445,
-      "type": "structural",
-      "rule": "standard"
-    },
-    {
-      "message": "Arrays MUST NOT be returned as the top-level structure in a response body.",
-      "path": "paths./refqualifications.get.responses.200.content.application/json.schema",
-      "line": 5782,
-      "type": "structural",
-      "rule": "standard"
-    },
-    {
-      "message": "Arrays MUST NOT be returned as the top-level structure in a response body.",
-      "path": "paths./refqualifications/categories.get.responses.200.content.application/json.schema",
-      "line": 5907,
-      "type": "structural",
-      "rule": "standard"
-    },
-    {
-      "message": "Arrays MUST NOT be returned as the top-level structure in a response body.",
-      "path": "paths./refpermis.get.responses.200.content.application/json.schema",
-      "line": 6188,
-      "type": "structural",
+      "message": "`example` property should be equal to one of the allowed values: accepte_pre_instructeur, refuse_pre_instructeur, sans_suite_pre_instructeur. Did you mean refuse_pre_instructeur?",
+      "path": "definitions.Dossier.properties.statut_pre_instructeur.example",
+      "line": 734,
+      "type": "",
       "rule": "standard"
     }
   ],
   "warnings": [
     {
-      "message": "OpenAPI object should have non-empty `tags` array.",
-      "path": "",
-      "line": 0,
+      "message": "Operation `description` must be present and non-empty string.",
+      "path": "paths./procedures.post",
+      "line": 35,
       "type": "",
       "rule": "standard"
     },
     {
       "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./armes/{id}.get",
-      "line": 12,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./armes/{id}.get.tags.0",
-      "line": 14,
+      "path": "paths./procedures/{id}.get",
+      "line": 58,
       "type": "",
       "rule": "standard"
     },
     {
       "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./armes/{id}.put",
-      "line": 57,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./armes/{id}.put.tags.0",
-      "line": 59,
+      "path": "paths./procedures/{id}.put",
+      "line": 78,
       "type": "",
       "rule": "standard"
     },
     {
       "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./armes/{id}.delete",
-      "line": 108,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./armes/{id}.delete.tags.0",
-      "line": 110,
+      "path": "paths./dossiers.post",
+      "line": 104,
       "type": "",
       "rule": "standard"
     },
     {
       "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./armes.get",
-      "line": 194,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./armes.get.tags.0",
-      "line": 196,
+      "path": "paths./dossiers/{id}.get",
+      "line": 126,
       "type": "",
       "rule": "standard"
     },
     {
       "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./armes.post",
-      "line": 259,
+      "path": "paths./dossiers/{id}.put",
+      "line": 145,
       "type": "",
       "rule": "standard"
     },
     {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./armes.post.tags.0",
-      "line": 261,
+      "message": "Parameter objects must have a `description` field.",
+      "path": "paths./dossiers.post.parameters.0",
+      "line": 114,
+      "type": "documentation",
+      "rule": "D19.15"
+    },
+    {
+      "message": "Parameter objects must have a `description` field.",
+      "path": "paths./dossiers/{id}.get.parameters.0",
+      "line": 134,
+      "type": "documentation",
+      "rule": "D19.15"
+    },
+    {
+      "message": "Parameter objects must have a `description` field.",
+      "path": "paths./dossiers/{id}.put.parameters.0",
+      "line": 153,
+      "type": "documentation",
+      "rule": "D19.15"
+    },
+    {
+      "message": "Parameter objects must have a `description` field.",
+      "path": "paths./dossiers/{id}.put.parameters.1",
+      "line": 157,
+      "type": "documentation",
+      "rule": "D19.15"
+    },
+    {
+      "message": "Schema must have a non-empty description.",
+      "path": "definitions.Procedure",
+      "line": 169,
+      "type": "documentation",
+      "rule": "D19.15"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.created_at",
+      "line": 185,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.updated_at",
+      "line": 190,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.euro_flag",
+      "line": 195,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.lien_site_web",
+      "line": 199,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.for_individual",
+      "line": 203,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.auto_archive_on",
+      "line": 207,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.hidden_at",
+      "line": 217,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.archived_at",
+      "line": 222,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.parent_procedure_id",
+      "line": 227,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.test_started_at",
+      "line": 232,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.aasm_state",
+      "line": 236,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.service_id",
+      "line": 245,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.duree_conservation_dossiers_dans_ds",
+      "line": 250,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.duree_conservation_dossiers_hors_ds",
+      "line": 255,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.cadre_juridique",
+      "line": 260,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.juridique_required",
+      "line": 264,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.declarative_with_state",
+      "line": 272,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.monavis_embed",
+      "line": 282,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.routing_criteria_name",
+      "line": 286,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.closed_at",
+      "line": 290,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.unpublised_at",
+      "line": 295,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.avis_type_id",
+      "line": 300,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.procedure_type_id",
+      "line": 305,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.niveau_instruction",
+      "line": 320,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.routing_name_pre_instructeur",
+      "line": 328,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.draft_revision_id",
+      "line": 332,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.published_revision_id",
+      "line": 337,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.niveau_validation",
+      "line": 342,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.types_de_champ",
+      "line": 347,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Enum values must follow case convention: k8s_camel_case",
+      "path": "definitions.Procedure.properties.declarative_with_state.enum.1",
+      "line": 277,
       "type": "",
       "rule": "standard"
     },
     {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./badges/{id}.get",
-      "line": 344,
+      "message": "Schema must have a non-empty description.",
+      "path": "definitions.TypesDeChamp",
+      "line": 354,
+      "type": "documentation",
+      "rule": "D19.15"
+    },
+    {
+      "message": "Schema must have a non-empty description.",
+      "path": "definitions.TypeDeChamp",
+      "line": 358,
+      "type": "documentation",
+      "rule": "D19.15"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.TypeDeChamp.properties.type_champ",
+      "line": 370,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.TypeDeChamp.properties.order_place",
+      "line": 412,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.TypeDeChamp.properties.procedure_id",
+      "line": 417,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.TypeDeChamp.properties.created_at",
+      "line": 426,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.TypeDeChamp.properties.updated_at",
+      "line": 431,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.TypeDeChamp.properties.stable_id",
+      "line": 448,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.TypeDeChamp.properties.parent_id",
+      "line": 453,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.TypeDeChamp.properties.api_name",
+      "line": 458,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.TypeDeChamp.properties.revision_id",
+      "line": 462,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Enum values must follow case convention: k8s_camel_case",
+      "path": "definitions.TypeDeChamp.properties.type_champ.enum.1",
+      "line": 375,
       "type": "",
       "rule": "standard"
     },
     {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./badges/{id}.get.tags.0",
-      "line": 346,
+      "message": "Enum values must follow case convention: k8s_camel_case",
+      "path": "definitions.TypeDeChamp.properties.type_champ.enum.3",
+      "line": 377,
       "type": "",
       "rule": "standard"
     },
     {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./badges/{id}.put",
-      "line": 389,
+      "message": "Enum values must follow case convention: k8s_camel_case",
+      "path": "definitions.TypeDeChamp.properties.type_champ.enum.8",
+      "line": 382,
       "type": "",
       "rule": "standard"
     },
     {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./badges/{id}.put.tags.0",
+      "message": "Enum values must follow case convention: k8s_camel_case",
+      "path": "definitions.TypeDeChamp.properties.type_champ.enum.9",
+      "line": 383,
+      "type": "",
+      "rule": "standard"
+    },
+    {
+      "message": "Enum values must follow case convention: k8s_camel_case",
+      "path": "definitions.TypeDeChamp.properties.type_champ.enum.10",
+      "line": 384,
+      "type": "",
+      "rule": "standard"
+    },
+    {
+      "message": "Enum values must follow case convention: k8s_camel_case",
+      "path": "definitions.TypeDeChamp.properties.type_champ.enum.16",
+      "line": 390,
+      "type": "",
+      "rule": "standard"
+    },
+    {
+      "message": "Enum values must follow case convention: k8s_camel_case",
+      "path": "definitions.TypeDeChamp.properties.type_champ.enum.17",
       "line": 391,
       "type": "",
       "rule": "standard"
     },
     {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./badges/{id}.delete",
-      "line": 440,
+      "message": "Enum values must follow case convention: k8s_camel_case",
+      "path": "definitions.TypeDeChamp.properties.type_champ.enum.18",
+      "line": 392,
       "type": "",
       "rule": "standard"
     },
     {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./badges/{id}.delete.tags.0",
-      "line": 442,
+      "message": "Enum values must follow case convention: k8s_camel_case",
+      "path": "definitions.TypeDeChamp.properties.type_champ.enum.19",
+      "line": 393,
       "type": "",
       "rule": "standard"
     },
     {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./badges.get",
-      "line": 526,
+      "message": "Enum values must follow case convention: k8s_camel_case",
+      "path": "definitions.TypeDeChamp.properties.type_champ.enum.26",
+      "line": 400,
       "type": "",
       "rule": "standard"
     },
     {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./badges.get.tags.0",
-      "line": 528,
+      "message": "Enum values must follow case convention: k8s_camel_case",
+      "path": "definitions.TypeDeChamp.properties.type_champ.enum.28",
+      "line": 402,
       "type": "",
       "rule": "standard"
     },
     {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./badges.post",
-      "line": 591,
+      "message": "Enum values must follow case convention: k8s_camel_case",
+      "path": "definitions.TypeDeChamp.properties.type_champ.enum.29",
+      "line": 403,
       "type": "",
       "rule": "standard"
     },
     {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./badges.post.tags.0",
-      "line": 593,
+      "message": "Enum values must follow case convention: k8s_camel_case",
+      "path": "definitions.TypeDeChamp.properties.type_champ.enum.30",
+      "line": 404,
       "type": "",
       "rule": "standard"
     },
     {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./batchimports.post",
-      "line": 676,
+      "message": "Enum values must follow case convention: k8s_camel_case",
+      "path": "definitions.TypeDeChamp.properties.type_champ.enum.33",
+      "line": 407,
       "type": "",
       "rule": "standard"
     },
     {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./batchimports.post.tags.0",
-      "line": 678,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./batchimports/permissions.post",
-      "line": 766,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./batchimports/permissions.post.tags.0",
-      "line": 768,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./batchimports/contrats.post",
-      "line": 855,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./batchimports/contrats.post.tags.0",
-      "line": 857,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./batchimports/contacts.post",
-      "line": 944,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./batchimports/contacts.post.tags.0",
-      "line": 946,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./batchimports/qualifications.post",
-      "line": 1033,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./batchimports/qualifications.post.tags.0",
-      "line": 1035,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./contacturgence/{id}.get",
-      "line": 1122,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./contacturgence/{id}.get.tags.0",
-      "line": 1124,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./contacturgence/{id}.put",
-      "line": 1167,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./contacturgence/{id}.put.tags.0",
-      "line": 1169,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./contacturgence/{id}.delete",
-      "line": 1218,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./contacturgence/{id}.delete.tags.0",
-      "line": 1220,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./contacturgences.get",
-      "line": 1304,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./contacturgences.get.tags.0",
-      "line": 1306,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./contacturgences.post",
-      "line": 1375,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./contacturgences.post.tags.0",
-      "line": 1377,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./contrats/{id}.get",
-      "line": 1460,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./contrats/{id}.get.tags.0",
-      "line": 1462,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./contrats/{id}.put",
-      "line": 1505,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./contrats/{id}.put.tags.0",
-      "line": 1507,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./contrats/{id}.delete",
-      "line": 1556,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./contrats/{id}.delete.tags.0",
-      "line": 1558,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./contrats.get",
-      "line": 1642,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./contrats.get.tags.0",
-      "line": 1644,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./contrats.post",
-      "line": 1717,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./contrats.post.tags.0",
-      "line": 1719,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./contrats/recherche.get",
-      "line": 1802,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./contrats/recherche.get.tags.0",
-      "line": 1804,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./passeports/{id}.get",
-      "line": 1905,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./passeports/{id}.get.tags.0",
-      "line": 1907,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./passeports/{id}.put",
-      "line": 1950,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./passeports/{id}.put.tags.0",
-      "line": 1952,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./passeports/{id}.delete",
-      "line": 2001,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./passeports/{id}.delete.tags.0",
-      "line": 2003,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./passeports.get",
-      "line": 2087,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./passeports.get.tags.0",
-      "line": 2089,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./passeports.post",
-      "line": 2163,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./passeports.post.tags.0",
-      "line": 2165,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./permis/{id}.get",
-      "line": 2248,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./permis/{id}.get.tags.0",
-      "line": 2250,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./permis/{id}.put",
-      "line": 2293,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./permis/{id}.put.tags.0",
-      "line": 2295,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./permis/{id}.delete",
-      "line": 2344,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./permis/{id}.delete.tags.0",
-      "line": 2346,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./permis.get",
-      "line": 2430,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./permis.get.tags.0",
-      "line": 2432,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./permis.post",
-      "line": 2515,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./permis.post.tags.0",
-      "line": 2517,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./permis/recherche.get",
-      "line": 2600,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./permis/recherche.get.tags.0",
-      "line": 2602,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./permissions/{id}.get",
-      "line": 2710,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./permissions/{id}.get.tags.0",
-      "line": 2712,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./permissions/{id}.put",
-      "line": 2755,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./permissions/{id}.put.tags.0",
-      "line": 2757,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./permissions/{id}.delete",
-      "line": 2806,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./permissions/{id}.delete.tags.0",
-      "line": 2808,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./permissions.get",
-      "line": 2892,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./permissions.get.tags.0",
-      "line": 2894,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./permissions.post",
-      "line": 2957,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./permissions.post.tags.0",
-      "line": 2959,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./personnels/{id}.get",
-      "line": 3042,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./personnels/{id}.get.tags.0",
-      "line": 3044,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./personnels/{id}.put",
-      "line": 3087,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./personnels/{id}.put.tags.0",
-      "line": 3089,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./personnels/{id}.delete",
-      "line": 3138,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./personnels/{id}.delete.tags.0",
-      "line": 3140,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./personnels.get",
-      "line": 3224,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./personnels.get.tags.0",
-      "line": 3226,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./personnels.post",
-      "line": 3304,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./personnels.post.tags.0",
-      "line": 3306,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./personnels/recherche.get",
-      "line": 3389,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./personnels/recherche.get.tags.0",
-      "line": 3391,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./qualifications/{id}.get",
-      "line": 3493,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./qualifications/{id}.get.tags.0",
-      "line": 3495,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./qualifications/{id}.put",
-      "line": 3538,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./qualifications/{id}.put.tags.0",
-      "line": 3540,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./qualifications/{id}.delete",
-      "line": 3589,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./qualifications/{id}.delete.tags.0",
-      "line": 3591,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./qualifications.get",
-      "line": 3675,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./qualifications.get.tags.0",
-      "line": 3677,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./qualifications.post",
-      "line": 3779,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./qualifications.post.tags.0",
-      "line": 3781,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./qualifications/liste.post",
-      "line": 3864,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./qualifications/liste.post.tags.0",
-      "line": 3866,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./qualifications/recherche.get",
-      "line": 3953,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./qualifications/recherche.get.tags.0",
-      "line": 3955,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./sante/{id}.get",
-      "line": 4082,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./sante/{id}.get.tags.0",
-      "line": 4084,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./sante/{id}.put",
-      "line": 4127,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./sante/{id}.put.tags.0",
-      "line": 4129,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./sante/{id}.delete",
-      "line": 4178,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./sante/{id}.delete.tags.0",
-      "line": 4180,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./sante.get",
-      "line": 4264,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./sante.get.tags.0",
-      "line": 4266,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./sante.post",
-      "line": 4339,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./sante.post.tags.0",
-      "line": 4341,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./sante/recherche.get",
-      "line": 4424,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./sante/recherche.get.tags.0",
-      "line": 4426,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./securitesociale/{id}.get",
-      "line": 4522,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./securitesociale/{id}.get.tags.0",
-      "line": 4524,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./securitesociale/{id}.put",
-      "line": 4567,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./securitesociale/{id}.put.tags.0",
-      "line": 4569,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./securitesociale/{id}.delete",
-      "line": 4618,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./securitesociale/{id}.delete.tags.0",
-      "line": 4620,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./securitesociale.get",
-      "line": 4704,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./securitesociale.get.tags.0",
-      "line": 4706,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./securitesociale.post",
-      "line": 4769,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./securitesociale.post.tags.0",
-      "line": 4771,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./sncf/{id}.get",
-      "line": 4854,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./sncf/{id}.get.tags.0",
-      "line": 4856,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./sncf/{id}.put",
-      "line": 4899,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./sncf/{id}.put.tags.0",
-      "line": 4901,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./sncf/{id}.delete",
-      "line": 4950,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./sncf/{id}.delete.tags.0",
-      "line": 4952,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./sncf.get",
-      "line": 5036,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./sncf.get.tags.0",
-      "line": 5038,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./sncf.post",
-      "line": 5107,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./sncf.post.tags.0",
-      "line": 5109,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./tailles/{id}.get",
-      "line": 5192,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./tailles/{id}.get.tags.0",
-      "line": 5194,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./tailles/{id}.put",
-      "line": 5237,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./tailles/{id}.put.tags.0",
-      "line": 5239,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./tailles/{id}.delete",
-      "line": 5288,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./tailles/{id}.delete.tags.0",
-      "line": 5290,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./tailles.get",
-      "line": 5374,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./tailles.get.tags.0",
-      "line": 5376,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./tailles.post",
-      "line": 5449,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./tailles.post.tags.0",
-      "line": 5451,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./refqualifications/{id}.get",
-      "line": 5534,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./refqualifications/{id}.get.tags.0",
-      "line": 5536,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./refqualifications/{id}.put",
-      "line": 5579,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./refqualifications/{id}.put.tags.0",
-      "line": 5581,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./refqualifications/{id}.delete",
-      "line": 5630,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./refqualifications/{id}.delete.tags.0",
-      "line": 5632,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./refqualifications.get",
-      "line": 5716,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./refqualifications.get.tags.0",
-      "line": 5718,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./refqualifications.post",
-      "line": 5786,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./refqualifications.post.tags.0",
-      "line": 5788,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./refqualifications/categories.get",
-      "line": 5871,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./refqualifications/categories.get.tags.0",
-      "line": 5873,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./refpermis/{id}.get",
-      "line": 5952,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./refpermis/{id}.get.tags.0",
-      "line": 5954,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./refpermis/{id}.put",
-      "line": 5997,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./refpermis/{id}.put.tags.0",
-      "line": 5999,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./refpermis/{id}.delete",
-      "line": 6048,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./refpermis/{id}.delete.tags.0",
-      "line": 6050,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./refpermis.get",
-      "line": 6134,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./refpermis.get.tags.0",
-      "line": 6136,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation `description` must be present and non-empty string.",
-      "path": "paths./refpermis.post",
-      "line": 6192,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operation tags should be defined in global tags.",
-      "path": "paths./refpermis.post.tags.0",
-      "line": 6194,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operations with non-form request bodies should set a name with the x-codegen-request-body-name annotation.",
-      "path": "paths./batchimports.post",
-      "line": 676,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operations with non-form request bodies should set a name with the x-codegen-request-body-name annotation.",
-      "path": "paths./batchimports/permissions.post",
-      "line": 766,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operations with non-form request bodies should set a name with the x-codegen-request-body-name annotation.",
-      "path": "paths./batchimports/contrats.post",
-      "line": 855,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operations with non-form request bodies should set a name with the x-codegen-request-body-name annotation.",
-      "path": "paths./batchimports/contacts.post",
-      "line": 944,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operations with non-form request bodies should set a name with the x-codegen-request-body-name annotation.",
-      "path": "paths./batchimports/qualifications.post",
-      "line": 1033,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Operations with non-form request bodies should set a name with the x-codegen-request-body-name annotation.",
-      "path": "paths./qualifications/liste.post",
-      "line": 3864,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./armes/{id}.get.parameters.0",
-      "line": 17,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./armes/{id}.put.parameters.0",
-      "line": 62,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./armes/{id}.delete.parameters.0",
-      "line": 113,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./armes.get.parameters.0",
-      "line": 199,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./armes.get.parameters.1",
-      "line": 205,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./armes.get.parameters.2",
-      "line": 211,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./armes.get.parameters.3",
-      "line": 216,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./badges/{id}.get.parameters.0",
-      "line": 349,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./badges/{id}.put.parameters.0",
-      "line": 394,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./badges/{id}.delete.parameters.0",
-      "line": 445,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./badges.get.parameters.0",
-      "line": 531,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./badges.get.parameters.1",
-      "line": 537,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./badges.get.parameters.2",
-      "line": 543,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./badges.get.parameters.3",
-      "line": 548,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./contacturgence/{id}.get.parameters.0",
-      "line": 1127,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./contacturgence/{id}.put.parameters.0",
-      "line": 1172,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./contacturgence/{id}.delete.parameters.0",
-      "line": 1223,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./contacturgences.get.parameters.0",
-      "line": 1309,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./contacturgences.get.parameters.1",
-      "line": 1315,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./contacturgences.get.parameters.2",
-      "line": 1321,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./contacturgences.get.parameters.3",
-      "line": 1326,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./contacturgences.get.parameters.4",
-      "line": 1333,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./contrats/{id}.get.parameters.0",
-      "line": 1465,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./contrats/{id}.put.parameters.0",
-      "line": 1510,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./contrats/{id}.delete.parameters.0",
-      "line": 1561,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./contrats.get.parameters.0",
-      "line": 1647,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./contrats.get.parameters.1",
-      "line": 1653,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./contrats.get.parameters.2",
-      "line": 1659,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./contrats.get.parameters.3",
-      "line": 1664,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./contrats.get.parameters.4",
-      "line": 1671,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./contrats.get.parameters.5",
-      "line": 1676,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./contrats/recherche.get.parameters.0",
-      "line": 1807,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./contrats/recherche.get.parameters.1",
-      "line": 1815,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./contrats/recherche.get.parameters.2",
-      "line": 1821,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./passeports/{id}.get.parameters.0",
-      "line": 1910,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./passeports/{id}.put.parameters.0",
-      "line": 1955,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./passeports/{id}.delete.parameters.0",
-      "line": 2006,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./passeports.get.parameters.0",
-      "line": 2092,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./passeports.get.parameters.1",
-      "line": 2098,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./passeports.get.parameters.2",
-      "line": 2104,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./passeports.get.parameters.3",
-      "line": 2109,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./passeports.get.parameters.4",
-      "line": 2117,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./passeports.get.parameters.5",
-      "line": 2122,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./permis/{id}.get.parameters.0",
-      "line": 2253,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./permis/{id}.put.parameters.0",
-      "line": 2298,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./permis/{id}.delete.parameters.0",
-      "line": 2349,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./permis.get.parameters.0",
-      "line": 2435,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./permis.get.parameters.1",
-      "line": 2441,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./permis.get.parameters.2",
-      "line": 2447,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./permis.get.parameters.3",
-      "line": 2452,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./permis.get.parameters.4",
-      "line": 2460,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./permis.get.parameters.5",
-      "line": 2467,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./permis.get.parameters.6",
-      "line": 2474,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./permis/recherche.get.parameters.0",
-      "line": 2605,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./permis/recherche.get.parameters.1",
-      "line": 2613,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./permis/recherche.get.parameters.2",
-      "line": 2620,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./permis/recherche.get.parameters.3",
-      "line": 2627,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./permissions/{id}.get.parameters.0",
-      "line": 2715,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./permissions/{id}.put.parameters.0",
-      "line": 2760,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./permissions/{id}.delete.parameters.0",
-      "line": 2811,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./permissions.get.parameters.0",
-      "line": 2897,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./permissions.get.parameters.1",
-      "line": 2903,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./permissions.get.parameters.2",
-      "line": 2909,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./permissions.get.parameters.3",
-      "line": 2914,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./personnels/{id}.get.parameters.0",
-      "line": 3047,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./personnels/{id}.put.parameters.0",
-      "line": 3092,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./personnels/{id}.delete.parameters.0",
-      "line": 3143,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./personnels.get.parameters.0",
-      "line": 3229,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./personnels.get.parameters.1",
-      "line": 3235,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./personnels.get.parameters.2",
-      "line": 3241,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./personnels.get.parameters.3",
-      "line": 3246,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./personnels.get.parameters.4",
-      "line": 3253,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./personnels.get.parameters.5",
-      "line": 3258,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./personnels.get.parameters.6",
-      "line": 3263,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./personnels/recherche.get.parameters.0",
-      "line": 3394,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./personnels/recherche.get.parameters.1",
-      "line": 3402,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./personnels/recherche.get.parameters.2",
-      "line": 3407,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./qualifications/{id}.get.parameters.0",
-      "line": 3498,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./qualifications/{id}.put.parameters.0",
-      "line": 3543,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./qualifications/{id}.delete.parameters.0",
-      "line": 3594,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./qualifications.get.parameters.0",
-      "line": 3680,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./qualifications.get.parameters.1",
-      "line": 3686,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./qualifications.get.parameters.2",
-      "line": 3692,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./qualifications.get.parameters.3",
-      "line": 3697,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./qualifications.get.parameters.4",
-      "line": 3705,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./qualifications.get.parameters.5",
-      "line": 3712,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./qualifications.get.parameters.6",
-      "line": 3719,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./qualifications.get.parameters.7",
-      "line": 3725,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./qualifications.get.parameters.8",
-      "line": 3732,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./qualifications.get.parameters.9",
-      "line": 3738,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./qualifications/recherche.get.parameters.0",
-      "line": 3958,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./qualifications/recherche.get.parameters.1",
-      "line": 3966,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./qualifications/recherche.get.parameters.2",
-      "line": 3973,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./qualifications/recherche.get.parameters.3",
-      "line": 3980,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./qualifications/recherche.get.parameters.4",
-      "line": 3986,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./qualifications/recherche.get.parameters.5",
-      "line": 3993,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./qualifications/recherche.get.parameters.6",
-      "line": 3999,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./sante/{id}.get.parameters.0",
-      "line": 4087,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./sante/{id}.put.parameters.0",
-      "line": 4132,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./sante/{id}.delete.parameters.0",
-      "line": 4183,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./sante.get.parameters.0",
-      "line": 4269,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./sante.get.parameters.1",
-      "line": 4275,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./sante.get.parameters.2",
-      "line": 4281,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./sante.get.parameters.3",
-      "line": 4286,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./sante.get.parameters.4",
-      "line": 4291,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./sante.get.parameters.5",
-      "line": 4296,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./sante/recherche.get.parameters.0",
-      "line": 4429,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./sante/recherche.get.parameters.1",
-      "line": 4437,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./securitesociale/{id}.get.parameters.0",
-      "line": 4527,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./securitesociale/{id}.put.parameters.0",
-      "line": 4572,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./securitesociale/{id}.delete.parameters.0",
-      "line": 4623,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./securitesociale.get.parameters.0",
-      "line": 4709,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./securitesociale.get.parameters.1",
-      "line": 4715,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./securitesociale.get.parameters.2",
-      "line": 4721,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./securitesociale.get.parameters.3",
-      "line": 4726,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./sncf/{id}.get.parameters.0",
-      "line": 4859,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./sncf/{id}.put.parameters.0",
-      "line": 4904,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./sncf/{id}.delete.parameters.0",
-      "line": 4955,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./sncf.get.parameters.0",
-      "line": 5041,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./sncf.get.parameters.1",
-      "line": 5047,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./sncf.get.parameters.2",
-      "line": 5053,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./sncf.get.parameters.3",
-      "line": 5058,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./sncf.get.parameters.4",
-      "line": 5066,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./tailles/{id}.get.parameters.0",
-      "line": 5197,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./tailles/{id}.put.parameters.0",
-      "line": 5242,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./tailles/{id}.delete.parameters.0",
-      "line": 5293,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./tailles.get.parameters.0",
-      "line": 5379,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./tailles.get.parameters.1",
-      "line": 5385,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./tailles.get.parameters.2",
-      "line": 5391,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./tailles.get.parameters.3",
-      "line": 5396,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./tailles.get.parameters.4",
-      "line": 5401,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./tailles.get.parameters.5",
-      "line": 5406,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./refqualifications/{id}.get.parameters.0",
-      "line": 5539,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./refqualifications/{id}.put.parameters.0",
-      "line": 5584,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./refqualifications/{id}.delete.parameters.0",
-      "line": 5635,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./refqualifications.get.parameters.0",
-      "line": 5721,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./refqualifications.get.parameters.1",
-      "line": 5727,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./refqualifications.get.parameters.2",
-      "line": 5733,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./refqualifications.get.parameters.3",
-      "line": 5738,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./refqualifications.get.parameters.4",
-      "line": 5745,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./refpermis/{id}.get.parameters.0",
-      "line": 5957,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./refpermis/{id}.put.parameters.0",
-      "line": 6002,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./refpermis/{id}.delete.parameters.0",
-      "line": 6053,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./refpermis.get.parameters.0",
-      "line": 6139,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./refpermis.get.parameters.1",
-      "line": 6145,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Parameter objects must have a `description` field.",
-      "path": "paths./refpermis.get.parameters.2",
-      "line": 6151,
+      "message": "Schema must have a non-empty description.",
+      "path": "definitions.EnveloppeProcedure",
+      "line": 469,
       "type": "documentation",
       "rule": "D19.15"
     },
     {
-      "message": "Ressources in paths should end with an s ('contacturgence').",
-      "path": "paths./contacturgence/{id}",
-      "line": 1121,
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.EnveloppeProcedure.properties.initiated_mail",
+      "line": 474,
       "type": "convention",
-      "rule": "CTMO.STANDARD-CODAGE-03"
+      "rule": "CTMO.STANDARD-CODAGE-19"
     },
     {
-      "message": "Ressources in paths should end with an s ('recherche').",
-      "path": "paths./contrats/recherche",
-      "line": 1801,
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.EnveloppeProcedure.properties.received_mail",
+      "line": 476,
       "type": "convention",
-      "rule": "CTMO.STANDARD-CODAGE-03"
+      "rule": "CTMO.STANDARD-CODAGE-19"
     },
     {
-      "message": "Ressources in paths should end with an s ('recherche').",
-      "path": "paths./permis/recherche",
-      "line": 2599,
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.EnveloppeProcedure.properties.closed_mail",
+      "line": 478,
       "type": "convention",
-      "rule": "CTMO.STANDARD-CODAGE-03"
+      "rule": "CTMO.STANDARD-CODAGE-19"
     },
     {
-      "message": "Ressources in paths should end with an s ('recherche').",
-      "path": "paths./personnels/recherche",
-      "line": 3388,
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.EnveloppeProcedure.properties.refused_mail",
+      "line": 480,
       "type": "convention",
-      "rule": "CTMO.STANDARD-CODAGE-03"
+      "rule": "CTMO.STANDARD-CODAGE-19"
     },
     {
-      "message": "Ressources in paths should end with an s ('liste').",
-      "path": "paths./qualifications/liste",
-      "line": 3863,
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.EnveloppeProcedure.properties.without_continuation_mail",
+      "line": 482,
       "type": "convention",
-      "rule": "CTMO.STANDARD-CODAGE-03"
+      "rule": "CTMO.STANDARD-CODAGE-19"
     },
     {
-      "message": "Ressources in paths should end with an s ('recherche').",
-      "path": "paths./qualifications/recherche",
-      "line": 3952,
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.EnveloppeProcedure.properties.types_de_champ",
+      "line": 486,
       "type": "convention",
-      "rule": "CTMO.STANDARD-CODAGE-03"
+      "rule": "CTMO.STANDARD-CODAGE-19"
     },
     {
-      "message": "Ressources in paths should end with an s ('sante').",
-      "path": "paths./sante/{id}",
-      "line": 4081,
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.EnveloppeProcedure.properties.types_de_champ_private",
+      "line": 488,
       "type": "convention",
-      "rule": "CTMO.STANDARD-CODAGE-03"
+      "rule": "CTMO.STANDARD-CODAGE-19"
     },
     {
-      "message": "Ressources in paths should end with an s ('sante').",
-      "path": "paths./sante",
-      "line": 4263,
+      "message": "Schema must have a non-empty description.",
+      "path": "definitions.Service",
+      "line": 490,
+      "type": "documentation",
+      "rule": "D19.15"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Service.properties.type_organisme",
+      "line": 498,
       "type": "convention",
-      "rule": "CTMO.STANDARD-CODAGE-03"
+      "rule": "CTMO.STANDARD-CODAGE-19"
     },
     {
-      "message": "Ressources in paths should end with an s ('sante').",
-      "path": "paths./sante/recherche",
-      "line": 4423,
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Service.properties.administrateur_id",
+      "line": 514,
       "type": "convention",
-      "rule": "CTMO.STANDARD-CODAGE-03"
+      "rule": "CTMO.STANDARD-CODAGE-19"
     },
     {
-      "message": "Ressources in paths should end with an s ('recherche').",
-      "path": "paths./sante/recherche",
-      "line": 4423,
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Service.properties.created_at",
+      "line": 541,
       "type": "convention",
-      "rule": "CTMO.STANDARD-CODAGE-03"
+      "rule": "CTMO.STANDARD-CODAGE-19"
     },
     {
-      "message": "Ressources in paths should end with an s ('securitesociale').",
-      "path": "paths./securitesociale/{id}",
-      "line": 4521,
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Service.properties.updated_at",
+      "line": 546,
       "type": "convention",
-      "rule": "CTMO.STANDARD-CODAGE-03"
+      "rule": "CTMO.STANDARD-CODAGE-19"
     },
     {
-      "message": "Ressources in paths should end with an s ('securitesociale').",
-      "path": "paths./securitesociale",
-      "line": 4703,
-      "type": "convention",
-      "rule": "CTMO.STANDARD-CODAGE-03"
-    },
-    {
-      "message": "Ressources in paths should end with an s ('sncf').",
-      "path": "paths./sncf/{id}",
-      "line": 4853,
-      "type": "convention",
-      "rule": "CTMO.STANDARD-CODAGE-03"
-    },
-    {
-      "message": "Ressources in paths should end with an s ('sncf').",
-      "path": "paths./sncf",
-      "line": 5035,
-      "type": "convention",
-      "rule": "CTMO.STANDARD-CODAGE-03"
-    },
-    {
-      "message": "Response schemas should be defined with a named ref.",
-      "path": "paths./armes.get.responses.200.content.application/json.schema",
-      "line": 255,
+      "message": "Enum values must follow case convention: k8s_camel_case",
+      "path": "definitions.Service.properties.type_organisme.enum.0",
+      "line": 502,
       "type": "",
       "rule": "standard"
     },
     {
-      "message": "Response schemas should be defined with a named ref.",
-      "path": "paths./badges.get.responses.200.content.application/json.schema",
-      "line": 587,
+      "message": "Enum values must follow case convention: k8s_camel_case",
+      "path": "definitions.Service.properties.type_organisme.enum.2",
+      "line": 504,
       "type": "",
       "rule": "standard"
     },
     {
-      "message": "Response schemas should be defined with a named ref.",
-      "path": "paths./batchimports.post.responses.200.content.application/json.schema",
+      "message": "Enum values must follow case convention: k8s_camel_case",
+      "path": "definitions.Service.properties.type_organisme.enum.3",
+      "line": 505,
+      "type": "",
+      "rule": "standard"
+    },
+    {
+      "message": "Enum values must follow case convention: k8s_camel_case",
+      "path": "definitions.Service.properties.type_organisme.enum.4",
+      "line": 506,
+      "type": "",
+      "rule": "standard"
+    },
+    {
+      "message": "Enum values must follow case convention: k8s_camel_case",
+      "path": "definitions.Service.properties.type_organisme.enum.5",
+      "line": 507,
+      "type": "",
+      "rule": "standard"
+    },
+    {
+      "message": "Schema must have a non-empty description.",
+      "path": "definitions.FormatEmail",
+      "line": 553,
+      "type": "documentation",
+      "rule": "D19.15"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.FormatEmail.properties.procedure_id",
+      "line": 569,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.FormatEmail.properties.created_at",
+      "line": 574,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.FormatEmail.properties.updated_at",
+      "line": 579,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Schema must have a non-empty description.",
+      "path": "definitions.Administrateurs",
+      "line": 586,
+      "type": "documentation",
+      "rule": "D19.15"
+    },
+    {
+      "message": "Schema must have a non-empty description.",
+      "path": "definitions.User",
+      "line": 590,
+      "type": "documentation",
+      "rule": "D19.15"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.User.properties.instructeur_id",
+      "line": 606,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.User.properties.administrateur_id",
+      "line": 611,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.User.properties.valideur_id",
+      "line": 616,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.User.properties.pre_instructeur_id",
+      "line": 621,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.User.properties.created_at",
+      "line": 626,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.User.properties.updated_at",
+      "line": 631,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Schema must have a non-empty description.",
+      "path": "definitions.wrapper_dossier",
+      "line": 638,
+      "type": "documentation",
+      "rule": "D19.15"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.wrapper_dossier.properties.types_de_champ",
+      "line": 643,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.wrapper_dossier.properties.types_de_champ_private",
+      "line": 645,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.wrapper_dossier.properties.groupe_instructeur",
+      "line": 649,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.wrapper_dossier.properties.groupe_pre_instructeur",
+      "line": 651,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Schema must have a non-empty description.",
+      "path": "definitions.Dossier",
+      "line": 653,
+      "type": "documentation",
+      "rule": "D19.15"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.autorisation_donnees",
+      "line": 660,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.user_id",
+      "line": 672,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.en_construction_at",
+      "line": 679,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.en_instruction_at",
+      "line": 683,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.processed_at",
+      "line": 687,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.hidden_at",
+      "line": 694,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.search_terms",
+      "line": 698,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.private_search_terms",
+      "line": 701,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.groupe_instructeur_id",
+      "line": 704,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.brouillon_close_to_expiration_notice_sent_at",
+      "line": 708,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.groupe_instructeur_updated_at",
+      "line": 712,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.en_construction_close_to_expiration_notice_sent_at",
+      "line": 716,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.en_construction_conservation_extension",
       "line": 720,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.termine_close_to_expiration_notice_sent_at",
+      "line": 724,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.groupe_pre_instructeur_id",
+      "line": 728,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.statut_pre_instructeur",
+      "line": 732,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.groupe_pre_instructeur_updated_at",
+      "line": 739,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.revision_id",
+      "line": 743,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.last_champ_updated_at",
+      "line": 747,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.last_champ_private_updated_at",
+      "line": 751,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.last_avis_updated_at",
+      "line": 755,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.last_commentaire_updated_at",
+      "line": 759,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.pre_instructeur_id",
+      "line": 763,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.created_at",
+      "line": 767,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.updated_at",
+      "line": 771,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
+    },
+    {
+      "message": "Enum values must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.state.enum.1",
+      "line": 667,
       "type": "",
       "rule": "standard"
     },
     {
-      "message": "Response schemas should be defined with a named ref.",
-      "path": "paths./batchimports/permissions.post.responses.200.content.application/json.schema",
-      "line": 810,
+      "message": "Enum values must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.state.enum.2",
+      "line": 668,
       "type": "",
       "rule": "standard"
     },
     {
-      "message": "Response schemas should be defined with a named ref.",
-      "path": "paths./batchimports/contrats.post.responses.200.content.application/json.schema",
-      "line": 899,
+      "message": "Enum values must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.state.enum.5",
+      "line": 671,
       "type": "",
       "rule": "standard"
     },
     {
-      "message": "Response schemas should be defined with a named ref.",
-      "path": "paths./batchimports/contacts.post.responses.200.content.application/json.schema",
-      "line": 988,
+      "message": "Enum values must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.statut_pre_instructeur.enum.0",
+      "line": 736,
       "type": "",
       "rule": "standard"
     },
     {
-      "message": "Response schemas should be defined with a named ref.",
-      "path": "paths./batchimports/qualifications.post.responses.200.content.application/json.schema",
-      "line": 1077,
+      "message": "Enum values must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.statut_pre_instructeur.enum.1",
+      "line": 737,
       "type": "",
       "rule": "standard"
     },
     {
-      "message": "Response schemas should be defined with a named ref.",
-      "path": "paths./contacturgences.get.responses.200.content.application/json.schema",
-      "line": 1371,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Response schemas should be defined with a named ref.",
-      "path": "paths./contrats.get.responses.200.content.application/json.schema",
-      "line": 1713,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Response schemas should be defined with a named ref.",
-      "path": "paths./contrats/recherche.get.responses.200.content.application/json.schema",
-      "line": 1859,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Response schemas should be defined with a named ref.",
-      "path": "paths./passeports.get.responses.200.content.application/json.schema",
-      "line": 2159,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Response schemas should be defined with a named ref.",
-      "path": "paths./permis.get.responses.200.content.application/json.schema",
-      "line": 2511,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Response schemas should be defined with a named ref.",
-      "path": "paths./permis/recherche.get.responses.200.content.application/json.schema",
-      "line": 2664,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Response schemas should be defined with a named ref.",
-      "path": "paths./permissions.get.responses.200.content.application/json.schema",
-      "line": 2953,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Response schemas should be defined with a named ref.",
-      "path": "paths./personnels.get.responses.200.content.application/json.schema",
-      "line": 3300,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Response schemas should be defined with a named ref.",
-      "path": "paths./personnels/recherche.get.responses.200.content.application/json.schema",
-      "line": 3447,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Response schemas should be defined with a named ref.",
-      "path": "paths./qualifications.get.responses.200.content.application/json.schema",
-      "line": 3775,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Response schemas should be defined with a named ref.",
-      "path": "paths./qualifications/liste.post.responses.200.content.application/json.schema",
-      "line": 3908,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Response schemas should be defined with a named ref.",
-      "path": "paths./qualifications/recherche.get.responses.200.content.application/json.schema",
-      "line": 4036,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Response schemas should be defined with a named ref.",
-      "path": "paths./sante.get.responses.200.content.application/json.schema",
-      "line": 4335,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Response schemas should be defined with a named ref.",
-      "path": "paths./sante/recherche.get.responses.200.content.application/json.schema",
-      "line": 4476,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Response schemas should be defined with a named ref.",
-      "path": "paths./securitesociale.get.responses.200.content.application/json.schema",
-      "line": 4765,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Response schemas should be defined with a named ref.",
-      "path": "paths./sncf.get.responses.200.content.application/json.schema",
-      "line": 5103,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Response schemas should be defined with a named ref.",
-      "path": "paths./tailles.get.responses.200.content.application/json.schema",
-      "line": 5445,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Response schemas should be defined with a named ref.",
-      "path": "paths./refqualifications.get.responses.200.content.application/json.schema",
-      "line": 5782,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Response schemas should be defined with a named ref.",
-      "path": "paths./refqualifications/categories.get.responses.200.content.application/json.schema",
-      "line": 5907,
-      "type": "",
-      "rule": "standard"
-    },
-    {
-      "message": "Response schemas should be defined with a named ref.",
-      "path": "paths./refpermis.get.responses.200.content.application/json.schema",
-      "line": 6188,
+      "message": "Enum values must follow case convention: k8s_camel_case",
+      "path": "definitions.Dossier.properties.statut_pre_instructeur.enum.2",
+      "line": 738,
       "type": "",
       "rule": "standard"
     },
     {
       "message": "Schema must have a non-empty description.",
-      "path": "components.schemas.Arme",
-      "line": 6278,
+      "path": "definitions.Groupe",
+      "line": 777,
       "type": "documentation",
       "rule": "D19.15"
     },
     {
-      "message": "Schema must have a non-empty description.",
-      "path": "components.schemas.Badge",
-      "line": 6301,
-      "type": "documentation",
-      "rule": "D19.15"
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Groupe.properties.procedure_id",
+      "line": 784,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
     },
     {
-      "message": "Schema must have a non-empty description.",
-      "path": "components.schemas.BatchAdministratifIndividu",
-      "line": 6325,
-      "type": "documentation",
-      "rule": "D19.15"
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Groupe.properties.created_at",
+      "line": 791,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
     },
     {
-      "message": "Schema must have a non-empty description.",
-      "path": "components.schemas.BatchPermissions",
-      "line": 6370,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Schema must have a non-empty description.",
-      "path": "components.schemas.Permission",
-      "line": 6390,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Schema must have a non-empty description.",
-      "path": "components.schemas.BatchContrats",
-      "line": 6425,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Schema must have a non-empty description.",
-      "path": "components.schemas.Contrat",
-      "line": 6444,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Schema must have a non-empty description.",
-      "path": "components.schemas.BatchContacts",
-      "line": 6479,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Schema must have a non-empty description.",
-      "path": "components.schemas.ContactUrgence",
-      "line": 6499,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Schema must have a non-empty description.",
-      "path": "components.schemas.BatchQualifications",
-      "line": 6530,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Schema must have a non-empty description.",
-      "path": "components.schemas.Qualification",
-      "line": 6552,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Schema must have a non-empty description.",
-      "path": "components.schemas.ReferentielQualification",
-      "line": 6586,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Property has inconsistent type: duree.",
-      "path": "components.schemas.BatchContrats.properties.duree",
-      "line": 6437,
-      "type": "semantic",
-      "rule": "standard"
-    },
-    {
-      "message": "Property has inconsistent type: duree.",
-      "path": "components.schemas.ReferentielQualification.properties.duree",
-      "line": 6600,
-      "type": "semantic",
-      "rule": "standard"
-    },
-    {
-      "message": "Schema must have a non-empty description.",
-      "path": "components.schemas.Passeport",
-      "line": 6617,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Schema must have a non-empty description.",
-      "path": "components.schemas.Permis",
-      "line": 6636,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Schema must have a non-empty description.",
-      "path": "components.schemas.TypePermis",
-      "line": 6663,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Schema must have a non-empty description.",
-      "path": "components.schemas.Personnel",
-      "line": 6684,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Schema must have a non-empty description.",
-      "path": "components.schemas.Sante",
-      "line": 6745,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Schema must have a non-empty description.",
-      "path": "components.schemas.SecuriteSociale",
-      "line": 6783,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Schema must have a non-empty description.",
-      "path": "components.schemas.Sncf",
-      "line": 6799,
-      "type": "documentation",
-      "rule": "D19.15"
-    },
-    {
-      "message": "Schema must have a non-empty description.",
-      "path": "components.schemas.Taille",
-      "line": 6820,
-      "type": "documentation",
-      "rule": "D19.15"
+      "message": "Property names must follow case convention: k8s_camel_case",
+      "path": "definitions.Groupe.properties.updated_at",
+      "line": 795,
+      "type": "convention",
+      "rule": "CTMO.STANDARD-CODAGE-19"
     }
   ],
   "stats": {
     "errors": {
-      "total": 28,
-      "`info` object must have a `contact` object": 1,
-      "Arrays MUST NOT be returned as the top-level structure in a response body.": 27
+      "total": 9,
+      "`example` property type should be object": 7,
+      "`example` property should be equal to one of the allowed values": 2
     },
     "warnings": {
-      "total": 390,
-      "OpenAPI object should have non-empty `tags` array.": 1,
-      "Operation `description` must be present and non-empty string.": 87,
-      "Operation tags should be defined in global tags.": 87,
-      "Operations with non-form request bodies should set a name with the x-codegen-request-body-name annotation.": 6,
-      "Parameter objects must have a `description` field.": 146,
-      "Ressources in paths should end with an s ('contacturgence').": 1,
-      "Ressources in paths should end with an s ('recherche').": 5,
-      "Ressources in paths should end with an s ('liste').": 1,
-      "Ressources in paths should end with an s ('sante').": 3,
-      "Ressources in paths should end with an s ('securitesociale').": 2,
-      "Ressources in paths should end with an s ('sncf').": 2,
-      "Response schemas should be defined with a named ref.": 27,
-      "Schema must have a non-empty description.": 20,
-      "Property has inconsistent type": 2
+      "total": 137,
+      "Operation `description` must be present and non-empty string.": 6,
+      "Parameter objects must have a `description` field.": 4,
+      "Schema must have a non-empty description.": 11,
+      "Property names must follow case convention": 90,
+      "Enum values must follow case convention": 26
     },
-    "statsByType": {
+    "statsDetailedByType": {
       "structural": {
-        "total": 28,
-        "`info` object must have a `contact` object": 1,
-        "Arrays MUST NOT be returned as the top-level structure in a response body.": 27
+        "total": 0
       },
       "semantic": {
-        "total": 2,
-        "Property has inconsistent type": 2
+        "total": 0
       },
       "convention": {
-        "total": 14,
-        "Ressources in paths should end with an s ('contacturgence').": 1,
-        "Ressources in paths should end with an s ('recherche').": 5,
-        "Ressources in paths should end with an s ('liste').": 1,
-        "Ressources in paths should end with an s ('sante').": 3,
-        "Ressources in paths should end with an s ('securitesociale').": 2,
-        "Ressources in paths should end with an s ('sncf').": 2
+        "total": 90,
+        "Property names must follow case convention": 90
       },
       "documentation": {
-        "total": 166,
-        "Parameter objects must have a `description` field.": 146,
-        "Schema must have a non-empty description.": 20
+        "total": 15,
+        "Parameter objects must have a `description` field.": 4,
+        "Schema must have a non-empty description.": 11
       },
       "untyped": {
-        "total": 208,
-        "OpenAPI object should have non-empty `tags` array.": 1,
-        "Operation `description` must be present and non-empty string.": 87,
-        "Operation tags should be defined in global tags.": 87,
-        "Operations with non-form request bodies should set a name with the x-codegen-request-body-name annotation.": 6,
-        "Response schemas should be defined with a named ref.": 27
+        "total": 41,
+        "`example` property type should be object": 7,
+        "`example` property should be equal to one of the allowed values": 2,
+        "Operation `description` must be present and non-empty string.": 6,
+        "Enum values must follow case convention": 26
       }
     },
-    "statsByRule": {
-      "CTMO.STANDARD-CODAGE-22": {
-        "total": 1,
-        "`info` object must have a `contact` object": 1
-      },
+    "statsDetailedByRule": {
       "standard": {
-        "total": 237,
-        "Arrays MUST NOT be returned as the top-level structure in a response body.": 27,
-        "OpenAPI object should have non-empty `tags` array.": 1,
-        "Operation `description` must be present and non-empty string.": 87,
-        "Operation tags should be defined in global tags.": 87,
-        "Operations with non-form request bodies should set a name with the x-codegen-request-body-name annotation.": 6,
-        "Response schemas should be defined with a named ref.": 27,
-        "Property has inconsistent type": 2
+        "total": 41,
+        "`example` property type should be object": 7,
+        "`example` property should be equal to one of the allowed values": 2,
+        "Operation `description` must be present and non-empty string.": 6,
+        "Enum values must follow case convention": 26
       },
       "D19.15": {
-        "total": 166,
-        "Parameter objects must have a `description` field.": 146,
-        "Schema must have a non-empty description.": 20
+        "total": 15,
+        "Parameter objects must have a `description` field.": 4,
+        "Schema must have a non-empty description.": 11
       },
-      "CTMO.STANDARD-CODAGE-03": {
-        "total": 14,
-        "Ressources in paths should end with an s ('contacturgence').": 1,
-        "Ressources in paths should end with an s ('recherche').": 5,
-        "Ressources in paths should end with an s ('liste').": 1,
-        "Ressources in paths should end with an s ('sante').": 3,
-        "Ressources in paths should end with an s ('securitesociale').": 2,
-        "Ressources in paths should end with an s ('sncf').": 2
+      "CTMO.STANDARD-CODAGE-19": {
+        "total": 90,
+        "Property names must follow case convention": 90
       }
     }
-  },
-  "statsByType": [],
-  "statsByRule": []
+  }
 }

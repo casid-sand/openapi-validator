@@ -3,6 +3,11 @@ const {
   validate
 } = require('../../../../src/plugins/validation/2and3/semantic-validators/paths');
 
+const defaultConfig = {
+    paths: {
+    }
+};
+
 describe('validation plugin - semantic - paths', function() {
   describe('Path parameter definitions need matching paramater declarations', function() {
     it('should not return problems for a valid definiton/declaration pair', function() {
@@ -20,7 +25,7 @@ describe('validation plugin - semantic - paths', function() {
         }
       };
 
-      const res = validate({ resolvedSpec: spec });
+      const res = validate({ resolvedSpec: spec }, defaultConfig);
       expect(res.errors).toEqual([]);
       expect(res.warnings).toEqual([]);
     });
@@ -34,7 +39,7 @@ describe('validation plugin - semantic - paths', function() {
         }
       };
 
-      const res = validate({ resolvedSpec: spec });
+      const res = validate({ resolvedSpec: spec }, defaultConfig);
       expect(res.errors).toEqual([
         {
           message: 'Empty path parameter declarations are not valid',
@@ -68,7 +73,7 @@ describe('validation plugin - semantic - paths', function() {
         }
       };
 
-      const res = validate({ resolvedSpec: spec });
+      const res = validate({ resolvedSpec: spec }, defaultConfig);
       expect(res.errors).toEqual([
         {
           message: 'Equivalent paths are not allowed.',
@@ -93,7 +98,7 @@ describe('validation plugin - semantic - paths', function() {
         }
       };
 
-      const res = validate({ resolvedSpec: spec });
+      const res = validate({ resolvedSpec: spec }, defaultConfig);
       expect(res.errors).toEqual([]);
       expect(res.warnings).toEqual([]);
     });
@@ -124,7 +129,7 @@ describe('validation plugin - semantic - paths', function() {
         }
       };
 
-      const res = validate({ resolvedSpec: spec });
+      const res = validate({ resolvedSpec: spec }, defaultConfig);
       expect(res.errors).toEqual([]);
       expect(res.warnings).toEqual([]);
     });
@@ -153,7 +158,7 @@ describe('validation plugin - semantic - paths', function() {
         }
       };
 
-      const res = validate({ resolvedSpec: spec });
+      const res = validate({ resolvedSpec: spec }, defaultConfig);
       expect(res.errors).toEqual([
         {
           message: 'Equivalent paths are not allowed.',
@@ -181,7 +186,7 @@ describe('validation plugin - semantic - paths', function() {
         }
       };
 
-      const res = validate({ resolvedSpec: spec });
+      const res = validate({ resolvedSpec: spec }, defaultConfig);
       expect(res.errors).toEqual([]);
       expect(res.warnings).toEqual([]);
     });
@@ -204,7 +209,7 @@ describe('validation plugin - semantic - paths', function() {
         }
       };
 
-      const res = validate({ resolvedSpec: spec });
+      const res = validate({ resolvedSpec: spec }, defaultConfig);
       expect(res.errors).toEqual([]);
       expect(res.warnings).toEqual([]);
     });
@@ -225,7 +230,7 @@ describe('validation plugin - semantic - paths', function() {
         }
       };
 
-      const res = validate({ resolvedSpec: spec });
+      const res = validate({ resolvedSpec: spec }, defaultConfig);
       expect(res.errors).toEqual([
         {
           message: 'Partial path templating is not allowed.',
@@ -249,7 +254,7 @@ describe('validation plugin - semantic - paths', function() {
         }
       };
 
-      const res = validate({ resolvedSpec: spec });
+      const res = validate({ resolvedSpec: spec }, defaultConfig);
       expect(res.errors).toEqual([]);
       expect(res.warnings).toEqual([]);
     });
@@ -263,7 +268,7 @@ describe('validation plugin - semantic - paths', function() {
         }
       };
 
-      const res = validate({ resolvedSpec: spec });
+      const res = validate({ resolvedSpec: spec }, defaultConfig);
       expect(res.errors).toEqual([
         {
           message: 'Query strings in paths are not allowed.',
@@ -287,9 +292,474 @@ describe('validation plugin - semantic - paths', function() {
         }
       };
 
-      const res = validate({ resolvedSpec: spec });
+      const res = validate({ resolvedSpec: spec }, defaultConfig);
       expect(res.errors).toEqual([]);
       expect(res.warnings).toEqual([]);
+    });
+  });
+
+  describe('Paths must contains resources name in the plural', () => {
+  
+    const config = {
+      paths: {
+        non_resources_part: 'warning'
+      }
+    };
+
+    it('should return one warning for a path without ending s', function() {
+
+        const spec = {
+            paths: {
+                '/v1/resource/{id}': {
+                parameters: [
+                    {
+                    in: 'path',
+                    name: 'id',
+                    description:
+                        'bad parameter but should be caught by another validator, not here',
+                    type: 'string'
+                    }
+                ]
+                },
+                '/v1/signatures': {
+                },
+                '/pets': {
+                }
+            }
+        };
+
+        const res = validate({ resolvedSpec: spec }, config);
+        expect(res.errors.length).toEqual(0);
+        expect(res.warnings.length).toEqual(1);
+        expect(res.warnings[0].message).toContain(
+            "Resources in paths should end with an 's' :"
+        );
+        expect(res.warnings[0].type).toEqual('convention');
+        expect(res.warnings[0].rule).toEqual('CTMO.STANDARD-CODAGE-03');
+    });
+
+    it('should return two warnings for a path with 2 resources without s and another path without s', function() {
+
+        const spec = {
+            paths: {
+                '/v1/resource/pet/{id}': {
+                parameters: [
+                    {
+                    in: 'path',
+                    name: 'id',
+                    description:
+                        'bad parameter but should be caught by another validator, not here',
+                    type: 'string'
+                    }
+                ]
+                },
+                '/v1/signature': {
+                },
+                '/pets': {
+                }
+            }
+        };
+
+        const res = validate({ resolvedSpec: spec }, config);
+        expect(res.errors.length).toEqual(0);
+        expect(res.warnings.length).toEqual(2);
+        expect(res.warnings[0].message).toContain(
+            "Resources in paths should end with an 's' :"
+        );
+        expect(res.warnings[1].message).toContain(
+            "Resources in paths should end with an 's' :"
+        );
+    });
+
+    it('should return ok with all resources in the plural', function() {
+
+        const spec = {
+            paths: {
+                '/resources/stores/{id}': {
+                parameters: [
+                    {
+                    in: 'path',
+                    name: 'id',
+                    description:
+                        'bad parameter but should be caught by another validator, not here',
+                    type: 'string'
+                    }
+                ]
+                },
+                '/signatures': {
+                },
+                '/pets': {
+                }
+            }
+        };
+
+        const res = validate({ resolvedSpec: spec }, config);
+        expect(res.errors.length).toEqual(0);
+        expect(res.warnings.length).toEqual(0);
+    });
+
+    it('should return ok with all resources in the plural and version string', function() {
+
+        const spec = {
+            paths: {
+                '/v1/resources/stores/{id}': {
+                parameters: [
+                    {
+                    in: 'path',
+                    name: 'id',
+                    description:
+                        'bad parameter but should be caught by another validator, not here',
+                    type: 'string'
+                    }
+                ]
+                },
+                '/v2/signatures': {
+                },
+                '/v1/pets': {
+                }
+            }
+        };
+
+        const res = validate({ resolvedSpec: spec }, config);
+        expect(res.errors.length).toEqual(0);
+        expect(res.warnings.length).toEqual(0);
+    });
+  });
+  
+  describe('Paths must alternate resources and identifier', () => {
+
+    const config = {
+      paths: {
+        alternate_resources_and_identifiers: 'warning'
+      }
+    };
+
+    it('should return one warning for a path without identifier between 2 resources', function() {
+
+        const spec = {
+            paths: {
+                '/stores/pets/{id}': {
+                parameters: [
+                    {
+                    in: 'path',
+                    name: 'id',
+                    description:
+                        'bad parameter but should be caught by another validator, not here',
+                    type: 'string'
+                    }
+                ]
+                }
+            }
+        };
+
+        const res = validate({ resolvedSpec: spec }, config);
+        expect(res.errors.length).toEqual(0);
+        expect(res.warnings.length).toEqual(1);
+        expect(res.warnings[0].message).toContain(
+            "Path must alternate resource type and identifier (eg 'resource/{id}/subresource/{id}')."
+        );
+        expect(res.warnings[0].type).toEqual('convention');
+        expect(res.warnings[0].rule).toEqual('CTMO.STANDARD-CODAGE-04');
+    });
+
+    it('should return one warning for a path without resource', function() {
+
+        const spec = {
+            paths: {
+                '/{id}': {
+                parameters: [
+                    {
+                    in: 'path',
+                    name: 'id',
+                    description:
+                        'bad parameter but should be caught by another validator, not here',
+                    type: 'string'
+                    }
+                ]
+                }
+            }
+        };
+
+        const res = validate({ resolvedSpec: spec }, config);
+        expect(res.errors.length).toEqual(0);
+        expect(res.warnings.length).toEqual(1);
+        expect(res.warnings[0].message).toContain(
+            "Path must alternate resource type and identifier (eg 'resource/{id}/subresource/{id}')."
+        );
+    });
+
+    it('should return one warning for a path starting with identifier', function() {
+
+        const spec = {
+            paths: {
+                '/{id}/pets': {
+                parameters: [
+                    {
+                    in: 'path',
+                    name: 'id',
+                    description:
+                        'bad parameter but should be caught by another validator, not here',
+                    type: 'string'
+                    }
+                ]
+                }
+            }
+        };
+
+        const res = validate({ resolvedSpec: spec }, config);
+        expect(res.errors.length).toEqual(0);
+        expect(res.warnings.length).toEqual(1);
+    });
+
+    it('should return ok with a path with only one depth : resource', function() {
+
+        const spec = {
+            paths: {
+                '/pets': {
+                }
+            }
+        };
+
+        const res = validate({ resolvedSpec: spec }, config);
+        expect(res.errors.length).toEqual(0);
+        expect(res.warnings.length).toEqual(0);
+    });
+
+    it('should return ok with a path with only one resource and one identifier', function() {
+
+        const spec = {
+            paths: {
+                '/pets/{id}': {
+                parameters: [
+                    {
+                    in: 'path',
+                    name: 'id',
+                    description:
+                        'bad parameter but should be caught by another validator, not here',
+                    type: 'string'
+                    }
+                ]
+                }
+            }
+        };
+
+        const res = validate({ resolvedSpec: spec }, config);
+        expect(res.errors.length).toEqual(0);
+        expect(res.warnings.length).toEqual(0);
+    });
+
+    it('should return ok with a path with only 3 resources and 3 identifiers', function() {
+
+        const spec = {
+            paths: {
+                '/cities/{cityId}/stores/{storeId}/pets/{petId}': {
+                parameters: [
+                    {
+                    in: 'path',
+                    name: 'petId',
+                    description:
+                        'bad parameter but should be caught by another validator, not here',
+                    type: 'string'
+                    },
+                    {
+                    in: 'path',
+                    name: 'cityId',
+                    description:
+                        'bad parameter but should be caught by another validator, not here',
+                    type: 'string'
+                    },
+                    {
+                    in: 'path',
+                    name: 'storeId',
+                    description:
+                        'bad parameter but should be caught by another validator, not here',
+                    type: 'string'
+                    }
+                ]
+                }
+            }
+        };
+
+        const res = validate({ resolvedSpec: spec }, config);
+        expect(res.errors.length).toEqual(0);
+        expect(res.warnings.length).toEqual(0);
+    });
+
+    it('should return ok with a path with version and resource', function() {
+
+        const spec = {
+            paths: {
+                '/v2.1/pets/{id}': {
+                parameters: [
+                    {
+                    in: 'path',
+                    name: 'id',
+                    description:
+                        'bad parameter but should be caught by another validator, not here',
+                    type: 'string'
+                    }
+                ]
+                }
+            }
+        };
+
+        const res = validate({ resolvedSpec: spec }, config);
+        expect(res.errors.length).toEqual(0);
+        expect(res.warnings.length).toEqual(0);
+    });
+  });
+
+  describe('Paths must 6 or less depths', () => {
+
+    const config = {
+      paths: {
+        max_path_levels: [
+            "warning",
+            6
+        ]
+      }
+    };
+
+    it('should return one warning for a path with 7 depths', function() {
+
+        const spec = {
+            paths: {
+                '/countries/cities/buckets/stores/{storeId}/pets/{petId}': {
+                parameters: [
+                    {
+                    in: 'path',
+                    name: 'petId',
+                    description:
+                        'bad parameter but should be caught by another validator, not here',
+                    type: 'string'
+                    },
+                    {
+                    in: 'path',
+                    name: 'storeId',
+                    description:
+                        'bad parameter but should be caught by another validator, not here',
+                    type: 'string'
+                    }
+                ]
+                }
+            }
+        };
+
+        const res = validate({ resolvedSpec: spec }, config);
+        expect(res.errors.length).toEqual(0);
+        expect(res.warnings.length).toEqual(1);
+        expect(res.warnings[0].message).toContain(
+            "Path must contain 6 depths maximum (3 levels alternating resource and identifier)."
+        );
+        expect(res.warnings[0].type).toEqual('convention');
+        expect(res.warnings[0].rule).toEqual('CTMO.STANDARD-CODAGE-05');
+    });
+
+    it('should return one warning for a path with version and 7 depths', function() {
+
+        const spec = {
+            paths: {
+                '/v1/countries/cities/buckets/stores/{storeId}/pets/{petId}': {
+                parameters: [
+                    {
+                    in: 'path',
+                    name: 'petId',
+                    description:
+                        'bad parameter but should be caught by another validator, not here',
+                    type: 'string'
+                    },
+                    {
+                    in: 'path',
+                    name: 'storeId',
+                    description:
+                        'bad parameter but should be caught by another validator, not here',
+                    type: 'string'
+                    }
+                ]
+                }
+            }
+        };
+
+        const res = validate({ resolvedSpec: spec }, config);
+        expect(res.errors.length).toEqual(0);
+        expect(res.warnings.length).toEqual(1);
+        expect(res.warnings[0].message).toContain(
+            "Path must contain 6 depths maximum (3 levels alternating resource and identifier)."
+        );
+    });
+
+    it('should return ok with a path with 6 depths', function() {
+
+        const spec = {
+            paths: {
+                '/countries/cities/stores/{storeId}/pets/{petId}': {
+                parameters: [
+                    {
+                    in: 'path',
+                    name: 'petId',
+                    description:
+                        'bad parameter but should be caught by another validator, not here',
+                    type: 'string'
+                    },
+                    {
+                    in: 'path',
+                    name: 'storeId',
+                    description:
+                        'bad parameter but should be caught by another validator, not here',
+                    type: 'string'
+                    }
+                ]
+                }
+            }
+        };
+
+        const res = validate({ resolvedSpec: spec }, config);
+        expect(res.errors.length).toEqual(0);
+        expect(res.warnings.length).toEqual(0);
+    });
+
+    it('should return ok with a path with 1 depth', function() {
+
+        const spec = {
+            paths: {
+                '/pets': {
+                }
+            }
+        };
+
+        const res = validate({ resolvedSpec: spec }, config);
+        expect(res.errors.length).toEqual(0);
+        expect(res.warnings.length).toEqual(0);
+    });
+
+    it('should return ok with a path with version and 6 depths', function() {
+
+        const spec = {
+            paths: {
+                '/version74.1/countries/cities/stores/{storeId}/pets/{petId}': {
+                parameters: [
+                    {
+                    in: 'path',
+                    name: 'petId',
+                    description:
+                        'bad parameter but should be caught by another validator, not here',
+                    type: 'string'
+                    },
+                    {
+                    in: 'path',
+                    name: 'storeId',
+                    description:
+                        'bad parameter but should be caught by another validator, not here',
+                    type: 'string'
+                    }
+                ]
+                }
+            }
+        };
+
+        const res = validate({ resolvedSpec: spec }, config);
+        expect(res.errors.length).toEqual(0);
+        expect(res.warnings.length).toEqual(0);
     });
   });
 
@@ -308,7 +778,7 @@ describe('validation plugin - semantic - paths', function() {
         }
       };
 
-      const res = validate({ resolvedSpec: spec });
+      const res = validate({ resolvedSpec: spec }, defaultConfig);
       expect(res.errors).toEqual([
         {
           message: 'Partial path templating is not allowed.',
@@ -337,7 +807,7 @@ describe('validation plugin - semantic - paths', function() {
         }
       };
 
-      const res = validate({ resolvedSpec: spec });
+      const res = validate({ resolvedSpec: spec }, defaultConfig);
       expect(res.errors).toEqual([
         {
           message: 'Equivalent paths are not allowed.',
@@ -383,7 +853,7 @@ describe('validation plugin - semantic - paths', function() {
       }
     };
 
-    const res = validate({ resolvedSpec: spec });
+    const res = validate({ resolvedSpec: spec }, defaultConfig);
     // errors/warnings would be caught it parameters-ibm.js
     expect(res.errors.length).toBe(0);
     expect(res.warnings.length).toBe(0);
