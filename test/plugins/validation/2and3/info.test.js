@@ -182,7 +182,7 @@ describe('validation plugin - semantic - info', () => {
     	'`contact` object must have a string-type `email` field'
     );
   });
-  
+
   it('should be ok with 1 warning if contact email is a string and name is missing', () => {
     const spec = {
       Openapi: '3.0.0',
@@ -203,4 +203,87 @@ describe('validation plugin - semantic - info', () => {
     	'`contact` object must have a string-type `name` field'
     );
   });
+
+  it('should return 1 error if description is missing', () => {
+    config.info.no_description = 'error';
+    
+    const spec = {
+      Openapi: '3.0.0',
+      info: {
+        title: '32',
+        version: 'v2.0',
+        contact: {
+            email: "toto@test.com",
+            name: "toto"
+        }
+      }
+    };
+
+    const res = validate({ jsSpec: spec }, config);
+    expect(res.warnings.length).toEqual(0);
+    expect(res.errors.length).toEqual(1);
+    expect(res.errors[0].path).toEqual(['info', 'description']);
+    expect(res.errors[0].message).toEqual(
+    	'API must have a non-empty description.'
+    );
+    expect(res.errors[0].type).toEqual(
+    	'documentation'
+    );
+    expect(res.errors[0].rule).toEqual(
+    	'D19.15'
+    );
+  });
+
+  it('should return 1 warning if description is shorter than 50 chars', () => {
+    config.info.no_description = 'error';
+    
+    const spec = {
+      Openapi: '3.0.0',
+      info: {
+        title: '32',
+        version: 'v2.0',
+        description: 'toto',
+        contact: {
+            email: "toto@test.com",
+            name: "toto"
+        }
+      }
+    };
+
+    const res = validate({ jsSpec: spec }, config);
+    expect(res.errors.length).toEqual(0);
+    expect(res.warnings.length).toEqual(1);
+    expect(res.warnings[0].path).toEqual(['info', 'description']);
+    expect(res.warnings[0].message).toEqual(
+    	'API description should be longer than 100 characters.'
+    );
+    expect(res.warnings[0].type).toEqual(
+    	'documentation'
+    );
+    expect(res.warnings[0].rule).toEqual(
+    	'D19.15'
+    );
+  });
+
+  it('should be ok if description is longer than 50 chars', () => {
+    config.info.no_description = 'error';
+    
+    const spec = {
+      Openapi: '3.0.0',
+      info: {
+        title: '32',
+        version: 'v2.0',
+        description: 'a description that is longer than 50 characters and enough for reading by a consumer of API to understanddescription longer than 100 characters and enough',
+        contact: {
+            email: "toto@test.com",
+            name: "toto"
+        }
+      }
+    };
+
+    const res = validate({ jsSpec: spec }, config);
+    expect(res.errors.length).toEqual(0);
+    expect(res.warnings.length).toEqual(0);
+  });
+ 
 });

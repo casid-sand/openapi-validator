@@ -27,6 +27,9 @@
 // Path must contains 6 depths max (alternating resources and identifier Assertion 8).
 // NB : version is excluded
 
+// Assertation 10:
+// Path should not end with a "/"
+
 const each = require('lodash/each');
 const findIndex = require('lodash/findIndex');
 const isObject = require('lodash/isObject');
@@ -58,7 +61,7 @@ module.exports.validate = function({ resolvedSpec }, config) {
 
     each(resolvedSpec.paths, (path, pathName) => {
         if (!path || !pathName) {
-        return;
+            return;
         }
 
         let resourcesMalFormed = '';
@@ -104,7 +107,7 @@ module.exports.validate = function({ resolvedSpec }, config) {
             }
         });
 
-        const checkResourcesPlural = config.non_resources_part
+        const checkResourcesPlural = config.path_segments_with_s
         if (resourcesMalFormed != '' && checkResourcesPlural != 'off') {
             messages.addTypedMessage(
                 `paths.${pathName}`,
@@ -140,6 +143,18 @@ module.exports.validate = function({ resolvedSpec }, config) {
                 checkResourcesAlternated,
                 'convention',
                 'CTMO.STANDARD-CODAGE-04'
+            );
+        }
+
+        //Assertation 10
+        const checkFinalSlash = config.path_ending_with_slash
+        if (checkFinalSlash != 'off' && numberOfLevels > 0 && pathName.length > 1 && pathName.charAt(pathName.length-1) == "/") {
+            messages.addTypedMessage(
+                `paths.${pathName}`,
+                `Path should not end with a '/'.`,
+                checkFinalSlash,
+                'convention',
+                'CTMO.STANDARD-CODAGE-11'
             );
         }
 

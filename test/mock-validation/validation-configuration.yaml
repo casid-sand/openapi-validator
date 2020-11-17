@@ -1,5 +1,8 @@
 {
   "shared": {
+    "info": {
+        "no_description": "error"
+    },
     "operations": {
       "no_operation_id": "warning",
       "operation_id_case_convention": [
@@ -34,13 +37,18 @@
       "snake_case_only": "off",
       "alternate_resources_and_identifiers": "error",
       "path_segments_with_s": "warning",
+      "path_ending_with_slash" : "warning",
       "max_path_levels": [
         "warning",
         6
       ],
       "paths_case_convention": [
-        "error",
+        "warning",
         "lower_snake_case"
+      ],
+      "paths_alternative_case_convention": [
+        "error",
+        "lower_dash_case"
       ]
     },
     "responses": {

@@ -9,7 +9,7 @@
 
 const MessageCarrier = require('../../../utils/messageCarrier');
 
-module.exports.validate = function({ jsSpec }) {
+module.exports.validate = function({ jsSpec }, config) {
   const messages = new MessageCarrier();
 
   const info = jsSpec.info;
@@ -45,7 +45,35 @@ module.exports.validate = function({ jsSpec }) {
         'structural',
         'CTMO.Regle-11'
       );
-      }
+    }
+
+    if (config && config.info) {
+        const checkDesc = config.info.no_description;
+        if (checkDesc != 'off') {
+            const description = jsSpec.info.description;
+            const hasDescription =
+                typeof description === 'string' && description.toString().trim().length > 0;
+            if (!hasDescription) {
+                messages.addTypedMessage(
+                    ['info', 'description'],
+                    'API must have a non-empty description.',
+                    checkDesc,
+                    'documentation',
+                    'D19.15'
+                );
+            } else {
+                if (description.length < 100) {
+                    messages.addTypedMessage(
+                        ['info', 'description'],
+                        'API description should be longer than 100 characters.',
+                        'warning',
+                        'documentation',
+                        'D19.15'
+                    );
+                }
+            }
+        }
+    }
       
     // Assertation 3
     const contact = jsSpec.info.contact;

@@ -302,7 +302,7 @@ describe('validation plugin - semantic - paths', function() {
   
     const config = {
       paths: {
-        non_resources_part: 'warning'
+        path_segments_with_s: 'warning'
       }
     };
 
@@ -760,6 +760,33 @@ describe('validation plugin - semantic - paths', function() {
         const res = validate({ resolvedSpec: spec }, config);
         expect(res.errors.length).toEqual(0);
         expect(res.warnings.length).toEqual(0);
+    });
+  });
+
+  describe('Final / is not allowed in path', () => {
+    const config = {
+      paths: {
+        path_ending_with_slash: "warning"
+      }
+    };
+    
+    it('should return one problem for an empty path template', function() {
+      const spec = {
+        paths: {
+          '/CoolPath': {},
+          '/BadPath/': {},
+          '/': {}
+        }
+      };
+
+      const res = validate({ resolvedSpec: spec }, config);
+      expect(res.errors.length).toEqual(0);
+      expect(res.warnings.length).toEqual(1);
+      expect(res.warnings[0].message).toContain(
+        "Path should not end with a '/'."
+      );
+      expect(res.warnings[0].type).toEqual('convention');
+      expect(res.warnings[0].rule).toEqual('CTMO.STANDARD-CODAGE-11');
     });
   });
 

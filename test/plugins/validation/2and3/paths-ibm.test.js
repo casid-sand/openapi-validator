@@ -182,6 +182,33 @@ describe('validation plugin - semantic - paths-ibm', function() {
     expect(res.warnings.length).toEqual(0);
   });
 
+  it('should not return an error when paths is missing', function() {
+    const config = {
+      paths: {
+        missing_path_parameter: 'error'
+      }
+    };
+
+    const spec = {
+      info: {
+          title: "test"
+      }
+    };
+
+    const res = validate({ resolvedSpec: spec }, config);
+    expect(res.errors.length).toEqual(1);
+    expect(res.warnings.length).toEqual(0);
+    expect(res.errors).toEqual([
+      {
+        message:
+          'API definition must have an `paths` object',
+        path: ['paths'],
+        type: 'structural',
+        rule: null
+      }
+    ]);
+  });
+
   it('should not return an error when incorrect path parameter is in a vendor extension', function() {
     const config = {
       paths: {
@@ -605,4 +632,191 @@ describe('validation plugin - semantic - paths-ibm', function() {
       'Common path parameters should be defined on path object'
     );
   });
+});
+
+describe('Test of alternative case convention configurations', () => {
+    const config = {
+        paths: {
+            "snake_case_only": "off",
+            "paths_case_convention": [
+                "off",
+                "lower_dash_case"
+            ],
+            "paths_alternative_case_convention": [
+                "off",
+                "lower_snake_case"
+            ]
+        }
+    };
+
+    it('should return no errors or warnings if 2 cases are disabled', function() {
+        const spec = {
+        paths: {
+            '/goodpath': {},
+            '/dash-path/': {},
+            '/camelPath/': {},
+            '/snake_path/': {},
+            '/': {}
+        }
+        };
+
+        const res = validate({ resolvedSpec: spec }, config);
+        expect(res.errors.length).toEqual(0);
+        expect(res.warnings.length).toEqual(0);
+    });
+
+    it('should return no errors or warnings if first case is disabled and second enabled', function() {
+        config.paths.paths_alternative_case_convention[0] = 'error';
+        const spec = {
+        paths: {
+            '/goodpath': {},
+            '/dash-path/': {},
+            '/camelPath/': {},
+            '/snake_path/': {},
+            '/': {}
+        }
+        };
+
+        const res = validate({ resolvedSpec: spec }, config);
+        expect(res.errors.length).toEqual(0);
+        expect(res.warnings.length).toEqual(0);
+    });
+
+    it('should return 1 errors with 2 cases are in error mode', function() {
+        config.paths.paths_case_convention[0] = 'error';
+        config.paths.paths_alternative_case_convention[0] = 'error';
+
+        const spec = {
+            paths: {
+                '/goodpath': {},
+                '/dash-path/': {},
+                '/camelPath/': {},
+                '/snake_path/': {},
+                '/': {}
+            }
+        };
+
+        const res = validate({ resolvedSpec: spec }, config);
+        expect(res.warnings.length).toEqual(0);
+        expect(res.errors.length).toEqual(1);
+        expect(res.errors[0].message).toContain("Path segments must follow case convention");
+        expect(res.errors[0].path).toEqual(["paths", "/camelPath/"]);
+        expect(res.errors[0].type).toEqual('convention');
+        expect(res.errors[0].rule).toEqual('CTMO.STANDARD-CODAGE-09/10');
+    });
+
+    it('should return 1 errors and 1 warning if first case is error and second case is warning', function() {
+        config.paths.paths_case_convention[0] = 'error';
+        config.paths.paths_alternative_case_convention[0] = 'warning';
+
+        const spec = {
+            paths: {
+                '/goodpath': {},
+                '/dash-path/': {},
+                '/camelPath/': {},
+                '/snake_path/': {},
+                '/': {}
+            }
+        };
+
+        const res = validate({ resolvedSpec: spec }, config);
+        expect(res.errors.length).toEqual(1);
+        expect(res.warnings.length).toEqual(1);
+        expect(res.errors[0].message).toContain("Path segments must follow case convention");
+        expect(res.errors[0].path).toEqual(["paths", "/camelPath/"]);
+        expect(res.warnings[0].message).toContain("Path segments should follow case convention");
+        expect(res.warnings[0].path).toEqual(["paths", "/snake_path/"]);
+    });
+
+    it('should return 2 errors if first case is enabled but not the second one', function() {
+        config.paths.paths_case_convention[0] = 'error';
+        config.paths.paths_alternative_case_convention[0] = 'off';
+
+        const spec = {
+            paths: {
+                '/goodpath': {},
+                '/dash-path/': {},
+                '/camelPath/': {},
+                '/snake_path/': {},
+                '/': {}
+            }
+        };
+
+        const res = validate({ resolvedSpec: spec }, config);
+        expect(res.warnings.length).toEqual(0);
+        expect(res.errors.length).toEqual(2);
+        expect(res.errors[0].message).toContain("Path segments must follow case convention");
+        expect(res.errors[0].path).toEqual(["paths", "/camelPath/"]);
+        expect(res.errors[1].message).toContain("Path segments must follow case convention");
+        expect(res.errors[1].path).toEqual(["paths", "/snake_path/"]);
+    });
+
+    it('should return 2 warnings if first case is warning but not the second one', function() {
+        config.paths.paths_case_convention[0] = 'warning';
+        config.paths.paths_alternative_case_convention[0] = 'off';
+
+        const spec = {
+            paths: {
+                '/goodpath': {},
+                '/dash-path/': {},
+                '/camelPath/': {},
+                '/snake_path/': {},
+                '/': {}
+            }
+        };
+
+        const res = validate({ resolvedSpec: spec }, config);
+        expect(res.errors.length).toEqual(0);
+        expect(res.warnings.length).toEqual(2);
+        expect(res.warnings[0].message).toContain("Path segments must follow case convention");
+        expect(res.warnings[0].path).toEqual(["paths", "/camelPath/"]);
+        expect(res.warnings[1].message).toContain("Path segments must follow case convention");
+        expect(res.warnings[1].path).toEqual(["paths", "/snake_path/"]);
+    });
+
+    it('should return 1 errors and 1 warning if first case is warning and second case is error', function() {
+        config.paths.paths_case_convention[0] = 'warning';
+        config.paths.paths_alternative_case_convention[0] = 'error';
+
+        const spec = {
+            paths: {
+                '/goodpath': {},
+                '/dash-path/': {},
+                '/camelPath/': {},
+                '/snake_path/': {},
+                '/': {}
+            }
+        };
+
+        const res = validate({ resolvedSpec: spec }, config);
+        expect(res.errors.length).toEqual(1);
+        expect(res.warnings.length).toEqual(1);
+        expect(res.errors[0].message).toContain("Path segments must follow case convention");
+        expect(res.errors[0].path).toEqual(["paths", "/camelPath/"]);
+        expect(res.warnings[0].message).toContain("Path segments should follow case convention");
+        expect(res.warnings[0].path).toEqual(["paths", "/snake_path/"]);
+    });
+
+    it('should return 1 warning with 2 cases are in warning mode', function() {
+        config.paths.paths_case_convention[0] = 'warning';
+        config.paths.paths_alternative_case_convention[0] = 'warning';
+
+        const spec = {
+            paths: {
+                '/goodpath': {},
+                '/dash-path/': {},
+                '/camelPath/': {},
+                '/snake_path/': {},
+                '/': {}
+            }
+        };
+
+        const res = validate({ resolvedSpec: spec }, config);
+        expect(res.errors.length).toEqual(0);
+        expect(res.warnings.length).toEqual(1);
+        expect(res.warnings[0].message).toContain("Path segments must follow case convention");
+        expect(res.warnings[0].path).toEqual(["paths", "/camelPath/"]);
+        expect(res.warnings[0].type).toEqual('convention');
+        expect(res.warnings[0].rule).toEqual('CTMO.STANDARD-CODAGE-09/10');
+    });
 });

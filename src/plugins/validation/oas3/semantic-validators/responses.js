@@ -55,7 +55,9 @@ module.exports.validate = function({ resolvedSpec }, config) {
             messages.addMessage(
               path.concat([statusCode]),
               `All responses must include a description.`,
-              'error'
+              'error',
+              'documentation',
+              'D19.15'
             );
           }
           // default warnings for discouraged status code per IBM API Handbook

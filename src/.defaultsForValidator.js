@@ -20,6 +20,9 @@
 
 const defaults = {
   'shared': {
+    'info': {
+        'no_description': 'off'
+    },
     'operations': {
       'no_operation_id': 'warning',
       'operation_id_case_convention': ['warning', 'lower_snake_case'],
@@ -47,12 +50,14 @@ const defaults = {
       'duplicate_path_parameter': 'warning',
       'snake_case_only': 'off',
       'alternate_resources_and_identifiers': 'off',
-      'non_resources_part': 'off',
+      'path_segments_with_s': 'off',
+      'path_ending_with_slash': 'off',
       'max_path_levels': [
         'off',
         6
       ],
-      'paths_case_convention': ['error', 'lower_snake_case']
+      'paths_case_convention': ['error', 'lower_snake_case'],
+      'paths_alternative_case_convention': ['off', 'lower_snake_case']
     },
     'responses': {
       'inline_response_schema': 'warning'

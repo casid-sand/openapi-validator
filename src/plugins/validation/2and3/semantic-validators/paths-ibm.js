@@ -34,7 +34,7 @@ module.exports.validate = function({ resolvedSpec }, config) {
   const paths = resolvedSpec.paths;
   const hasPaths = paths && typeof paths === 'object';
   if (!hasPaths) {
-    messages.addMessage(
+    messages.addTypedMessage(
       ['paths'],
       'API definition must have an `paths` object',
       'error',
@@ -198,26 +198,66 @@ module.exports.validate = function({ resolvedSpec }, config) {
         // functionality
         if (config.paths_case_convention) {
             const checkStatusPath = config.paths_case_convention[0];
+            let checkAlternativePathCaseConvention = 'off';
+            let caseConventionAlternative;
+            if (config.paths_alternative_case_convention) {
+                checkAlternativePathCaseConvention = config.paths_alternative_case_convention[0];
+                if (checkAlternativePathCaseConvention != 'off') {
+                    caseConventionAlternative = config.paths_alternative_case_convention[1];
+                }
+            }
+
             if (checkStatusPath !== 'off') {
-            const caseConvention = config.paths_case_convention[1];
-            const segments = pathName.split('/');
-            segments.forEach(segment => {
-                // the first element will be "" since pathName starts with "/"
-                // also, ignore validating the path parameters
-                if (segment === '' || segment[0] === '{') {
-                return;
-                }
-                const isCorrectCase = checkCase(segment, caseConvention);
-                if (!isCorrectCase) {
-                messages.addTypedMessage(
-                    ['paths', pathName],
-                    `Path segments must follow case convention: ${caseConvention}`,
-                    checkStatusPath,
-                    'convention',
-                    'CTMO.STANDARD-CODAGE-09/10'
-                );
-                }
-            });
+                const caseConvention = config.paths_case_convention[1];
+                
+                const segments = pathName.split('/');
+                segments.forEach(segment => {
+                    // the first element will be "" since pathName starts with "/"
+                    // also, ignore validating the path parameters
+                    if (segment === '' || segment[0] === '{') {
+                        return;
+                    }
+                    const isCorrectCase = checkCase(segment, caseConvention);
+                    let messageStatus = checkStatusPath;
+                    if (!isCorrectCase) {
+                        if (checkAlternativePathCaseConvention == 'off') {
+                            messages.addTypedMessage(
+                                ['paths', pathName],
+                                `Path segments must follow case convention: ${caseConvention}`,
+                                messageStatus,
+                                'convention',
+                                'CTMO.STANDARD-CODAGE-09/10'
+                            );
+                        } else {
+                            // test is segment respect alternative case, if defined
+                            const isCorrectAlternativeCase = checkCase(segment, caseConventionAlternative);
+                            if (isCorrectAlternativeCase) {
+                                // if the 2 cases convention are at same error level, and the 2nd is ok => no error, else 'warning'
+                                if (checkStatusPath != checkAlternativePathCaseConvention) {
+                                    messageStatus = 'warning';
+                                    messages.addTypedMessage(
+                                        ['paths', pathName],
+                                        `Path segments should follow case convention: ${caseConvention}`,
+                                        messageStatus,
+                                        'convention',
+                                        'CTMO.STANDARD-CODAGE-09/10'
+                                    );
+                                }
+                            } else {
+                                if (checkStatusPath == 'error' || checkAlternativePathCaseConvention == 'error') {
+                                    messageStatus = 'error';
+                                }
+                                messages.addTypedMessage(
+                                    ['paths', pathName],
+                                    `Path segments must follow case convention: ${caseConvention} or ${caseConventionAlternative}`,
+                                    messageStatus,
+                                    'convention',
+                                    'CTMO.STANDARD-CODAGE-09/10'
+                                );
+                            }
+                        }
+                    }
+                });
             }
         }
         }

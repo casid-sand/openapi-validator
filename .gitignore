@@ -13,3 +13,5 @@ coverage/
 .spectral.yaml
 .spectral.yml
 .project
+test/mock-validation/input/*
+test/mock-validation/output/*

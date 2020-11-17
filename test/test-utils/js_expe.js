@@ -27,7 +27,7 @@ messages.addTypedMessage(
             '`info` object must have a `contact` object',
             'error',
             'semantic',
-            'DIR19'
+            'D19'
           );          
 
 console.log(messages);
