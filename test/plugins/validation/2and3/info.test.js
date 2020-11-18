@@ -104,11 +104,118 @@ describe('validation plugin - semantic - info', () => {
     };
 
     const res = validate({ jsSpec: spec }, config);
+    expect(res.warnings.length).toEqual(0);
     expect(res.errors.length).toEqual(1);
     expect(res.errors[0].path).toEqual(['info', 'version']);
     expect(res.errors[0].message).toEqual(
       '`info` object must have a string-type `version` field'
     );
+  });
+
+  it('should return an error when a version is not good', () => {
+    const versionRegexConfig = {
+      info: {
+        version_regex: 'error'
+      }
+    };
+    
+    const spec = {
+      Openapi: '3.0.0',
+      info: {
+        title: '32',
+        version: 'v1.0.1',
+        contact: {
+          name: 'test',
+          email: 'test@def.gouv.fr'
+        }
+      }
+    };
+
+    const res = validate({ jsSpec: spec }, versionRegexConfig);
+    expect(res.errors.length).toEqual(1);
+    expect(res.warnings.length).toEqual(0);
+    expect(res.errors[0].path).toEqual(['info', 'version']);
+    expect(res.errors[0].message).toEqual('`info` object must have a version number like X.Y.z or X.Y or X.Y-rc1');
+  });
+
+  it('should return an error when version is not good', () => {
+    const versionRegexConfig = {
+      info: {
+        version_regex: 'error'
+      }
+    };
+    
+    const spec = {
+      Openapi: '3.0.0',
+      info: {
+        title: '32',
+        version: '1',
+        contact: {
+          name: 'test',
+          email: 'test@def.gouv.fr'
+        }
+      }
+    };
+
+    const res = validate({ jsSpec: spec }, versionRegexConfig);
+    expect(res.warnings.length).toEqual(0);
+    expect(res.errors.length).toEqual(1);
+    expect(res.errors[0].path).toEqual(['info', 'version']);
+    expect(res.errors[0].message).toEqual('`info` object must have a version number like X.Y.z or X.Y or X.Y-rc1');
+    expect(res.errors[0].type).toEqual('convention');
+    expect(res.errors[0].rule).toEqual('CTMO.Regle-11');
+  });
+
+  it('should return 1 warning if version is not x.y.z', () => {
+    const versionRegexConfig = {
+      info: {
+        version_regex: 'error'
+      }
+    };
+    
+    const spec = {
+      Openapi: '3.0.0',
+      info: {
+        title: '32',
+        version: '1.2-rc3',
+        contact: {
+          name: 'test',
+          email: 'test@def.gouv.fr'
+        }
+      }
+    };
+
+    const res = validate({ jsSpec: spec }, versionRegexConfig);
+    expect(res.errors.length).toEqual(0);
+    expect(res.warnings.length).toEqual(1);
+    expect(res.warnings[0].path).toEqual(['info', 'version']);
+    expect(res.warnings[0].message).toEqual('`info` object should have a version number like X.Y.z');
+    expect(res.warnings[0].type).toEqual('convention');
+    expect(res.warnings[0].rule).toEqual('CTMO.Regle-11');
+  });
+
+  it('should be ok if version is good', () => {
+    const versionRegexConfig = {
+      info: {
+        version_regex: 'error'
+      }
+    };
+    
+    const spec = {
+      Openapi: '3.0.0',
+      info: {
+        title: '32',
+        version: '10.2.37',
+        contact: {
+          name: 'test',
+          email: 'test@def.gouv.fr'
+        }
+      }
+    };
+
+    const res = validate({ jsSpec: spec }, versionRegexConfig);
+    expect(res.errors.length).toEqual(0);
+    expect(res.warnings.length).toEqual(0);
   });
 
   //Nouveaux tests implémentés
@@ -117,12 +224,14 @@ describe('validation plugin - semantic - info', () => {
       swagger: '2.0',
       info: {
         contact: {
-          email: 'test@def.gouv.fr'
+          email: 'test@def.gouv.fr',
+          name: 'toto'
         }
       }
     };
 
     const res = validate({ jsSpec: spec }, config);
+    expect(res.warnings.length).toEqual(0);
     expect(res.errors.length).toEqual(2);
     expect(res.errors[0].path).toEqual(['info', 'title']);
     expect(res.errors[1].path).toEqual(['info', 'version']);
@@ -201,6 +310,97 @@ describe('validation plugin - semantic - info', () => {
     expect(res.warnings[0].path).toEqual(['info', 'contact', 'name']);
     expect(res.warnings[0].message).toEqual(
     	'`contact` object must have a string-type `name` field'
+    );
+  });
+
+  it('should be ok if domain is ok', () => {
+    const emailConfig = {
+      info: {
+        contact_email_domain: [
+            'error',
+            "test.com"
+        ]
+      }
+    };
+    
+    const spec = {
+      Openapi: '3.0.0',
+      info: {
+        title: '32',
+        version: 'v2.0',
+        contact: {
+            email: "toto@test.com",
+            name: 'toto'
+        }
+      }
+    };
+
+    const res = validate({ jsSpec: spec }, emailConfig);
+    expect(res.errors.length).toEqual(0);
+    expect(res.warnings.length).toEqual(0);
+  });
+
+  it('should return 1 error if domain is bad', () => {
+    const emailConfig = {
+      info: {
+        contact_email_domain: [
+            'error',
+            "@test.com"
+        ]
+      }
+    };
+    
+    const spec = {
+      Openapi: '3.0.0',
+      info: {
+        title: '32',
+        version: 'v2.0',
+        contact: {
+            email: "toto@baddomain.com",
+            name: 'toto'
+        }
+      }
+    };
+
+    const res = validate({ jsSpec: spec }, emailConfig);
+    expect(res.errors.length).toEqual(1);
+    expect(res.warnings.length).toEqual(0);
+    expect(res.errors[0].path).toEqual(['info', 'contact', 'email']);
+    expect(res.errors[0].message).toContain(
+    	"'contact.email' object must have domain "
+    );
+    expect(res.errors[0].type).toEqual('structural');
+    expect(res.errors[0].rule).toEqual('CTMO.STANDARD-CODAGE-22');
+  });
+
+it('should return 1 error if email is not email adress', () => {
+    const emailConfig = {
+      info: {
+        contact_email_domain: [
+            'error',
+            "@test.com"
+        ]
+      }
+    };
+    
+    const spec = {
+      Openapi: '3.0.0',
+      info: {
+        title: '32',
+        version: 'v2.0',
+        contact: {
+            email: "toto",
+            name: 'toto'
+        }
+      }
+    };
+
+    const res = validate({ jsSpec: spec }, emailConfig);
+    expect(res.errors.length).toEqual(1);
+    expect(res.warnings.length).toEqual(0);
+    expect(res.errors[0].path).toEqual(['info', 'contact', 'email']);
+    expect(res.errors[0].message).toContain(
+    	"'contact.email' object must have domain"
     );
   });
 

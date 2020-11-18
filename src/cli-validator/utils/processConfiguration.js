@@ -364,10 +364,12 @@ const validateConfigOption = function(userOption, defaultOption) {
     }
   });
   // verify the given option is valid
-  const validOptions = configOptions[optionType];
-  if (!validOptions.includes(userOption)) {
-    result.valid = false;
-    result.options = validOptions;
+  if (optionType) {
+    const validOptions = configOptions[optionType];
+    if (!validOptions.includes(userOption)) {
+        result.valid = false;
+        result.options = validOptions;
+    }
   }
 
   return result;

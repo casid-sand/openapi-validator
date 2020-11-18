@@ -20,8 +20,14 @@
 
 const defaults = {
   'shared': {
+    'extensions': {
+        'data_extensions': 'off',
+        'version_in_path': 'off'
+    },
     'info': {
-        'no_description': 'off'
+        'no_description': 'off',
+        'version_regex': 'off',
+        'contact_email_domain': ['off', 'none']
     },
     'operations': {
       'no_operation_id': 'warning',
@@ -162,12 +168,17 @@ const configOptions = {
   'case_conventions': [
     'lower_snake_case',
     'upper_snake_case',
+    'all_snake_case',
     'upper_camel_case',
     'lower_camel_case',
+    'all_camel_case',
     'k8s_camel_case',
+    'k8s_upper_camel_case',
+    'k8s_all_camel_case',
     'lower_dash_case',
     'upper_dash_case',
-    'operation_id_case'
+    'operation_id_case',
+    'all_dash_case'
   ]
 };
 

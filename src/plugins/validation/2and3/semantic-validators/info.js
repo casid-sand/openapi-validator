@@ -9,6 +9,10 @@
 
 const MessageCarrier = require('../../../utils/messageCarrier');
 
+const versionMajorMinorPatchRegex = /^\d+\.\d+\.\d+$/;
+const versionMajorMinorRcRegex = /^\d+\.\d(.*)+$/;
+const versionMajorMinorRegex = /^\d+\.\d+$/;
+
 module.exports.validate = function({ jsSpec }, config) {
   const messages = new MessageCarrier();
 
@@ -45,6 +49,29 @@ module.exports.validate = function({ jsSpec }, config) {
         'structural',
         'CTMO.Regle-11'
       );
+    } else {
+        const checkVersion = config.info.version_regex;
+        if (checkVersion && checkVersion != 'off') {
+            if (! versionMajorMinorPatchRegex.test(version.toLowerCase())) {
+                if (versionMajorMinorRcRegex.test(version.toLowerCase()) || versionMajorMinorRegex.test(version.toLowerCase())) {
+                    messages.addTypedMessage(
+                        ['info', 'version'],
+                        '`info` object should have a version number like X.Y.z',
+                        'warning',
+                        'convention',
+                        'CTMO.Regle-11'
+                    );
+                } else {
+                    messages.addTypedMessage(
+                        ['info', 'version'],
+                        '`info` object must have a version number like X.Y.z or X.Y or X.Y-rc1',
+                        checkVersion,
+                        'convention',
+                        'CTMO.Regle-11'
+                    );
+                }
+            }
+        }
     }
 
     if (config && config.info) {
@@ -97,18 +124,49 @@ module.exports.validate = function({ jsSpec }, config) {
           typeof contactEmail === 'string' && contactEmail.toString().trim().length > 0;
           
       if (!hasContactName) {
-            messages.addMessage(
+            messages.addTypedMessage(
               ['info', 'contact', 'name'],
               '`contact` object must have a string-type `name` field',
-              'warning'
+              'warning',
+              'structural',
+              'CTMO.STANDARD-CODAGE-22'
             );
       }
       if (!hasContactEmail) {
-            messages.addMessage(
+            messages.addTypedMessage(
               ['info', 'contact', 'email'],
               '`contact` object must have a string-type `email` field',
-              'error'
+              'error',
+              'structural',
+              'CTMO.STANDARD-CODAGE-22'
             );
+      } else {
+            if (config.info.contact_email_domain) {
+                const checkEmailAddress = config.info.contact_email_domain[0];
+                if (checkEmailAddress != 'off') {
+                    const emailAddressDomain = config.info.contact_email_domain[1];
+                    const emailDomainRegex = /^(.*)\@(.*)$/;
+                    let emailArray = null;
+                    let isEmailOk = false;
+                    if (emailDomainRegex.test(contactEmail)) {
+                        emailArray = emailDomainRegex.exec(contactEmail);
+                        if (emailArray != null && emailArray.length == 3) {
+                            if (emailArray[2] == emailAddressDomain) {
+                                isEmailOk = true;
+                            }
+                        }
+                    }
+                    if (! isEmailOk) {
+                        messages.addTypedMessage(
+                            ['info', 'contact', 'email'],
+                            `'contact.email' object must have domain : ${emailAddressDomain} - ${emailArray}`,
+                            checkEmailAddress,
+                            'structural',
+                            'CTMO.STANDARD-CODAGE-22'
+                        );
+                    }
+                }
+            }
       }
           
     }
