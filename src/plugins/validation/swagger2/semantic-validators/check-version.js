@@ -8,12 +8,10 @@ const MessageCarrier = require('../../../utils/messageCarrier');
 
 
 const versionInPathRegex = /^v(ersion)?[\_\-\.]?(\d+)(\.\d+)?(\.\d+)?$/;
-const versionName = /^(?:v(?:ersion)?)?[\_\-\. ]?(\d+)(?:\.(\d+))?(?:\.(\d+))?(?:\.(\d+))?(.*)$/;
+const versionNameRegex = /^(?:v(?:ersion)?)?[\_\-\. ]?(\d+)(?:\.(\d+))?(?:\.(\d+))?(?:\.(\d+))?(.*)$/;
 
 module.exports.validate = function({ jsSpec }, config) {
     const messages = new MessageCarrier();
-
-    console.log("checkVersion.start");
 
     if (config.extensions && config.extensions.version_in_path) {
         //console.log("checkVersion.if ok");

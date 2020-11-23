@@ -13,7 +13,7 @@ const versionMajorMinorPatchRegex = /^\d+\.\d+\.\d+$/;
 const versionMajorMinorRcRegex = /^\d+\.\d(.*)+$/;
 const versionMajorMinorRegex = /^\d+\.\d+$/;
 
-const versionName = /^(?:v(?:ersion)?)?[\_\-\. ]?(\d+)(?:\.(\d+))?(?:\.(\d+))?(?:\.(\d+))?(.*)$/;
+const versionNameRegex = /^(?:v(?:ersion)?)?[\_\-\. ]?(\d+)(?:\.(\d+))?(?:\.(\d+))?(?:\.(\d+))?(.*)$/;
 
 module.exports.validate = function({ jsSpec }, config) {
   const messages = new MessageCarrier();
@@ -55,23 +55,13 @@ module.exports.validate = function({ jsSpec }, config) {
         const checkVersion = config.info.version_regex;
         if (checkVersion && checkVersion != 'off') {
           const versionValueLower = versionValue.toLowerCase();
-          if (versionName.test(versionValueLower)) {
+          if (versionNameRegex.test(versionValueLower)) {
             //at leat : major number is present if here
-            const versionComponents = versionValueLower.match(versionName);
-            versionComponents.map(versionPart => {
-              console.log("part:" + versionPart + " => "  + versionComponents[versionPart]);
-            });
-            console.log("version:" + versionComponents[0]);
-            console.log("version1:" + versionComponents[1]);
-            console.log("version2:" + versionComponents[2]);
-            console.log("version3:" + versionComponents[3]);
-            console.log("version4:" + versionComponents[4]);
-            console.log("version5:" + versionComponents[5]);
+            const versionComponents = versionValueLower.match(versionNameRegex);
             if (versionComponents[2] == undefined 
               || versionComponents[3] == undefined 
               || versionComponents[4] != undefined 
               || (versionComponents[5] != undefined && versionComponents[5] != "")) {
-
                 //if minor is not defined, or path is not defined 
                 //or if a RC/Beta tag is present
                 //or an additionnal minor number is present

@@ -123,7 +123,7 @@ describe('validation plugin - semantic - info', () => {
       Openapi: '3.0.0',
       info: {
         title: '32',
-        version: 'v1.0.1',
+        version: 'beta-test 1.0.1.4.5',
         contact: {
           name: 'test',
           email: 'test@def.gouv.fr'
@@ -149,7 +149,7 @@ describe('validation plugin - semantic - info', () => {
       Openapi: '3.0.0',
       info: {
         title: '32',
-        version: '1',
+        version: 'toto',
         contact: {
           name: 'test',
           email: 'test@def.gouv.fr'
@@ -194,7 +194,35 @@ describe('validation plugin - semantic - info', () => {
     expect(res.warnings[0].rule).toEqual('CTMO.Regle-11');
   });
 
-  it('should be ok if version is good', () => {
+  it('should return 1 warning if version is not x.y.z', () => {
+    const versionRegexConfig = {
+      info: {
+        version_regex: 'error'
+      }
+    };
+    
+    const spec = {
+      Openapi: '3.0.0',
+      info: {
+        title: '32',
+        version: 'version 1.2.4.5',
+        contact: {
+          name: 'test',
+          email: 'test@def.gouv.fr'
+        }
+      }
+    };
+
+    const res = validate({ jsSpec: spec }, versionRegexConfig);
+    expect(res.errors.length).toEqual(0);
+    expect(res.warnings.length).toEqual(1);
+    expect(res.warnings[0].path).toEqual(['info', 'version']);
+    expect(res.warnings[0].message).toEqual('`info` object should have a version number like X.Y.z');
+    expect(res.warnings[0].type).toEqual('convention');
+    expect(res.warnings[0].rule).toEqual('CTMO.Regle-11');
+  });
+
+  it('should be ok if version is good - numbers only', () => {
     const versionRegexConfig = {
       info: {
         version_regex: 'error'
@@ -206,6 +234,30 @@ describe('validation plugin - semantic - info', () => {
       info: {
         title: '32',
         version: '10.2.37',
+        contact: {
+          name: 'test',
+          email: 'test@def.gouv.fr'
+        }
+      }
+    };
+
+    const res = validate({ jsSpec: spec }, versionRegexConfig);
+    expect(res.errors.length).toEqual(0);
+    expect(res.warnings.length).toEqual(0);
+  });
+
+  it('should be ok if version is good - v x.y.z', () => {
+    const versionRegexConfig = {
+      info: {
+        version_regex: 'error'
+      }
+    };
+    
+    const spec = {
+      Openapi: '3.0.0',
+      info: {
+        title: '32',
+        version: 'v1.0.1',
         contact: {
           name: 'test',
           email: 'test@def.gouv.fr'

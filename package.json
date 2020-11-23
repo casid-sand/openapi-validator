@@ -9,6 +9,7 @@
     "link": "npm install -g",
     "unlink": "npm uninstall -g",
     "test": "jest test/",
+    "backup": "jest test/plugins/validation/2and3/info.test.js",
     "speed-test-local": "jest --testNamePattern='^((?!@skip-local).)*$' test/",
     "test-validators": "jest test/plugins",
     "test-cli-tool": "jest test/cli-validator/tests",
