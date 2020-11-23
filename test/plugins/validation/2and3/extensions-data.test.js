@@ -49,14 +49,15 @@ describe('validation plugin - semantic - extension data - incorrect values', () 
             "x-maximum-request-size": "inconnu",
             "x-data-access-network": "np",
             "x-data-security-mention": "",
-            "x-maximum-request-bandwidth": ""
+            "x-maximum-request-bandwidth": "",
+            "x-data-is-file": ""
           },
         }
       }
     };
 
     const res = validate({ jsSpec: spec }, config);
-    expect(res.errors.length).toEqual(17);
+    expect(res.errors.length).toEqual(18);
     expect(res.errors[0].path).toEqual(['info', 'x-data-access-authorization']);
     expect(res.errors[0].message).toContain("'x-data-access-authorization' value must be one of");
     expect(res.errors[0].type).toEqual('convention');
@@ -97,6 +98,8 @@ describe('validation plugin - semantic - extension data - incorrect values', () 
     expect(res.errors[15].message).toEqual("'x-maximum-request-bandwidth' value must be a number.");
     expect(res.errors[16].path).toEqual(['paths', '/pathTwo', 'get',  'x-maximum-request-size']);
     expect(res.errors[16].message).toEqual("'x-maximum-request-size' value must be a number.");
+    expect(res.errors[17].path).toEqual(['paths', '/pathTwo', 'get', 'x-data-is-file']);
+    expect(res.errors[17].message).toEqual("'x-data-is-file' value must be a non-empty string.");
 
     expect(res.warnings.length).toEqual(0);
   });
@@ -351,9 +354,6 @@ describe('validation plugin - semantic - extension data - missing values', () =>
     };
 
     const res = validate({ jsSpec: spec }, config);
-    console.log(res.errors[0].path);
-    console.log(res.errors[1].path);
-
     expect(res.warnings.length).toEqual(0);
     expect(res.errors.length).toEqual(5);
     expect(res.errors[0].path).toEqual(['paths', '/pathwithNoExtensions', 'x-data-access-authorization' ]);

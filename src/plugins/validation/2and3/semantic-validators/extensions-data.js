@@ -67,11 +67,6 @@ module.exports.validate = function({ jsSpec }, config) {
 
             if (hasInfo) {
                 infoExtensionsValues = checkAllExtensionsValues(info, ['info'], messages, checkDataExtension);
-
-                keys = Object.keys(infoExtensionsValues);
-                keys.forEach(key=> {
-                    console.log(`info ${key} : ${infoExtensionsValues[key]}`);
-                });
             }
 
             const paths = jsSpec.paths;
@@ -111,6 +106,22 @@ module.exports.validate = function({ jsSpec }, config) {
                         if (operationName.slice(0, 2) !== 'x-') {
                             let operationExtensionsValues = checkAllExtensionsValues(jsSpec.paths[pathName][operationName], ['paths', pathName, operationName], messages, checkDataExtension);
 
+                            const jsExtensionDataIsFile = jsSpec.paths[pathName][operationName]["x-data-is-file"];
+                            if (jsExtensionDataIsFile != undefined) {
+                                const hasExtensionDataIsFile =
+                                    typeof jsExtensionDataIsFile === "string" && jsExtensionDataIsFile.length > 0;
+                                if (!hasExtensionDataIsFile) {
+                                    hasError = true;
+                                    messages.addTypedMessage(
+                                        ['paths', pathName, operationName, "x-data-is-file"],
+                                        `'x-data-is-file' value must be a non-empty string.`,
+                                        checkDataExtension,
+                                        'convention',
+                                        'CTMO.STANDARD-CODAGE-23'
+                                    );
+                                }
+                            }
+
                             let keys = Object.keys(operationExtensionsValues);
                             keys.forEach(key=> {
                                 if (operationExtensionsValues[key] === false) {
@@ -136,29 +147,15 @@ module.exports.validate = function({ jsSpec }, config) {
                     });
                 });
 
-                console.log(' ');
-                console.log('********************');
-                console.log(' ');
-                console.log(' ');
-                console.log(`atLeastOneExtensionForOperations:${atLeastOneExtensionForOperations} - atLeastOneExtensionForPaths:${atLeastOneExtensionForPaths}`);
                 let pathsKeys = Object.keys(pathsExtensionsValues);
                 pathsKeys.forEach(pathName=> {
                     const pathData = pathsExtensionsValues[pathName];
-                    console.log('********************');
-                    console.log(`path:${pathName} - atLeastOneExtensionForOperationsInPath:${pathData.atLeastOneExtensionForOperationsInPath}`);
-                    let pathExtensionKeys = Object.keys(pathData.extensionsValues);
-                    pathExtensionKeys.forEach(extensionName=> {
-                        console.log(` path-extension:${extensionName} ${pathData.extensionsValues[extensionName]}`);
-                    });
 
                     let operationKeys = Object.keys(pathData.operations);
                     operationKeys.forEach(operationName=> {
-                        console.log('   ---------------------');
-                        console.log(`   operation:${operationName}`);
                         const operationData = pathData.operations[operationName];
                         let operationExtensionsKeys = Object.keys(operationData);
                         operationExtensionsKeys.forEach(extensionName=> {
-                            console.log(`     operation-extension:${extensionName} ${operationData[extensionName]}`);
                         });
                     });
                 });
@@ -170,7 +167,6 @@ module.exports.validate = function({ jsSpec }, config) {
                 extensionsKeys.forEach(extensionKey=> {
                     //add message for extension not defined
                     if (sharedDataExtensionsDefinition[extensionKey].required === true && infoExtensionsValues[extensionKey] === false) {
-                        console.log(`missing global : ${extensionKey}`);
                         messages.addTypedMessage(
                             ['info', extensionKey],
                             `Extension value must be defined in object 'info', 'path' or 'operation' : '${extensionKey}' (recommended on 'info' object).`,
@@ -190,7 +186,6 @@ module.exports.validate = function({ jsSpec }, config) {
                         const extensionsKeys = Object.keys(sharedDataExtensionsDefinition);
                         extensionsKeys.forEach(extensionKey=> {
                             if (sharedDataExtensionsDefinition[extensionKey].required === true && pathData.extensionsValues[extensionKey] === false) {
-                                console.log(`missing in path : ${pathName} ${extensionKey}`);
                                 messages.addTypedMessage(
                                     ['paths', pathName, extensionKey],
                                     `Extension value must be defined in object 'info', 'path' or 'operation' : '${extensionKey}' (recommended on 'info' object).`,
@@ -208,7 +203,6 @@ module.exports.validate = function({ jsSpec }, config) {
                             const extensionsKeys = Object.keys(sharedDataExtensionsDefinition);
                             extensionsKeys.forEach(extensionKey=> {
                                 if (sharedDataExtensionsDefinition[extensionKey].required === true && operationData[extensionKey] === false) {
-                                    console.log(`missing in operation : ${pathName} ${extensionKey}`);
                                     messages.addTypedMessage(
                                         ['paths', pathName, operationName, extensionKey],
                                         `Extension value must be defined in object 'info', 'path' or 'operation' : '${extensionKey}' (recommended on 'info' object).`,
