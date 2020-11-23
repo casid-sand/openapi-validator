@@ -30,13 +30,16 @@
 // Assertation 10:
 // Path should not end with a "/"
 
+//Assertation 11 
+// If version is in path, it should be equal than version of API
+
 const each = require('lodash/each');
 const findIndex = require('lodash/findIndex');
 const isObject = require('lodash/isObject');
 const MessageCarrier = require('../../../utils/messageCarrier');
 
 const templateRegex = /\{(.*?)\}/g;
-const versionRegex = /^v(ersion)?(\d+\.)?(\d+\.)?(\d+)$/;
+const versionInPathRegex = /^v(ersion)?[\_\-\.]?(\d+)(\.\d+)?(\.\d+)?$/;
 const parameterRegex = /^{.*}$/;
 
 const pluralFirstWordLowerCase = /^[a-z][a-z0-9]*[sxz](?:[\_\-\.][a-z0-9]+)*$/; // example : learnings_opt_out or learningx-opt-out or learningz.opt.Out
@@ -90,7 +93,7 @@ module.exports.validate = function({ resolvedSpec }, config) {
 
             //check if root path (number 2) is the version
             if (depthPath > 1) {
-                if (! (depthPath == 2 && versionRegex.test(substr.toLowerCase()))) {
+                if (! (depthPath == 2 && versionInPathRegex.test(substr.toLowerCase()))) {
                     numberOfLevels += 1;
 
                     if (substr.length > 0 && !parameterRegex.test(substr)) {
