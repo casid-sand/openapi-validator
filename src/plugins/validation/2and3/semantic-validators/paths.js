@@ -17,7 +17,7 @@
 // Paths cannot have literal query strings in them.
 
 // Assertation 7:
-// Paths parts should end with an "s"
+// Paths parts should be at plural : ending with s, x or z, or having first word ending with it
 
 // Assertation 8:
 // Resources and identifier must be alternated in path
@@ -38,6 +38,10 @@ const MessageCarrier = require('../../../utils/messageCarrier');
 const templateRegex = /\{(.*?)\}/g;
 const versionRegex = /^v(ersion)?(\d+\.)?(\d+\.)?(\d+)$/;
 const parameterRegex = /^{.*}$/;
+
+const pluralFirstWordLowerCase = /^[a-z][a-z0-9]*[sxz](?:[\_\-\.][a-z0-9]+)*$/; // example : learnings_opt_out or learningx-opt-out or learningz.opt.Out
+const pluralFirstWordCamelCase = /^[a-zA-Z][a-z0-9]*[sxz](?:[A-Z][a-z0-9]+)*$/; // example : learningxOptOut or LearningsOptOut
+
 
 module.exports.validate = function({ resolvedSpec }, config) {
   const messages = new MessageCarrier();
@@ -70,6 +74,7 @@ module.exports.validate = function({ resolvedSpec }, config) {
         let numberOfLevels = 0;
         pathName.split('/').map(substr => {
             depthPath += 1;
+            substr = substr.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
             
             // Assertation 5
             if (
@@ -88,13 +93,30 @@ module.exports.validate = function({ resolvedSpec }, config) {
                 if (! (depthPath == 2 && versionRegex.test(substr.toLowerCase()))) {
                     numberOfLevels += 1;
 
-                    // Assertation 7
-                    if (substr.length > 0 && !parameterRegex.test(substr) && substr.charAt(substr.length-1).toLowerCase() != "s") {
-                        if (resourcesMalFormed == '') {
-                            resourcesMalFormed = `'${substr}'`;
+                    if (substr.length > 0 && !parameterRegex.test(substr)) {
+                        const lastPathChar = substr.charAt(substr.length-1).toLowerCase();
 
-                        } else {
-                            resourcesMalFormed = `${resourcesMalFormed}, '${substr}'`;
+                        // Assertation 7
+                        //checks last word last char
+                        if(lastPathChar != "s" && lastPathChar != "x" && lastPathChar != "z") {
+
+                            //check first word depending on case
+                            let firstWordPlural = false;
+                            if (substr.indexOf('_') > -1 || substr.indexOf('-') > -1 || substr.indexOf('.') > -1 ) {
+                                firstWordPlural = pluralFirstWordLowerCase.test(substr.toLowerCase());
+                            } else {
+                                //check in camelCase
+                                firstWordPlural = pluralFirstWordCamelCase.test(substr);
+                            }
+
+                            if (firstWordPlural === false) {
+                                if (resourcesMalFormed == '') {
+                                    resourcesMalFormed = `'${substr}'`;
+
+                                } else {
+                                    resourcesMalFormed = `${resourcesMalFormed}, '${substr}'`;
+                                }
+                            }
                         }
                     }
 
@@ -111,7 +133,7 @@ module.exports.validate = function({ resolvedSpec }, config) {
         if (resourcesMalFormed != '' && checkResourcesPlural != 'off') {
             messages.addTypedMessage(
                 `paths.${pathName}`,
-                `Resources in paths should end with an 's' : ${resourcesMalFormed}.`,
+                `Resources in paths should be plural (with an 's', 'x' or 'z') : ${resourcesMalFormed}.`,
                 checkResourcesPlural,
                 'convention',
                 'CTMO.STANDARD-CODAGE-03'

@@ -332,7 +332,7 @@ describe('validation plugin - semantic - paths', function() {
         expect(res.errors.length).toEqual(0);
         expect(res.warnings.length).toEqual(1);
         expect(res.warnings[0].message).toContain(
-            "Resources in paths should end with an 's' :"
+            "Resources in paths should be plural (with an 's', 'x' or 'z') :"
         );
         expect(res.warnings[0].type).toEqual('convention');
         expect(res.warnings[0].rule).toEqual('CTMO.STANDARD-CODAGE-03');
@@ -356,19 +356,39 @@ describe('validation plugin - semantic - paths', function() {
                 '/v1/signature': {
                 },
                 '/pets': {
+                },
+                '/joujou-enfant': {
+                },
+                '/joujouEnfant': {
+                },
+                '/joujou_enfant': {
+                },
+                '/joujou_enfants_test': {
+                },
+                '/JOUJOU_ENFANT': {
+                },
+                '/JOUJOU-ENFANT': {
+                },
+                '/JOUJOU.ENFANT': {
+                },
+                '/joujou.enfant': {
                 }
             }
         };
 
         const res = validate({ resolvedSpec: spec }, config);
         expect(res.errors.length).toEqual(0);
-        expect(res.warnings.length).toEqual(2);
-        expect(res.warnings[0].message).toContain(
-            "Resources in paths should end with an 's' :"
-        );
-        expect(res.warnings[1].message).toContain(
-            "Resources in paths should end with an 's' :"
-        );
+        expect(res.warnings.length).toEqual(10);
+        expect(res.warnings[0].message).toContain("Resources in paths should be plural (with an 's', 'x' or 'z') :");
+        expect(res.warnings[1].message).toContain("Resources in paths should be plural (with an 's', 'x' or 'z') :");
+        expect(res.warnings[2].message).toContain("Resources in paths should be plural (with an 's', 'x' or 'z') :");
+        expect(res.warnings[3].message).toContain("Resources in paths should be plural (with an 's', 'x' or 'z') :");
+        expect(res.warnings[4].message).toContain("Resources in paths should be plural (with an 's', 'x' or 'z') :");
+        expect(res.warnings[5].message).toContain("Resources in paths should be plural (with an 's', 'x' or 'z') :");
+        expect(res.warnings[6].message).toContain("Resources in paths should be plural (with an 's', 'x' or 'z') :");
+        expect(res.warnings[7].message).toContain("Resources in paths should be plural (with an 's', 'x' or 'z') :");
+        expect(res.warnings[8].message).toContain("Resources in paths should be plural (with an 's', 'x' or 'z') :");
+        expect(res.warnings[9].message).toContain("Resources in paths should be plural (with an 's', 'x' or 'z') :");
     });
 
     it('should return ok with all resources in the plural', function() {
@@ -386,10 +406,64 @@ describe('validation plugin - semantic - paths', function() {
                     }
                 ]
                 },
+                '/ressources/signatures': {
+                },
                 '/signatures': {
                 },
-                '/pets': {
-                }
+                '/pet_shops': {
+                },
+                '/pets_shop': {
+                },
+                '/houx': {
+                },
+                '/gaz': {
+                },
+                '/Services': {
+                },
+                '/HOUX': {
+                },
+                '/EMPLOYES': {
+                },
+                '/GAZ': {
+                },
+                '/demandes_service': {
+                },
+                '/demandes.service': {
+                },
+                '/demandes-service': {
+                },
+                '/demandesService': {
+                },
+                '/gaz_oduc': {
+                },
+                '/trucs_utiles/joujoux_enfant': {
+                },
+                '/tests/trucs/joujoux-enfant': {
+                },
+                '/tests/trucs/joujoux.enfant': {
+                },
+                '/various/joujouxEnfant': {
+                },
+                '/various/joujouzEnfant': {
+                },
+                '/GENOUX_ENFANT': {
+                },
+                '/GENOUX.ENFANT': {
+                },
+                '/GENOUX-ENFANT': {
+                },
+                '/trucs_utiles/Joujoux_Enfant': {
+                },
+                '/tests/trucs/Joujoux-Enfant': {
+                },
+                '/tests/trucs/Joujoux.Enfant': {
+                },
+                '/tests/trucs/JoujouxEnfant': {
+                },
+                '/tests/trucs/bêtes': {
+                },
+                '/trucs_accéntué': {
+                },
             }
         };
 
