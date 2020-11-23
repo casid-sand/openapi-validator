@@ -36,7 +36,11 @@ module.exports = function exportReportFile(
   if (swaggerObject) {
     if (swaggerObject.jsSpec) {
         const version = getVersion(swaggerObject.jsSpec);
-        jsonReport.versionFormat = version;
+        if (version === "2") {
+          jsonReport.format = "Swagger 2";
+        } else if (version === "3") {
+          jsonReport.format = "OpenAPI 3";
+        }
     }
     const info = swaggerObject.jsSpec.info;
     const hasInfo = info && typeof info === 'object';

@@ -166,19 +166,18 @@ const deprecated = {
 
 const configOptions = {
   'case_conventions': [
-    'lower_snake_case',
-    'upper_snake_case',
-    'all_snake_case',
-    'upper_camel_case',
-    'lower_camel_case',
-    'all_camel_case',
-    'k8s_camel_case',
-    'k8s_upper_camel_case',
-    'k8s_all_camel_case',
-    'lower_dash_case',
-    'upper_dash_case',
-    'operation_id_case',
-    'all_dash_case'
+    'lower_snake_case', // lower_snake_case
+    'upper_snake_case', // UPPER_SNAKE_CASE
+    'all_snake_case', // lower_snake_case ou UPPER_SNAKE_CASE
+    'upper_camel_case', // UpperCamelCase
+    'lower_camel_case', // lowerCamelCase
+    'all_camel_case', // UpperCamelCase ou lowerCamelCase
+    'k8s_camel_case', // kubernetesAPICamelCase
+    'k8s_upper_camel_case', // UpperKubernetesAPICamelCase
+    'k8s_all_camel_case', // kubernetesAPICamelCase ou KubernetesAPICamelCase
+    'lower_dash_case', // lower-spinal-case
+    'upper_dash_case', // UPPER-SPINAL-CASE
+    'all_dash_case' // lower-spinal-case ou UPPER-SPINAL-CASE
   ]
 };
 
