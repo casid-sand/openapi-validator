@@ -2,12 +2,12 @@
   "shared": {
     "extensions": {
         "data_extensions": "error",
-        "version_in_path": "error"
+        "version_in_path": "off"
     },
     "info": {
         "no_description": "error",
         "version_regex": "error",
-        "contact_email_domain": ["error", "def.gouv.fr"]
+        "contact_email_domain": ["error", "intradef.gouv.fr"]
     },
     "operations": {
       "no_operation_id": "warning",
@@ -97,7 +97,7 @@
   "swagger2": {
     "operations": {
       "no_consumes_for_put_or_post": "warning",
-      "get_op_has_consumes": "warning",
+      "get_op_has_consumes": "off",
       "no_produces": "warning"
     }
   },

@@ -135,7 +135,7 @@ describe('validation plugin - semantic - info', () => {
     expect(res.errors.length).toEqual(1);
     expect(res.warnings.length).toEqual(0);
     expect(res.errors[0].path).toEqual(['info', 'version']);
-    expect(res.errors[0].message).toEqual('`info` object must have a version number like X.Y.z or X.Y or X.Y-rc1');
+    expect(res.errors[0].message).toEqual('`info` object must have a version number like X.Y.z (or X.Y or X.Y-rc1)');
   });
 
   it('should return an error when version is not good', () => {
@@ -161,7 +161,7 @@ describe('validation plugin - semantic - info', () => {
     expect(res.warnings.length).toEqual(0);
     expect(res.errors.length).toEqual(1);
     expect(res.errors[0].path).toEqual(['info', 'version']);
-    expect(res.errors[0].message).toEqual('`info` object must have a version number like X.Y.z or X.Y or X.Y-rc1');
+    expect(res.errors[0].message).toEqual('`info` object must have a version number like X.Y.z (or X.Y or X.Y-rc1)');
     expect(res.errors[0].type).toEqual('convention');
     expect(res.errors[0].rule).toEqual('CTMO.Regle-11');
   });

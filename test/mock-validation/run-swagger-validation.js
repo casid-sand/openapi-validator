@@ -7,7 +7,7 @@ const dateTime = require('node-datetime');
 const program = {};
 let exitcode;
 
-let swagger_file_name = '20201119-swagger_regimes_solde_BAsicAuth copy.json';
+let swagger_file_name = 'swagger2-ds-intradef-v1-20201123.yaml';
 
 
 let swagger_name = '';

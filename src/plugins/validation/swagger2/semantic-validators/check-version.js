@@ -6,60 +6,20 @@
 
 const MessageCarrier = require('../../../utils/messageCarrier');
 
-//All extensions can be declared at info, path or operation (except for x-data-is-file not declared here)
-//If required : each must defined at least at one level
-const sharedDataExtensionsDefinition = {
-    'x-data-access-authorization': {
-        'required': true,
-        'type': 'string',
-        'values': ['publique', 'nécessitant une autorisation du fournisseur API']
-    },
-    'x-data-access-network': {
-        'required': true,
-        'type': 'string',
-        'values': ['helissng', 'helissng,intradef', 'helissng, intradef', 'intradef']
-    },
-    'x-data-security-classification': {
-        'required': true,
-        'type': 'string',
-        'values': ['np','dr']
-    },
-    'x-data-security-mention': {
-        'required': true,
-        'type': 'string',
-        'values': ['aucune','médical','personnel','protection personnel','concours','industrie','technologie','commercial']
-    },
-    'x-data-use-constraint': {
-        'required': true,
-        'type': 'string',
-        'values': ['aucune','dpcs','rgpd']
-    },
-    'x-maximum-request-bandwidth': {
-        'required': false,
-        'type': 'number'
-    },
-    'x-maximum-request-rate': {
-        'required': false,
-        'type': 'number'
-    },
-    'x-maximum-request-size': {
-        'required': false,
-        'type': 'number'
-    },
-    'x-maximum-response-size': {
-        'required': false,
-        'type': 'number'
-    }
-};
 
-const numberRegex = /^\d+((\,|\.)(\d)+)?$/;
+const versionInPathRegex = /^v(ersion)?[\_\-\.]?(\d+)(\.\d+)?(\.\d+)?$/;
+const versionName = /^(?:v(?:ersion)?)?[\_\-\. ]?(\d+)(?:\.(\d+))?(?:\.(\d+))?(?:\.(\d+))?(.*)$/;
 
 module.exports.validate = function({ jsSpec }, config) {
     const messages = new MessageCarrier();
 
-    if (config.extensions && config.extensions.data_extensions) {
-        const checkDataExtension = config.extensions.data_extensions;
-        if (checkDataExtension != 'off') {
+    console.log("checkVersion.start");
+
+    if (config.extensions && config.extensions.version_in_path) {
+        //console.log("checkVersion.if ok");
+        const checkVersionInPath = config.extensions.version_in_path;
+        if (checkVersionInPath != 'off') {
+            //console.log("checkVersion.if2 ok");
             let infoExtensionsValues = {};
 
             let info = jsSpec.info;
