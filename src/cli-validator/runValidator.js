@@ -11,6 +11,7 @@ const exportReportFile = require('./utils/exportReportFile');
 const ext = require('./utils/fileExtensionValidator');
 const config = require('./utils/processConfiguration');
 const buildSwaggerObject = require('./utils/buildSwaggerObject');
+const MessageCarrier = require('../plugins//utils/messageCarrier');
 const validator = require('./utils/validator');
 const print = require('./utils/printResults');
 const printJson = require('./utils/printJsonResults');
@@ -227,17 +228,37 @@ const processInput = async function(program) {
     const originalWorkingDirectory = process.cwd();
     process.chdir(path.dirname(validFile));
 
+    let results;
+
     // validator requires the swagger object to follow a specific format
     let swagger;
     try {
       swagger = await buildSwaggerObject(input);
     } catch (err) {
-      printError(chalk, 'There is a problem with the Swagger.', getError(err));
+      const messages = new MessageCarrier();
+      let error = getError(err);
+      let pathDirNameRegex = new RegExp(`".*\#`);
+      error = error.replace(pathDirNameRegex, '"#');
+      error = error.replace("\\n", '');
+      printError(chalk, 'There is a problem with the Swagger.', error);
+      messages.addTypedMessage([], 
+        `GRAVE : ${error}`,
+        'error',
+        'structural',
+        null);
+      results = {
+        errors: {},
+        warnings: {},
+        error: false,
+        warning: false
+      };
+      results.errors["buildSwaggerObject"] = [...messages.errors];
+      results.error = true;
+
       if (debug) {
         console.log(err.stack);
       }
       exitCode = 1;
-      continue;
     } finally {
       // return the working directory to its original location so that
       // the rest of the program runs as expected. using finally block
@@ -245,35 +266,40 @@ const processInput = async function(program) {
       process.chdir(originalWorkingDirectory);
     }
 
-    // run spectral and save the results
-    let spectralResults;
-    try {
-      process.chdir(path.dirname(validFile));
-      // let spectral handle the parsing of the original swagger/oa3 document
-      spectralResults = await spectral.run(originalFile);
-    } catch (err) {
-      printError(chalk, 'There was a problem with spectral.', getError(err));
-      if (debug) {
-        console.log(err.stack);
-      }
-      exitCode = 1;
-      continue;
-    } finally {
-      // return the working directory to its original location
-      process.chdir(originalWorkingDirectory);
-    }
+    if (exitCode === 0) {
 
-    // run validator, print the results, and determine if validator passed
-    let results;
-    try {
-      results = validator(swagger, configObject, spectralResults, debug);
-    } catch (err) {
-      printError(chalk, 'There was a problem with a validator.', getError(err));
-      if (debug) {
-        console.log(err.stack);
+      // run spectral and save the results
+      let spectralResults;
+      try {
+        process.chdir(path.dirname(validFile));
+        // let spectral handle the parsing of the original swagger/oa3 document
+        spectralResults = await spectral.run(originalFile);
+      } catch (err) {
+        printError(chalk, 'There was a problem with spectral.', getError(err));
+        if (debug) {
+          console.log(err.stack);
+        }
+        exitCode = 1;
+        continue;
+      } finally {
+        // return the working directory to its original location
+        process.chdir(originalWorkingDirectory);
       }
-      exitCode = 1;
-      continue;
+
+      console.log("fin spectral");
+
+      // run validator, print the results, and determine if validator passed
+      try {
+        results = validator(swagger, configObject, spectralResults, debug);
+      } catch (err) {
+        printError(chalk, 'There was a problem with a validator.', getError(err));
+        if (debug) {
+          console.log(err.stack);
+        }
+        exitCode = 1;
+        continue;
+      }
+
     }
 
     // the warning property tells the user if warnings are included as part of the output

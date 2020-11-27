@@ -7,7 +7,7 @@ const dateTime = require('node-datetime');
 const program = {};
 let exitcode;
 
-let swagger_file_name = 'swagger2-ds-intradef-v1-20201123.yaml';
+let swagger_file_name = 'swagger-DNA-PES-23-11-2020.yml';
 
 
 let swagger_name = '';
