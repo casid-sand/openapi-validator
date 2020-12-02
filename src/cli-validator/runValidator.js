@@ -159,6 +159,7 @@ const processInput = async function(program) {
   // define an exit code to return. this will tell the parent program whether
   // the validator passed or not
   let exitCode = 0;
+  let fileErrorCode = 0;
 
   // fs module does not return promises by default
   // create a version of the 'readFile' function that does
@@ -176,6 +177,8 @@ const processInput = async function(program) {
   }
 
   for (const validFile of filesToValidate) {
+    fileErrorCode = 0;
+
     if (filesToValidate.length > 1) {
       console.log(
         '\n    ' + chalk.underline(`Validation Results for ${validFile}:`)
@@ -259,6 +262,7 @@ const processInput = async function(program) {
         console.log(err.stack);
       }
       exitCode = 1;
+      fileErrorCode = -1;
     } finally {
       // return the working directory to its original location so that
       // the rest of the program runs as expected. using finally block
@@ -266,7 +270,7 @@ const processInput = async function(program) {
       process.chdir(originalWorkingDirectory);
     }
 
-    if (exitCode === 0) {
+    if (fileErrorCode === 0) {
 
       // run spectral and save the results
       let spectralResults;
@@ -285,8 +289,6 @@ const processInput = async function(program) {
         // return the working directory to its original location
         process.chdir(originalWorkingDirectory);
       }
-
-      console.log("fin spectral");
 
       // run validator, print the results, and determine if validator passed
       try {

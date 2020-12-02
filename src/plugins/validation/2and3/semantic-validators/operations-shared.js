@@ -162,13 +162,28 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
 
       const hasSummary =
         op.summary && op.summary.length > 0 && !!op.summary.toString().trim();
-      if (!hasSummary) {
-        messages.addTypedMessage(
-          `paths.${pathKey}.${opKey}.summary`,
-          'Operations must have a non-empty `summary` field.',
-          config.no_summary,
-          'documentation'
-        );
+      const hasDescription =
+        op.description && op.description.length > 0 && !!op.description.toString().trim();
+      if (config.no_summary != 'off') {
+        if (!hasSummary) {
+          messages.addTypedMessage(
+            `paths.${pathKey}.${opKey}.summary`,
+            'Operations must have a non-empty `summary` field.',
+            config.no_summary,
+            'documentation'
+          );
+        }
+      }
+
+      if (config.neither_description_nor_summary != 'off') {
+        if (!hasSummary && !hasDescription) {
+          messages.addTypedMessage(
+            `paths.${pathKey}.${opKey}`,
+            'Operations must have a non-empty `summary` field or a non-empty `description` field.',
+            config.neither_description_nor_summary,
+            'documentation'
+          );
+        }
       }
 
       // this should be good with resolved spec, but double check

@@ -33,6 +33,7 @@ const defaults = {
       'no_operation_id': 'warning',
       'operation_id_case_convention': ['warning', 'lower_snake_case'],
       'no_summary': 'warning',
+      'neither_description_nor_summary': 'off',
       'no_array_responses': 'error',
       'parameter_order': 'warning',
       'undefined_tag': 'warning',

@@ -185,6 +185,183 @@ describe('validation plugin - semantic - operations-shared', function() {
       expect(res.errors.length).toEqual(0);
     });
 
+    it('should complain about missing summary and description', function() {
+      const configWithoutSummaryAndDesc = {
+        operations: {
+          neither_description_nor_summary: 'error',
+          no_summary:'off',
+          no_operation_id: 'warning',
+          operation_id_case_convention: ['warning', 'lower_snake_case'],
+          no_array_responses: 'error',
+          parameter_order: 'warning',
+          undefined_tag: 'warning',
+          unused_tag: 'warning',
+          operation_id_naming_convention: 'warning'
+        }
+      };
+      
+      const spec = {
+        paths: {
+          '/CoolPath': {
+            put: {
+              consumes: ['consumes'],
+              operationId: 'operation_id_without_summary',
+              description: 'description',
+              parameters: [
+                {
+                  name: 'BadParameter',
+                  in: 'body',
+                  schema: {
+                    required: ['Property'],
+                    properties: [
+                      {
+                        name: 'Property'
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            post: {
+              consumes: ['consumes'],
+              operationId: 'operation_id_without_desc',
+              summary: 'summary',
+              parameters: [
+                {
+                  name: 'BadParameter',
+                  in: 'body',
+                  schema: {
+                    required: ['Property'],
+                    properties: [
+                      {
+                        name: 'Property'
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            get: {
+              operationId: 'operation_id_without_desc_and_summary',
+              parameters: [
+                {
+                  name: 'BadParameter',
+                  in: 'body',
+                  schema: {
+                    required: ['Property'],
+                    properties: [
+                      {
+                        name: 'Property'
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      };
+
+      const res = validate({ resolvedSpec: spec }, configWithoutSummaryAndDesc);
+      expect(res.errors.length).toEqual(1);
+      expect(res.errors[0].path).toEqual('paths./CoolPath.get');
+      expect(res.errors[0].message).toEqual(
+        'Operations must have a non-empty `summary` field or a non-empty `description` field.'
+      );
+      expect(res.warnings.length).toEqual(0);
+    });
+
+    it('should complain about empty summary and description', function() {
+      const configWithoutSummaryAndDesc = {
+        operations: {
+          neither_description_nor_summary: 'error',
+          no_summary:'off',
+          no_operation_id: 'warning',
+          operation_id_case_convention: ['warning', 'lower_snake_case'],
+          no_array_responses: 'error',
+          parameter_order: 'warning',
+          undefined_tag: 'warning',
+          unused_tag: 'warning',
+          operation_id_naming_convention: 'warning'
+        }
+      };
+      
+      const spec = {
+        paths: {
+          '/CoolPath': {
+            patch: {
+              consumes: ['consumes'],
+              operationId: 'operation_id_without_summary',
+              description: 'description',
+              summary: ' ',
+              parameters: [
+                {
+                  name: 'BadParameter',
+                  in: 'body',
+                  schema: {
+                    required: ['Property'],
+                    properties: [
+                      {
+                        name: 'Property'
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            post: {
+              consumes: ['consumes'],
+              operationId: 'operation_id_without_desc',
+              summary: 'summary',
+              description: ' ',
+              parameters: [
+                {
+                  name: 'BadParameter',
+                  in: 'body',
+                  schema: {
+                    required: ['Property'],
+                    properties: [
+                      {
+                        name: 'Property'
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            put: {
+              consumes: ['consumes'],
+              operationId: 'operation_id_without_desc_and_summary',
+              summary: ' ',
+              description: ' ',
+              parameters: [
+                {
+                  name: 'BadParameter',
+                  in: 'body',
+                  schema: {
+                    required: ['Property'],
+                    properties: [
+                      {
+                        name: 'Property'
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      };
+
+      const res = validate({ resolvedSpec: spec }, configWithoutSummaryAndDesc);
+      expect(res.errors.length).toEqual(1);
+      expect(res.errors[0].path).toEqual('paths./CoolPath.put');
+      expect(res.errors[0].message).toEqual(
+        'Operations must have a non-empty `summary` field or a non-empty `description` field.'
+      );
+      expect(res.warnings.length).toEqual(0);
+    });
+
     it('should not complain about anything when x-sdk-exclude is true', function() {
       const spec = {
         paths: {

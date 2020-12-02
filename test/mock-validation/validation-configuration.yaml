@@ -10,12 +10,13 @@
         "contact_email_domain": ["error", "intradef.gouv.fr"]
     },
     "operations": {
-      "no_operation_id": "warning",
+      "no_operation_id": "off",
       "operation_id_case_convention": [
         "off",
         "k8s_camel_case"
       ],
       "no_summary": "off",
+      "neither_description_nor_summary": "warning",
       "no_array_responses": "error",
       "parameter_order": "warning",
       "undefined_tag": "warning",
@@ -123,6 +124,8 @@
     }
   },
   "spectral": {
-    "rules": {}
+    "rules": {
+      "operation-description": "off"
+    }
   }
 }
