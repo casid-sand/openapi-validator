@@ -33,13 +33,16 @@
 //Assertation 11 
 // If version is in path, it should be equal than version of API
 
+// Assertation 12:
+// check if basePath/server is include in path URI
+
 const each = require('lodash/each');
 const findIndex = require('lodash/findIndex');
 const isObject = require('lodash/isObject');
 const MessageCarrier = require('../../../utils/messageCarrier');
 
 const templateRegex = /\{(.*?)\}/g;
-const versionInPathRegex = /^v(ersion)?[\_\-\.]?(\d+)(\.\d+)?(\.\d+)?$/;
+const versionInPathRegex = /^(?:v(?:ersion)?[\_\-\.]?)?(\d+)(\.\d+)?(\.\d+)?$/;
 const parameterRegex = /^{.*}$/;
 
 const pluralFirstWordLowerCase = /^[a-z][a-z0-9]*[sxz](?:[\_\-\.][a-z0-9]+)*$/; // example : learnings_opt_out or learningx-opt-out or learningz.opt.Out
@@ -96,7 +99,8 @@ module.exports.validate = function({ resolvedSpec }, config) {
                 if (! (depthPath == 2 && versionInPathRegex.test(substr.toLowerCase()))) {
                     numberOfLevels += 1;
 
-                    if (substr.length > 0 && !parameterRegex.test(substr)) {
+                    //check all path elements plural, except parameters and version
+                    if (substr.length > 0 && !parameterRegex.test(substr) && !versionInPathRegex.test(substr.toLowerCase())) {
                         const lastPathChar = substr.charAt(substr.length-1).toLowerCase();
 
                         // Assertation 7

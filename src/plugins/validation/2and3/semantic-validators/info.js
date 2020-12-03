@@ -13,7 +13,7 @@ const versionMajorMinorPatchRegex = /^\d+\.\d+\.\d+$/;
 const versionMajorMinorRcRegex = /^\d+\.\d(.*)+$/;
 const versionMajorMinorRegex = /^\d+\.\d+$/;
 
-const versionNameRegex = /^(?:v(?:ersion)?)?[\_\-\. ]?(\d+)(?:\.(\d+))?(?:\.(\d+))?(?:\.(\d+))?(.*)$/;
+const versionNameRegex = /^(?:v(?:ersion)?[\_\-\. ]*)?(\d+)(?:\.(\d+))?(?:\.(\d+))?(?:\.(\d+))?(.*)$/;
 
 module.exports.validate = function({ jsSpec }, config) {
   const messages = new MessageCarrier();
@@ -52,7 +52,7 @@ module.exports.validate = function({ jsSpec }, config) {
         'CTMO.Regle-11'
       );
     } else {
-        const checkVersion = config.info.version_regex;
+        const checkVersion = config.info.version_regex_rule;
         if (checkVersion && checkVersion != 'off') {
           const versionValueLower = versionValue.toLowerCase();
           if (versionNameRegex.test(versionValueLower)) {

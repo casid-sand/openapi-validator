@@ -1,9 +1,6 @@
 // Assertation 1:
 // check if x-data are defined in each path/operation or at global level
 
-// Assertation 2:
-// check if version is in basePath on in each uri
-
 const MessageCarrier = require('../../../utils/messageCarrier');
 
 //All extensions can be declared at info, path or operation (except for x-data-is-file not declared here)

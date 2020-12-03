@@ -26,7 +26,7 @@ const defaults = {
     },
     'info': {
         'no_description': 'off',
-        'version_regex': 'off',
+        'version_regex_rule': 'off',
         'contact_email_domain': ['off', 'none']
     },
     'operations': {

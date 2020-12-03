@@ -2,11 +2,11 @@
   "shared": {
     "extensions": {
         "data_extensions": "error",
-        "version_in_path": "off"
+        "version_in_path": "warning"
     },
     "info": {
         "no_description": "error",
-        "version_regex": "error",
+        "version_regex_rule": "error",
         "contact_email_domain": ["error", "intradef.gouv.fr"]
     },
     "operations": {

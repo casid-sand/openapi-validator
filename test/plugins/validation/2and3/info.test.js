@@ -115,7 +115,7 @@ describe('validation plugin - semantic - info', () => {
   it('should return an error when a version is not good', () => {
     const versionRegexConfig = {
       info: {
-        version_regex: 'error'
+        version_regex_rule: 'error'
       }
     };
     
@@ -141,7 +141,7 @@ describe('validation plugin - semantic - info', () => {
   it('should return an error when version is not good', () => {
     const versionRegexConfig = {
       info: {
-        version_regex: 'error'
+        version_regex_rule: 'error'
       }
     };
     
@@ -169,7 +169,7 @@ describe('validation plugin - semantic - info', () => {
   it('should return 1 warning if version is not x.y.z', () => {
     const versionRegexConfig = {
       info: {
-        version_regex: 'error'
+        version_regex_rule: 'error'
       }
     };
     
@@ -197,7 +197,7 @@ describe('validation plugin - semantic - info', () => {
   it('should return 1 warning if version is not x.y.z', () => {
     const versionRegexConfig = {
       info: {
-        version_regex: 'error'
+        version_regex_rule: 'error'
       }
     };
     
@@ -225,7 +225,7 @@ describe('validation plugin - semantic - info', () => {
   it('should be ok if version is good - numbers only', () => {
     const versionRegexConfig = {
       info: {
-        version_regex: 'error'
+        version_regex_rule: 'error'
       }
     };
     
@@ -249,7 +249,7 @@ describe('validation plugin - semantic - info', () => {
   it('should be ok if version is good - v x.y.z', () => {
     const versionRegexConfig = {
       info: {
-        version_regex: 'error'
+        version_regex_rule: 'error'
       }
     };
     
