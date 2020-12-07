@@ -292,7 +292,7 @@ module.exports.validate = function({ jsSpec }, config) {
                     console.log("no version declared at all");
                     messages.addTypedMessage(
                         `basePath`,
-                        `Version must defined in basePath/server, or in each path.`,
+                        `Version must be defined in basePath/server, or in each path.`,
                         checkVersionInPath,
                         'convention',
                         'CTMO.Regle-14'
