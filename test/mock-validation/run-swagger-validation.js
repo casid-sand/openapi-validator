@@ -4,7 +4,7 @@ const dateTime = require('node-datetime');
 const program = {};
 let exitcode;
 
-let swagger_file_name = 'openapi3-TIR-v1-20201207.yml';
+let swagger_file_name = 'CMAn-NOE-117-07.01-AV-Demande_d’accès_à_la_Passerelle_API.yaml';
 let dir_path = './test/mock-validation/input/';
 
 //swagger_file_name = "missing-object.yml"

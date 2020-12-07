@@ -2,7 +2,7 @@
   "shared": {
     "extensions": {
         "data_extensions": "error",
-        "version_in_path": "warning"
+        "version_in_path": "error"
     },
     "info": {
         "no_description": "error",
@@ -125,7 +125,10 @@
   },
   "spectral": {
     "rules": {
-      "operation-description": "off"
+      "operation-description": "off",
+      "oas2-valid-definition-example": "warning",
+      "oas3-valid-example": "warning",
+      "oas3-valid-schema-example": "warning"
     }
   }
 }

@@ -1,3 +1,4 @@
+#See rules at : https://meta.stoplight.io/docs/spectral/docs/reference/openapi-rules.md
 extends: [[spectral:oas, off]]
 formats: [oas2, oas3]
 functionsDir: ../functions
