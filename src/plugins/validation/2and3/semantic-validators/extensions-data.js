@@ -262,7 +262,7 @@ function checkExtensionValue(jsObject, pathToObjectArray, extensionKey, messages
                 );
             } else {
                 if (sharedDataExtensionsDefinition[extensionKey].values) {
-                    if (sharedDataExtensionsDefinition[extensionKey].values.indexOf(jsExtensionValue) === -1) {
+                    if (sharedDataExtensionsDefinition[extensionKey].values.indexOf(jsExtensionValue.toLowerCase()) === -1) {
                         hasError = true;
                         hasCorrectExtensionValue = false;
                         messages.addTypedMessage(

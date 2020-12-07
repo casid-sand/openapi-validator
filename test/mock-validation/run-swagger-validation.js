@@ -4,7 +4,7 @@ const dateTime = require('node-datetime');
 const program = {};
 let exitcode;
 
-let swagger_file_name = 'openapi3-test.yaml';
+let swagger_file_name = 'openapi3-TIR-v1-20201207.yml';
 let dir_path = './test/mock-validation/input/';
 
 //swagger_file_name = "missing-object.yml"
