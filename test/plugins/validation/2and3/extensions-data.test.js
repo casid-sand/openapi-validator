@@ -110,7 +110,7 @@ describe('validation plugin - semantic - extension data - incorrect values', () 
 describe('validation plugin - semantic - extension data - missing values', () => {
 
   //this is for openapi object
-  it('should be 1 error without paths and one missing', () => {
+  it('should be 1 error without paths and one extension missing', () => {
     const spec = {
       Openapi: '3.0.0',
       info: {
@@ -129,6 +129,7 @@ describe('validation plugin - semantic - extension data - missing values', () =>
     };
 
     const res = validate({ jsSpec: spec }, config);
+
     expect(res.errors.length).toEqual(1);
     expect(res.warnings.length).toEqual(0);
     expect(res.errors[0].path).toEqual(['info', 'x-data-use-constraint'] );
@@ -147,10 +148,10 @@ describe('validation plugin - semantic - extension data - missing values', () =>
               email: "test@test.com",
               name: "toto"
           },
-          "x-data-access-network": "intradef",
+          "x-data-access-network": "Intradef",
           "x-data-access-authorization": "nécessitant une autorisation du fournisseur API",
           "x-data-security-mention": "aucune",
-          "x-data-security-classification": "np",
+          "x-data-security-classification": "NP",
           "x-data-use-constraint": "rgpd",
         },
         paths: {
@@ -168,6 +169,7 @@ describe('validation plugin - semantic - extension data - missing values', () =>
       };
   
       const res = validate({ jsSpec: spec }, config);
+
       expect(res.errors.length).toEqual(0);
       expect(res.warnings.length).toEqual(0);
     });
@@ -218,6 +220,7 @@ describe('validation plugin - semantic - extension data - missing values', () =>
       };
   
       const res = validate({ jsSpec: spec }, config);
+
       expect(res.errors.length).toEqual(0);
       expect(res.warnings.length).toEqual(0);
     });
@@ -258,6 +261,7 @@ describe('validation plugin - semantic - extension data - missing values', () =>
       };
   
       const res = validate({ jsSpec: spec }, config);
+
       expect(res.errors.length).toEqual(1);
       expect(res.warnings.length).toEqual(0);
       expect(res.errors[0].path).toEqual(['info', 'x-data-security-mention']);
@@ -277,6 +281,38 @@ describe('validation plugin - semantic - extension data - missing values', () =>
             name: "toto"
         },
       },
+      paths: {
+        "/pathOne": {
+            "get": {
+            },
+            "post": {
+            }
+          },
+        "/pathTwo": {
+          "get": {
+          },
+        }
+      }
+    };
+
+    const res = validate({ jsSpec: spec }, config);
+    expect(res.warnings.length).toEqual(0);
+    expect(res.errors.length).toEqual(5);
+    expect(res.errors[0].path).toEqual(['info', 'x-data-access-authorization'] );
+    expect(res.errors[0].message).toEqual("Extension value must be defined in object 'info', 'path' or 'operation' : 'x-data-access-authorization' (recommended on 'info' object).");
+    expect(res.errors[0].type).toEqual('convention');
+    expect(res.errors[0].rule).toEqual('CTMO.STANDARD-CODAGE-23');
+    expect(res.errors[1].path).toEqual(['info', 'x-data-access-network'] );
+    expect(res.errors[1].message).toEqual("Extension value must be defined in object 'info', 'path' or 'operation' : 'x-data-access-network' (recommended on 'info' object).");
+    expect(res.errors[2].message).toEqual("Extension value must be defined in object 'info', 'path' or 'operation' : 'x-data-security-classification' (recommended on 'info' object).");
+    expect(res.errors[3].message).toEqual("Extension value must be defined in object 'info', 'path' or 'operation' : 'x-data-security-mention' (recommended on 'info' object).");
+    expect(res.errors[4].message).toEqual("Extension value must be defined in object 'info', 'path' or 'operation' : 'x-data-use-constraint' (recommended on 'info' object).");
+  });
+
+  //this is for openapi object
+  it('should be 5 errors on info with all missing extensions', () => {
+    const spec = {
+      Openapi: '3.0.0',
       paths: {
         "/pathOne": {
             "get": {

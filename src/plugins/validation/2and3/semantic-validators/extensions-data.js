@@ -9,7 +9,7 @@ const sharedDataExtensionsDefinition = {
     'x-data-access-authorization': {
         'required': true,
         'type': 'string',
-        'values': ['publique', 'nécessitant une autorisation du fournisseur API']
+        'values': ['publique', 'necessitant une autorisation du fournisseur api']
     },
     'x-data-access-network': {
         'required': true,
@@ -24,7 +24,7 @@ const sharedDataExtensionsDefinition = {
     'x-data-security-mention': {
         'required': true,
         'type': 'string',
-        'values': ['aucune','médical','personnel','protection personnel','concours','industrie','technologie','commercial']
+        'values': ['aucune','medical','personnel','protection personnel','concours','industrie','technologie','commercial']
     },
     'x-data-use-constraint': {
         'required': true,
@@ -62,9 +62,9 @@ module.exports.validate = function({ jsSpec }, config) {
             let info = jsSpec.info;
             const hasInfo = info && typeof info === 'object';
 
-            if (hasInfo) {
+            //if (hasInfo) {
                 infoExtensionsValues = checkAllExtensionsValues(info, ['info'], messages, checkDataExtension);
-            }
+            //}
 
             const paths = jsSpec.paths;
             const hasPaths = paths && typeof paths === 'object';
@@ -240,7 +240,12 @@ function checkAllExtensionsValues(jsObject, pathToObjectArray, messages, message
 
 function checkExtensionValue(jsObject, pathToObjectArray, extensionKey, messages, messageLevel) {
 
-    let jsExtensionValue = jsObject[extensionKey];
+    let jsExtensionValue;
+    if (jsObject != null) {
+        jsExtensionValue = jsObject[extensionKey];
+    } else {
+        jsExtensionValue = undefined;
+    }
     let hasCorrectExtensionValue = false;
     let hasError = false;
 
@@ -262,12 +267,14 @@ function checkExtensionValue(jsObject, pathToObjectArray, extensionKey, messages
                 );
             } else {
                 if (sharedDataExtensionsDefinition[extensionKey].values) {
-                    if (sharedDataExtensionsDefinition[extensionKey].values.indexOf(jsExtensionValue.toLowerCase()) === -1) {
+                    //lower case conversion and remove "e" with accents
+                    const valueToFind = jsExtensionValue.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                    if (sharedDataExtensionsDefinition[extensionKey].values.indexOf(valueToFind) === -1) {
                         hasError = true;
                         hasCorrectExtensionValue = false;
                         messages.addTypedMessage(
                             pathToObjectArray,
-                            `'${extensionKey}' value must be one of ${sharedDataExtensionsDefinition[extensionKey].values.toString()}`,
+                            `'${extensionKey}' value must be one of ${sharedDataExtensionsDefinition[extensionKey].values.toString()} - not ${valueToFind}`,
                             messageLevel,
                             'convention',
                             'CTMO.STANDARD-CODAGE-23'

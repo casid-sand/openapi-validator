@@ -16,7 +16,6 @@ module.exports.validate = function({ jsSpec }, config) {
     if (config.extensions && config.extensions.version_in_path) {
         const checkVersionInPath = config.extensions.version_in_path;
         if (checkVersionInPath != 'off') {
-            console.log("checkVersionInPath");
 
             let info = jsSpec.info;
             const hasInfo = info && typeof info === 'object';
@@ -25,13 +24,11 @@ module.exports.validate = function({ jsSpec }, config) {
             let apiversionComponents = [];
 
             if (hasInfo) {
-                console.log("info present");
                 apiVersionString = info.version;
                 hasApiVersion =
                     typeof apiVersionString === 'string' && apiVersionString.toString().trim().length > 0;
 
                 if (hasApiVersion) {
-                    console.log("version present");
                     apiVersionString = apiVersionString.toLowerCase();
                     apiversionComponents = apiVersionString.match(versionNameRegex);
                 }
@@ -45,37 +42,31 @@ module.exports.validate = function({ jsSpec }, config) {
 
                 //if version 2 (swagger) : check basePath
 
-                console.log("swagger 2");
-
                 const basePath = jsSpec.basePath;
                 const hasBasePath = basePath && typeof basePath === 'string';
 
                 if (hasBasePath) {
-                    
-                    console.log("basePath present");
                     
                     let hasVersionElementInBasePath = false;
                     //parse each url element : separates by /
                     basePath.split('/').map(basePathElement => {
 
                         if (basePathElement !== "") {
-                        
-                            console.log(`basePath element: ${basePathElement}`);
 
                             basePathElement = basePathElement.toLowerCase();
                             if (versionInPathRegex.test(basePathElement)) {
                                 //duplicate version in path
                                 if (hasVersionElementInBasePath === true) {
-                                    console.log("version doublon");
                                     messages.addTypedMessage(
-                                        `basePath`,
+                                        [`basePath`],
                                         `Version identifier is duplicate in basePath.`,
-                                        checkVersionInPath,
+                                        'warning',
                                         'convention',
                                         'CTMO.Regle-14'
                                     );
                                 }
                                 hasVersionElementInBasePath = true;
+                                hasApiVersionInBasePath = true;
 
                                 //if version is declared in info, compare it
                                 if (hasApiVersion === true) {
@@ -83,20 +74,16 @@ module.exports.validate = function({ jsSpec }, config) {
                                     const hasCorrectVersionNumber = isVersionSimilar(basePathElement, apiversionComponents);
 
                                     if (hasCorrectVersionNumber === true) {
-                                        console.log("version correcte");
                                         hasApiVersionInBasePath= true;
                                     } else {
-                                        console.log("version incorrecte");
                                         messages.addTypedMessage(
-                                            `basePath`,
+                                            [`basePath`],
                                             `Version in basePath doesn't match API version : ${basePathElement} doesn't match ${apiVersionString}.`,
                                             checkVersionInPath,
                                             'convention',
                                             'CTMO.Regle-14'
                                         );
                                     }
-                                } else {
-                                    hasApiVersionInBasePath = true;
                                 }
                             }
                         }
@@ -105,21 +92,15 @@ module.exports.validate = function({ jsSpec }, config) {
             } else if (versionLanguage === "3") {
                 //if version 3 (openapi) : check each server url
 
-                console.log("openapi 3");
-
                 const serversList = jsSpec.servers;
                 const hasServers = serversList && typeof serversList === 'object';
                 let serversWithoutVersion = [];
                 let hasOneServerWithVersion = false;
 
                 if (hasServers) {
-                    console.log("servers present");
                     for (let i = 0, len = serversList.length; i < len; i++) {
-                        console.log(`server num ${i}`);
                         const server = serversList[i];
-                        console.log(`server ${server}`);
                         const serverUrl = server.url;
-                        console.log(`serverUrl ${serverUrl}`);
 
                         if (serverUrl && typeof serverUrl === "string" && serverUrl.toString().trim().length > 0) {
 
@@ -130,18 +111,15 @@ module.exports.validate = function({ jsSpec }, config) {
                             serverUrl.split('/').map(serverUrlElement => {
 
                                 if (serverUrlElement !== "") {
-                                
-                                    console.log(`server url element: ${serverUrlElement}`);
 
                                     serverUrlElement = serverUrlElement.toLowerCase();
                                     if (versionInPathRegex.test(serverUrlElement)) {
                                         //duplicate version in path
                                         if (hasVersionElementInServer === true) {
-                                            console.log("version doublon");
                                             messages.addTypedMessage(
-                                                [`servers`, `${i}`],
-                                                `Version identifier is duplicate in basePath.`,
-                                                checkVersionInPath,
+                                                [`servers`, `${i}`, 'url'],
+                                                `Version identifier is duplicate in url.`,
+                                                'warning',
                                                 'convention',
                                                 'CTMO.Regle-14'
                                             );
@@ -154,12 +132,10 @@ module.exports.validate = function({ jsSpec }, config) {
                                             const hasCorrectVersionNumber = isVersionSimilar(serverUrlElement, apiversionComponents);
 
                                             if (hasCorrectVersionNumber === true) {
-                                                console.log("version correcte");
                                                 hasCorrectVersionInServer= true;
                                             } else {
-                                                console.log("version incorrecte");
                                                 messages.addTypedMessage(
-                                                    [`servers`, `${i}`],
+                                                    [`servers`, `${i}`, 'url'],
                                                     `Version in server doesn't match API version : ${serverUrlElement} doesn't match ${apiVersionString}.`,
                                                     checkVersionInPath,
                                                     'convention',
@@ -174,7 +150,7 @@ module.exports.validate = function({ jsSpec }, config) {
                                 
                             });
 
-                            if (hasCorrectVersionInServer === true) {
+                            if (hasVersionElementInServer === true) {
                                 hasOneServerWithVersion = true;
                             } else {
                                 serversWithoutVersion.push(i);
@@ -191,7 +167,6 @@ module.exports.validate = function({ jsSpec }, config) {
 
                         //and at least one without version
                         if (serversWithoutVersion.length> 0) {
-                            console.log(`version manquante dans ${serversWithoutVersion.length} serveur`);
                             let serversNumberStr = "";
                             for (let i = 0, len = serversWithoutVersion.length; i < len; i++) {
                                 if (serversNumberStr !== "") {
@@ -200,7 +175,7 @@ module.exports.validate = function({ jsSpec }, config) {
                                 serversNumberStr = `${serversNumberStr}${serversWithoutVersion[i]}`;
                             }
                             messages.addTypedMessage(
-                                `servers`,
+                                [`servers`],
                                 `Version must be declared in all servers, or in none, but is missing in elements : ${serversNumberStr}`,
                                 checkVersionInPath,
                                 'convention',
@@ -215,11 +190,11 @@ module.exports.validate = function({ jsSpec }, config) {
             const paths = jsSpec.paths;
             const hasPaths = paths && typeof paths === 'object';
             let hasOnePathWithoutVersion = false;
+            let hasOnePathWithVersion = false;
 
             if (hasPaths) {
                 const pathNames = Object.keys(jsSpec.paths);
                 pathNames.forEach(pathName => {
-                    console.log(`**pathName: ${pathName}`);
                     let pathHasVersion = false;
 
                     //parse each url element : separates by /
@@ -227,30 +202,25 @@ module.exports.validate = function({ jsSpec }, config) {
 
                         if (pathElement !== "") {
                         
-                            console.log(` --pathElement element: ${pathElement}`);
                             pathElement = pathElement.toLowerCase();
-
-                            let hasVersionInPathName = false;
 
                             if (versionInPathRegex.test(pathElement)) {
                                 //duplicate version in path
-                                if (hasVersionInPathName === true) {
-                                    console.log("version doublon in path");
+                                if (pathHasVersion === true) {
                                     messages.addTypedMessage(
                                         ['paths', pathName],
                                         `Version identifier is duplicate in path.`,
-                                        checkVersionInPath,
+                                        'warning',
                                         'convention',
                                         'CTMO.Regle-14'
                                     );
                                 }
-                                hasVersionInPathName = true;
+                                pathHasVersion = true;
 
                                 if (hasApiVersionInBasePath === true) {
-                                    console.log("version doublon in path/basePath");
                                     messages.addTypedMessage(
                                         ['paths', pathName],
-                                        `Version identifier of basePath is duplicate in path.`,
+                                        `Version identifier of basePath/server is duplicate in path.`,
                                         'warning',
                                         'convention',
                                         'CTMO.Regle-14'
@@ -263,10 +233,8 @@ module.exports.validate = function({ jsSpec }, config) {
                                     const hasCorrectVersionNumber = isVersionSimilar(pathElement, apiversionComponents);
 
                                     if (hasCorrectVersionNumber === true) {
-                                        console.log("version correcte");
-                                        pathHasVersion= true;
+                                        hasOnePathWithVersion= true;
                                     } else {
-                                        console.log("version incorrecte");
                                         messages.addTypedMessage(
                                             ['paths', pathName],
                                             `Version in path doesn't match API version : ${pathElement} doesn't match ${apiVersionString}.`,
@@ -276,7 +244,7 @@ module.exports.validate = function({ jsSpec }, config) {
                                         );
                                     }
                                 } else {
-                                    pathHasVersion = true;
+                                    hasOnePathWithVersion = true;
                                 }
                             } 
                         }
@@ -288,15 +256,42 @@ module.exports.validate = function({ jsSpec }, config) {
                     }
                 });
 
-                if (hasOnePathWithoutVersion && !hasApiVersionInBasePath) {
-                    console.log("no version declared at all");
-                    messages.addTypedMessage(
-                        `basePath`,
-                        `Version must be defined in basePath/server, or in each path.`,
-                        checkVersionInPath,
-                        'convention',
-                        'CTMO.Regle-14'
-                    );
+                if (!hasApiVersionInBasePath) {
+
+                    let elementName = "";
+                    if (versionLanguage == "2") {
+                        elementName = `basePath`;
+                    } if (versionLanguage == "3") {
+                        elementName = `servers`;
+                    }
+
+                    if (hasOnePathWithVersion) {
+                        if (hasOnePathWithoutVersion) {
+                            messages.addTypedMessage(
+                                [elementName],
+                                `Version should be declared in basePath or servers URL, not in paths, or it should be in all paths.`,
+                                checkVersionInPath,
+                                'convention',
+                                'CTMO.Regle-14'
+                            );
+                        } else {
+                            messages.addTypedMessage(
+                                [elementName],
+                                `Version should be declared in basePath or servers URL, not in paths.`,
+                                'warning',
+                                'convention',
+                                'CTMO.Regle-14'
+                            );
+                        }
+                    } else {
+                        messages.addTypedMessage(
+                            [elementName],
+                            `Version must be defined in basePath/server (recommended), or in each path, but is missing.`,
+                            checkVersionInPath,
+                            'convention',
+                            'CTMO.Regle-14'
+                        );
+                    }
                 }
 
             }
