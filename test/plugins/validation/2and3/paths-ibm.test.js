@@ -375,7 +375,7 @@ describe('validation plugin - semantic - paths-ibm', function() {
       '/v1/api/not.good_.segment/{id}/resource'
     ]);
     expect(res.warnings[0].message).toEqual(
-      'Path segments must follow case convention: lower_snake_case'
+      'Path segments must follow case convention: "lower_snake_case".'
     );
   });
 
@@ -411,7 +411,7 @@ describe('validation plugin - semantic - paths-ibm', function() {
       '/v1/api/NotGoodSegment/{shouldntMatter}/resource'
     ]);
     expect(res.warnings[0].message).toEqual(
-      'Path segments must follow case convention: lower_camel_case'
+      'Path segments must follow case convention: "camelCase".'
     );
   });
 
@@ -699,7 +699,7 @@ describe('Test of alternative case convention configurations', () => {
         const res = validate({ resolvedSpec: spec }, config);
         expect(res.warnings.length).toEqual(0);
         expect(res.errors.length).toEqual(1);
-        expect(res.errors[0].message).toContain("Path segments must follow case convention");
+        expect(res.errors[0].message).toEqual('Path segments must follow case convention: "spinal-case" or "lower_snake_case".');
         expect(res.errors[0].path).toEqual(["paths", "/camelPath/"]);
         expect(res.errors[0].type).toEqual('convention');
         expect(res.errors[0].rule).toEqual('CTMO.STANDARD-CODAGE-09/10');
@@ -722,9 +722,9 @@ describe('Test of alternative case convention configurations', () => {
         const res = validate({ resolvedSpec: spec }, config);
         expect(res.errors.length).toEqual(1);
         expect(res.warnings.length).toEqual(1);
-        expect(res.errors[0].message).toContain("Path segments must follow case convention");
+        expect(res.errors[0].message).toEqual('Path segments must follow case convention: "spinal-case" recommendend, or eventually "lower_snake_case".');
         expect(res.errors[0].path).toEqual(["paths", "/camelPath/"]);
-        expect(res.warnings[0].message).toContain("Path segments should follow case convention");
+        expect(res.warnings[0].message).toEqual('Path segments should follow case convention: "spinal-case" recommended.');
         expect(res.warnings[0].path).toEqual(["paths", "/snake_path/"]);
     });
 
@@ -745,9 +745,9 @@ describe('Test of alternative case convention configurations', () => {
         const res = validate({ resolvedSpec: spec }, config);
         expect(res.warnings.length).toEqual(0);
         expect(res.errors.length).toEqual(2);
-        expect(res.errors[0].message).toContain("Path segments must follow case convention");
+        expect(res.errors[0].message).toEqual('Path segments must follow case convention: "spinal-case".');
         expect(res.errors[0].path).toEqual(["paths", "/camelPath/"]);
-        expect(res.errors[1].message).toContain("Path segments must follow case convention");
+        expect(res.errors[1].message).toEqual('Path segments must follow case convention: "spinal-case".');
         expect(res.errors[1].path).toEqual(["paths", "/snake_path/"]);
     });
 
@@ -768,9 +768,9 @@ describe('Test of alternative case convention configurations', () => {
         const res = validate({ resolvedSpec: spec }, config);
         expect(res.errors.length).toEqual(0);
         expect(res.warnings.length).toEqual(2);
-        expect(res.warnings[0].message).toContain("Path segments must follow case convention");
+        expect(res.warnings[0].message).toEqual('Path segments must follow case convention: "spinal-case".');
         expect(res.warnings[0].path).toEqual(["paths", "/camelPath/"]);
-        expect(res.warnings[1].message).toContain("Path segments must follow case convention");
+        expect(res.warnings[1].message).toEqual('Path segments must follow case convention: "spinal-case".');
         expect(res.warnings[1].path).toEqual(["paths", "/snake_path/"]);
     });
 
@@ -791,9 +791,9 @@ describe('Test of alternative case convention configurations', () => {
         const res = validate({ resolvedSpec: spec }, config);
         expect(res.errors.length).toEqual(1);
         expect(res.warnings.length).toEqual(1);
-        expect(res.errors[0].message).toContain("Path segments must follow case convention");
+        expect(res.errors[0].message).toEqual('Path segments must follow case convention: "lower_snake_case" recommendend, or eventually "spinal-case".');
         expect(res.errors[0].path).toEqual(["paths", "/camelPath/"]);
-        expect(res.warnings[0].message).toContain("Path segments should follow case convention");
+        expect(res.warnings[0].message).toEqual('Path segments should follow case convention: "lower_snake_case" recommended.');
         expect(res.warnings[0].path).toEqual(["paths", "/snake_path/"]);
     });
 
@@ -814,7 +814,7 @@ describe('Test of alternative case convention configurations', () => {
         const res = validate({ resolvedSpec: spec }, config);
         expect(res.errors.length).toEqual(0);
         expect(res.warnings.length).toEqual(1);
-        expect(res.warnings[0].message).toContain("Path segments must follow case convention");
+        expect(res.warnings[0].message).toEqual('Path segments must follow case convention: "spinal-case" or "lower_snake_case".');
         expect(res.warnings[0].path).toEqual(["paths", "/camelPath/"]);
         expect(res.warnings[0].type).toEqual('convention');
         expect(res.warnings[0].rule).toEqual('CTMO.STANDARD-CODAGE-09/10');

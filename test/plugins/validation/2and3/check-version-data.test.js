@@ -448,7 +448,7 @@ describe('validation plugin - semantic - check-version in path for swagger2', ()
   //this is for swagger object
   it('should be ok with version in all paths', () => {
     const spec = {
-      Swagger: '2.0',
+      swagger: '2.0',
       info: {
         title: "Test",
         version: "1.0",
@@ -480,7 +480,7 @@ describe('validation plugin - semantic - check-version in path for swagger2', ()
   //this is for swagger object
   it('should be ok with version in all paths and api version missing', () => {
     const spec = {
-      Swagger: '2.0',
+      swagger: '2.0',
       info: {
         title: "Test",
         description: "toto",
@@ -510,7 +510,7 @@ describe('validation plugin - semantic - check-version in path for swagger2', ()
 
   it('should be ok with version in basePath', () => {
     const spec = {
-      Swagger: '2.0',
+      swagger: '2.0',
       info: {
         title: "Test",
         version: "2.0.0",
@@ -540,7 +540,7 @@ describe('validation plugin - semantic - check-version in path for swagger2', ()
 
   it('should be ok with version in basePath api version missing', () => {
     const spec = {
-      Swagger: '2.0',
+      swagger: '2.0',
       info: {
         title: "Test",
         description: "toto",
@@ -569,7 +569,7 @@ describe('validation plugin - semantic - check-version in path for swagger2', ()
 
   it('should be warning with duplicate version in basePath', () => {
     const spec = {
-      Swagger: '2.0',
+      swagger: '2.0',
       info: {
         title: "Test",
         version: "2.0.0",
@@ -601,7 +601,7 @@ describe('validation plugin - semantic - check-version in path for swagger2', ()
 
   it('should be errors with incorrect version in basePath', () => {
     const spec = {
-      Swagger: '2.0',
+      swagger: '2.0',
       info: {
         title: "Test",
         version: "2.0.0",
@@ -633,7 +633,7 @@ describe('validation plugin - semantic - check-version in path for swagger2', ()
 
   it('should be errors with no version in basePath and only in one path', () => {
     const spec = {
-      Swagger: '2.0',
+      swagger: '2.0',
       info: {
         title: "Test",
         version: "3.0.0",

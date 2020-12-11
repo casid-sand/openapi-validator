@@ -68,7 +68,7 @@ describe('validation plugin - semantic - parameters-ibm', () => {
         '0'
       ]);
       expect(res.errors[0].message).toEqual(
-        'Parameter names must follow case convention: lower_snake_case'
+        'Parameter names must follow case convention: "lower_snake_case".'
       );
     });
 

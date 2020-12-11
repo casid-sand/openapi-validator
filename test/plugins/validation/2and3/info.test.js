@@ -8,7 +8,7 @@ describe('validation plugin - semantic - info', () => {
   //this is for openapi object
   it('should return an error when a parameter does not have info', () => {
     const spec = {
-      Openapi: '3.0.0'
+      openapi: '3.0.0'
     };
 
     const res = validate({ jsSpec: spec }, config);
@@ -20,7 +20,7 @@ describe('validation plugin - semantic - info', () => {
   });
   it('should return an error when a info is not defined as a proper object', () => {
     const spec = {
-      Openapi: '3.0.0',
+      openapi: '3.0.0',
       info: 'abc'
     };
 
@@ -33,7 +33,7 @@ describe('validation plugin - semantic - info', () => {
   });
   it('should return an error when a title (and version) is not a string', () => {
     const spec = {
-      Openapi: '3.0.0',
+      openapi: '3.0.0',
       info: {
         title: 32,
         version: '32',
@@ -53,7 +53,7 @@ describe('validation plugin - semantic - info', () => {
   });
   it('should return an error when a (title and) version is not a string', () => {
     const spec = {
-      Openapi: '3.0.0',
+      openapi: '3.0.0',
       info: {
         title: '32',
         version: 32,
@@ -73,7 +73,7 @@ describe('validation plugin - semantic - info', () => {
   });
   it('should return an error when a title is missing', () => {
     const spec = {
-      Openapi: '3.0.0',
+      openapi: '3.0.0',
       info: {
         version: '32',
         contact: {
@@ -93,7 +93,7 @@ describe('validation plugin - semantic - info', () => {
 
   it('should return an error when a version is missing', () => {
     const spec = {
-      Openapi: '3.0.0',
+      openapi: '3.0.0',
       info: {
         title: '32',
         contact: {
@@ -120,7 +120,7 @@ describe('validation plugin - semantic - info', () => {
     };
     
     const spec = {
-      Openapi: '3.0.0',
+      openapi: '3.0.0',
       info: {
         title: '32',
         version: 'beta-test 1.0.1.4.5',
@@ -146,7 +146,7 @@ describe('validation plugin - semantic - info', () => {
     };
     
     const spec = {
-      Openapi: '3.0.0',
+      openapi: '3.0.0',
       info: {
         title: '32',
         version: 'toto',
@@ -174,7 +174,7 @@ describe('validation plugin - semantic - info', () => {
     };
     
     const spec = {
-      Openapi: '3.0.0',
+      openapi: '3.0.0',
       info: {
         title: '32',
         version: '1.2-rc3',
@@ -202,7 +202,7 @@ describe('validation plugin - semantic - info', () => {
     };
     
     const spec = {
-      Openapi: '3.0.0',
+      openapi: '3.0.0',
       info: {
         title: '32',
         version: 'version 1.2.4.5',
@@ -230,7 +230,7 @@ describe('validation plugin - semantic - info', () => {
     };
     
     const spec = {
-      Openapi: '3.0.0',
+      openapi: '3.0.0',
       info: {
         title: '32',
         version: '10.2.37',
@@ -254,7 +254,7 @@ describe('validation plugin - semantic - info', () => {
     };
     
     const spec = {
-      Openapi: '3.0.0',
+      openapi: '3.0.0',
       info: {
         title: '32',
         version: 'v1.0.1',
@@ -308,7 +308,7 @@ describe('validation plugin - semantic - info', () => {
 
   it('should return an error when contact is not an object', () => {
     const spec = {
-      Openapi: '3.0.0',
+      openapi: '3.0.0',
       info: {
         title: '32',
         version: 'v2.0',
@@ -326,7 +326,7 @@ describe('validation plugin - semantic - info', () => {
   
   it('should return an error when contact email is missing', () => {
     const spec = {
-      Openapi: '3.0.0',
+      openapi: '3.0.0',
       info: {
         title: '32',
         version: 'v2.0',
@@ -346,7 +346,7 @@ describe('validation plugin - semantic - info', () => {
 
   it('should be ok with 1 warning if contact email is a string and name is missing', () => {
     const spec = {
-      Openapi: '3.0.0',
+      openapi: '3.0.0',
       info: {
         title: '32',
         version: 'v2.0',
@@ -376,7 +376,7 @@ describe('validation plugin - semantic - info', () => {
     };
     
     const spec = {
-      Openapi: '3.0.0',
+      openapi: '3.0.0',
       info: {
         title: '32',
         version: 'v2.0',
@@ -403,7 +403,7 @@ describe('validation plugin - semantic - info', () => {
     };
     
     const spec = {
-      Openapi: '3.0.0',
+      openapi: '3.0.0',
       info: {
         title: '32',
         version: 'v2.0',
@@ -436,7 +436,7 @@ it('should return 1 error if email is not email adress', () => {
     };
     
     const spec = {
-      Openapi: '3.0.0',
+      openapi: '3.0.0',
       info: {
         title: '32',
         version: 'v2.0',
@@ -460,7 +460,7 @@ it('should return 1 error if email is not email adress', () => {
     config.info.no_description = 'error';
     
     const spec = {
-      Openapi: '3.0.0',
+      openapi: '3.0.0',
       info: {
         title: '32',
         version: 'v2.0',
@@ -490,7 +490,7 @@ it('should return 1 error if email is not email adress', () => {
     config.info.no_description = 'error';
     
     const spec = {
-      Openapi: '3.0.0',
+      openapi: '3.0.0',
       info: {
         title: '32',
         version: 'v2.0',
@@ -521,7 +521,7 @@ it('should return 1 error if email is not email adress', () => {
     config.info.no_description = 'error';
     
     const spec = {
-      Openapi: '3.0.0',
+      openapi: '3.0.0',
       info: {
         title: '32',
         version: 'v2.0',

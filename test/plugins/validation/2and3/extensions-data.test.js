@@ -14,7 +14,7 @@ describe('validation plugin - semantic - extension data - incorrect values', () 
   //this is for openapi object
   it('should be errors with incorrects extensions values', () => {
     const spec = {
-      Openapi: '3.0.0',
+      openapi: '3.0.0',
       info: {
         title: "Test",
         version: "1.0",
@@ -33,6 +33,16 @@ describe('validation plugin - semantic - extension data - incorrect values', () 
         "x-maximum-request-size": "inconnu",
         "x-maximum-response-size": "inconnu",
       },
+      servers:[
+        {
+          "url": "http://test.com/api",
+          "x-source": "internet"
+        },
+        {
+          "url": "http://prod.com/api/objects",
+          "x-source": "heliss-ng"
+        },
+      ],
       paths: {
         "/pathOne": {
           "x-maximum-request-rate": "inconnu",
@@ -57,7 +67,7 @@ describe('validation plugin - semantic - extension data - incorrect values', () 
     };
 
     const res = validate({ jsSpec: spec }, config);
-    expect(res.errors.length).toEqual(18);
+    expect(res.errors.length).toEqual(20);
     expect(res.errors[0].path).toEqual(['info', 'x-data-access-authorization']);
     expect(res.errors[0].message).toContain("'x-data-access-authorization' value must be one of");
     expect(res.errors[0].type).toEqual('convention');
@@ -101,6 +111,70 @@ describe('validation plugin - semantic - extension data - incorrect values', () 
     expect(res.errors[17].path).toEqual(['paths', '/pathTwo', 'get', 'x-data-is-file']);
     expect(res.errors[17].message).toEqual("'x-data-is-file' value must be a non-empty string.");
 
+    expect(res.errors[18].path).toEqual(['servers','0']);
+    expect(res.errors[18].message).toContain("'x-source' value must be one of");
+    expect(res.errors[19].path).toEqual(['servers','1']);
+    expect(res.errors[19].message).toContain("'x-source' value must be one of");
+
+    expect(res.warnings.length).toEqual(0);
+  });
+
+  //this is for swagger object
+  it('should be 3 errors with 3 values incorrect in swagger 2', () => {
+    const spec = {
+      swagger: '2.0.0',
+      info: {
+        title: "Test",
+        version: "1.0",
+        description: "toto",
+        contact: {
+            email: "test@test.com",
+            name: "toto"
+        },
+        "x-data-access-network": "internet",
+        "x-data-access-authorization": "nécessitant une autorisation du fournisseur API",
+        "x-data-security-mention": "toto",
+        "x-data-security-classification": "np",
+        "x-data-use-constraint": "rgpd",
+        "x-source":"internet",
+        "x-maximum-request-bandwidth": "100",
+        "x-maximum-request-rate": "10",
+        "x-maximum-request-size": "15",
+        "x-maximum-response-size": "28",
+        "x-other-extension-string": "toto",
+        "x-other-extension-number": "28",
+      },
+      paths: {
+        "/pathOne": {
+          "x-maximum-request-rate": "10",
+          "x-maximum-request-size": "15",
+          "x-maximum-response-size": "24",
+          "get": {
+            "x-maximum-response-size": "24"
+            },
+          "post": {
+            "x-maximum-response-size": "14"
+            }
+          },
+        "/pathTwo": {
+          "x-data-use-constraint": "dpcs",
+          "get": {
+            "x-data-use-constraint": "aucune",
+          },
+        }
+      }
+    };
+
+    const res = validate({ jsSpec: spec }, config);
+
+    expect(res.errors.length).toEqual(3);
+    expect(res.errors[0].path).toEqual(['info', 'x-data-access-network']);
+    expect(res.errors[0].message).toContain("'x-data-access-network' value must be one of");
+    expect(res.errors[1].path).toEqual(['info', 'x-data-security-mention']);
+    expect(res.errors[1].message).toContain("'x-data-security-mention' value must be one of");
+    expect(res.errors[2].path).toEqual(['info', 'x-source']);
+    expect(res.errors[2].message).toContain("'x-source' value must be one of");
+
     expect(res.warnings.length).toEqual(0);
   });
 
@@ -110,9 +184,9 @@ describe('validation plugin - semantic - extension data - incorrect values', () 
 describe('validation plugin - semantic - extension data - missing values', () => {
 
   //this is for openapi object
-  it('should be 1 error without paths and one extension missing', () => {
+  it('should be 1 error without paths and one extension missing and one x-source missing for one server', () => {
     const spec = {
-      Openapi: '3.0.0',
+      openapi: '3.0.0',
       info: {
         title: "Test",
         version: "1.0",
@@ -125,21 +199,32 @@ describe('validation plugin - semantic - extension data - missing values', () =>
         "x-data-access-authorization": "nécessitant une autorisation du fournisseur API",
         "x-data-security-mention": "aucune",
         "x-data-security-classification": "np"
-      }
+      },
+      servers:[
+        {
+          "url": "http://test.com/api",
+          "x-source": "intradef"
+        },
+        {
+          "url": "http://prod.com/api/objects",
+        },
+      ],
     };
 
     const res = validate({ jsSpec: spec }, config);
 
-    expect(res.errors.length).toEqual(1);
+    expect(res.errors.length).toEqual(2);
     expect(res.warnings.length).toEqual(0);
     expect(res.errors[0].path).toEqual(['info', 'x-data-use-constraint'] );
     expect(res.errors[0].message).toEqual("Extension value must be defined in object 'info', 'path' or 'operation' : 'x-data-use-constraint' (recommended on 'info' object).");
+    expect(res.errors[1].path).toEqual(['servers','1']);
+    expect(res.errors[1].message).toEqual("'x-source' value must be defined and a non-empty string.");
   });
 
     //this is for openapi object
     it('should be ok with all required extensions in OpenAPI 3 corrects in info', () => {
       const spec = {
-        Openapi: '3.0.0',
+        openapi: '3.0.0',
         info: {
           title: "Test",
           version: "1.0",
@@ -154,6 +239,16 @@ describe('validation plugin - semantic - extension data - missing values', () =>
           "x-data-security-classification": "NP",
           "x-data-use-constraint": "rgpd",
         },
+        servers:[
+          {
+            "url": "http://test.com/api",
+            "x-source": "intradef"
+          },
+          {
+            "url": "http://prod.com/api/objects",
+            "x-source": "helissng"
+          },
+        ],
         paths: {
           "/pathOne": {
               "get": {
@@ -175,9 +270,9 @@ describe('validation plugin - semantic - extension data - missing values', () =>
     });
 
     //this is for openapi object
-    it('should be ok with all required extensions in Swagger 2 corrects and others extensions', () => {
+    it('should be ok with all required extensions in swagger 2 corrects and others extensions', () => {
       const spec = {
-        Swagger: '2.0.0',
+        swagger: '2.0.0',
         info: {
           title: "Test",
           version: "1.0",
@@ -191,6 +286,7 @@ describe('validation plugin - semantic - extension data - missing values', () =>
           "x-data-security-mention": "aucune",
           "x-data-security-classification": "np",
           "x-data-use-constraint": "rgpd",
+          "x-source":"intradef",
           "x-maximum-request-bandwidth": "100",
           "x-maximum-request-rate": "10",
           "x-maximum-request-size": "15",
@@ -226,9 +322,9 @@ describe('validation plugin - semantic - extension data - missing values', () =>
     });
 
     //this is for openapi object
-    it('should be 1 error with one extension missing', () => {
+    it('should be 2 error with one extension missing and x-source missing in swagger 2', () => {
       const spec = {
-        Swagger: '2.0.0',
+        swagger: '2.0.0',
         info: {
           title: "Test",
           version: "1.0",
@@ -262,16 +358,18 @@ describe('validation plugin - semantic - extension data - missing values', () =>
   
       const res = validate({ jsSpec: spec }, config);
 
-      expect(res.errors.length).toEqual(1);
+      expect(res.errors.length).toEqual(2);
       expect(res.warnings.length).toEqual(0);
       expect(res.errors[0].path).toEqual(['info', 'x-data-security-mention']);
       expect(res.errors[0].message).toEqual("Extension value must be defined in object 'info', 'path' or 'operation' : 'x-data-security-mention' (recommended on 'info' object).");
+      expect(res.errors[1].path).toEqual(['info', 'x-source']);
+      expect(res.errors[1].message).toEqual("'x-source' value must be defined and a non-empty string.");
     });
 
   //this is for openapi object
-  it('should be 5 errors on info with all missing extensions', () => {
+  it('should be 5 errors on info with all missing extensions and servers missing in openapi3', () => {
     const spec = {
-      Openapi: '3.0.0',
+      openapi: '3.0.0',
       info: {
         title: "Test",
         version: "1.0",
@@ -297,7 +395,7 @@ describe('validation plugin - semantic - extension data - missing values', () =>
 
     const res = validate({ jsSpec: spec }, config);
     expect(res.warnings.length).toEqual(0);
-    expect(res.errors.length).toEqual(5);
+    expect(res.errors.length).toEqual(6);
     expect(res.errors[0].path).toEqual(['info', 'x-data-access-authorization'] );
     expect(res.errors[0].message).toEqual("Extension value must be defined in object 'info', 'path' or 'operation' : 'x-data-access-authorization' (recommended on 'info' object).");
     expect(res.errors[0].type).toEqual('convention');
@@ -307,12 +405,14 @@ describe('validation plugin - semantic - extension data - missing values', () =>
     expect(res.errors[2].message).toEqual("Extension value must be defined in object 'info', 'path' or 'operation' : 'x-data-security-classification' (recommended on 'info' object).");
     expect(res.errors[3].message).toEqual("Extension value must be defined in object 'info', 'path' or 'operation' : 'x-data-security-mention' (recommended on 'info' object).");
     expect(res.errors[4].message).toEqual("Extension value must be defined in object 'info', 'path' or 'operation' : 'x-data-use-constraint' (recommended on 'info' object).");
+    expect(res.errors[5].path).toEqual(['servers'] );
+    expect(res.errors[5].message).toEqual("'x-source' value must be defined in 'servers'.");
   });
 
   //this is for openapi object
-  it('should be 5 errors on info with all missing extensions', () => {
+  it('should be 6 errors on info with all missing extensions in swagger 2', () => {
     const spec = {
-      Openapi: '3.0.0',
+      swagger: '2.0.0',
       paths: {
         "/pathOne": {
             "get": {
@@ -329,7 +429,7 @@ describe('validation plugin - semantic - extension data - missing values', () =>
 
     const res = validate({ jsSpec: spec }, config);
     expect(res.warnings.length).toEqual(0);
-    expect(res.errors.length).toEqual(5);
+    expect(res.errors.length).toEqual(6);
     expect(res.errors[0].path).toEqual(['info', 'x-data-access-authorization'] );
     expect(res.errors[0].message).toEqual("Extension value must be defined in object 'info', 'path' or 'operation' : 'x-data-access-authorization' (recommended on 'info' object).");
     expect(res.errors[0].type).toEqual('convention');
@@ -339,12 +439,14 @@ describe('validation plugin - semantic - extension data - missing values', () =>
     expect(res.errors[2].message).toEqual("Extension value must be defined in object 'info', 'path' or 'operation' : 'x-data-security-classification' (recommended on 'info' object).");
     expect(res.errors[3].message).toEqual("Extension value must be defined in object 'info', 'path' or 'operation' : 'x-data-security-mention' (recommended on 'info' object).");
     expect(res.errors[4].message).toEqual("Extension value must be defined in object 'info', 'path' or 'operation' : 'x-data-use-constraint' (recommended on 'info' object).");
+    expect(res.errors[5].path).toEqual(['info', 'x-source']);
+    expect(res.errors[5].message).toEqual("'x-source' value must be defined and a non-empty string.");
   });
 
   //this is for openapi object
   it('should be 5 errors on path and operation with missing extension', () => {
     const spec = {
-      Swagger: '2.0.0',
+      swagger: '2.0.0',
       info: {
         title: "Test",
         version: "1.0",
@@ -354,7 +456,8 @@ describe('validation plugin - semantic - extension data - missing values', () =>
             name: "toto"
         },
         "x-data-access-network": "intradef",
-        "x-data-use-constraint": "rgpd"
+        "x-data-use-constraint": "rgpd",
+        "x-source": "intradef"
       },
       paths: {
         "/pathWithAllExtensions": {

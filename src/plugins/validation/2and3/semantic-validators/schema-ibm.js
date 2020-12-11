@@ -500,7 +500,7 @@ function checkPropNamesCaseConvention(
       if (!isCorrectCase) {
         messages.addTypedMessage(
           contextPath.concat(['properties', propName]),
-          `Property names must follow case convention: ${caseConventionValue}`,
+          `Property names must follow case convention: ${checkCase.getCaseConventionExample(caseConventionValue)}.`,
           checkStatus,
           'convention',
           'CTMO.STANDARD-CODAGE-19'
@@ -559,7 +559,7 @@ function checkEnumCaseConvention(
         if (!isCorrectCase) {
           messages.addMessage(
             contextPath.concat(['enum', i.toString()]),
-            `Enum values must follow case convention: ${caseConventionValue}`,
+            `Enum values must follow case convention: ${checkCase.getCaseConventionExample(caseConventionValue)}.`,
             checkStatus,
             'convention',
              'CTMO.STANDARD-CODAGE-19'

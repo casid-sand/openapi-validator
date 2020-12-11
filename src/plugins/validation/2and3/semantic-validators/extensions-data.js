@@ -1,9 +1,16 @@
 // Assertation 1:
 // check if x-data are defined in each path/operation or at global level
 
-const MessageCarrier = require('../../../utils/messageCarrier');
+// Assertation 2:
+// check if x-data-is-file is defined and is a string
 
-//All extensions can be declared at info, path or operation (except for x-data-is-file not declared here)
+// Assertation 3:
+// check if x-source is defined in info for swagger 2 or in server for openapi 3
+
+const MessageCarrier = require('../../../utils/messageCarrier');
+const getVersion = require('../../../../cli-validator/utils/getOpenApiVersion');
+
+//All extensions can be declared at info, path or operation (except for x-data-is-file not declared in this array )
 //If required : each must defined at least at one level
 const sharedDataExtensionsDefinition = {
     'x-data-access-authorization': {
@@ -49,22 +56,26 @@ const sharedDataExtensionsDefinition = {
     }
 };
 
+const xSourceAcceptedValues = ['helissng', 'intradef'];
+const sourceExtensionName = "x-source";
+const isFileExtenstionName = "x-data-is-file";
+
+
 const numberRegex = /^\d+((\,|\.)(\d)+)?$/;
 
 module.exports.validate = function({ jsSpec }, config) {
     const messages = new MessageCarrier();
 
+    let info = jsSpec.info;
+    const hasInfo = info && typeof info === 'object';
+
     if (config.extensions && config.extensions.data_extensions) {
+        // Assertation 1
         const checkDataExtension = config.extensions.data_extensions;
         if (checkDataExtension != 'off') {
             let infoExtensionsValues = {};
-
-            let info = jsSpec.info;
-            const hasInfo = info && typeof info === 'object';
-
-            //if (hasInfo) {
-                infoExtensionsValues = checkAllExtensionsValues(info, ['info'], messages, checkDataExtension);
-            //}
+           
+            infoExtensionsValues = checkAllExtensionsValues(info, ['info'], messages, checkDataExtension);
 
             const paths = jsSpec.paths;
             const hasPaths = paths && typeof paths === 'object';
@@ -103,15 +114,16 @@ module.exports.validate = function({ jsSpec }, config) {
                         if (operationName.slice(0, 2) !== 'x-') {
                             let operationExtensionsValues = checkAllExtensionsValues(jsSpec.paths[pathName][operationName], ['paths', pathName, operationName], messages, checkDataExtension);
 
-                            const jsExtensionDataIsFile = jsSpec.paths[pathName][operationName]["x-data-is-file"];
+                            // Assertation 2
+                            const jsExtensionDataIsFile = jsSpec.paths[pathName][operationName][isFileExtenstionName];
                             if (jsExtensionDataIsFile != undefined) {
                                 const hasExtensionDataIsFile =
                                     typeof jsExtensionDataIsFile === "string" && jsExtensionDataIsFile.length > 0;
                                 if (!hasExtensionDataIsFile) {
                                     hasError = true;
                                     messages.addTypedMessage(
-                                        ['paths', pathName, operationName, "x-data-is-file"],
-                                        `'x-data-is-file' value must be a non-empty string.`,
+                                        ['paths', pathName, operationName, isFileExtenstionName],
+                                        `'${isFileExtenstionName}' value must be a non-empty string.`,
                                         checkDataExtension,
                                         'convention',
                                         'CTMO.STANDARD-CODAGE-23'
@@ -215,12 +227,92 @@ module.exports.validate = function({ jsSpec }, config) {
             }
 
         }
+
+        // Assertation 3
+        //search x-source-extension
+        const versionLanguage = getVersion(jsSpec);
+        if (versionLanguage === "2") {
+            let hasXSource = false;
+            if (hasInfo) {
+                let xsourceValue = info[sourceExtensionName];
+                hasXSource = xsourceValue && typeof xsourceValue === 'string';
+
+                if (hasXSource) {
+                    xsourceValue = xsourceValue.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                    if (xSourceAcceptedValues.indexOf(xsourceValue) === -1) {
+                        messages.addTypedMessage(
+                            ['info', sourceExtensionName],
+                            `'${sourceExtensionName}' value must be one of ${xSourceAcceptedValues.toString()}.`,
+                            checkDataExtension,
+                            'convention',
+                            'CTMO.STANDARD-CODAGE-23'
+                        );
+                    }
+                }
+            }
+            if (!hasXSource) {
+                messages.addTypedMessage(
+                    ['info', sourceExtensionName],
+                    `'${sourceExtensionName}' value must be defined and a non-empty string.`,
+                    checkDataExtension,
+                    'convention',
+                    'CTMO.STANDARD-CODAGE-23'
+                );
+            }
+        } else {
+            let hasOneServer = false;
+
+            const serversList = jsSpec.servers;
+            const hasServers = serversList && typeof serversList === 'object';
+            if (hasServers) {
+                for (let i = 0, len = serversList.length; i < len; i++) {
+                    hasOneServer = true;
+                    const server = serversList[i];
+
+                    let serverSourceValue = server[sourceExtensionName];
+                    const hasXSource = serverSourceValue && typeof serverSourceValue === 'string';
+                    if (hasXSource) {
+                        serverSourceValue = serverSourceValue.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                        if (xSourceAcceptedValues.indexOf(serverSourceValue) === -1) {
+                            messages.addTypedMessage(
+                                ['servers', `${i}`],
+                                `'${sourceExtensionName}' value must be one of ${xSourceAcceptedValues.toString()}.`,
+                                checkDataExtension,
+                                'convention',
+                                'CTMO.STANDARD-CODAGE-23'
+                            );
+                        }
+                    } else {
+                        messages.addTypedMessage(
+                            ['servers', `${i}`],
+                            `'${sourceExtensionName}' value must be defined and a non-empty string.`,
+                            checkDataExtension,
+                            'convention',
+                            'CTMO.STANDARD-CODAGE-23'
+                        );
+                    }
+                }
+            }
+
+            //if no server, add an error for x-source
+            if (!hasOneServer) {
+                messages.addTypedMessage(
+                    ['servers'],
+                    `'${sourceExtensionName}' value must be defined in 'servers'.`,
+                    checkDataExtension,
+                    'convention',
+                    'CTMO.STANDARD-CODAGE-23'
+                );
+            }
+        }
     }
 
     return messages;
 };
 
 function checkAllExtensionsValues(jsObject, pathToObjectArray, messages, messageLevel) {
+    
+    //search shared extensions
     const extensionsKeys = Object.keys(sharedDataExtensionsDefinition);
     const extensionsValues = {};
     extensionsKeys.forEach(extensionKey=> {
@@ -229,20 +321,21 @@ function checkAllExtensionsValues(jsObject, pathToObjectArray, messages, message
         const pathToExtensionArray = pathToObjectArray.slice();
         pathToExtensionArray.push(extensionKey);
 
-        const extensionValue = checkExtensionValue (jsObject, pathToExtensionArray, extensionKey, messages, messageLevel);
+        const extensionDefinition = sharedDataExtensionsDefinition[extensionKey];
+        extensionDefinition.name = extensionKey;
+
+        const extensionValue = checkExtensionValue (jsObject, pathToExtensionArray, extensionDefinition, messages, messageLevel);
         
         extensionsValues[extensionKey] = extensionValue;
-
     });
-
     return extensionsValues;
 }
 
-function checkExtensionValue(jsObject, pathToObjectArray, extensionKey, messages, messageLevel) {
+function checkExtensionValue(jsObject, pathToObjectArray, extensionDefinition, messages, messageLevel) {
 
     let jsExtensionValue;
     if (jsObject != null) {
-        jsExtensionValue = jsObject[extensionKey];
+        jsExtensionValue = jsObject[extensionDefinition.name];
     } else {
         jsExtensionValue = undefined;
     }
@@ -252,7 +345,7 @@ function checkExtensionValue(jsObject, pathToObjectArray, extensionKey, messages
     if (jsExtensionValue != undefined) {
         jsExtensionValue = jsExtensionValue.toString().trim();
 
-        if (sharedDataExtensionsDefinition[extensionKey].type === 'string') {
+        if (extensionDefinition.type === 'string') {
             
             hasCorrectExtensionValue =
                 typeof jsExtensionValue === "string" && jsExtensionValue.length > 0;
@@ -260,21 +353,21 @@ function checkExtensionValue(jsObject, pathToObjectArray, extensionKey, messages
                 hasError = true;
                 messages.addTypedMessage(
                     pathToObjectArray,
-                    `'${extensionKey}' value must be a non-empty string.`,
+                    `'${extensionDefinition.name}' value must be a non-empty string.`,
                     messageLevel,
                     'convention',
                     'CTMO.STANDARD-CODAGE-23'
                 );
             } else {
-                if (sharedDataExtensionsDefinition[extensionKey].values) {
+                if (extensionDefinition.values) {
                     //lower case conversion and remove "e" with accents
                     const valueToFind = jsExtensionValue.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                    if (sharedDataExtensionsDefinition[extensionKey].values.indexOf(valueToFind) === -1) {
+                    if (extensionDefinition.values.indexOf(valueToFind) === -1) {
                         hasError = true;
                         hasCorrectExtensionValue = false;
                         messages.addTypedMessage(
                             pathToObjectArray,
-                            `'${extensionKey}' value must be one of ${sharedDataExtensionsDefinition[extensionKey].values.toString()} - not ${valueToFind}`,
+                            `'${extensionDefinition.name}' value must be one of ${extensionDefinition.values.toString()}.`,
                             messageLevel,
                             'convention',
                             'CTMO.STANDARD-CODAGE-23'
@@ -282,13 +375,13 @@ function checkExtensionValue(jsObject, pathToObjectArray, extensionKey, messages
                     }
                 }
             }
-        } else if (sharedDataExtensionsDefinition[extensionKey].type === 'number') {
+        } else if (extensionDefinition.type === 'number') {
             if (jsExtensionValue.length === 0 || !numberRegex.test(jsExtensionValue)) {
                 hasError = true;
                 hasCorrectExtensionValue = false;
                 messages.addTypedMessage(
                     pathToObjectArray,
-                    `'${extensionKey}' value must be a number.`,
+                    `'${extensionDefinition.name}' value must be a number.`,
                     messageLevel,
                     'convention',
                     'CTMO.STANDARD-CODAGE-23'

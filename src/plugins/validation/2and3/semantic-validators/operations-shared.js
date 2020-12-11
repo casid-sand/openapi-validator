@@ -138,7 +138,7 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
         if (!isCorrectCase) {
           messages.addTypedMessage(
             `paths.${pathKey}.${opKey}.operationId`,
-            `operationIds must follow case convention: ${caseConvention}`,
+            `operationIds must follow case convention: ${checkCase.getCaseConventionExample(caseConvention)}.`,
             checkStatus,
             'convention'
           );

@@ -447,7 +447,7 @@ describe('validation plugin - semantic - schema-ibm - Swagger 2', () => {
       'thingString'
     ]);
     expect(res.warnings[0].message).toEqual(
-      'Property names must follow case convention: lower_snake_case'
+      'Property names must follow case convention: "lower_snake_case".'
     );
   });
 
@@ -496,7 +496,7 @@ describe('validation plugin - semantic - schema-ibm - Swagger 2', () => {
       'thingString'
     ]);
     expect(res.warnings[0].message).toEqual(
-      'Property names must follow case convention: lower_snake_case'
+      'Property names must follow case convention: "lower_snake_case".'
     );
   });
 
@@ -1535,7 +1535,7 @@ describe('validation plugin - semantic - schema-ibm - OpenAPI 3', () => {
       '2'
     ]);
     expect(res.warnings[0].message).toEqual(
-      'Enum values must follow case convention: lower_snake_case'
+      'Enum values must follow case convention: "lower_snake_case".'
     );
   });
 
@@ -1584,7 +1584,7 @@ describe('validation plugin - semantic - schema-ibm - OpenAPI 3', () => {
       '1'
     ]);
     expect(res.warnings[0].message).toEqual(
-      'Enum values must follow case convention: lower_snake_case'
+      'Enum values must follow case convention: "lower_snake_case".'
     );
   });
 
@@ -1624,7 +1624,7 @@ describe('validation plugin - semantic - schema-ibm - OpenAPI 3', () => {
       '2'
     ]);
     expect(res.warnings[0].message).toEqual(
-      'Enum values must follow case convention: lower_snake_case'
+      'Enum values must follow case convention: "lower_snake_case".'
     );
   });
 
@@ -1673,7 +1673,7 @@ describe('validation plugin - semantic - schema-ibm - OpenAPI 3', () => {
       '1'
     ]);
     expect(res.warnings[0].message).toEqual(
-      'Enum values must follow case convention: lower_snake_case'
+      'Enum values must follow case convention: "lower_snake_case".'
     );
   });
 

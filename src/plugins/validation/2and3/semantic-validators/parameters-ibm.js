@@ -58,7 +58,7 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
           if (!isCorrectCase) {
             messages.addTypedMessage(
               path,
-              `Parameter names must follow case convention: ${caseConvention}`,
+              `Parameter names must follow case convention: ${checkCase.getCaseConventionExample(caseConvention)}.`,
               checkStatus,
               'convention',
               'CTMO.STANDARD-CODAGE-19'

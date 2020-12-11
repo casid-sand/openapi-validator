@@ -78,3 +78,47 @@ module.exports = (string, convention) => {
       console.log(`Unsupported case: ${convention}`);
   }
 };
+
+module.exports.getCaseConventionExample = function (convention) {
+  switch (convention) {
+    case 'lower_snake_case':
+      return '"lower_snake_case"';
+
+    case 'upper_snake_case':
+      return '"UPPER_SNAKE_CASE"';
+
+    case 'all_snake_case':
+      return '"lower_snake_case" or "UPPER_SNAKE_CASE"';
+
+    case 'upper_camel_case':
+      return '"UpperCamelCase"';
+
+    case 'lower_camel_case':
+      return '"camelCase"';
+
+    case 'all_camel_case':
+      return '"camelCase" or "UpperCamelCase"';
+
+    case 'k8s_camel_case':
+      return '"kubernetesAPICase"';
+
+    case 'k8s_upper_camel_case':
+        return '"UpperKubernetesAPICase"';
+
+    case 'k8s_all_camel_case':
+      return '"kubernetesAPICase" or "UpperKubernetesAPICase"'
+
+    case 'lower_dash_case':
+      return '"spinal-case"';
+
+    case 'upper_dash_case':
+      return '"UPPER-SPINAL-CASE"';
+
+    case 'all_dash_case':
+      return '"spinal-case" or "UPPER-SPINAL-CASE"';
+
+    default:
+      // this should never happen, the convention is validated in the config processor
+      console.log(`Unsupported case: ${convention}`);
+  }
+};

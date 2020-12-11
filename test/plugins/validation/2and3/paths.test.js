@@ -296,6 +296,39 @@ describe('validation plugin - semantic - paths', function() {
       expect(res.errors).toEqual([]);
       expect(res.warnings).toEqual([]);
     });
+
+    it('should return no problems for a correct path template', function() {
+      const spec = {
+        paths: {
+          '/CoolPath/': {
+            parameters: [
+              {
+                name: 'unusedParameterName',
+                in: 'path'
+              }
+            ]
+          },
+          '/TemplatePath/{userId}': {
+            parameters: [
+              {
+                name: 'userId',
+                in: 'path'
+              },
+              {
+                name: 'unusedSecondParameterName',
+                in: 'path'
+              }
+            ]
+          }
+        }
+      };
+
+      const res = validate({ resolvedSpec: spec }, defaultConfig);
+      expect(res.errors.length).toEqual(2);
+      expect(res.errors[0].message).toEqual("Path parameter was defined but never used: unusedParameterName.");
+      expect(res.errors[1].message).toEqual("Path parameter was defined but never used: unusedSecondParameterName.");
+      expect(res.warnings).toEqual([]);
+    });
   });
 
   describe('Paths must contains resources name in the plural', () => {

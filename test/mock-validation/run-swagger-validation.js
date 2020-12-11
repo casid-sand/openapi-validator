@@ -4,7 +4,7 @@ const dateTime = require('node-datetime');
 const program = {};
 let exitcode;
 
-let swagger_file_name = 'CMAn-NOE-117-07.01-AV-Demande_d’accès_à_la_Passerelle_API.yaml';
+let swagger_file_name = 'swagger-test.yml';
 let dir_path = './test/mock-validation/input/';
 
 //swagger_file_name = "missing-object.yml"
