@@ -14,5 +14,9 @@ coverage/
 .spectral.yml
 .project
 *.code-workspace
-test/mock-validation/input/*
-test/mock-validation/output/*
+test/mock-validation/input/*.json
+test/mock-validation/input/*.yaml
+test/mock-validation/input/*.yml
+test/mock-validation/output/*.json
+test/mock-validation/output/*.yaml
+test/mock-validation/output/*.yml
