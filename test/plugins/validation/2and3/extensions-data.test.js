@@ -168,6 +168,7 @@ describe('validation plugin - semantic - extension data - incorrect values', () 
     const res = validate({ jsSpec: spec }, config);
 
     expect(res.errors.length).toEqual(3);
+
     expect(res.errors[0].path).toEqual(['info', 'x-data-access-network']);
     expect(res.errors[0].message).toContain("'x-data-access-network' value must be one of");
     expect(res.errors[1].path).toEqual(['info', 'x-data-security-mention']);
@@ -208,6 +209,10 @@ describe('validation plugin - semantic - extension data - missing values', () =>
         {
           "url": "http://prod.com/api/objects",
         },
+        {
+          "url": "http://testu.com/api",
+          "x-source": "helissng"
+        },
       ],
     };
 
@@ -221,8 +226,90 @@ describe('validation plugin - semantic - extension data - missing values', () =>
     expect(res.errors[1].message).toEqual("'x-source' value must be defined and a non-empty string.");
   });
 
+  //this is for openapi object
+  it('should be 1 error with x-source missing in 3 servers', () => {
+    const spec = {
+      openapi: '3.0.0',
+      info: {
+        title: "Test",
+        version: "1.0",
+        description: "toto",
+        contact: {
+            email: "test@test.com",
+            name: "toto"
+        },
+        "x-data-access-network": "intradef",
+        "x-data-access-authorization": "nécessitant une autorisation du fournisseur API",
+        "x-data-security-mention": "aucune",
+        "x-data-security-classification": "np",
+        "x-data-use-constraint": "aucune"
+      },
+      servers:[
+        {
+          "url": "http://test.com/api",
+        },
+        {
+          "url": "http://prod.com/api/objects",
+        },
+        {
+          "url": "http://testu.com/api",
+        },
+      ],
+    };
+
+    const res = validate({ jsSpec: spec }, config);
+
+    expect(res.errors.length).toEqual(1);
+    expect(res.warnings.length).toEqual(0);
+    expect(res.errors[0].path).toEqual(['servers']);
+    expect(res.errors[0].message).toEqual("'x-source' value must be defined and a non-empty string on each 'server', or in 'info'.");
+  });
+
+  //this is for openapi object
+  it('should be 1 error with incorrect x-source in info and correct in one server', () => {
+    const spec = {
+      openapi: '3.0.0',
+      info: {
+        title: "Test",
+        version: "1.0",
+        description: "toto",
+        contact: {
+            email: "test@test.com",
+            name: "toto"
+        },
+        "x-data-access-network": "intradef",
+        "x-data-access-authorization": "nécessitant une autorisation du fournisseur API",
+        "x-data-security-mention": "aucune",
+        "x-data-security-classification": "np",
+        "x-data-use-constraint": "aucune",
+        "x-source": "internet"
+      },
+      servers:[
+        {
+          "url": "http://test.com/api",
+        },
+        {
+          "url": "http://prod.com/api/objects",
+          "x-source": "helissng"
+        },
+        {
+          "url": "http://testu.com/api",
+        },
+      ],
+    };
+
+    const res = validate({ jsSpec: spec }, config);
+
+    expect(res.errors.length).toEqual(2);
+    expect(res.warnings.length).toEqual(0);
+    expect(res.errors[0].path).toEqual(['info', 'x-source']);
+    expect(res.errors[0].message).toContain("'x-source' value must be one of");
+    expect(res.errors[0].path).toEqual(['servers', '1']);
+    expect(res.errors[0].message).toEqual("'x-source' identifier is duplicate in server and in 'info'.");
+  });
+
     //this is for openapi object
-    it('should be ok with all required extensions in OpenAPI 3 corrects in info', () => {
+    it('should be ok with all required extensions in OpenAPI 3 corrects in info and x-source in each server', () => {
       const spec = {
         openapi: '3.0.0',
         info: {
@@ -247,6 +334,53 @@ describe('validation plugin - semantic - extension data - missing values', () =>
           {
             "url": "http://prod.com/api/objects",
             "x-source": "helissng"
+          },
+        ],
+        paths: {
+          "/pathOne": {
+              "get": {
+              },
+              "post": {
+              }
+            },
+          "/pathTwo": {
+            "get": {
+            },
+          }
+        }
+      };
+  
+      const res = validate({ jsSpec: spec }, config);
+
+      expect(res.errors.length).toEqual(0);
+      expect(res.warnings.length).toEqual(0);
+    });
+
+    //this is for openapi object
+    it('should be ok with all required extensions in OpenAPI 3 corrects in info, including x-source', () => {
+      const spec = {
+        openapi: '3.0.0',
+        info: {
+          title: "Test",
+          version: "1.0",
+          description: "toto",
+          contact: {
+              email: "test@test.com",
+              name: "toto"
+          },
+          "x-data-access-network": "Intradef",
+          "x-data-access-authorization": "nécessitant une autorisation du fournisseur API",
+          "x-data-security-mention": "aucune",
+          "x-data-security-classification": "NP",
+          "x-data-use-constraint": "rgpd",
+          "x-source": "intradef"
+        },
+        servers:[
+          {
+            "url": "http://test.com/api",
+          },
+          {
+            "url": "http://prod.com/api/objects",
           },
         ],
         paths: {

@@ -229,8 +229,9 @@ module.exports.validate = function({ jsSpec }, config) {
         }
 
         // Assertation 3
-        //search x-source-extension
+        // search x-source-extension
         const versionLanguage = getVersion(jsSpec);
+        // x-source in Swagger2 : only in info
         if (versionLanguage === "2") {
             let hasXSource = false;
             if (hasInfo) {
@@ -238,7 +239,7 @@ module.exports.validate = function({ jsSpec }, config) {
                 hasXSource = xsourceValue && typeof xsourceValue === 'string';
 
                 if (hasXSource) {
-                    xsourceValue = xsourceValue.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                    xsourceValue = getStringValueNormalized(xsourceValue);
                     if (xSourceAcceptedValues.indexOf(xsourceValue) === -1) {
                         messages.addTypedMessage(
                             ['info', sourceExtensionName],
@@ -260,11 +261,35 @@ module.exports.validate = function({ jsSpec }, config) {
                 );
             }
         } else {
+            // x-source in openapi3 : in info on in servers
             let hasOneServer = false;
+
+            let hasXSourceInInfo = false;
+            if (hasInfo) {
+                let xsourceValue = info[sourceExtensionName];
+                hasXSourceInInfo = xsourceValue && typeof xsourceValue === 'string';
+
+                if (hasXSourceInInfo) {
+                    xsourceValue = getStringValueNormalized(xsourceValue);
+                    if (xSourceAcceptedValues.indexOf(xsourceValue) === -1) {
+                        if (xSourceAcceptedValues.indexOf(xsourceValue) === -1) {
+                            messages.addTypedMessage(
+                                ['info', sourceExtensionName],
+                                `'${sourceExtensionName}' value must be one of ${xSourceAcceptedValues.toString()}.`,
+                                checkDataExtension,
+                                'convention',
+                                'CTMO.STANDARD-CODAGE-23'
+                            );
+                        }
+                    }
+                }
+            }
 
             const serversList = jsSpec.servers;
             const hasServers = serversList && typeof serversList === 'object';
             if (hasServers) {
+                let hasSourceInOneServer = false;
+                const arrayServersWithoutSource = [];
                 for (let i = 0, len = serversList.length; i < len; i++) {
                     hasOneServer = true;
                     const server = serversList[i];
@@ -272,7 +297,8 @@ module.exports.validate = function({ jsSpec }, config) {
                     let serverSourceValue = server[sourceExtensionName];
                     const hasXSource = serverSourceValue && typeof serverSourceValue === 'string';
                     if (hasXSource) {
-                        serverSourceValue = serverSourceValue.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                        serverSourceValue = getStringValueNormalized(serverSourceValue);
+                        hasSourceInOneServer = true;
                         if (xSourceAcceptedValues.indexOf(serverSourceValue) === -1) {
                             messages.addTypedMessage(
                                 ['servers', `${i}`],
@@ -282,10 +308,39 @@ module.exports.validate = function({ jsSpec }, config) {
                                 'CTMO.STANDARD-CODAGE-23'
                             );
                         }
+
+                        if (hasXSourceInInfo) {
+                            messages.addTypedMessage(
+                                [`servers`, `${i}`],
+                                `'${sourceExtensionName}' identifier is duplicate in server and in 'info'.`,
+                                checkDataExtension,
+                                'convention',
+                                'CTMO.STANDARD-CODAGE-23'
+                            );
+                        }
+                    } else {
+                        arrayServersWithoutSource.push(i);
+                    }
+                }
+
+                if (!hasXSourceInInfo) {
+                    //if x-source is in info, no errors for server
+                    if (hasSourceInOneServer) {
+                        //if x-source in one server at least, add message for each server without
+                        for (let i = 0, len = arrayServersWithoutSource.length; i < len; i++) {
+                            const serverNum = arrayServersWithoutSource[i];
+                            messages.addTypedMessage(
+                                ['servers', `${serverNum}`],
+                                `'${sourceExtensionName}' value must be defined and a non-empty string.`,
+                                checkDataExtension,
+                                'convention',
+                                'CTMO.STANDARD-CODAGE-23'
+                            );
+                        }
                     } else {
                         messages.addTypedMessage(
-                            ['servers', `${i}`],
-                            `'${sourceExtensionName}' value must be defined and a non-empty string.`,
+                            ['servers'],
+                            `'${sourceExtensionName}' value must be defined and a non-empty string on each 'server', or in 'info'.`,
                             checkDataExtension,
                             'convention',
                             'CTMO.STANDARD-CODAGE-23'
@@ -295,7 +350,7 @@ module.exports.validate = function({ jsSpec }, config) {
             }
 
             //if no server, add an error for x-source
-            if (!hasOneServer) {
+            if (!hasOneServer && !hasXSourceInInfo) {
                 messages.addTypedMessage(
                     ['servers'],
                     `'${sourceExtensionName}' value must be defined in 'servers'.`,
@@ -361,7 +416,7 @@ function checkExtensionValue(jsObject, pathToObjectArray, extensionDefinition, m
             } else {
                 if (extensionDefinition.values) {
                     //lower case conversion and remove "e" with accents
-                    const valueToFind = jsExtensionValue.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                    const valueToFind = getStringValueNormalized(jsExtensionValue);
                     if (extensionDefinition.values.indexOf(valueToFind) === -1) {
                         hasError = true;
                         hasCorrectExtensionValue = false;
@@ -397,5 +452,15 @@ function checkExtensionValue(jsObject, pathToObjectArray, extensionDefinition, m
         return jsExtensionValue;
     } else {
         return false;
+    }
+}
+
+function getStringValueNormalized(stringToNormalize) {
+
+    if (stringToNormalize !== null && stringToNormalize !== undefined) {
+        const normalizedString = stringToNormalize.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        return normalizedString;
+    } else {
+        return null;
     }
 }
