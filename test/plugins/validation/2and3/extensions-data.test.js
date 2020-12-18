@@ -304,8 +304,8 @@ describe('validation plugin - semantic - extension data - missing values', () =>
     expect(res.warnings.length).toEqual(0);
     expect(res.errors[0].path).toEqual(['info', 'x-source']);
     expect(res.errors[0].message).toContain("'x-source' value must be one of");
-    expect(res.errors[0].path).toEqual(['servers', '1']);
-    expect(res.errors[0].message).toEqual("'x-source' identifier is duplicate in server and in 'info'.");
+    expect(res.errors[1].path).toEqual(['servers', '1']);
+    expect(res.errors[1].message).toEqual("'x-source' identifier is duplicate in server and in 'info'.");
   });
 
     //this is for openapi object
