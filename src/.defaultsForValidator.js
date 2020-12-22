@@ -102,6 +102,9 @@ const defaults = {
       'no_consumes_for_put_or_post': 'error',
       'get_op_has_consumes': 'warning',
       'no_produces': 'warning'
+    },
+    'extensions': {
+      'content_not_in_json': 'off'
     }
   },
   'oas3': {
@@ -123,6 +126,9 @@ const defaults = {
     },
     'schemas': {
       'json_or_param_binary_string': 'warning'
+    },
+    'extensions': {
+      'content_not_in_json': 'off'
     }
   },
   'spectral': {

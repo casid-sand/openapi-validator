@@ -35,7 +35,7 @@
       "invalid_type_format_pair": "error",
       "content_type_parameter": "error",
       "accept_type_parameter": "error",
-      "authorization_parameter": "warning",
+      "authorization_parameter": "error",
       "required_param_has_default": "warning"
     },
     "paths": {
@@ -100,6 +100,9 @@
       "no_consumes_for_put_or_post": "warning",
       "get_op_has_consumes": "off",
       "no_produces": "warning"
+    },
+     "extensions": {
+        "content_not_in_json": "error"
     }
   },
   "oas3": {
@@ -121,6 +124,9 @@
     },
     "schemas": {
       "json_or_param_binary_string": "warning"
+    },
+     "extensions": {
+        "content_not_in_json": "error"
     }
   },
   "spectral": {

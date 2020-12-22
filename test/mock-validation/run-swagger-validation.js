@@ -4,7 +4,7 @@ const dateTime = require('node-datetime');
 const program = {};
 let exitcode;
 
-let swagger_file_name = 'swagger-sms.yml';
+let swagger_file_name = 'swagger-test copy.yml';
 let dir_path = './test/mock-validation/input/';
 
 //swagger_file_name = "missing-object.yml"

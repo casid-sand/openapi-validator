@@ -7,16 +7,16 @@
 // Assertation 3:
 // GET operations must have a non-empty `produces` field.
 
+const { isArray } = require('lodash');
 const each = require('lodash/each');
 const includes = require('lodash/includes');
 const map = require('lodash/map');
 const pick = require('lodash/pick');
 const MessageCarrier = require('../../../utils/messageCarrier');
+const contentTypesChecker = require('./content-types');
 
 module.exports.validate = function({ jsSpec }, config) {
   const messages = new MessageCarrier();
-
-  config = config.operations;
 
   map(jsSpec.paths, (path, pathKey) => {
     if (pathKey.slice(0, 2) === 'x-') {
@@ -41,6 +41,7 @@ module.exports.validate = function({ jsSpec }, config) {
       if (includes(['put', 'post'], opKey.toLowerCase())) {
         const hasLocalConsumes =
           op.consumes &&
+          Array.isArray(op.consumes) && 
           op.consumes.length > 0 &&
           !!op.consumes.join('').trim();
         const hasGlobalConsumes = !!jsSpec.consumes;
@@ -73,7 +74,7 @@ module.exports.validate = function({ jsSpec }, config) {
           messages.addMessage(
             `paths.${pathKey}.${opKey}.consumes`,
             'PUT and POST operations with a body parameter must have a non-empty `consumes` field.',
-            config.no_consumes_for_put_or_post
+            config.operations.no_consumes_for_put_or_post
           );
         }
       }
@@ -83,6 +84,7 @@ module.exports.validate = function({ jsSpec }, config) {
         // operations should have a produces property
         const hasLocalProduces =
           op.produces &&
+          Array.isArray(op.produces) && 
           op.produces.length > 0 &&
           !!op.produces.join('').trim();
         const hasGlobalProduces = !!jsSpec.produces;
@@ -99,7 +101,7 @@ module.exports.validate = function({ jsSpec }, config) {
           messages.addTypedMessage(
             `paths.${pathKey}.${opKey}.produces`,
             'Operations must have a non-empty `produces` field.',
-            config.no_produces,
+            config.operations.no_produces,
             'convention'
           );
         }
@@ -112,8 +114,18 @@ module.exports.validate = function({ jsSpec }, config) {
           messages.addMessage(
             `paths.${pathKey}.${opKey}.consumes`,
             'GET operations should not specify a consumes field.',
-            config.get_op_has_consumes
+            config.operations.get_op_has_consumes
           );
+        }
+      }
+
+      if (config.extensions && config.extensions.content_not_in_json) {
+        const checkJSon = config.extensions.content_not_in_json;
+        if (checkJSon != 'off') {
+            const producesList = op.produces;
+            const consumesList = op.consumes;
+            contentTypesChecker.validateContentTypeList(producesList, checkJSon, 'Operation produces', `paths.${pathKey}.${opKey}.produces`, messages);
+            contentTypesChecker.validateContentTypeList(consumesList, checkJSon, 'Operation consumes', `paths.${pathKey}.${opKey}.consumes`, messages);
         }
       }
     });
@@ -121,3 +133,5 @@ module.exports.validate = function({ jsSpec }, config) {
 
   return messages;
 };
+
+
