@@ -7,6 +7,12 @@
 // Assertation 3. Request bodies with application/json content should not use schema
 // type: string, format: binary.
 
+// Assertation 4:
+// check if response content type is in JSON
+
+// Assertation 5:
+// check if request content type is in JSON
+
 const pick = require('lodash/pick');
 const each = require('lodash/each');
 const { hasRefProperty } = require('../../../utils');
@@ -18,13 +24,14 @@ module.exports.validate = function({ resolvedSpec, jsSpec }, config) {
   const messages = new MessageCarrier();
 
   const configSchemas = config.schemas;
-  config = config.operations;
 
   const REQUEST_BODY_NAME = 'x-codegen-request-body-name';
 
   // get, head, and delete are not in this list because they are not allowed
   // to have request bodies
   const allowedOps = ['post', 'put', 'patch', 'options', 'trace'];
+
+  const allOps = ['post', 'put', 'patch', 'options', 'trace', 'head', 'get', 'delete'];
 
   each(resolvedSpec.paths, (path, pathName) => {
     const operations = pick(path, allowedOps);
@@ -41,7 +48,7 @@ module.exports.validate = function({ resolvedSpec, jsSpec }, config) {
           messages.addMessage(
             `paths.${pathName}.${opName}.requestBody`,
             'Request bodies MUST specify a `content` property',
-            config.no_request_body_content
+            config.operations.no_request_body_content
           );
         } else {
           // request body has content
@@ -80,7 +87,7 @@ module.exports.validate = function({ resolvedSpec, jsSpec }, config) {
             messages.addMessage(
               `paths.${pathName}.${opName}`,
               'Operations with non-form request bodies should set a name with the x-codegen-request-body-name annotation.',
-              config.no_request_body_name
+              config.operations.no_request_body_name
             );
           }
 
@@ -104,10 +111,103 @@ module.exports.validate = function({ resolvedSpec, jsSpec }, config) {
               }
             }
           }
+
         }
       }
+
+
     });
+
+    const allOperations = pick(path, allOps);
+    each(allOperations, (op, opName) => {
+
+      //Assertation 4 and 5
+      if (config.operations && config.operations.content_not_in_json) {
+        const checkJSon = config.operations.content_not_in_json;
+        if (checkJSon != 'off') {
+          const responsesCodes = op.responses;
+          if (responsesCodes !== null && responsesCodes !== undefined) {
+            const responseCodesKeys = Object.keys(responsesCodes);
+            responseCodesKeys.forEach(responseCode => {
+              const responsesContents = op.responses[responseCode].content;
+              if (responsesContents !== null && responsesContents !== undefined) {
+                const responsesContentsKeys = Object.keys(responsesContents);
+                responsesContentsKeys.forEach(responseContent => {
+
+                  const isJson =
+                    responseContent === 'application/json' ||
+                    responseContent === 'application/hal+json'
+
+                    if (!isJson) {
+                      if (responseContent.includes('json')) {
+                          messages.addTypedMessage(
+                              `paths.${pathName}.${opName}.responses.${responseCode}.content.${responseContent}`,
+                              `JSON Content-type must be 'application/json' or 'application/hal+json', without charset.`,
+                              `warning`,
+                              'convention',
+                              'CTMO.STANDARD-CODAGE-15'
+                          );
+                      } else {
+                          messages.addTypedMessage(
+                              `paths.${pathName}.${opName}.responses.${responseCode}.content.${responseContent}`,
+                              `Content-Type must be JSON ('application/json' or 'application/hal+json').`,
+                              checkJSon,
+                              'convention',
+                              'CTMO.STANDARD-CODAGE-15'
+                          );
+                      }
+                  }
+
+                });
+              }
+            });
+          }
+
+          const requestBody = op.requestBody
+          if (requestBody !== undefined && typeof requestBody === 'object') {
+            const requestContents = op.requestBody.content;
+            if (requestContents !== null && requestContents !== undefined) {
+              const requestContentsKeys = Object.keys(requestContents);
+              requestContentsKeys.forEach(requestContent => {
+
+                const isJson =
+                  requestContent === 'application/json' ||
+                  requestContent === 'application/hal+json'
+
+                  if (!isJson) {
+                    if (requestContent.includes('json')) {
+                        messages.addTypedMessage(
+                            `paths.${pathName}.${opName}.requestBody.content.${requestContent}`,
+                            `JSON Content-type must be 'application/json' or 'application/hal+json', without charset.`,
+                            `warning`,
+                            'convention',
+                            'CTMO.STANDARD-CODAGE-15'
+                        );
+                    } else {
+                        messages.addTypedMessage(
+                            `paths.${pathName}.${opName}.requestBody.content.${requestContent}`,
+                            `Content-Type must be JSON ('application/json' or 'application/hal+json').`,
+                            checkJSon,
+                            'convention',
+                            'CTMO.STANDARD-CODAGE-15'
+                        );
+                    }
+                }
+
+              });
+            }
+          }
+
+        }
+
+      }
+
+    });
+
+
   });
+
+  
 
   return messages;
 };

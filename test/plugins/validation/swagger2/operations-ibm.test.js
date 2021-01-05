@@ -506,7 +506,7 @@ describe('validation plugin - semantic - operations-ibm - swagger2', function() 
 
   it('should not complain when json produces and consumes is used', function() {
     const config = {
-      extensions: {
+      operations: {
         content_not_in_json: 'error'
       }
     };
@@ -556,7 +556,7 @@ describe('validation plugin - semantic - operations-ibm - swagger2', function() 
 
   it('should complain when text/json is used or Json with charset', function() {
     const config = {
-      extensions: {
+      operations: {
         content_not_in_json: 'error'
       }
     };
@@ -600,18 +600,18 @@ describe('validation plugin - semantic - operations-ibm - swagger2', function() 
     };
 
     const res = validate({ jsSpec: spec }, config);
-    expect(res.errors.length).toEqual(2);
-    expect(res.errors[0].path).toEqual('paths./CoolPath.post.produces.0');
-    expect(res.errors[0].message).toEqual(`JSON Operation produces Content-type must be 'application/json' or 'application/hal+json', without charset.`);
-    expect(res.errors[1].path).toEqual('paths./CoolPath.post.consumes.1');
-    expect(res.errors[1].message).toEqual(`JSON Operation consumes Content-type must be 'application/json' or 'application/hal+json', without charset.`);
-    expect(res.warnings.length).toEqual(0);
+    expect(res.warnings.length).toEqual(2);
+    expect(res.warnings[0].path).toEqual('paths./CoolPath.post.produces.0');
+    expect(res.warnings[0].message).toEqual(`JSON Operation produces Content-type must be 'application/json' or 'application/hal+json', without charset.`);
+    expect(res.warnings[1].path).toEqual('paths./CoolPath.post.consumes.1');
+    expect(res.warnings[1].message).toEqual(`JSON Operation consumes Content-type must be 'application/json' or 'application/hal+json', without charset.`);
+    expect(res.errors.length).toEqual(0);
   });
 
   
   it('should complain when text or xml is used', function() {
     const config = {
-      extensions: {
+      operations: {
         content_not_in_json: 'error'
       }
     };

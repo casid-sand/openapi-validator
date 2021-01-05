@@ -99,16 +99,15 @@
     "operations": {
       "no_consumes_for_put_or_post": "warning",
       "get_op_has_consumes": "off",
-      "no_produces": "warning"
-    },
-     "extensions": {
-        "content_not_in_json": "error"
+      "no_produces": "warning",
+      "content_not_in_json": "error"
     }
   },
   "oas3": {
     "operations": {
       "no_request_body_content": "error",
-      "no_request_body_name": "off"
+      "no_request_body_name": "off",
+      "content_not_in_json": "error"
     },
     "parameters": {
       "no_in_property": "error",
@@ -124,9 +123,6 @@
     },
     "schemas": {
       "json_or_param_binary_string": "warning"
-    },
-     "extensions": {
-        "content_not_in_json": "error"
     }
   },
   "spectral": {

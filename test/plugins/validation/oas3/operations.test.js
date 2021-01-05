@@ -689,4 +689,371 @@ describe('validation plugin - semantic - operations - oas3', function() {
       'paths./pets.post.requestBody.content.application/json.schema.items.items.properties.prop2.items'
     );
   });
+
+  it('should not complain when json, or hal+json is used in request or response', function() {
+    config.operations.content_not_in_json = 'error';
+
+    
+    const spec = {
+      paths: {
+        '/pets': {
+          post: {
+            'x-codegen-request-body-name': 'goodRequestBody',
+            summary: 'this is a summary',
+            operationId: 'operationId',
+            requestBody: {
+              description: 'body for request',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'array',
+                    items: {
+                      type: 'array',
+                      items: {
+                        type: 'object',
+                        properties: {
+                          prop1: {
+                            type: 'object',
+                            properties: {
+                              sub_prop1: {
+                                type: 'string'
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                'application/hal+json': {
+                  schema: {
+                    type: 'array',
+                    items: {
+                      type: 'array',
+                      items: {
+                        type: 'object',
+                        properties: {
+                          prop1: {
+                            type: 'object',
+                            properties: {
+                              sub_prop1: {
+                                type: 'string'
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            responses: {
+              "200": {
+                description: 'body for request',
+                content: {
+                  'application/json': {
+                    schema: {
+                      type: 'array',
+                      items: {
+                        type: 'array',
+                        items: {
+                          type: 'object',
+                          properties: {
+                            prop1: {
+                              type: 'object',
+                              properties: {
+                                sub_prop1: {
+                                  type: 'string'
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  'application/hal+json': {
+                    schema: {
+                      type: 'array',
+                      items: {
+                        type: 'array',
+                        items: {
+                          type: 'object',
+                          properties: {
+                            prop1: {
+                              type: 'object',
+                              properties: {
+                                sub_prop1: {
+                                  type: 'string'
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    };
+
+    const res = validate({ resolvedSpec: spec, jsSpec: spec }, config);
+    expect(res.warnings.length).toEqual(0);
+    expect(res.errors.length).toEqual(0);
+  });
+
+  it('should complain warnings when text/json, or json with charset is used', function() {
+    config.operations.content_not_in_json = 'error';
+    
+    const spec = {
+      paths: {
+        '/pets': {
+          post: {
+            'x-codegen-request-body-name': 'goodRequestBody',
+            summary: 'this is a summary',
+            operationId: 'operationId',
+            requestBody: {
+              description: 'body for request',
+              content: {
+                'application/json;charset=UTF-8': {
+                  schema: {
+                    type: 'array',
+                    items: {
+                      type: 'array',
+                      items: {
+                        type: 'object',
+                        properties: {
+                          prop1: {
+                            type: 'object',
+                            properties: {
+                              sub_prop1: {
+                                type: 'string'
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                'text/json': {
+                  schema: {
+                    type: 'array',
+                    items: {
+                      type: 'array',
+                      items: {
+                        type: 'object',
+                        properties: {
+                          prop1: {
+                            type: 'object',
+                            properties: {
+                              sub_prop1: {
+                                type: 'string'
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            responses: {
+              "200": {
+                description: 'body for request',
+                content: {
+                  'text/json': {
+                    schema: {
+                      type: 'array',
+                      items: {
+                        type: 'array',
+                        items: {
+                          type: 'object',
+                          properties: {
+                            prop1: {
+                              type: 'object',
+                              properties: {
+                                sub_prop1: {
+                                  type: 'string'
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  'application/json;charset=UTF-8': {
+                    schema: {
+                      type: 'array',
+                      items: {
+                        type: 'array',
+                        items: {
+                          type: 'object',
+                          properties: {
+                            prop1: {
+                              type: 'object',
+                              properties: {
+                                sub_prop1: {
+                                  type: 'string'
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    };
+
+    const res = validate({ resolvedSpec: spec, jsSpec: spec }, config);
+    expect(res.errors.length).toEqual(0);
+    expect(res.warnings.length).toEqual(4);
+    expect(res.warnings[0].message).toEqual(`JSON Content-type must be 'application/json' or 'application/hal+json', without charset.`);
+    expect(res.warnings[0].path).toEqual('paths./pets.post.responses.200.content.text/json');
+    expect(res.warnings[1].message).toEqual(`JSON Content-type must be 'application/json' or 'application/hal+json', without charset.`);
+    expect(res.warnings[1].path).toEqual('paths./pets.post.responses.200.content.application/json;charset=UTF-8');
+    expect(res.warnings[2].message).toEqual(`JSON Content-type must be 'application/json' or 'application/hal+json', without charset.`);
+    expect(res.warnings[2].path).toEqual('paths./pets.post.requestBody.content.application/json;charset=UTF-8');
+    expect(res.warnings[3].message).toEqual(`JSON Content-type must be 'application/json' or 'application/hal+json', without charset.`);
+    expect(res.warnings[3].path).toEqual('paths./pets.post.requestBody.content.text/json');
+    expect(res.errors.length).toEqual(0);
+  });
+
+  it('should complain when text/json or xml is used', function() {
+    config.operations.content_not_in_json = 'error';
+    
+    const spec = {
+      paths: {
+        '/pets': {
+          post: {
+            'x-codegen-request-body-name': 'goodRequestBody',
+            summary: 'this is a summary',
+            operationId: 'operationId',
+            requestBody: {
+              description: 'body for request',
+              content: {
+                'text/html': {
+                  schema: {
+                    type: 'array',
+                    items: {
+                      type: 'array',
+                      items: {
+                        type: 'object',
+                        properties: {
+                          prop1: {
+                            type: 'object',
+                            properties: {
+                              sub_prop1: {
+                                type: 'string'
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                'application/xml': {
+                  schema: {
+                    type: 'array',
+                    items: {
+                      type: 'array',
+                      items: {
+                        type: 'object',
+                        properties: {
+                          prop1: {
+                            type: 'object',
+                            properties: {
+                              sub_prop1: {
+                                type: 'string'
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            responses: {
+              "200": {
+                description: 'body for request',
+                content: {
+                  'application/xml': {
+                    schema: {
+                      type: 'array',
+                      items: {
+                        type: 'array',
+                        items: {
+                          type: 'object',
+                          properties: {
+                            prop1: {
+                              type: 'object',
+                              properties: {
+                                sub_prop1: {
+                                  type: 'string'
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  'text/html': {
+                    schema: {
+                      type: 'array',
+                      items: {
+                        type: 'array',
+                        items: {
+                          type: 'object',
+                          properties: {
+                            prop1: {
+                              type: 'object',
+                              properties: {
+                                sub_prop1: {
+                                  type: 'string'
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    };
+
+    const res = validate({ resolvedSpec: spec, jsSpec: spec }, config);
+    expect(res.errors.length).toEqual(4);
+    expect(res.errors[0].message).toEqual(`Content-Type must be JSON ('application/json' or 'application/hal+json').`);
+    expect(res.errors[0].path).toEqual('paths./pets.post.responses.200.content.application/xml');
+    expect(res.errors[1].message).toEqual(`Content-Type must be JSON ('application/json' or 'application/hal+json').`);
+    expect(res.errors[1].path).toEqual('paths./pets.post.responses.200.content.text/html');
+    expect(res.errors[2].message).toEqual(`Content-Type must be JSON ('application/json' or 'application/hal+json').`);
+    expect(res.errors[2].path).toEqual('paths./pets.post.requestBody.content.text/html');
+    expect(res.errors[3].message).toEqual(`Content-Type must be JSON ('application/json' or 'application/hal+json').`);
+    expect(res.errors[3].path).toEqual('paths./pets.post.requestBody.content.application/xml');
+    expect(res.warnings.length).toEqual(0);
+  });
+
 });

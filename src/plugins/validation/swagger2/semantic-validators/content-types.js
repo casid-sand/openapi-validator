@@ -9,8 +9,8 @@ module.exports.validate = function({ jsSpec }, config) {
 
     const messages = new MessageCarrier();
 
-    if (config.extensions && config.extensions.content_not_in_json) {
-        const checkJSon = config.extensions.content_not_in_json;
+    if (config.operations && config.operations.content_not_in_json) {
+        const checkJSon = config.operations.content_not_in_json;
         if (checkJSon != 'off') {
             
             const globalProducesList = jsSpec.produces;
@@ -48,7 +48,7 @@ module.exports.validateContentTypeList = function (contentTypeList, checkTypeLev
                             messages.addTypedMessage(
                                 `${pathToObject}.${i}`,
                                 `JSON ${consumeOrProduceName} Content-type must be 'application/json' or 'application/hal+json', without charset.`,
-                                checkTypeLevel,
+                                `warning`,
                                 'convention',
                                 'CTMO.STANDARD-CODAGE-15'
                             );

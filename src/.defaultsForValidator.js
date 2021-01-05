@@ -101,16 +101,15 @@ const defaults = {
     'operations': {
       'no_consumes_for_put_or_post': 'error',
       'get_op_has_consumes': 'warning',
-      'no_produces': 'warning'
-    },
-    'extensions': {
+      'no_produces': 'warning',
       'content_not_in_json': 'off'
     }
   },
   'oas3': {
     'operations': {
       'no_request_body_content': 'error',
-      'no_request_body_name': 'warning'
+      'no_request_body_name': 'warning',
+      'content_not_in_json': 'off'
     },
     'parameters': {
       'no_in_property': 'error',
@@ -126,9 +125,6 @@ const defaults = {
     },
     'schemas': {
       'json_or_param_binary_string': 'warning'
-    },
-    'extensions': {
-      'content_not_in_json': 'off'
     }
   },
   'spectral': {

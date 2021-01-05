@@ -119,8 +119,8 @@ module.exports.validate = function({ jsSpec }, config) {
         }
       }
 
-      if (config.extensions && config.extensions.content_not_in_json) {
-        const checkJSon = config.extensions.content_not_in_json;
+      if (config.operations && config.operations.content_not_in_json) {
+        const checkJSon = config.operations.content_not_in_json;
         if (checkJSon != 'off') {
             const producesList = op.produces;
             const consumesList = op.consumes;
