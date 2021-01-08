@@ -45,10 +45,21 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
 
       if (isParameter && !isHeaderParameter && !isRef && !isDeprecated) {
         const checkStatus = config.param_name_case_convention[0];
+        let checkAlternativeParameterCaseConvention = 'off';
+        let caseConventionAlternative;
+        if (config.param_name_alternative_case_convention) {
+          checkAlternativeParameterCaseConvention = config.param_name_alternative_case_convention[0];
+            if (checkAlternativeParameterCaseConvention != 'off') {
+                caseConventionAlternative = config.param_name_alternative_case_convention[1];
+            }
+        }
+
         if (checkStatus !== 'off') {
           const caseConvention = config.param_name_case_convention[1];
-          // Relax snakecase check to allow names with "."
-          const isCorrectCase =
+          
+          // Relax snakecase check to allow names with "." and names like "filter[paramname]"
+
+          /*const isCorrectCase =
             !obj.name ||
             obj.name
               .split('.')
@@ -63,8 +74,21 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
               'convention',
               'CTMO.STANDARD-CODAGE-19'
             );
-          }
+          }*/
+
+          let paramName = obj.name;
+          paramName = paramName.replace('[','.');
+          paramName = paramName.replace(']','.');
+          const nameSegments = paramName.split('.');
+          nameSegments.forEach(segment => {
+              // the first element will be "" since pathName starts with "/"
+              // also, ignore validating the path parameters
+              if (segment !== '') {                
+                const segmentIsCorrect = checkCase.checkCaseConventionOrAlternativeCase(segment, caseConvention, checkStatus, caseConventionAlternative, checkAlternativeParameterCaseConvention, messages, path, 'Parameter names', 'CTMO.STANDARD-CODAGE-19');
+              }
+          });
         }
+
       }
 
       if (isParameter && isHeaderParameter) {

@@ -214,61 +214,10 @@ module.exports.validate = function({ resolvedSpec }, config) {
                 segments.forEach(segment => {
                     // the first element will be "" since pathName starts with "/"
                     // also, ignore validating the path parameters
-                    if (segment === '' || segment[0] === '{') {
-                        return;
+                    if (segment !== '' && segment[0] !== '{') {
+                        checkCase.checkCaseConventionOrAlternativeCase(segment, caseConvention, checkStatusPath, caseConventionAlternative, checkAlternativePathCaseConvention, messages, ['paths', pathName], 'Path segments', 'CTMO.STANDARD-CODAGE-09/10');
                     }
-                    const isCorrectCase = checkCase(segment, caseConvention);
-                    let messageStatus = checkStatusPath;
-                    if (!isCorrectCase) {
-                        if (checkAlternativePathCaseConvention == 'off') {
-                            messages.addTypedMessage(
-                                ['paths', pathName],
-                                `Path segments must follow case convention: ${checkCase.getCaseConventionExample(caseConvention)}.`,
-                                messageStatus,
-                                'convention',
-                                'CTMO.STANDARD-CODAGE-09/10'
-                            );
-                        } else {
-                            // test is segment respect alternative case, if defined
-                            const isCorrectAlternativeCase = checkCase(segment, caseConventionAlternative);
-                            if (isCorrectAlternativeCase) {
-                                // if the 2 cases convention are at same error level, and the 2nd is ok => no error, else 'warning'
-                                if (checkStatusPath != checkAlternativePathCaseConvention) {
-                                    messageStatus = 'warning';
-                                    let messageString = `Path segments should follow case convention: ${checkCase.getCaseConventionExample(caseConvention)} recommended.`;
-                                    if (checkAlternativePathCaseConvention === 'error') {
-                                        messageString = `Path segments should follow case convention: ${checkCase.getCaseConventionExample(caseConventionAlternative)} recommended.`;
-                                    }
-                                    messages.addTypedMessage(
-                                        ['paths', pathName],
-                                        messageString,
-                                        messageStatus,
-                                        'convention',
-                                        'CTMO.STANDARD-CODAGE-09/10'
-                                    );
-                                }
-                            } else {
-                                let messageString = `Path segments must follow case convention: ${checkCase.getCaseConventionExample(caseConvention)} or ${checkCase.getCaseConventionExample(caseConventionAlternative)}.`;
-                                if (checkStatusPath !== checkAlternativePathCaseConvention) {
-                                    if (checkStatusPath === 'error') {
-                                        messageString = `Path segments must follow case convention: ${checkCase.getCaseConventionExample(caseConvention)} recommendend, or eventually ${checkCase.getCaseConventionExample(caseConventionAlternative)}.`;
-                                    } else {
-                                        messageString = `Path segments must follow case convention: ${checkCase.getCaseConventionExample(caseConventionAlternative)} recommendend, or eventually ${checkCase.getCaseConventionExample(caseConvention)}.`;
-                                    }
-                                }
-                                if (checkStatusPath == 'error' || checkAlternativePathCaseConvention == 'error') {
-                                    messageStatus = 'error';
-                                } 
-                                messages.addTypedMessage(
-                                    ['paths', pathName],
-                                    messageString,
-                                    messageStatus,
-                                    'convention',
-                                    'CTMO.STANDARD-CODAGE-09/10'
-                                );
-                            }
-                        }
-                    }
+
                 });
             }
         }

@@ -788,7 +788,7 @@ describe('validation plugin - semantic - operations-shared', function() {
       expect(res.warnings.length).toEqual(1);
       expect(res.warnings[0].path).toEqual('paths./CoolPath.put.operationId');
       expect(res.warnings[0].message).toEqual(
-        'operationIds must follow case convention: "lower_snake_case".'
+        "operationIds must follow case convention: 'lower_snake_case'."
       );
       expect(res.errors.length).toEqual(0);
     });

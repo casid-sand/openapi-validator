@@ -326,18 +326,18 @@ describe('case convention regex tests', function() {
 
   describe('examples', function() {
     it('should return good examples', function() {
-      expect(checkCase.getCaseConventionExample("lower_snake_case")).toEqual('"lower_snake_case"');
-      expect(checkCase.getCaseConventionExample("upper_snake_case")).toEqual('"UPPER_SNAKE_CASE"');
-      expect(checkCase.getCaseConventionExample("all_snake_case")).toEqual('"lower_snake_case" or "UPPER_SNAKE_CASE"');
-      expect(checkCase.getCaseConventionExample("upper_camel_case")).toEqual('"UpperCamelCase"');
-      expect(checkCase.getCaseConventionExample("lower_camel_case")).toEqual('"camelCase"');
-      expect(checkCase.getCaseConventionExample("all_camel_case")).toEqual('"camelCase" or "UpperCamelCase"');
-      expect(checkCase.getCaseConventionExample("k8s_camel_case")).toEqual('"kubernetesAPICase"');
-      expect(checkCase.getCaseConventionExample("k8s_upper_camel_case")).toEqual('"UpperKubernetesAPICase"');
-      expect(checkCase.getCaseConventionExample("k8s_all_camel_case")).toEqual('"kubernetesAPICase" or "UpperKubernetesAPICase"');
-      expect(checkCase.getCaseConventionExample("lower_dash_case")).toEqual('"spinal-case"');
-      expect(checkCase.getCaseConventionExample("upper_dash_case")).toEqual('"UPPER-SPINAL-CASE"');
-      expect(checkCase.getCaseConventionExample("all_dash_case")).toEqual('"spinal-case" or "UPPER-SPINAL-CASE"');
+      expect(checkCase.getCaseConventionExample("lower_snake_case")).toEqual("'lower_snake_case'");
+      expect(checkCase.getCaseConventionExample("upper_snake_case")).toEqual("'UPPER_SNAKE_CASE'");
+      expect(checkCase.getCaseConventionExample("all_snake_case")).toEqual("'lower_snake_case' or 'UPPER_SNAKE_CASE'");
+      expect(checkCase.getCaseConventionExample("upper_camel_case")).toEqual("'UpperCamelCase'");
+      expect(checkCase.getCaseConventionExample("lower_camel_case")).toEqual("'camelCase'");
+      expect(checkCase.getCaseConventionExample("all_camel_case")).toEqual("'camelCase' or 'UpperCamelCase'");
+      expect(checkCase.getCaseConventionExample("k8s_camel_case")).toEqual("'kubernetesAPICase'");
+      expect(checkCase.getCaseConventionExample("k8s_upper_camel_case")).toEqual("'UpperKubernetesAPICase'");
+      expect(checkCase.getCaseConventionExample("k8s_all_camel_case")).toEqual("'kubernetesAPICase' or 'UpperKubernetesAPICase'");
+      expect(checkCase.getCaseConventionExample("lower_dash_case")).toEqual("'spinal-case'");
+      expect(checkCase.getCaseConventionExample("upper_dash_case")).toEqual("'UPPER-SPINAL-CASE'");
+      expect(checkCase.getCaseConventionExample("all_dash_case")).toEqual("'spinal-case' or 'UPPER-SPINAL-CASE'");
 
     });
   });

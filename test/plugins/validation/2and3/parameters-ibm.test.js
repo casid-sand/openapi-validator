@@ -5,6 +5,19 @@ const {
 
 const config = require('../../../../src/.defaultsForValidator').defaults.shared;
 
+const configWithAlternative = {
+  parameters: {
+        "param_name_case_convention": [
+            "error",
+            "k8s_camel_case"
+        ],
+        "param_name_alternative_case_convention": [
+            "warning",
+            "lower_snake_case"
+        ]
+    }
+};
+
 describe('validation plugin - semantic - parameters-ibm', () => {
   describe('Swagger 2', () => {
     it('should return an error when a parameter does not have a description', () => {
@@ -68,7 +81,7 @@ describe('validation plugin - semantic - parameters-ibm', () => {
         '0'
       ]);
       expect(res.errors[0].message).toEqual(
-        'Parameter names must follow case convention: "lower_snake_case".'
+        "Parameter names must follow case convention: 'lower_snake_case'."
       );
     });
 
@@ -309,6 +322,310 @@ describe('validation plugin - semantic - parameters-ibm', () => {
       );
       expect(res.warnings.length).toEqual(0);
     });
+
+    it('should return errors and warnings for bad case parameters with alternative case', () => {     
+      
+      const spec = {
+        paths: {
+          '/pets': {
+            get: {
+              parameters: [
+                {
+                  name: 'someparam',
+                  in: 'query',
+                  type: 'string',
+                  description: 'test',
+                  required: true
+                },
+                {
+                  name: 'camelParam',
+                  in: 'query',
+                  type: 'string',
+                  description: 'test',
+                  required: true
+                },
+                {
+                  name: 'filter[camelParam]',
+                  in: 'query',
+                  type: 'string',
+                  description: 'test',
+                  required: true
+                },
+                {
+                  name: 'snake_param',
+                  in: 'query',
+                  type: 'string',
+                  description: 'test',
+                  required: true
+                },
+                {
+                  name: 'filter[snake_param]',
+                  in: 'query',
+                  type: 'string',
+                  description: 'test',
+                  required: true
+                },
+                {
+                  name: 'spinal-param',
+                  in: 'query',
+                  type: 'string',
+                  description: 'test',
+                  required: true
+                },
+                {
+                  name: 'filter[spinal-param]',
+                  in: 'query',
+                  type: 'string',
+                  description: 'test',
+                  required: true
+                },
+                {
+                  "$ref": "#/parameters/someparamdef"
+                },
+                {
+                  "$ref": "#/parameters/camelparamdef"
+                },
+                {
+                  "$ref": "#/parameters/filtercamelparamdef"
+                },
+                {
+                  "$ref": "#/parameters/snakeparamdef"
+                },
+                {
+                  "$ref": "#/parameters/filtersnakeparamdef"
+                },
+                {
+                  "$ref": "#/parameters/spinalparamdef"
+                },
+                {
+                  "$ref": "#/parameters/filterspinalparamdef"
+                }
+              ]
+            }
+          }
+        },
+        parameters: {
+            someparamdef: {
+              name: 'someparamdef',
+              in: 'query',
+              type: 'string',
+              description: 'test',
+              required: true
+            },
+            camelparamdef: {
+              name: 'camelParamDef',
+              in: 'query',
+              type: 'string',
+              description: 'test',
+              required: true
+            },
+            filtercamelparamdef: {
+              name: 'filter[camelParamDef]',
+              in: 'query',
+              type: 'string',
+              description: 'test',
+              required: true
+            },
+            snakeparamdef: {
+              name: 'snake_param_def',
+              in: 'query',
+              type: 'string',
+              description: 'test',
+              required: true
+            },
+            filtersnakeparamdef: {
+              name: 'filter[snake_param_def]',
+              in: 'query',
+              type: 'string',
+              description: 'test',
+              required: true
+            },
+            spinalparamdef: {
+              name: 'spinal-param-def',
+              in: 'query',
+              type: 'string',
+              description: 'test',
+              required: true
+            },
+            filterspinalparamdef: {
+              name: 'filter[spinal-param-def]',
+              in: 'query',
+              type: 'string',
+              description: 'test',
+              required: true
+            }
+        }
+      };
+
+      const res = validate({ jsSpec: spec, isOAS3: false }, configWithAlternative);
+      expect(res.errors.length).toEqual(4);      
+      expect(res.errors[0].path).toEqual(["paths", "/pets", "get", "parameters", "5"]);
+      expect(res.errors[0].message).toEqual("Parameter names must follow case convention: 'kubernetesAPICase' recommended, or eventually 'lower_snake_case'.");
+      expect(res.errors[1].path).toEqual(["paths", "/pets", "get", "parameters", "6"]);
+      expect(res.errors[1].message).toEqual("Parameter names must follow case convention: 'kubernetesAPICase' recommended, or eventually 'lower_snake_case'.");
+      expect(res.errors[2].path).toEqual(["parameters", "spinalparamdef"]);
+      expect(res.errors[2].message).toEqual("Parameter names must follow case convention: 'kubernetesAPICase' recommended, or eventually 'lower_snake_case'.");
+      expect(res.errors[3].path).toEqual(["parameters", "filterspinalparamdef"]);
+      expect(res.errors[3].message).toEqual("Parameter names must follow case convention: 'kubernetesAPICase' recommended, or eventually 'lower_snake_case'.");
+      expect(res.warnings.length).toEqual(4);
+      expect(res.warnings[0].path).toEqual(["paths", "/pets", "get", "parameters", "3"]);
+      expect(res.warnings[0].message).toEqual("Parameter names should follow case convention: 'kubernetesAPICase' recommended.");
+      expect(res.warnings[1].path).toEqual(["paths", "/pets", "get", "parameters", "4"]);
+      expect(res.warnings[1].message).toEqual("Parameter names should follow case convention: 'kubernetesAPICase' recommended.");
+      expect(res.warnings[2].path).toEqual(["parameters", "snakeparamdef"]);
+      expect(res.warnings[2].message).toEqual("Parameter names should follow case convention: 'kubernetesAPICase' recommended.");
+      expect(res.warnings[3].path).toEqual(["parameters", "filtersnakeparamdef"]);
+      expect(res.warnings[3].message).toEqual("Parameter names should follow case convention: 'kubernetesAPICase' recommended.");
+    });
+
+    it('should return errors for bad case parameters with alternative case', () => {
+     
+      configWithAlternative.parameters.param_name_alternative_case_convention[0] = 'error';
+
+      const spec = {
+        paths: {
+          '/pets': {
+            get: {
+              parameters: [
+                {
+                  name: 'someparam',
+                  in: 'query',
+                  type: 'string',
+                  description: 'test',
+                  required: true
+                },
+                {
+                  name: 'camelParam',
+                  in: 'query',
+                  type: 'string',
+                  description: 'test',
+                  required: true
+                },
+                {
+                  name: 'filter[camelParam]',
+                  in: 'query',
+                  type: 'string',
+                  description: 'test',
+                  required: true
+                },
+                {
+                  name: 'snake_param',
+                  in: 'query',
+                  type: 'string',
+                  description: 'test',
+                  required: true
+                },
+                {
+                  name: 'filter[snake_param]',
+                  in: 'query',
+                  type: 'string',
+                  description: 'test',
+                  required: true
+                },
+                {
+                  name: 'spinal-param',
+                  in: 'query',
+                  type: 'string',
+                  description: 'test',
+                  required: true
+                },
+                {
+                  name: 'filter[spinal-param]',
+                  in: 'query',
+                  type: 'string',
+                  description: 'test',
+                  required: true
+                },
+                {
+                  "$ref": "#/parameters/someparamdef"
+                },
+                {
+                  "$ref": "#/parameters/camelparamdef"
+                },
+                {
+                  "$ref": "#/parameters/filtercamelparamdef"
+                },
+                {
+                  "$ref": "#/parameters/snakeparamdef"
+                },
+                {
+                  "$ref": "#/parameters/filtersnakeparamdef"
+                },
+                {
+                  "$ref": "#/parameters/spinalparamdef"
+                },
+                {
+                  "$ref": "#/parameters/filterspinalparamdef"
+                }
+              ]
+            }
+          }
+        },
+        parameters: {
+            someparamdef: {
+              name: 'someparamdef',
+              in: 'query',
+              type: 'string',
+              description: 'test',
+              required: true
+            },
+            camelparamdef: {
+              name: 'camelParamDef',
+              in: 'query',
+              type: 'string',
+              description: 'test',
+              required: true
+            },
+            filtercamelparamdef: {
+              name: 'filter[camelParamDef]',
+              in: 'query',
+              type: 'string',
+              description: 'test',
+              required: true
+            },
+            snakeparamdef: {
+              name: 'snake_param_def',
+              in: 'query',
+              type: 'string',
+              description: 'test',
+              required: true
+            },
+            filtersnakeparamdef: {
+              name: 'filter[snake_param_def]',
+              in: 'query',
+              type: 'string',
+              description: 'test',
+              required: true
+            },
+            spinalparamdef: {
+              name: 'spinal-param-def',
+              in: 'query',
+              type: 'string',
+              description: 'test',
+              required: true
+            },
+            filterspinalparamdef: {
+              name: 'filter[spinal-param-def]',
+              in: 'query',
+              type: 'string',
+              description: 'test',
+              required: true
+            }
+        }
+      };
+
+      const res = validate({ jsSpec: spec, isOAS3: false }, configWithAlternative);
+      expect(res.errors.length).toEqual(4);
+      expect(res.errors[0].path).toEqual(["paths", "/pets", "get", "parameters", "5"]);
+      expect(res.errors[0].message).toEqual("Parameter names must follow case convention: 'kubernetesAPICase' or 'lower_snake_case'.");
+      expect(res.errors[1].path).toEqual(["paths", "/pets", "get", "parameters", "6"]);
+      expect(res.errors[1].message).toEqual("Parameter names must follow case convention: 'kubernetesAPICase' or 'lower_snake_case'.");
+      expect(res.errors[2].path).toEqual(["parameters", "spinalparamdef"]);
+      expect(res.errors[2].message).toEqual("Parameter names must follow case convention: 'kubernetesAPICase' or 'lower_snake_case'.");
+      expect(res.errors[3].path).toEqual(["parameters", "filterspinalparamdef"]);
+      expect(res.errors[3].message).toEqual("Parameter names must follow case convention: 'kubernetesAPICase' or 'lower_snake_case'.");
+      expect(res.warnings.length).toEqual(0);
+    });
   });
 
   describe('OpenAPI 3', () => {
@@ -538,6 +855,368 @@ describe('validation plugin - semantic - parameters-ibm', () => {
       expect(res.errors[0].message).toEqual(
         'Parameter objects must have a `description` field.'
       );
+    });
+
+    it('should return errors and warnings for bad case parameters with alternative case', () => {     
+      
+      configWithAlternative.parameters.param_name_alternative_case_convention[0] = 'warning';
+
+      const spec = {
+        paths: {
+          '/pets': {
+            get: {
+              parameters: [
+                {
+                  name: 'goodparam',
+                  in: 'query',
+                  required: true,
+                  description: 'tags to filter by',
+                  schema: {
+                    type: 'string',
+                  }
+                },
+                {
+                  name: 'camelParam',
+                  in: 'query',
+                  schema: {
+                    type: 'string',
+                  },
+                  description: 'test',
+                  required: true
+                },
+                {
+                  name: 'filter[camelParam]',
+                  in: 'query',
+                  schema: {
+                    type: 'string',
+                  },
+                  description: 'test',
+                  required: true
+                },
+                {
+                  name: 'snake_param',
+                  in: 'query',
+                  schema: {
+                    type: 'string',
+                  },
+                  description: 'test',
+                  required: true
+                },
+                {
+                  name: 'filter[snake_param]',
+                  in: 'query',
+                  schema: {
+                    type: 'string',
+                  },
+                  description: 'test',
+                  required: true
+                },
+                {
+                  name: 'spinal-param',
+                  in: 'query',
+                  schema: {
+                    type: 'string',
+                  },
+                  description: 'test',
+                  required: true
+                },
+                {
+                  name: 'filter[spinal-param]',
+                  in: 'query',
+                  schema: {
+                    type: 'string',
+                  },
+                  description: 'test',
+                  required: true
+                },
+                {
+                  $ref: "#/components/parameters/goodparamdef"
+                },
+                {
+                  $ref: "#/components/parameters/camelparamdef"
+                },
+                {
+                  $ref: "#/components/parameters/filtercamelparamdef"
+                },
+                {
+                  $ref: "#/components/parameters/snakeparamdef"
+                },
+                {
+                  $ref: "#/components/parameters/filtersnakeparamdef"
+                },
+                {
+                  $ref: "#/components/parameters/spinalparamdef"
+                },
+                {
+                  $ref: "#/components/parameters/filterspinalparamdef"
+                }
+              ]
+            }
+          }
+        },
+        components: {
+          parameters: {
+            goodparamdef: {
+              in: 'query',
+              name: 'goodparamdef',
+              schema: {
+                type: 'string'
+              }
+            },
+            camelparamdef: {
+              name: 'camelParamDef',
+              in: 'query',
+              schema: {
+                type: 'string',
+              },
+              description: 'test',
+              required: true
+            },
+            filtercamelparamdef: {
+              name: 'filter[camelParamDef]',
+              in: 'query',
+              schema: {
+                type: 'string',
+              },
+              description: 'test',
+              required: true
+            },
+            snakeparamdef: {
+              name: 'snake_param_def',
+              in: 'query',
+              schema: {
+                type: 'string',
+              },
+              description: 'test',
+              required: true
+            },
+            filtersnakeparamdef: {
+              name: 'filter[snake_param_def]',
+              in: 'query',
+              schema: {
+                type: 'string',
+              },
+              description: 'test',
+              required: true
+            },
+            spinalparamdef: {
+              name: 'spinal-param-def',
+              in: 'query',
+              schema: {
+                type: 'string',
+              },
+              description: 'test',
+              required: true
+            },
+            filterspinalparamdef: {
+              name: 'filter[spinal-param-def]',
+              in: 'query',
+              schema: {
+                type: 'string',
+              },
+              description: 'test',
+              required: true
+            }
+          }
+        }
+      };
+
+      const res = validate({ jsSpec: spec, isOAS3: true }, configWithAlternative);
+      expect(res.errors.length).toEqual(4);
+      expect(res.errors[0].path).toEqual(["paths", "/pets", "get", "parameters", "5"]);
+      expect(res.errors[0].message).toEqual("Parameter names must follow case convention: 'kubernetesAPICase' recommended, or eventually 'lower_snake_case'.");
+      expect(res.errors[1].path).toEqual(["paths", "/pets", "get", "parameters", "6"]);
+      expect(res.errors[1].message).toEqual("Parameter names must follow case convention: 'kubernetesAPICase' recommended, or eventually 'lower_snake_case'.");
+      expect(res.errors[2].path).toEqual(["components", "parameters", "spinalparamdef"]);
+      expect(res.errors[2].message).toEqual("Parameter names must follow case convention: 'kubernetesAPICase' recommended, or eventually 'lower_snake_case'.");
+      expect(res.errors[3].path).toEqual(["components", "parameters", "filterspinalparamdef"]);
+      expect(res.errors[3].message).toEqual("Parameter names must follow case convention: 'kubernetesAPICase' recommended, or eventually 'lower_snake_case'.");
+      expect(res.warnings.length).toEqual(4);
+      expect(res.warnings[0].path).toEqual(["paths", "/pets", "get", "parameters", "3"]);
+      expect(res.warnings[0].message).toEqual("Parameter names should follow case convention: 'kubernetesAPICase' recommended.");
+      expect(res.warnings[1].path).toEqual(["paths", "/pets", "get", "parameters", "4"]);
+      expect(res.warnings[1].message).toEqual("Parameter names should follow case convention: 'kubernetesAPICase' recommended.");
+      expect(res.warnings[2].path).toEqual(["components", "parameters", "snakeparamdef"]);
+      expect(res.warnings[2].message).toEqual("Parameter names should follow case convention: 'kubernetesAPICase' recommended.");
+      expect(res.warnings[3].path).toEqual(["components", "parameters", "filtersnakeparamdef"]);
+      expect(res.warnings[3].message).toEqual("Parameter names should follow case convention: 'kubernetesAPICase' recommended.");
+    });
+
+    it('should return errors for bad case parameters with alternative case', () => {
+     
+      configWithAlternative.parameters.param_name_alternative_case_convention[0] = 'error';
+
+      const spec = {
+        paths: {
+          '/pets': {
+            get: {
+              parameters: [
+                {
+                  name: 'goodparam',
+                  in: 'query',
+                  required: true,
+                  description: 'tags to filter by',
+                  schema: {
+                    type: 'string',
+                  }
+                },
+                {
+                  name: 'camelParam',
+                  in: 'query',
+                  schema: {
+                    type: 'string',
+                  },
+                  description: 'test',
+                  required: true
+                },
+                {
+                  name: 'filter[camelParam]',
+                  in: 'query',
+                  schema: {
+                    type: 'string',
+                  },
+                  description: 'test',
+                  required: true
+                },
+                {
+                  name: 'snake_param',
+                  in: 'query',
+                  schema: {
+                    type: 'string',
+                  },
+                  description: 'test',
+                  required: true
+                },
+                {
+                  name: 'filter[snake_param]',
+                  in: 'query',
+                  schema: {
+                    type: 'string',
+                  },
+                  description: 'test',
+                  required: true
+                },
+                {
+                  name: 'spinal-param',
+                  in: 'query',
+                  schema: {
+                    type: 'string',
+                  },
+                  description: 'test',
+                  required: true
+                },
+                {
+                  name: 'filter[spinal-param]',
+                  in: 'query',
+                  schema: {
+                    type: 'string',
+                  },
+                  description: 'test',
+                  required: true
+                },
+                {
+                  $ref: "#/components/parameters/goodparamdef"
+                },
+                {
+                  $ref: "#/components/parameters/camelparamdef"
+                },
+                {
+                  $ref: "#/components/parameters/filtercamelparamdef"
+                },
+                {
+                  $ref: "#/components/parameters/snakeparamdef"
+                },
+                {
+                  $ref: "#/components/parameters/filtersnakeparamdef"
+                },
+                {
+                  $ref: "#/components/parameters/spinalparamdef"
+                },
+                {
+                  $ref: "#/components/parameters/filterspinalparamdef"
+                }
+              ]
+            }
+          }
+        },
+        components: {
+          parameters: {
+            goodparamdef: {
+              in: 'query',
+              name: 'goodparamdef',
+              schema: {
+                type: 'string'
+              }
+            },
+            camelparamdef: {
+              name: 'camelParamDef',
+              in: 'query',
+              schema: {
+                type: 'string',
+              },
+              description: 'test',
+              required: true
+            },
+            filtercamelparamdef: {
+              name: 'filter[camelParamDef]',
+              in: 'query',
+              schema: {
+                type: 'string',
+              },
+              description: 'test',
+              required: true
+            },
+            snakeparamdef: {
+              name: 'snake_param_def',
+              in: 'query',
+              schema: {
+                type: 'string',
+              },
+              description: 'test',
+              required: true
+            },
+            filtersnakeparamdef: {
+              name: 'filter[snake_param_def]',
+              in: 'query',
+              schema: {
+                type: 'string',
+              },
+              description: 'test',
+              required: true
+            },
+            spinalparamdef: {
+              name: 'spinal-param-def',
+              in: 'query',
+              schema: {
+                type: 'string',
+              },
+              description: 'test',
+              required: true
+            },
+            filterspinalparamdef: {
+              name: 'filter[spinal-param-def]',
+              in: 'query',
+              schema: {
+                type: 'string',
+              },
+              description: 'test',
+              required: true
+            }
+          }
+        }
+      };
+
+      const res = validate({ jsSpec: spec, isOAS3: true }, configWithAlternative);
+      expect(res.errors.length).toEqual(4);
+      expect(res.errors[0].path).toEqual(["paths", "/pets", "get", "parameters", "5"]);
+      expect(res.errors[0].message).toEqual("Parameter names must follow case convention: 'kubernetesAPICase' or 'lower_snake_case'.");
+      expect(res.errors[1].path).toEqual(["paths", "/pets", "get", "parameters", "6"]);
+      expect(res.errors[1].message).toEqual("Parameter names must follow case convention: 'kubernetesAPICase' or 'lower_snake_case'.");
+      expect(res.errors[2].path).toEqual(["components", "parameters", "spinalparamdef"]);
+      expect(res.errors[2].message).toEqual("Parameter names must follow case convention: 'kubernetesAPICase' or 'lower_snake_case'.");
+      expect(res.errors[3].path).toEqual(["components", "parameters", "filterspinalparamdef"]);
+      expect(res.errors[3].message).toEqual("Parameter names must follow case convention: 'kubernetesAPICase' or 'lower_snake_case'.");
+      expect(res.warnings.length).toEqual(0);
     });
   });
 });

@@ -4,7 +4,10 @@ const dateTime = require('node-datetime');
 const program = {};
 let exitcode;
 
-let swagger_file_name = 'openapi3-test.yaml';
+let swagger_file_name;
+
+swagger_file_name = 'openapi3-test.yaml';
+swagger_file_name = 'swagger-test.yml';
 let dir_path = './test/mock-validation/input/';
 
 //swagger_file_name = "missing-object.yml"
@@ -28,7 +31,7 @@ var formattedDate = dt.format('Y-m-d');
 program.args = [`${dir_path}${swagger_file_name}`];
 program.config = './test/mock-validation/validation-configuration.yaml';
 program.report_statistics = true;
-program.output = `./test/mock-validation/output/report-${formattedDate}-${swagger_name}.json`;
+program.output = `./test/mock-validation/output/rapport-analyse-${formattedDate}-${swagger_name}.json`;
 
 console.log('Validation de swagger-to-validate.yaml');
 exitCode = commandLineValidator(program);
