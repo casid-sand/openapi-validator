@@ -51,4 +51,16 @@ module.exports = class MessageCarrier {
       });
     }
   }
+
+  displayMessage(status, number) {
+    if (this._messages[status]) {
+      if (this._messages[status][number]) {
+        console.log(`Message ${status} - Item ${number} - Path ${this._messages[status][number].path} - ${this._messages[status][number].message}`);
+      } else {
+        console.log(`WARN - Messages ${status} ${number} empty.`);
+      }
+    } else {
+      console.log(`WARN - Messages ${status} empty.`);
+    }
+  }
 };

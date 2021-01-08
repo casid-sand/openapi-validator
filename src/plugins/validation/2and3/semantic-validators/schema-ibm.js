@@ -104,6 +104,8 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
   // properties that have the same name but an inconsistent type.
   const propertiesToCompare = {};
 
+  let caseConventionAlternative = config.property_alternative_case_convention;
+
   schemas.forEach(({ schema, path }) => {
     generateFormatErrors(schema, path, config, isOAS3, messages);
 
@@ -125,6 +127,7 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
             schema,
             path,
             config.property_case_convention,
+            caseConventionAlternative,
             messages
           );
         }
@@ -473,16 +476,27 @@ function checkPropNamesCaseCollision(
  * @param schema
  * @param contextPath
  * @param caseConvention an array, [0]='off' | 'warning' | 'error'. [1]='lower_snake_case' etc.
+ * @param alternativeCaseConvention an array, [0]='off' | 'warning' | 'error'. [1]='lower_snake_case' etc.
  * @param messages
  */
 function checkPropNamesCaseConvention(
   schema,
   contextPath,
   caseConvention,
+  alternativeCaseConvention,
   messages
 ) {
   if (!schema.properties || !caseConvention) {
     return;
+  }
+
+  let checkAlternativeParameterCaseConvention = 'off';
+  let caseConventionAlternative;
+  if (alternativeCaseConvention) {
+    checkAlternativeParameterCaseConvention = alternativeCaseConvention[0];
+      if (checkAlternativeParameterCaseConvention != 'off') {
+          caseConventionAlternative = alternativeCaseConvention[1];
+      }
   }
 
   // flag any property whose name does not follow the case convention
@@ -494,18 +508,12 @@ function checkPropNamesCaseConvention(
 
     const checkStatus = caseConvention[0] || 'off';
     if (checkStatus.match('error|warning')) {
-      const caseConventionValue = caseConvention[1];
+      const caseConventionValue = caseConvention[1];    
 
-      const isCorrectCase = checkCase(propName, caseConventionValue);
-      if (!isCorrectCase) {
-        messages.addTypedMessage(
-          contextPath.concat(['properties', propName]),
-          `Property names must follow case convention: ${checkCase.getCaseConventionExample(caseConventionValue)}.`,
-          checkStatus,
-          'convention',
-          'CTMO.STANDARD-CODAGE-19'
-        );
-      }
+      checkCase.checkCaseConventionOrAlternativeCase(propName, caseConventionValue, checkStatus, 
+        caseConventionAlternative, checkAlternativeParameterCaseConvention, 
+        messages, contextPath.concat(['properties', propName]), 'Property names', 'CTMO.STANDARD-CODAGE-19');
+
     }
   });
 }

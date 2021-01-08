@@ -58,24 +58,6 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
           const caseConvention = config.param_name_case_convention[1];
           
           // Relax snakecase check to allow names with "." and names like "filter[paramname]"
-
-          /*const isCorrectCase =
-            !obj.name ||
-            obj.name
-              .split('.')
-              .map(s => checkCase(s, caseConvention))
-              .every(v => v);
-
-          if (!isCorrectCase) {
-            messages.addTypedMessage(
-              path,
-              `Parameter names must follow case convention: ${checkCase.getCaseConventionExample(caseConvention)}.`,
-              checkStatus,
-              'convention',
-              'CTMO.STANDARD-CODAGE-19'
-            );
-          }*/
-
           let paramName = obj.name;
           paramName = paramName.replace('[','.');
           paramName = paramName.replace(']','.');
@@ -84,7 +66,9 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
               // the first element will be "" since pathName starts with "/"
               // also, ignore validating the path parameters
               if (segment !== '') {                
-                const segmentIsCorrect = checkCase.checkCaseConventionOrAlternativeCase(segment, caseConvention, checkStatus, caseConventionAlternative, checkAlternativeParameterCaseConvention, messages, path, 'Parameter names', 'CTMO.STANDARD-CODAGE-19');
+                checkCase.checkCaseConventionOrAlternativeCase(segment, caseConvention, checkStatus, 
+                  caseConventionAlternative, checkAlternativeParameterCaseConvention, 
+                  messages, path, 'Parameter names', 'CTMO.STANDARD-CODAGE-19');
               }
           });
         }

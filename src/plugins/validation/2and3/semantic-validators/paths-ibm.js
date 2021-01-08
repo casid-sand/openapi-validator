@@ -215,7 +215,9 @@ module.exports.validate = function({ resolvedSpec }, config) {
                     // the first element will be "" since pathName starts with "/"
                     // also, ignore validating the path parameters
                     if (segment !== '' && segment[0] !== '{') {
-                        checkCase.checkCaseConventionOrAlternativeCase(segment, caseConvention, checkStatusPath, caseConventionAlternative, checkAlternativePathCaseConvention, messages, ['paths', pathName], 'Path segments', 'CTMO.STANDARD-CODAGE-09/10');
+                        checkCase.checkCaseConventionOrAlternativeCase(segment, caseConvention, checkStatusPath, 
+                            caseConventionAlternative, checkAlternativePathCaseConvention, 
+                            messages, ['paths', pathName], 'Path segments', 'CTMO.STANDARD-CODAGE-09/10');
                     }
 
                 });

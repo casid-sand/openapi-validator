@@ -86,6 +86,7 @@ const defaults = {
       'array_of_arrays': 'warning',
       'inconsistent_property_type': 'warning',
       'property_case_convention': [ 'error', 'lower_snake_case'],
+      'property_alternative_case_convention': [ 'off', 'lower_camel_case'],
       'property_case_collision': 'error',
       'enum_case_convention': [ 'warning', 'lower_snake_case'],
       'undefined_required_properties': 'warning'

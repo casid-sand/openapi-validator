@@ -537,6 +537,176 @@ describe('validation plugin - semantic - schema-ibm - Swagger 2', () => {
     expect(res.warnings.length).toEqual(0);
   });
 
+  // tests for explicit property case convention
+  it('should return an error when a property name does not follow default case and alternative case, or warning if ok for alternative case', () => {
+    const customConfig = {
+      schemas: {
+        snake_case_only: 'off',
+        property_case_convention: ['error', 'k8s_camel_case'],
+        property_alternative_case_convention: ['warning', 'lower_snake_case']
+      }
+    };
+
+    const spec = {
+      definitions: {
+        Thing: {
+          type: 'object',
+          description: 'thing',
+          properties: {
+            goodstring: {
+              type: 'string',
+              description: 'thing string'
+            },
+            camelString: {
+              type: 'string',
+              description: 'thing string'
+            },
+            snake_string: {
+              type: 'string',
+              description: 'thing string'
+            },
+            "spinal-string": {
+              type: 'string',
+              description: 'thing string'
+            }
+          }
+        }
+      }
+    };
+
+    const res = validate({ jsSpec: spec }, customConfig);
+    expect(res.errors.length).toEqual(1);
+    expect(res.errors.length).toEqual(1);
+    expect(res.errors[0].path).toEqual([
+      'definitions',
+      'Thing',
+      'properties',
+      'spinal-string'
+    ]);
+    expect(res.errors[0].message).toEqual("Property names must follow case convention: 'kubernetesAPICase' recommended, or eventually 'lower_snake_case'.");
+
+    expect(res.warnings.length).toEqual(1);
+    expect(res.warnings[0].path).toEqual([
+      'definitions',
+      'Thing',
+      'properties',
+      'snake_string'
+    ]);
+    expect(res.warnings[0].message).toEqual("Property names should follow case convention: 'kubernetesAPICase' recommended.");
+  });
+
+  it('should return errors when a property name does not default and alternative case', () => {
+    const customConfig = {
+      schemas: {
+        snake_case_only: 'off',
+        property_case_convention: ['warning', 'k8s_camel_case'],
+        property_alternative_case_convention: ['warning', 'upper_snake_case']
+      }
+    };
+
+    const spec = {
+      definitions: {
+        Thing: {
+          type: 'object',
+          description: 'thing',
+          properties: {
+            thing: {
+              type: 'array',
+              description: 'thing array',
+              items: {
+                type: 'object',
+                properties: {
+                  thingString: {
+                    type: 'string',
+                    description: 'thing string'
+                  }
+                }
+              }
+            },
+            goodstring: {
+              type: 'string',
+              description: 'thing string'
+            },
+            camelString: {
+              type: 'string',
+              description: 'thing string'
+            },
+            snake_string: {
+              type: 'string',
+              description: 'thing string'
+            },
+            UPPER_SNAKE_STRING: {
+              type: 'string',
+              description: 'thing string'
+            },
+            "spinal-string": {
+              type: 'string',
+              description: 'thing string'
+            }
+          }
+        }
+      }
+    };
+
+    const res = validate({ jsSpec: spec }, customConfig);
+
+    expect(res.errors.length).toEqual(0);
+    expect(res.warnings.length).toEqual(2);
+    expect(res.warnings[0].path).toEqual([
+      'definitions',
+      'Thing',
+      'properties',
+      'snake_string'
+    ]);
+    expect(res.warnings[0].message).toEqual("Property names must follow case convention: 'kubernetesAPICase' or 'UPPER_SNAKE_CASE'.");
+    expect(res.warnings[1].path).toEqual([
+      'definitions',
+      'Thing',
+      'properties',
+      'spinal-string'
+    ]);
+    expect(res.warnings[1].message).toEqual("Property names must follow case convention: 'kubernetesAPICase' or 'UPPER_SNAKE_CASE'.");
+
+  });
+
+  it('should return no warnings or errors when a property does follow property_case_convention[1]=lower_snake_case', () => {
+    const customConfig = {
+      schemas: {
+        snake_case_only: 'off',
+        property_case_convention: ['error', 'lower_snake_case'],
+        property_alternative_case_convention: ['warning', 'lower_snake_case']
+      }
+    };
+
+    const spec = {
+      definitions: {
+        Thing: {
+          type: 'object',
+          description: 'thing',
+          properties: {
+            thing: {
+              type: 'array',
+              description: 'thing array',
+              items: {
+                type: 'object',
+                properties: {
+                  thing_string: {
+                    type: 'string',
+                    description: 'thing string'
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    };
+
+    const res = validate({ jsSpec: spec }, customConfig);
+    expect(res.errors.length).toEqual(0);
+    expect(res.warnings.length).toEqual(0);
+  });
+
   // tests for explicit name collisions
   it('should return a warning when two property names of different case conventions are identical if converted to a single case', () => {
     const customConfig = {
