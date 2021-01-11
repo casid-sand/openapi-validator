@@ -13,8 +13,8 @@ const versionNameRegex = /^(?:v(?:ersion)?[\_\-\. ]*)?(\d+)(?:\.(\d+))?(?:\.(\d+
 module.exports.validate = function({ jsSpec }, config) {
     const messages = new MessageCarrier();
 
-    if (config.extensions && config.extensions.version_in_path) {
-        const checkVersionInPath = config.extensions.version_in_path;
+    if (config.common && config.common.version_in_path) {
+        const checkVersionInPath = config.common.version_in_path;
         if (checkVersionInPath != 'off') {
 
             let info = jsSpec.info;

@@ -1,10 +1,10 @@
 const expect = require('expect');
 const {
   validate
-} = require('../../../../src/plugins/validation/2and3/semantic-validators/check-version-in-path');
+} = require('../../../../src/plugins/validation/2and3/semantic-validators/check-version-in-path-sand');
 
 const config = {
-  extensions: {
+  common: {
     version_in_path: 'error'
   }
 };

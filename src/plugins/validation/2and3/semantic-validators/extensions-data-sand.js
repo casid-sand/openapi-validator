@@ -69,9 +69,9 @@ module.exports.validate = function({ jsSpec }, config) {
     let info = jsSpec.info;
     const hasInfo = info && typeof info === 'object';
 
-    if (config.extensions && config.extensions.data_extensions) {
+    if (config.common && config.common.data_extensions) {
         // Assertation 1
-        const checkDataExtension = config.extensions.data_extensions;
+        const checkDataExtension = config.common.data_extensions;
         if (checkDataExtension != 'off') {
             let infoExtensionsValues = {};
            

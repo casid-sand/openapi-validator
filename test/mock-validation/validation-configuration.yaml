@@ -1,6 +1,6 @@
 {
   "shared": {
-    "extensions": {
+    "common": {
         "data_extensions": "error",
         "version_in_path": "error"
     },

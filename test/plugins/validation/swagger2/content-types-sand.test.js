@@ -1,5 +1,5 @@
 const expect = require('expect');
-const contentTypesValidator = require('../../../../src/plugins/validation/swagger2/semantic-validators/content-types');
+const contentTypesValidator = require('../../../../src/plugins/validation/swagger2/semantic-validators/content-types-sand');
 
 describe('validation plugin - semantic - content-types - swagger2', function() {
   

@@ -1,10 +1,10 @@
 const expect = require('expect');
 const {
   validate
-} = require('../../../../src/plugins/validation/2and3/semantic-validators/extensions-data');
+} = require('../../../../src/plugins/validation/2and3/semantic-validators/extensions-data-sand');
 
 const config = {
-  extensions: {
+  common: {
     data_extensions: 'error'
   }
 };

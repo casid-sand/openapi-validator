@@ -20,7 +20,7 @@
 
 const defaults = {
   'shared': {
-    'extensions': {
+    'common': {
         'data_extensions': 'off',
         'version_in_path': 'off'
     },

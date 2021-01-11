@@ -9,7 +9,7 @@
     "link": "npm install -g",
     "unlink": "npm uninstall -g",
     "test": "jest test/",
-    "speed-test-local": "jest test/plugins/validation/2and3/check-version-data.test.js",
+    "speed-test-local": "jest test/plugins/validation/2and3/check-version-data-sand.test.js",
     "speed-test-local-old": "jest --testNamePattern='^((?!@skip-local).)*$' test/",
     "test-validators": "jest test/plugins",
     "test-cli-tool": "jest test/cli-validator/tests",
@@ -17,7 +17,7 @@
     "report-coverage": "codecov",
     "lint": "eslint --cache --quiet --ext '.js' src test",
     "fix": "eslint --fix --ext '.js' src test",
-    "pkg": "./node_modules/.bin/pkg --out-path=./bin ./package.json; cd bin; rename -f 's/ibm-openapi-validator-(linux|macos|win)/lint-openapi-$1/g' ./ibm-openapi-*"
+    "pkg": "./node_modules/.bin/pkg --out-path=./bin ./package.json; cd bin; rename -f 's/sand-openapi-validator-(linux|macos|win)/lint-openapi-$1/g' ./sand-openapi-*"
   },
   "dependencies": {
     "@stoplight/spectral": "^5.5.0",

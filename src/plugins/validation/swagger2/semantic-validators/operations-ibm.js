@@ -13,7 +13,7 @@ const includes = require('lodash/includes');
 const map = require('lodash/map');
 const pick = require('lodash/pick');
 const MessageCarrier = require('../../../utils/messageCarrier');
-const contentTypesChecker = require('./content-types');
+const contentTypesChecker = require('./content-types-sand');
 
 module.exports.validate = function({ jsSpec }, config) {
   const messages = new MessageCarrier();
