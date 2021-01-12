@@ -107,6 +107,10 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
   let caseConventionAlternative = config.property_alternative_case_convention;
 
   schemas.forEach(({ schema, path }) => {
+    
+    console.log(`schema:${schema}`);
+    console.log(`path:${path}`);
+    
     generateFormatErrors(schema, path, config, isOAS3, messages);
 
     generateDescriptionWarnings(schema, path, config, isOAS3, messages);
@@ -490,12 +494,36 @@ function checkPropNamesCaseConvention(
     return;
   }
 
-  let checkAlternativeParameterCaseConvention = 'off';
-  let caseConventionAlternative;
+  console.log("=================> isobject");
+
+  const objName = contextPath[contextPath.length - 1]
+
+  console.log(`name:${objName}`);
+  //TODO
+  const checkStatusObjectNames = config.model_case_convention[0];
+  if (checkStatusObjectNames !== 'off') {
+    const objectCaseConvention = config.model_case_convention[1];
+    let checkAlternativeObjectCaseConvention = 'off';
+    let objectCaseConventionAlternative;
+    if (config.model_alternative_case_convention) {
+      checkAlternativeObjectCaseConvention = config.model_alternative_case_convention[0];
+        if (checkAlternativeParameterCaseConvention != 'off') {
+          objectCaseConventionAlternative = config.model_alternative_case_convention[1];
+        }
+    }
+
+    checkCase.checkCaseConventionOrAlternativeCase(objName, objectCaseConvention, checkStatusObjectNames, 
+      objectCaseConventionAlternative, checkAlternativeObjectCaseConvention, 
+      messages, contextPath, 'Object names', 'CTMO.STANDARD-CODAGE-19');
+
+  }
+
+  let checkAlternativePropertyCaseConvention = 'off';
+  let propertyCaseConventionAlternative;
   if (alternativeCaseConvention) {
-    checkAlternativeParameterCaseConvention = alternativeCaseConvention[0];
-      if (checkAlternativeParameterCaseConvention != 'off') {
-          caseConventionAlternative = alternativeCaseConvention[1];
+    checkAlternativePropertyCaseConvention = alternativeCaseConvention[0];
+      if (checkAlternativePropertyCaseConvention != 'off') {
+        propertyCaseConventionAlternative = alternativeCaseConvention[1];
       }
   }
 
@@ -511,7 +539,7 @@ function checkPropNamesCaseConvention(
       const caseConventionValue = caseConvention[1];    
 
       checkCase.checkCaseConventionOrAlternativeCase(propName, caseConventionValue, checkStatus, 
-        caseConventionAlternative, checkAlternativeParameterCaseConvention, 
+        propertyCaseConventionAlternative, checkAlternativePropertyCaseConvention, 
         messages, contextPath.concat(['properties', propName]), 'Property names', 'CTMO.STANDARD-CODAGE-19');
 
     }

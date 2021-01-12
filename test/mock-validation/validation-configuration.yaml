@@ -80,6 +80,14 @@
       "description_mentions_json": "warning",
       "array_of_arrays": "warning",
       "inconsistent_property_type": "warning",
+      "model_case_convention": [
+        "error",
+        "k8s_camel_case"
+      ],
+      "model_alternative_case_convention": [
+        "warning",
+        "upper_snake_case"
+      ],
       "property_case_convention": [
         "error",
         "k8s_camel_case"

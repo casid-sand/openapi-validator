@@ -85,6 +85,8 @@ const defaults = {
       'description_mentions_json': 'warning',
       'array_of_arrays': 'warning',
       'inconsistent_property_type': 'warning',
+      'model_case_convention': [ 'off', 'k8s_camel_case'],
+      'model_alternative_case_convention': [ 'off', 'upper_snake_case'],
       'property_case_convention': [ 'error', 'lower_snake_case'],
       'property_alternative_case_convention': [ 'off', 'lower_camel_case'],
       'property_case_collision': 'error',
