@@ -595,7 +595,7 @@ describe('validation plugin - semantic - schema-ibm - Swagger 2', () => {
     expect(res.warnings[0].message).toEqual("Property names should follow case convention: 'kubernetesAPICase' recommended.");
   });
 
-  it('should return errors when a property name does not default and alternative case', () => {
+  it('should return warnings when a property name does not default and alternative case', () => {
     const customConfig = {
       schemas: {
         snake_case_only: 'off',
@@ -658,6 +658,7 @@ describe('validation plugin - semantic - schema-ibm - Swagger 2', () => {
       'properties',
       'snake_string'
     ]);
+    expect(res.warnings[0].rule).toEqual("CTMO.STANDARD-CODAGE-19");
     expect(res.warnings[0].message).toEqual("Property names must follow case convention: 'kubernetesAPICase' or 'UPPER_SNAKE_CASE'.");
     expect(res.warnings[1].path).toEqual([
       'definitions',
@@ -696,6 +697,230 @@ describe('validation plugin - semantic - schema-ibm - Swagger 2', () => {
                   }
                 }
               }
+            }
+          }
+        }
+      }
+    };
+
+    const res = validate({ jsSpec: spec }, customConfig);
+    expect(res.errors.length).toEqual(0);
+    expect(res.warnings.length).toEqual(0);
+  });
+
+  //Tests for model case convention
+  it('should return no warnings when an object name does follow property_case_convention[1]=lower_camel_case', () => {
+    const customConfig = {
+      schemas: {
+        snake_case_only: 'off',
+        model_case_convention: ['warning', 'lower_camel_case']
+      }
+    };
+
+    const spec = {
+      definitions: {
+        thing: {
+          type: 'object',
+          description: 'thing',
+          properties: {
+            thing: {
+              type: 'array',
+              description: 'thing array',
+              items: {
+                type: 'object',
+                properties: {
+                  thing_string: {
+                    type: 'string',
+                    description: 'thing string'
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    };
+
+    const res = validate({ jsSpec: spec }, customConfig);
+    expect(res.errors.length).toEqual(0);
+    expect(res.warnings.length).toEqual(0);
+  });
+
+  it('should return an error when an object name does not follow default case and alternative case, or warning if ok for alternative case', () => {
+    const customConfig = {
+      schemas: {
+        snake_case_only: 'off',
+        model_case_convention: ['error', 'k8s_camel_case'],
+        model_alternative_case_convention: ['warning', 'lower_snake_case']
+      }
+    };
+
+    const spec = {
+      definitions: {
+        thing: {
+          type: 'object',
+          description: 'thing',
+          properties: {
+            goodstring: {
+              type: 'string',
+              description: 'thing string'
+            }
+          }
+        },
+        camelThing: {
+          type: 'object',
+          description: 'thing',
+          properties: {
+            goodstring: {
+              type: 'string',
+              description: 'thing string'
+            }
+          }
+        },
+        snake_thing: {
+          type: 'object',
+          description: 'thing',
+          properties: {
+            goodstring: {
+              type: 'string',
+              description: 'thing string'
+            }
+          }
+        },
+        "spinal-thing": {
+          type: 'object',
+          description: 'thing',
+          properties: {
+            goodstring: {
+              type: 'string',
+              description: 'thing string'
+            }
+          }
+        }
+      }
+    };
+
+    const res = validate({ jsSpec: spec }, customConfig);
+    expect(res.errors.length).toEqual(1);
+    expect(res.errors[0].path).toEqual([
+      'definitions',
+      'spinal-thing'
+    ]);
+    expect(res.errors[0].message).toEqual("Object names must follow case convention: 'kubernetesAPICase' recommended, or eventually 'lower_snake_case'.");
+    expect(res.errors[0].rule).toEqual("CTMO.STANDARD-CODAGE-19");
+
+    expect(res.warnings.length).toEqual(1);
+    expect(res.warnings[0].path).toEqual([
+      'definitions',
+      'snake_thing'
+    ]);
+    expect(res.warnings[0].message).toEqual("Object names should follow case convention: 'kubernetesAPICase' recommended.");
+  });
+
+  it('should return warnings when an object name does not follow default and alternative case', () => {
+    const customConfig = {
+      schemas: {
+        snake_case_only: 'off',
+        model_case_convention: ['warning', 'k8s_camel_case'],
+        model_alternative_case_convention: ['warning', 'lower_dash_case']
+      }
+    };
+
+    const spec = {
+      definitions: {
+        thing: {
+          type: 'object',
+          description: 'thing',
+          properties: {
+            goodstring: {
+              type: 'string',
+              description: 'thing string'
+            }
+          }
+        },
+        camelThing: {
+          type: 'object',
+          description: 'thing',
+          properties: {
+            goodstring: {
+              type: 'string',
+              description: 'thing string'
+            }
+          }
+        },
+        snake_thing: {
+          type: 'object',
+          description: 'thing',
+          properties: {
+            goodstring: {
+              type: 'string',
+              description: 'thing string'
+            }
+          }
+        },
+        "spinal-thing": {
+          type: 'object',
+          description: 'thing',
+          properties: {
+            goodstring: {
+              type: 'string',
+              description: 'thing string'
+            }
+          }
+        }
+      }
+    };
+
+    const res = validate({ jsSpec: spec }, customConfig);
+
+    expect(res.errors.length).toEqual(0);
+    expect(res.warnings.length).toEqual(1);
+    expect(res.warnings[0].path).toEqual([
+      'definitions',
+      'snake_thing'
+    ]);
+    expect(res.warnings[0].message).toEqual("Object names must follow case convention: 'kubernetesAPICase' or 'spinal-case'.");
+
+  });
+
+  it('should return no warnings or errors when an object name does follow case convention or alternative', () => {
+    const customConfig = {
+      schemas: {
+        snake_case_only: 'off',
+        model_case_convention: ['error', 'k8s_camel_case'],
+        model_alternative_case_convention: ['error', 'lower_snake_case']
+      }
+    };
+
+    const spec = {
+      definitions: {
+        thing: {
+          type: 'object',
+          description: 'thing',
+          properties: {
+            goodstring: {
+              type: 'string',
+              description: 'thing string'
+            }
+          }
+        },
+        camelThing: {
+          type: 'object',
+          description: 'thing',
+          properties: {
+            goodstring: {
+              type: 'string',
+              description: 'thing string'
+            }
+          }
+        },
+        snake_thing: {
+          type: 'object',
+          description: 'thing',
+          properties: {
+            goodstring: {
+              type: 'string',
+              description: 'thing string'
             }
           }
         }

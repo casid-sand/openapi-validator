@@ -63,4 +63,12 @@ module.exports = class MessageCarrier {
       console.log(`WARN - Messages ${status} empty.`);
     }
   }
+
+  displayWarning(number) {
+    this.displayMessage("warning", number);
+  }
+
+  displayErro(number) {
+    this.displayMessage("error", number);
+  }
 };
