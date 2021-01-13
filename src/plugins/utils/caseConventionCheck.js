@@ -18,7 +18,7 @@ const k8sCamelCase = /^[a-z][a-z0-9]*([A-Z]+[a-z0-9]*)*$/; // example : learning
 const k8sUpperCamelCase = /^[A-Z][a-z0-9]+([A-Z]+[a-z0-9]*)*$/; // example : LearningOptOutAPI
 const lowerDashCase = /^[a-z][a-z0-9]*(-[a-z0-9]+)*$/; // example : learning-opt-out
 const upperDashCase = /^[A-Z][A-Z0-9]*(-[A-Z0-9]+)*$/; // example : LEARNING-OPT-OUT
-const spinalFirstUpperCase = /^[A-Z][a-z0-9]*(-[a-z0-9]+)*$/; // example : Learning-Opt-Out
+const spinalFirstUpperCase = /^([A-Z][a-z0-9]*)+(-([A-Z][a-z0-9]*)+)*$/; // example : Learning-Opt-Out
 
 module.exports = (string, convention) => {
   switch (convention) {
@@ -92,8 +92,8 @@ module.exports.checkCaseConventionOrAlternativeCase = function (stringToTest,
     alternativeCaseConvention, alternativeCheckLevel, 
     messageCarrier, pathToElement, elementTypeName, ruleIdentifier) {
 
-//switch default and alternative if alternative is more restrictive
-if (defaultCheckLevel === 'off' && alternativeCheckLevel !== 'off'
+//switch default and alternative case if alternative is more restrictive than default
+if ((defaultCheckLevel === 'off' || !defaultCheckLevel) && alternativeCheckLevel !== 'off' && alternativeCheckLevel
     || defaultCheckLevel === 'warning' && alternativeCheckLevel ==='error') {
     let tempValue;
 
@@ -106,38 +106,64 @@ if (defaultCheckLevel === 'off' && alternativeCheckLevel !== 'off'
     alternativeCaseConvention = tempValue;
 }
   
-  let stringIsCorrectCase = true;
+  let stringHasCorrectCase = true;
 
   // test if string respect default case
   const isCorrectDefaultCase = this(stringToTest, defaultCaseConvention);
   // test if string respect alternative case, if defined
   let isCorrectAlternativeCase = undefined;
-  if (alternativeCaseConvention !== null && alternativeCaseConvention !== undefined) {
+  if (alternativeCaseConvention) {
     isCorrectAlternativeCase = this(stringToTest, alternativeCaseConvention);
   }
 
   let messageStatus = defaultCheckLevel;
-  if (defaultCheckLevel !== 'off') {
+  if (defaultCheckLevel !== 'off' && defaultCheckLevel) {
+    //check case is enabled
     if (!isCorrectDefaultCase) {
-        if (alternativeCheckLevel === 'off') {
-            stringIsCorrectCase = false;
-            messageCarrier.addTypedMessage(
-                pathToElement,
-                `${elementTypeName} must follow case convention: ${this.getCaseConventionExample(defaultCaseConvention)}.`,
-                messageStatus,
-                'convention',
-                ruleIdentifier
-            );
+        //does not follow default case
+        if (alternativeCheckLevel === 'off' || !alternativeCheckLevel) {
+            //alternative check case is disabled
+            stringHasCorrectCase = false;
+            if (messageCarrier) {
+                messageCarrier.addTypedMessage(
+                    pathToElement,
+                    `${elementTypeName} must follow case convention: ${this.getCaseConventionExample(defaultCaseConvention)}.`,
+                    messageStatus,
+                    'convention',
+                    ruleIdentifier
+                );
+            }
         } else {
+            //alternative check case is enabled
             if (isCorrectAlternativeCase) {
-                // if the 2 cases convention are at same error level, and the 2nd is ok => no error, else 'warning'
+                //respect alternative case, but not default case
+                
+                // if the 2 cases convention are at same error level, and the alternative case is ok => no error, else 'warning'
                 if (defaultCheckLevel != alternativeCheckLevel) {
                     messageStatus = 'warning';
-                    let messageString = `${elementTypeName} should follow case convention: ${this.getCaseConventionExample(defaultCaseConvention)} recommended.`;
-                    if (alternativeCheckLevel === 'error') {
-                        messageString = `${elementTypeName} should follow case convention: ${this.getCaseConventionExample(alternativeCaseConvention)} recommended.`;
+                    stringHasCorrectCase = false;
+                    if (messageCarrier) {
+                        messageCarrier.addTypedMessage(
+                            pathToElement,
+                            `${elementTypeName} should follow case convention: ${this.getCaseConventionExample(defaultCaseConvention)} recommended.`,
+                            messageStatus,
+                            'convention',
+                            ruleIdentifier
+                        );
                     }
-                    stringIsCorrectCase = false;
+                }
+            } else {
+                //does not respect alternative case, nor default case
+                
+                stringHasCorrectCase = false;
+                if (messageCarrier) {
+                    let messageString;
+                    //message is different if the case convention are at same error level or not
+                    if (defaultCheckLevel !== alternativeCheckLevel) {
+                        messageString = `${elementTypeName} must follow case convention: ${this.getCaseConventionExample(defaultCaseConvention)} recommended, or eventually ${this.getCaseConventionExample(alternativeCaseConvention)}.`;
+                    } else {
+                        messageString = `${elementTypeName} must follow case convention: ${this.getCaseConventionExample(defaultCaseConvention)} or ${this.getCaseConventionExample(alternativeCaseConvention)}.`;
+                    }
                     messageCarrier.addTypedMessage(
                         pathToElement,
                         messageString,
@@ -146,32 +172,12 @@ if (defaultCheckLevel === 'off' && alternativeCheckLevel !== 'off'
                         ruleIdentifier
                     );
                 }
-            } else {
-                let messageString = `${elementTypeName} must follow case convention: ${this.getCaseConventionExample(defaultCaseConvention)} or ${this.getCaseConventionExample(alternativeCaseConvention)}.`;
-                if (defaultCheckLevel !== alternativeCheckLevel) {
-                    if (defaultCheckLevel === 'error') {
-                        messageString = `${elementTypeName} must follow case convention: ${this.getCaseConventionExample(defaultCaseConvention)} recommended, or eventually ${this.getCaseConventionExample(alternativeCaseConvention)}.`;
-                    } else {
-                        messageString = `${elementTypeName} must follow case convention: ${this.getCaseConventionExample(alternativeCaseConvention)} recommended, or eventually ${this.getCaseConventionExample(defaultCaseConvention)}.`;
-                    }
-                }
-                if (defaultCheckLevel == 'error' || alternativeCheckLevel == 'error') {
-                    messageStatus = 'error';
-                } 
-                stringIsCorrectCase = false;
-                messageCarrier.addTypedMessage(
-                pathToElement,
-                messageString,
-                messageStatus,
-                'convention',
-                ruleIdentifier
-                );
             }
         }
     }
   }
 
-  return stringIsCorrectCase;
+  return stringHasCorrectCase;
 }
 
 module.exports.getCaseConventionExample = function (convention) {
@@ -205,7 +211,7 @@ module.exports.getCaseConventionExample = function (convention) {
 
     case 'spinal_first_upper_case':  
     case 'dash_first_upper_case':
-      return "'Spinal-First_Letter-Upper-Case'";
+      return "'Spinal-First-Letter-Upper-Case'";
 
     case 'lower_spinal_case':  
     case 'lower_dash_case':
@@ -221,6 +227,6 @@ module.exports.getCaseConventionExample = function (convention) {
 
     default:
       // this should never happen, the convention is validated in the config processor
-      console.log(`Unsupported case: ${convention}`);
+      return `Unsupported case: ${convention}`;
   }
 };

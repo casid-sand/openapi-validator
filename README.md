@@ -309,20 +309,21 @@ For rules that accept additional configuration, there will be a limited set of a
 - Some rules check strings for adherence to a specific case convention. In some cases, the case convention checked is configurable.
 - Rules with configurable case conventions will end in `_case_convention`, such as `param_name_case_convention`.
 
-| Option                | Description                                                                   | Example                                |
-| --------------------- | ----------------------------------------------------------------------------- | -------------------------------------- |
-| lower_snake_case      | Words must follow standard lower snake case conventions.                      | learning_opt_out                       |
-| upper_snake_case      | Words must follow standard upper snake case conventions.                      | LEARNING_OPT_OUT                       |
-| all_snake_case        | Words must follow upper or lower snake case conventions.                      | LEARNING_OPT_OUT or learning_opt_out   |
-| upper_camel_case      | Words must follow standard upper camel case conventions.                      | LearningOptOut                         |
-| lower_camel_case      | Words must follow standard lower camel case conventions.                      | learningOptOut                         |
-| all_camel_case        | Words must follow upper or lower camel case conventions.                      | LearningOptOut or learningOptOut       |
-| k8s_camel_case        | Words must follow Kubernetes API camel case conventions.                      | learningOptOutAPI                      |
-| k8s_upper_camel_case  | Words must follow Kubernetes API camel case conventions, starting with upper. | LearningOptOutAPI                      |
-| k8s_all_camel_case    | Words must follow upper or lower Kubernetes API camel case conventions.       | LearningOptOutAPI or learningOptOutAPI |
-| lower_spinal_case     | Words must follow standard lower spinal case conventions.                     | learning-opt-out                       |
-| upper_spinal_case     | Words must follow standard upper spinal case conventions.                     | LEARNING-OPT-OUT                       |
-| all_spinal_case       | Words must follow upper or lower spinal case conventions.                     | LEARNING-OPT-OUT or learning-opt-out   |
+| Option                    | Description                                                                   | Example                                |
+| ------------------------- | ----------------------------------------------------------------------------- | -------------------------------------- |
+| lower_snake_case          | Words must follow standard lower snake case conventions.                      | learning_opt_out                       |
+| upper_snake_case          | Words must follow standard upper snake case conventions.                      | LEARNING_OPT_OUT                       |
+| all_snake_case            | Words must follow upper or lower snake case conventions.                      | LEARNING_OPT_OUT or learning_opt_out   |
+| upper_camel_case          | Words must follow standard upper camel case conventions.                      | LearningOptOut                         |
+| lower_camel_case          | Words must follow standard lower camel case conventions.                      | learningOptOut                         |
+| all_camel_case            | Words must follow upper or lower camel case conventions.                      | LearningOptOut or learningOptOut       |
+| k8s_camel_case            | Words must follow Kubernetes API camel case conventions.                      | learningOptOutAPI                      |
+| k8s_upper_camel_case      | Words must follow Kubernetes API camel case conventions, starting with upper. | LearningOptOutAPI                      |
+| k8s_all_camel_case        | Words must follow upper or lower Kubernetes API camel case conventions.       | LearningOptOutAPI or learningOptOutAPI |
+| lower_spinal_case         | Words must follow standard lower spinal case conventions.                     | learning-opt-out                       |
+| upper_spinal_case         | Words must follow standard upper spinal case conventions.                     | LEARNING-OPT-OUT                       |
+| all_spinal_case           | Words must follow upper or lower spinal case conventions.                     | LEARNING-OPT-OUT or learning-opt-out   |
+| spinal_first_upper_case   | Words must follow spinal case conventions with first letter upper.            | Learning-OptionOut-API                 |
 
 ### Configuration file
 
