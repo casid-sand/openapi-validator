@@ -17,6 +17,7 @@
 // array_of_arrays:
 // Schema properties that are arrays should avoid having items that are also arrays
 
+const { isArray } = require('lodash');
 const forIn = require('lodash/forIn');
 const includes = require('lodash/includes');
 const { checkCase, walk } = require('../../../utils');
@@ -107,9 +108,12 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
   let caseConventionAlternative = config.property_alternative_case_convention;
 
   schemas.forEach(({ schema, path }) => {
+       
     generateFormatErrors(schema, path, config, isOAS3, messages);
 
     generateDescriptionWarnings(schema, path, config, isOAS3, messages);
+
+    checkObjectNameCaseConvention(path, isOAS3, config, messages);
 
     const checkStatus = config.snake_case_only;
     if (checkStatus !== 'off') {
@@ -341,6 +345,15 @@ function typeFormatErrors(obj, path, isOAS3, messages, checkStatus) {
   }
 }
 
+// determine if this is a top-level schema
+function isContextTopLevelSchema(contextPath, isOAS3) {
+  return isOAS3
+  ? contextPath.length === 3 &&
+    contextPath[0] === 'components' &&
+    contextPath[1] === 'schemas'
+  : contextPath.length === 2 && contextPath[0] === 'definitions';
+}
+
 // http://watson-developer-cloud.github.io/api-guidelines/swagger-coding-style#models
 function generateDescriptionWarnings(
   schema,
@@ -350,11 +363,7 @@ function generateDescriptionWarnings(
   messages
 ) {
   // determine if this is a top-level schema
-  const isTopLevelSchema = isOAS3
-    ? contextPath.length === 3 &&
-      contextPath[0] === 'components' &&
-      contextPath[1] === 'schemas'
-    : contextPath.length === 2 && contextPath[0] === 'definitions';
+  const isTopLevelSchema = isContextTopLevelSchema(contextPath, isOAS3);
 
   // Check description in schema only for "top level" schema
   const hasDescription =
@@ -472,6 +481,47 @@ function checkPropNamesCaseCollision(
 }
 
 /**
+ * Check that object names follow the specified case convention
+ * @param contextPath
+ * @param isOAS3 boolean : true if OpenAPI 3, or false if Swagger 2
+ * @param config validator configuration
+ * @param messages
+ */
+function checkObjectNameCaseConvention(
+  contextPath,
+  isOAS3,
+  config,
+  messages
+) {
+  // determine if this is a top-level schema
+  const isTopLevelSchema = isContextTopLevelSchema(contextPath, isOAS3);
+  
+  if (isTopLevelSchema) {
+
+    const objName = contextPath[contextPath.length - 1]
+
+    if (config.model_case_convention && isArray(config.model_case_convention)) {
+      const checkStatusObjectNames = config.model_case_convention[0];
+      if (checkStatusObjectNames !== 'off') {
+        const objectCaseConvention = config.model_case_convention[1];
+        let checkAlternativeObjectCaseConvention = 'off';
+        let objectCaseConventionAlternative;
+        if (config.model_alternative_case_convention && isArray(config.model_alternative_case_convention)) {
+          checkAlternativeObjectCaseConvention = config.model_alternative_case_convention[0];
+            if (checkAlternativeObjectCaseConvention != 'off') {
+              objectCaseConventionAlternative = config.model_alternative_case_convention[1];
+            }
+        }
+
+        checkCase.checkCaseConventionOrAlternativeCase(objName, objectCaseConvention, checkStatusObjectNames, 
+          objectCaseConventionAlternative, checkAlternativeObjectCaseConvention, 
+          messages, contextPath, 'Object names', 'CTMO.STANDARD-CODAGE-19');
+      }
+    }
+  }
+}
+
+/**
  * Check that property names follow the specified case convention
  * @param schema
  * @param contextPath
@@ -490,12 +540,12 @@ function checkPropNamesCaseConvention(
     return;
   }
 
-  let checkAlternativeParameterCaseConvention = 'off';
-  let caseConventionAlternative;
+  let checkAlternativePropertyCaseConvention = 'off';
+  let propertyCaseConventionAlternative;
   if (alternativeCaseConvention) {
-    checkAlternativeParameterCaseConvention = alternativeCaseConvention[0];
-      if (checkAlternativeParameterCaseConvention != 'off') {
-          caseConventionAlternative = alternativeCaseConvention[1];
+    checkAlternativePropertyCaseConvention = alternativeCaseConvention[0];
+      if (checkAlternativePropertyCaseConvention != 'off') {
+        propertyCaseConventionAlternative = alternativeCaseConvention[1];
       }
   }
 
@@ -511,7 +561,7 @@ function checkPropNamesCaseConvention(
       const caseConventionValue = caseConvention[1];    
 
       checkCase.checkCaseConventionOrAlternativeCase(propName, caseConventionValue, checkStatus, 
-        caseConventionAlternative, checkAlternativeParameterCaseConvention, 
+        propertyCaseConventionAlternative, checkAlternativePropertyCaseConvention, 
         messages, contextPath.concat(['properties', propName]), 'Property names', 'CTMO.STANDARD-CODAGE-19');
 
     }
