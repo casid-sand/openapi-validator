@@ -18,6 +18,7 @@ const k8sCamelCase = /^[a-z][a-z0-9]*([A-Z]+[a-z0-9]*)*$/; // example : learning
 const k8sUpperCamelCase = /^[A-Z][a-z0-9]+([A-Z]+[a-z0-9]*)*$/; // example : LearningOptOutAPI
 const lowerDashCase = /^[a-z][a-z0-9]*(-[a-z0-9]+)*$/; // example : learning-opt-out
 const upperDashCase = /^[A-Z][A-Z0-9]*(-[A-Z0-9]+)*$/; // example : LEARNING-OPT-OUT
+const spinalFirstUpperCase = /^[A-Z][a-z0-9]*(-[a-z0-9]+)*$/; // example : Learning-Opt-Out
 
 module.exports = (string, convention) => {
   switch (convention) {
@@ -60,12 +61,19 @@ module.exports = (string, convention) => {
         return k8sCamelCase.test(string);
       }
 
+    case 'spinal_first_upper_case':
+    case 'dash_first_upper_case':
+      return spinalFirstUpperCase.test(string);
+
+    case 'lower_spinal_case':
     case 'lower_dash_case':
       return lowerDashCase.test(string);
 
+    case 'upper_spinal_case':
     case 'upper_dash_case':
       return upperDashCase.test(string);
 
+    case 'all_spinal_case':
     case 'all_dash_case':
       if (lowerDashCase.test(string)) {
         return true;
@@ -79,7 +87,24 @@ module.exports = (string, convention) => {
   }
 };
 
-module.exports.checkCaseConventionOrAlternativeCase = function (stringToTest, defaultCaseConvention, defaultCheckLevel, alternativeCaseConvention, alternativeCheckLevel, messageCarrier, pathToElement, elementTypeName, ruleIdentifier) {
+module.exports.checkCaseConventionOrAlternativeCase = function (stringToTest, 
+    defaultCaseConvention, defaultCheckLevel, 
+    alternativeCaseConvention, alternativeCheckLevel, 
+    messageCarrier, pathToElement, elementTypeName, ruleIdentifier) {
+
+//switch default and alternative if alternative is more restrictive
+if (defaultCheckLevel === 'off' && alternativeCheckLevel !== 'off'
+    || defaultCheckLevel === 'warning' && alternativeCheckLevel ==='error') {
+    let tempValue;
+
+    tempValue = defaultCheckLevel;
+    defaultCheckLevel = alternativeCheckLevel;
+    alternativeCheckLevel = tempValue;
+
+    tempValue = defaultCaseConvention;
+    defaultCaseConvention = alternativeCaseConvention;
+    alternativeCaseConvention = tempValue;
+}
   
   let stringIsCorrectCase = true;
 
@@ -92,55 +117,57 @@ module.exports.checkCaseConventionOrAlternativeCase = function (stringToTest, de
   }
 
   let messageStatus = defaultCheckLevel;
-  if (!isCorrectDefaultCase) {
-    if (alternativeCheckLevel === 'off') {
-      stringIsCorrectCase = false;
-      messageCarrier.addTypedMessage(
-        pathToElement,
-        `${elementTypeName} must follow case convention: ${this.getCaseConventionExample(defaultCaseConvention)}.`,
-        messageStatus,
-        'convention',
-        ruleIdentifier
-      );
-    } else {
-      if (isCorrectAlternativeCase) {
-        // if the 2 cases convention are at same error level, and the 2nd is ok => no error, else 'warning'
-        if (defaultCheckLevel != alternativeCheckLevel) {
-          messageStatus = 'warning';
-          let messageString = `${elementTypeName} should follow case convention: ${this.getCaseConventionExample(defaultCaseConvention)} recommended.`;
-          if (alternativeCheckLevel === 'error') {
-              messageString = `${elementTypeName} should follow case convention: ${this.getCaseConventionExample(alternativeCaseConvention)} recommended.`;
-          }
-          stringIsCorrectCase = false;
-          messageCarrier.addTypedMessage(
-            pathToElement,
-            messageString,
-            messageStatus,
-            'convention',
-            ruleIdentifier
-          );
+  if (defaultCheckLevel !== 'off') {
+    if (!isCorrectDefaultCase) {
+        if (alternativeCheckLevel === 'off') {
+            stringIsCorrectCase = false;
+            messageCarrier.addTypedMessage(
+                pathToElement,
+                `${elementTypeName} must follow case convention: ${this.getCaseConventionExample(defaultCaseConvention)}.`,
+                messageStatus,
+                'convention',
+                ruleIdentifier
+            );
+        } else {
+            if (isCorrectAlternativeCase) {
+                // if the 2 cases convention are at same error level, and the 2nd is ok => no error, else 'warning'
+                if (defaultCheckLevel != alternativeCheckLevel) {
+                    messageStatus = 'warning';
+                    let messageString = `${elementTypeName} should follow case convention: ${this.getCaseConventionExample(defaultCaseConvention)} recommended.`;
+                    if (alternativeCheckLevel === 'error') {
+                        messageString = `${elementTypeName} should follow case convention: ${this.getCaseConventionExample(alternativeCaseConvention)} recommended.`;
+                    }
+                    stringIsCorrectCase = false;
+                    messageCarrier.addTypedMessage(
+                        pathToElement,
+                        messageString,
+                        messageStatus,
+                        'convention',
+                        ruleIdentifier
+                    );
+                }
+            } else {
+                let messageString = `${elementTypeName} must follow case convention: ${this.getCaseConventionExample(defaultCaseConvention)} or ${this.getCaseConventionExample(alternativeCaseConvention)}.`;
+                if (defaultCheckLevel !== alternativeCheckLevel) {
+                    if (defaultCheckLevel === 'error') {
+                        messageString = `${elementTypeName} must follow case convention: ${this.getCaseConventionExample(defaultCaseConvention)} recommended, or eventually ${this.getCaseConventionExample(alternativeCaseConvention)}.`;
+                    } else {
+                        messageString = `${elementTypeName} must follow case convention: ${this.getCaseConventionExample(alternativeCaseConvention)} recommended, or eventually ${this.getCaseConventionExample(defaultCaseConvention)}.`;
+                    }
+                }
+                if (defaultCheckLevel == 'error' || alternativeCheckLevel == 'error') {
+                    messageStatus = 'error';
+                } 
+                stringIsCorrectCase = false;
+                messageCarrier.addTypedMessage(
+                pathToElement,
+                messageString,
+                messageStatus,
+                'convention',
+                ruleIdentifier
+                );
+            }
         }
-      } else {
-        let messageString = `${elementTypeName} must follow case convention: ${this.getCaseConventionExample(defaultCaseConvention)} or ${this.getCaseConventionExample(alternativeCaseConvention)}.`;
-        if (defaultCheckLevel !== alternativeCheckLevel) {
-          if (defaultCheckLevel === 'error') {
-            messageString = `${elementTypeName} must follow case convention: ${this.getCaseConventionExample(defaultCaseConvention)} recommended, or eventually ${this.getCaseConventionExample(alternativeCaseConvention)}.`;
-          } else {
-            messageString = `${elementTypeName} must follow case convention: ${this.getCaseConventionExample(alternativeCaseConvention)} recommended, or eventually ${this.getCaseConventionExample(defaultCaseConvention)}.`;
-          }
-        }
-        if (defaultCheckLevel == 'error' || alternativeCheckLevel == 'error') {
-          messageStatus = 'error';
-        } 
-        stringIsCorrectCase = false;
-        messageCarrier.addTypedMessage(
-          pathToElement,
-          messageString,
-          messageStatus,
-          'convention',
-          ruleIdentifier
-        );
-      }
     }
   }
 
@@ -176,13 +203,20 @@ module.exports.getCaseConventionExample = function (convention) {
     case 'k8s_all_camel_case':
       return "'kubernetesAPICase' or 'UpperKubernetesAPICase'";
 
+    case 'spinal_first_upper_case':  
+    case 'dash_first_upper_case':
+      return "'Spinal-First_Letter-Upper-Case'";
+
+    case 'lower_spinal_case':  
     case 'lower_dash_case':
       return "'spinal-case'";
 
     case 'upper_dash_case':
+    case 'upper_spinal_case':
       return "'UPPER-SPINAL-CASE'";
 
     case 'all_dash_case':
+    case 'all_spinal_case':
       return "'spinal-case' or 'UPPER-SPINAL-CASE'";
 
     default:

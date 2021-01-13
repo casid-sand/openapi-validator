@@ -55,7 +55,7 @@
       ],
       "paths_case_convention": [
         "error",
-        "lower_dash_case"
+        "lower_spinal_case"
       ],
       "paths_alternative_case_convention": [
         "warning",

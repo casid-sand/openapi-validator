@@ -180,9 +180,9 @@ const configOptions = {
     'k8s_camel_case', // kubernetesAPICamelCase
     'k8s_upper_camel_case', // UpperKubernetesAPICamelCase
     'k8s_all_camel_case', // kubernetesAPICamelCase ou KubernetesAPICamelCase
-    'lower_dash_case', // lower-spinal-case
-    'upper_dash_case', // UPPER-SPINAL-CASE
-    'all_dash_case' // lower-spinal-case ou UPPER-SPINAL-CASE
+    'lower_dash_case', 'lower_spinal_case', // lower-spinal-case
+    'upper_dash_case', 'upper_spinal_case', // UPPER-SPINAL-CASE
+    'all_dash_case', 'all_spinal_case' // lower-spinal-case ou UPPER-SPINAL-CASE
   ]
 };
 

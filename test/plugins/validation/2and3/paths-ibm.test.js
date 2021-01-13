@@ -640,7 +640,7 @@ describe('Test of alternative case convention configurations', () => {
             "snake_case_only": "off",
             "paths_case_convention": [
                 "off",
-                "lower_dash_case"
+                "lower_spinal_case"
             ],
             "paths_alternative_case_convention": [
                 "off",
@@ -794,7 +794,7 @@ describe('Test of alternative case convention configurations', () => {
         expect(res.errors[0].message).toEqual("Path segments must follow case convention: 'lower_snake_case' recommended, or eventually 'spinal-case'.");
         expect(res.errors[0].path).toEqual(["paths", "/camelPath/"]);
         expect(res.warnings[0].message).toEqual("Path segments should follow case convention: 'lower_snake_case' recommended.");
-        expect(res.warnings[0].path).toEqual(["paths", "/snake_path/"]);
+        expect(res.warnings[0].path).toEqual(["paths", "/dash-path/"]);
     });
 
     it('should return 1 warning with 2 cases are in warning mode', function() {

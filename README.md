@@ -320,9 +320,9 @@ For rules that accept additional configuration, there will be a limited set of a
 | k8s_camel_case        | Words must follow Kubernetes API camel case conventions.                      | learningOptOutAPI                      |
 | k8s_upper_camel_case  | Words must follow Kubernetes API camel case conventions, starting with upper. | LearningOptOutAPI                      |
 | k8s_all_camel_case    | Words must follow upper or lower Kubernetes API camel case conventions.       | LearningOptOutAPI or learningOptOutAPI |
-| lower_dash_case       | Words must follow standard lower dash case conventions.                       | learning-opt-out                       |
-| upper_dash_case       | Words must follow standard upper dash case conventions.                       | LEARNING-OPT-OUT                       |
-| all_dash_case         | Words must follow upper or lower dash case conventions.                       | LEARNING-OPT-OUT or learning-opt-out   |
+| lower_spinal_case     | Words must follow standard lower spinal case conventions.                     | learning-opt-out                       |
+| upper_spinal_case     | Words must follow standard upper spinal case conventions.                     | LEARNING-OPT-OUT                       |
+| all_spinal_case       | Words must follow upper or lower spinal case conventions.                     | LEARNING-OPT-OUT or learning-opt-out   |
 
 ### Configuration file
 
