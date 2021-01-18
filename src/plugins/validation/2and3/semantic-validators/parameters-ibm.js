@@ -98,7 +98,7 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
           messages.addMessage(path, messageAT, checkStatusAT);
         }
 
-        // check for accept-type defined in a header parameter (AT = accept-type)
+        // check for Authorization defined in a header parameter
         const checkStatusAuth = config.authorization_parameter;
         const definesAuth = obj.name.toLowerCase() === 'authorization';
         let messageAuth =

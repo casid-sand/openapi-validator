@@ -97,6 +97,31 @@ describe('if the type is `apiKey` then it should have `query`, `header` or `cook
   });
 });
 
+it('if type is `apiKey`, then the `bearerFormat` property should not be defined', function() {
+  const spec = {
+    components: {
+      securitySchemes: {
+        SecuritySchemeModel: {
+          type: 'apiKey',
+          in: 'cookie',
+          scheme: 'basic',
+          name: 'apiKey',
+          descriptions: 'example text',
+          bearerFormat: 'JWT',
+        }
+      }
+    }
+  };
+
+  const res = validate({ resolvedSpec: spec });
+  expect(res.errors.length).toEqual(1);
+  expect(res.warnings.length).toEqual(0);
+  expect(res.errors[0].path).toEqual('securitySchemes.SecuritySchemeModel');
+  expect(res.errors[0].message).toEqual(
+    "apiKey authorization must not define `bearerFormat` (only available for `http` securityScheme type)."
+  );
+});
+
 describe('if the type is `oauth2` then it should have flows and flows should follow the spec requirements', function() {
   it('should have flows property if type is oauth2', function() {
     const spec = {
@@ -206,7 +231,7 @@ describe('if the type is `oauth2` then it should have flows and flows should fol
   });
 });
 
-describe('if `type` is `http`, then scheme property must be defined', function() {
+describe('if `type` is `http`, then scheme property must be defined and `name` and `in` must not', function() {
   it('should have a defined scheme if type is `http`', function() {
     const spec = {
       components: {
@@ -226,6 +251,50 @@ describe('if `type` is `http`, then scheme property must be defined', function()
     expect(res.errors[0].message).toEqual(
       'scheme must be defined for type `http`'
     );
+  });
+
+  it('should not have a name if type is `http`', function() {
+    const spec = {
+      components: {
+        securitySchemes: {
+          SecuritySchemeModel: {
+            type: 'http',
+            scheme: 'bearer',
+            bearerFormat: 'JWT',
+            descriptions: 'example text',
+            name: 'Customized-Header'
+          }
+        }
+      }
+    };
+
+    const res = validate({ resolvedSpec: spec });
+    expect(res.errors.length).toEqual(1);
+    expect(res.warnings.length).toEqual(0);
+    expect(res.errors[0].path).toEqual('securitySchemes.SecuritySchemeModel');
+    expect(res.errors[0].message).toEqual('`name` property  must not be defined for type `http` (only available for `apiKey` securityScheme type).');
+  });
+
+  it('should not have a in if type is `http`', function() {
+    const spec = {
+      components: {
+        securitySchemes: {
+          SecuritySchemeModel: {
+            type: 'http',
+            scheme: 'bearer',
+            bearerFormat: 'JWT',
+            descriptions: 'example text',
+            in: 'header'
+          }
+        }
+      }
+    };
+
+    const res = validate({ resolvedSpec: spec });
+    expect(res.errors.length).toEqual(1);
+    expect(res.warnings.length).toEqual(0);
+    expect(res.errors[0].path).toEqual('securitySchemes.SecuritySchemeModel');
+    expect(res.errors[0].message).toEqual('`in` property must not be defined for type `http` (only available for `apiKey` securityScheme type).');
   });
 });
 

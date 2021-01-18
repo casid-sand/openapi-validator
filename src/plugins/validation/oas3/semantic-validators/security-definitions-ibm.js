@@ -20,6 +20,9 @@
 // Assertation 5: `flows` object is required for `oauth2` type
 // Assertation 6: `opedIdConnectUrl` property is required for `openIdConnect` and must be a valid url
 
+// Assertation 7: 'bearerFormat' property is forbidden for `apiKey` type
+// Assertation 8: 'name' and 'in' properties are forbidden for `http` type
+
 const stringValidator = require('validator');
 const MessageCarrier = require('../../../utils/messageCarrier');
 
@@ -40,32 +43,46 @@ module.exports.validate = function({ resolvedSpec }) {
     const type = security.type;
 
     if (!type) {
-      messages.addMessage(
+      messages.addTypedMessage(
         path,
         'security scheme is missing required field `type`',
-        'error'
+        'error',
+        'structural'
       );
     } else if (authTypes.indexOf(type) === -1) {
-      messages.addMessage(
+      messages.addTypedMessage(
         path + '.type',
         '`type` must have one of the following types: `apiKey`, `oauth2`, `http`, `openIdConnect`',
-        'error'
+        'error',
+        'structural'
       );
     } else if (type === API_KEY) {
       //apiKey validation
       const authIn = security.in;
       if (!authIn || !['query', 'header', 'cookie'].includes(authIn)) {
-        messages.addMessage(
+        messages.addTypedMessage(
           path + '.in',
           "apiKey authorization must have required 'in' property, valid values are 'query' or 'header' or 'cookie'.",
-          'error'
+          'error',
+          'structural'
         );
       }
       if (!security.name) {
-        messages.addMessage(
+        messages.addTypedMessage(
           path,
           "apiKey authorization must have required 'name' string property. The name of the header or query property to be used.",
-          'error'
+          'error',
+          'structural'
+        );
+      }
+      //Assertation 7
+      //bearerFormat is forbidden
+      if (security.bearerFormat) {
+        messages.addTypedMessage(
+          path,
+          'apiKey authorization must not define `bearerFormat` (only available for `http` securityScheme type).',
+          'error',
+          'structural'
         );
       }
     }
@@ -74,28 +91,32 @@ module.exports.validate = function({ resolvedSpec }) {
       const flows = security.flows;
 
       if (!flows) {
-        messages.addMessage(
+        messages.addTypedMessage(
           path,
           "oauth2 authorization must have required 'flows' property",
-          'error'
+          'error',
+          'structural'
         );
       } else if (flows.authorizationCode && !flows.authorizationCode.tokenUrl) {
-        messages.addMessage(
+        messages.addTypedMessage(
           path + '.flows.authorizationCode',
           "flow must have required 'tokenUrl' property if type is `authorizationCode`",
-          'error'
+          'error',
+          'structural'
         );
       } else if (flows.password && !flows.password.tokenUrl) {
-        messages.addMessage(
+        messages.addTypedMessage(
           path + '.flows.password',
           "flow must have required 'tokenUrl' property if type is `password`",
-          'error'
+          'error',
+          'structural'
         );
       } else if (flows.clientCredentials && !flows.clientCredentials.tokenUrl) {
-        messages.addMessage(
+        messages.addTypedMessage(
           path + '.flows.clientCredentials',
           "flow must have required 'tokenUrl' property if type is  `clientCredentials`",
-          'error'
+          'error',
+          'structural'
         );
       } else if (
         !flows.implicit &&
@@ -103,61 +124,88 @@ module.exports.validate = function({ resolvedSpec }) {
         !flows.password &&
         !flows.clientCredentials
       ) {
-        messages.addMessage(
+        messages.addTypedMessage(
           path + '.flows',
           "oauth2 authorization `flows` must have one of the following properties: 'implicit', 'password', 'clientCredentials' or 'authorizationCode'",
-          'error'
+          'error',
+          'structural'
         );
       } else if (flows.implicit) {
         const authorizationUrl = flows.implicit.authorizationUrl;
         if (!authorizationUrl) {
-          messages.addMessage(
+          messages.addTypedMessage(
             path + '.flows.implicit',
             "oauth2 implicit flow must have required 'authorizationUrl' property",
-            'error'
+            'error',
+            'structural'
           );
         }
         if (!flows.implicit.scopes) {
-          messages.addMessage(
+          messages.addTypedMessage(
             path + '.flows.implicit',
             "oauth2 authorization implicit flow must have required 'scopes' property.",
-            'error'
+            'error',
+            'structural'
           );
         }
       } else if (flows.authorizationCode) {
         const authorizationUrl = flows.authorizationCode.authorizationUrl;
         if (!authorizationUrl) {
-          messages.addMessage(
+          messages.addTypedMessage(
             path + 'flows.authorizationCode',
             "oauth2 authorizationCode flow must have required 'authorizationUrl' property.",
-            'error'
+            'error',
+            'structural'
           );
         }
       } else if (flows.password) {
         const tokenUrl = flows.password.tokenUrl;
         if (!tokenUrl) {
-          messages.addMessage(
+          messages.addTypedMessage(
             path + '.flows.password',
             "oauth2 authorization password flow must have required 'tokenUrl' property.",
-            'error'
+            'error',
+            'structural'
           );
         }
       } else if (flows.clientCredentials) {
         if (!flows.clientCredentials.tokenUrl) {
-          messages.addMessage(
+          messages.addTypedMessage(
             path + '.flows.clientCredentials',
             "oauth2 authorization clientCredentials flow must have required 'tokenUrl' property.",
-            'error'
+            'error',
+            'structural'
           );
         }
       }
     } else if (type === HTTP) {
       //scheme is required
       if (!security.scheme) {
-        messages.addMessage(
+        messages.addTypedMessage(
           path,
           'scheme must be defined for type `http`',
-          'error'
+          'error',
+          'structural'
+        );
+      }
+
+      //Assertation 8
+      //name is forbidden
+      if (security.name) {
+        messages.addTypedMessage(
+          path,
+          '`name` property  must not be defined for type `http` (only available for `apiKey` securityScheme type).',
+          'error',
+          'structural'
+        );
+      }
+      //in is forbidden
+      if (security.in) {
+        messages.addTypedMessage(
+          path,
+          '`in` property must not be defined for type `http` (only available for `apiKey` securityScheme type).',
+          'error',
+          'structural'
         );
       }
     } else if (type == OPENID_CONNECT) {
@@ -167,10 +215,11 @@ module.exports.validate = function({ resolvedSpec }) {
         typeof openIdConnectURL !== 'string' ||
         !stringValidator.isURL(openIdConnectURL)
       ) {
-        messages.addMessage(
+        messages.addTypedMessage(
           path,
           'openIdConnectUrl must be defined for openIdConnect property and must be a valid URL',
-          'error'
+          'error',
+          'structural'
         );
       }
     }

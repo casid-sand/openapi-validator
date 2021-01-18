@@ -1,10 +1,21 @@
 const expect = require('expect');
 const checkCase = require('../../../src/plugins/utils/caseConventionCheck');
 const MessageCarrier = require('../../../src/plugins/utils/messageCarrier');
+const { getCapturedText } = require('../../test-utils');
 
 describe('case convention regex tests', function() {
-  
-    it('shoulf return error if case is not supported', function() {
+    
+  let consoleSpy;
+
+  beforeEach(() => {
+    consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    consoleSpy.mockRestore();
+  });
+
+    it('should return error if case is not supported', function() {
       const string = 'sha1';
       expect(checkCase(string, "testCase")).toEqual(undefined);
     });
@@ -433,12 +444,23 @@ describe('case convention example tests', function() {
 
 describe('case convention and alternative check tests', function() {
 
+  
+  let consoleSpy;
+
+  beforeEach(() => {
+    consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    consoleSpy.mockRestore();
+  });
+
     it('should valid only default case', function() {
         const messages = new MessageCarrier();
         let result;
 
         result = checkCase.checkCaseConventionOrAlternativeCase('stringDefaultCase', 'lower_camel_case', 'error', 
-            'fakecase', 'off', 
+            'lower_spinal_case', 'off', 
             messages, 'path_to', 'Examples string', 'CTMO.STANDARD-CODAGE-19');
             
         expect(result).toEqual(true);
@@ -478,7 +500,7 @@ describe('case convention and alternative check tests', function() {
         let result;
 
         result = checkCase.checkCaseConventionOrAlternativeCase('stringDefaultCase', 
-            'fakeFirstCase', undefined, 
+            'lower_spinal_case', undefined, 
             'lower_camel_case', 'error', 
             messages, 'path_to', 'Examples string', 'CTMO.STANDARD-CODAGE-19');
             
@@ -493,7 +515,7 @@ describe('case convention and alternative check tests', function() {
 
         result = checkCase.checkCaseConventionOrAlternativeCase('stringDefault-Case_test', 
             'lower_snake_case', 'off', 
-            'fakeSecondCase', 'off', 
+            'lower_spinal_case', 'off', 
             messages, 'path_to', 'Examples string', 'CTMO.STANDARD-CODAGE-19');
             
         expect(result).toEqual(true);
