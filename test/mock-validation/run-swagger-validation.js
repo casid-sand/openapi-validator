@@ -8,6 +8,7 @@ let swagger_file_name;
 
 swagger_file_name = 'openapi3-test.yaml';
 swagger_file_name = 'swagger-test.yml';
+swagger_file_name = 'Ccpm - v1.1-anonym-temp.yaml';
 let dir_path = './test/mock-validation/input/';
 
 //swagger_file_name = "missing-object.yml"
@@ -33,6 +34,6 @@ program.config = './test/mock-validation/validation-configuration.yaml';
 program.report_statistics = true;
 program.output = `./test/mock-validation/output/rapport-analyse-${formattedDate}-${swagger_name}.json`;
 
-console.log('Validation de swagger-to-validate.yaml');
+console.log(`Validation de ${swagger_file_name}`);
 exitCode = commandLineValidator(program);
 

@@ -16,7 +16,7 @@ const sharedDataExtensionsDefinition = {
     'x-data-access-authorization': {
         'required': true,
         'type': 'string',
-        'values': ['publique', 'necessitant une autorisation du fournisseur api']
+        'values': ['publique', 'necessitant une autorisation du fournisseur', 'necessitant une autorisation du fournisseur api']
     },
     'x-data-access-network': {
         'required': true,

@@ -96,9 +96,10 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
               if (isArray) {
                 messages.addTypedMessage(
                   `paths.${pathKey}.${opKey}.responses.${name}.content.${contentType}.schema`,
-                  'Arrays MUST NOT be returned as the top-level structure in a response body.',
+                  'Arrays MUST NOT be returned as the top-level structure in a response body : create an object with data and metadata for collection.',
                   checkStatusArrRes,
-                  'structural'
+                  'structural',
+                  'CTMO.STANDARD-CODAGE-16'
                 );
               }
             });
@@ -110,9 +111,10 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
             if (isArray) {
               messages.addTypedMessage(
                 `paths.${pathKey}.${opKey}.responses.${name}.schema`,
-                'Arrays MUST NOT be returned as the top-level structure in a response body.',
+                'Arrays MUST NOT be returned as the top-level structure in a response body : create an object with data and metadata for collection.',
                 checkStatusArrRes,
-                'structural'
+                'structural',
+                'CTMO.STANDARD-CODAGE-16'
               );
             }
           }
