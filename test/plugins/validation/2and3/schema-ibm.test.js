@@ -447,7 +447,7 @@ describe('validation plugin - semantic - schema-ibm - Swagger 2', () => {
       'thingString'
     ]);
     expect(res.warnings[0].message).toEqual(
-      "Property names must follow case convention: 'lower_snake_case'."
+      "Property names must follow case convention: 'thingString' doesn't respect 'lower_snake_case'."
     );
   });
 
@@ -496,7 +496,7 @@ describe('validation plugin - semantic - schema-ibm - Swagger 2', () => {
       'thingString'
     ]);
     expect(res.warnings[0].message).toEqual(
-      "Property names must follow case convention: 'lower_snake_case'."
+      "Property names must follow case convention: 'thingString' doesn't respect 'lower_snake_case'."
     );
   });
 
@@ -583,7 +583,7 @@ describe('validation plugin - semantic - schema-ibm - Swagger 2', () => {
       'properties',
       'spinal-string'
     ]);
-    expect(res.errors[0].message).toEqual("Property names must follow case convention: 'kubernetesAPICase' recommended, or eventually 'lower_snake_case'.");
+    expect(res.errors[0].message).toEqual("Property names must follow case convention: 'spinal-string' doesn't respect 'kubernetesAPICase' recommended, or eventually 'lower_snake_case'.");
 
     expect(res.warnings.length).toEqual(1);
     expect(res.warnings[0].path).toEqual([
@@ -592,7 +592,7 @@ describe('validation plugin - semantic - schema-ibm - Swagger 2', () => {
       'properties',
       'snake_string'
     ]);
-    expect(res.warnings[0].message).toEqual("Property names should follow case convention: 'kubernetesAPICase' recommended.");
+    expect(res.warnings[0].message).toEqual("Property names should follow case convention: 'snake_string' doesn't respect 'kubernetesAPICase' recommended.");
   });
 
   it('should return warnings when a property name does not default and alternative case', () => {
@@ -659,14 +659,14 @@ describe('validation plugin - semantic - schema-ibm - Swagger 2', () => {
       'snake_string'
     ]);
     expect(res.warnings[0].rule).toEqual("CTMO.STANDARD-CODAGE-19");
-    expect(res.warnings[0].message).toEqual("Property names must follow case convention: 'kubernetesAPICase' or 'UPPER_SNAKE_CASE'.");
+    expect(res.warnings[0].message).toEqual("Property names must follow case convention: 'snake_string' doesn't respect 'kubernetesAPICase' or 'UPPER_SNAKE_CASE'.");
     expect(res.warnings[1].path).toEqual([
       'definitions',
       'Thing',
       'properties',
       'spinal-string'
     ]);
-    expect(res.warnings[1].message).toEqual("Property names must follow case convention: 'kubernetesAPICase' or 'UPPER_SNAKE_CASE'.");
+    expect(res.warnings[1].message).toEqual("Property names must follow case convention: 'spinal-string' doesn't respect 'kubernetesAPICase' or 'UPPER_SNAKE_CASE'.");
 
   });
 
@@ -806,7 +806,7 @@ describe('validation plugin - semantic - schema-ibm - Swagger 2', () => {
       'definitions',
       'spinal-thing'
     ]);
-    expect(res.errors[0].message).toEqual("Object names must follow case convention: 'kubernetesAPICase' recommended, or eventually 'lower_snake_case'.");
+    expect(res.errors[0].message).toEqual("Object names must follow case convention: 'spinal-thing' doesn't respect 'kubernetesAPICase' recommended, or eventually 'lower_snake_case'.");
     expect(res.errors[0].rule).toEqual("CTMO.STANDARD-CODAGE-19");
 
     expect(res.warnings.length).toEqual(1);
@@ -814,7 +814,7 @@ describe('validation plugin - semantic - schema-ibm - Swagger 2', () => {
       'definitions',
       'snake_thing'
     ]);
-    expect(res.warnings[0].message).toEqual("Object names should follow case convention: 'kubernetesAPICase' recommended.");
+    expect(res.warnings[0].message).toEqual("Object names should follow case convention: 'snake_thing' doesn't respect 'kubernetesAPICase' recommended.");
   });
 
   it('should return warnings when an object name does not follow default and alternative case', () => {
@@ -879,7 +879,7 @@ describe('validation plugin - semantic - schema-ibm - Swagger 2', () => {
       'definitions',
       'snake_thing'
     ]);
-    expect(res.warnings[0].message).toEqual("Object names must follow case convention: 'kubernetesAPICase' or 'spinal-case'.");
+    expect(res.warnings[0].message).toEqual("Object names must follow case convention: 'snake_thing' doesn't respect 'kubernetesAPICase' or 'spinal-case'.");
 
   });
 

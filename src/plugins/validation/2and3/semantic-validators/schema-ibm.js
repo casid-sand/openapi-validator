@@ -615,7 +615,7 @@ function checkEnumCaseConvention(
         const caseConventionValue = caseConvention[1];
         const isCorrectCase = checkCase(enumValue, caseConventionValue);
         if (!isCorrectCase) {
-          messages.addMessage(
+          messages.addTypedMessage(
             contextPath.concat(['enum', i.toString()]),
             `Enum values must follow case convention: ${checkCase.getCaseConventionExample(caseConventionValue)}.`,
             checkStatus,

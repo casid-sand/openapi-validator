@@ -435,8 +435,8 @@ describe('case convention example tests', function() {
         expect(checkCase.getCaseConventionExample("lower_spinal_case")).toEqual("'spinal-case'");
         expect(checkCase.getCaseConventionExample("upper_spinal_case")).toEqual("'UPPER-SPINAL-CASE'");
         expect(checkCase.getCaseConventionExample("all_spinal_case")).toEqual("'spinal-case' or 'UPPER-SPINAL-CASE'");
-        expect(checkCase.getCaseConventionExample("spinal_first_upper_case")).toEqual("'Spinal-First-Letter-Upper-Case'");
-        expect(checkCase.getCaseConventionExample("dash_first_upper_case")).toEqual("'Spinal-First-Letter-Upper-Case'");
+        expect(checkCase.getCaseConventionExample("spinal_first_upper_case")).toEqual("'Spinal-FirstLetterUpper-Case'");
+        expect(checkCase.getCaseConventionExample("dash_first_upper_case")).toEqual("'Spinal-FirstLetterUpper-Case'");
         expect(checkCase.getCaseConventionExample("unrecognized_case")).toEqual("Unsupported case: unrecognized_case");
     });
 
@@ -682,7 +682,7 @@ describe('case convention and alternative check tests', function() {
         expect(result).toEqual(false);
         expect(messages.errors.length).toEqual(0);
         expect(messages.warnings.length).toEqual(1);
-        expect(messages.warnings[0].message).toEqual("Examples string should follow case convention: 'spinal-case' recommended.");
+        expect(messages.warnings[0].message).toEqual("Examples string should follow case convention: 'stringAlternativeString' doesn't respect 'spinal-case' recommended.");
         expect(messages.warnings[0].path).toEqual("path_to");
         expect(messages.warnings[0].type).toEqual("convention");
         expect(messages.warnings[0].rule).toEqual('EXAMPLE_RULE_ID');
@@ -700,7 +700,7 @@ describe('case convention and alternative check tests', function() {
         expect(result).toEqual(false);
         expect(messages.errors.length).toEqual(0);
         expect(messages.warnings.length).toEqual(1);
-        expect(messages.warnings[0].message).toEqual("Examples string should follow case convention: 'spinal-case' recommended.");
+        expect(messages.warnings[0].message).toEqual("Examples string should follow case convention: 'stringAlternativeString' doesn't respect 'spinal-case' recommended.");
         expect(messages.warnings[0].path).toEqual("path_to");
         expect(messages.warnings[0].type).toEqual("convention");
         expect(messages.warnings[0].rule).toEqual('EXAMPLE_RULE_ID');
@@ -718,7 +718,7 @@ describe('case convention and alternative check tests', function() {
         expect(result).toEqual(false);
         expect(messages.errors.length).toEqual(0);
         expect(messages.warnings.length).toEqual(1);
-        expect(messages.warnings[0].message).toEqual("Examples string must follow case convention: 'spinal-case'.");
+        expect(messages.warnings[0].message).toEqual("Examples string must follow case convention: 'stringAlternativeString' doesn't respect 'spinal-case'.");
         expect(messages.warnings[0].path).toEqual("path_to");
         expect(messages.warnings[0].type).toEqual("convention");
         expect(messages.warnings[0].rule).toEqual('EXAMPLE_RULE_ID');
@@ -736,7 +736,7 @@ describe('case convention and alternative check tests', function() {
         expect(result).toEqual(false);
         expect(messages.warnings.length).toEqual(0);
         expect(messages.errors.length).toEqual(1);
-        expect(messages.errors[0].message).toEqual("Examples string must follow case convention: 'spinal-case'.");
+        expect(messages.errors[0].message).toEqual("Examples string must follow case convention: 'stringAlternativeString' doesn't respect 'spinal-case'.");
         expect(messages.errors[0].path).toEqual("path_to");
         expect(messages.errors[0].type).toEqual("convention");
         expect(messages.errors[0].rule).toEqual('EXAMPLE_RULE_ID');
@@ -754,7 +754,7 @@ describe('case convention and alternative check tests', function() {
         expect(result).toEqual(false);
         expect(messages.warnings.length).toEqual(0);
         expect(messages.errors.length).toEqual(1);
-        expect(messages.errors[0].message).toEqual("Examples string must follow case convention: 'spinal-case' or 'camelCase' or 'UpperCamelCase'.");
+        expect(messages.errors[0].message).toEqual("Examples string must follow case convention: 'stringAlternative-string_Wrong' doesn't respect 'spinal-case' or 'camelCase' or 'UpperCamelCase'.");
         expect(messages.errors[0].path).toEqual("path_to");
         expect(messages.errors[0].type).toEqual("convention");
         expect(messages.errors[0].rule).toEqual('EXAMPLE_RULE_ID');
@@ -772,7 +772,7 @@ describe('case convention and alternative check tests', function() {
         expect(result).toEqual(false);
         expect(messages.warnings.length).toEqual(0);
         expect(messages.errors.length).toEqual(1);
-        expect(messages.errors[0].message).toEqual("Examples string must follow case convention: 'camelCase' recommended, or eventually 'spinal-case'.");
+        expect(messages.errors[0].message).toEqual("Examples string must follow case convention: 'stringAlternative-string_Wrong' doesn't respect 'camelCase' recommended, or eventually 'spinal-case'.");
         expect(messages.errors[0].path).toEqual("path_to");
         expect(messages.errors[0].type).toEqual("convention");
         expect(messages.errors[0].rule).toEqual('EXAMPLE_RULE_ID');

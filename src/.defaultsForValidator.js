@@ -47,6 +47,8 @@ const defaults = {
       'no_parameter_description': 'error',
       'param_name_case_convention': ['error', 'lower_snake_case'],
       'param_name_alternative_case_convention': ['off', 'lower_snake_case'],
+      'header_name_case_convention': ['off', 'spinal_first_upper_case'],
+      'header_starting_with_x': 'off',
       'invalid_type_format_pair': 'error',
       'content_type_parameter': 'error',
       'accept_type_parameter': 'error',

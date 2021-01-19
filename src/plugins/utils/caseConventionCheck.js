@@ -127,7 +127,7 @@ if ((defaultCheckLevel === 'off' || !defaultCheckLevel) && alternativeCheckLevel
             if (messageCarrier) {
                 messageCarrier.addTypedMessage(
                     pathToElement,
-                    `${elementTypeName} must follow case convention: ${this.getCaseConventionExample(defaultCaseConvention)}.`,
+                    `${elementTypeName} must follow case convention: '${stringToTest}' doesn't respect ${this.getCaseConventionExample(defaultCaseConvention)}.`,
                     messageStatus,
                     'convention',
                     ruleIdentifier
@@ -145,7 +145,7 @@ if ((defaultCheckLevel === 'off' || !defaultCheckLevel) && alternativeCheckLevel
                     if (messageCarrier) {
                         messageCarrier.addTypedMessage(
                             pathToElement,
-                            `${elementTypeName} should follow case convention: ${this.getCaseConventionExample(defaultCaseConvention)} recommended.`,
+                            `${elementTypeName} should follow case convention: '${stringToTest}' doesn't respect ${this.getCaseConventionExample(defaultCaseConvention)} recommended.`,
                             messageStatus,
                             'convention',
                             ruleIdentifier
@@ -160,9 +160,9 @@ if ((defaultCheckLevel === 'off' || !defaultCheckLevel) && alternativeCheckLevel
                     let messageString;
                     //message is different if the case convention are at same error level or not
                     if (defaultCheckLevel !== alternativeCheckLevel) {
-                        messageString = `${elementTypeName} must follow case convention: ${this.getCaseConventionExample(defaultCaseConvention)} recommended, or eventually ${this.getCaseConventionExample(alternativeCaseConvention)}.`;
+                        messageString = `${elementTypeName} must follow case convention: '${stringToTest}' doesn't respect ${this.getCaseConventionExample(defaultCaseConvention)} recommended, or eventually ${this.getCaseConventionExample(alternativeCaseConvention)}.`;
                     } else {
-                        messageString = `${elementTypeName} must follow case convention: ${this.getCaseConventionExample(defaultCaseConvention)} or ${this.getCaseConventionExample(alternativeCaseConvention)}.`;
+                        messageString = `${elementTypeName} must follow case convention: '${stringToTest}' doesn't respect ${this.getCaseConventionExample(defaultCaseConvention)} or ${this.getCaseConventionExample(alternativeCaseConvention)}.`;
                     }
                     messageCarrier.addTypedMessage(
                         pathToElement,
@@ -211,7 +211,7 @@ module.exports.getCaseConventionExample = function (convention) {
 
     case 'spinal_first_upper_case':  
     case 'dash_first_upper_case':
-      return "'Spinal-First-Letter-Upper-Case'";
+      return "'Spinal-FirstLetterUpper-Case'";
 
     case 'lower_spinal_case':  
     case 'lower_dash_case':

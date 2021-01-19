@@ -11,6 +11,8 @@
 const { checkCase, isParameterObject, walk } = require('../../../utils');
 const MessageCarrier = require('../../../utils/messageCarrier');
 
+const headerStartingWithXRegex = /^([xX])(([-_\.A-Z]))/;
+
 module.exports.validate = function({ jsSpec, isOAS3 }, config) {
   const messages = new MessageCarrier();
 
@@ -43,34 +45,70 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
       const isHeaderParameter = obj.in && obj.in.toLowerCase() === 'header'; // header params need not be checked for case
       const isDeprecated = obj.deprecated === true;
 
-      if (isParameter && !isHeaderParameter && !isRef && !isDeprecated) {
-        const checkStatus = config.param_name_case_convention[0];
-        let checkAlternativeParameterCaseConvention = 'off';
-        let caseConventionAlternative;
-        if (config.param_name_alternative_case_convention) {
-          checkAlternativeParameterCaseConvention = config.param_name_alternative_case_convention[0];
-            if (checkAlternativeParameterCaseConvention != 'off') {
-                caseConventionAlternative = config.param_name_alternative_case_convention[1];
-            }
-        }
+      if (isParameter && !isRef && !isDeprecated) {
+              
+        if (isHeaderParameter) {
+          //for header parameters
+          const checkHeaderCaseConvention = config.header_name_case_convention[0];
 
-        if (checkStatus !== 'off') {
-          const caseConvention = config.param_name_case_convention[1];
-          
-          // Relax snakecase check to allow names with "." and names like "filter[paramname]"
-          let paramName = obj.name;
-          paramName = paramName.replace('[','.');
-          paramName = paramName.replace(']','.');
-          const nameSegments = paramName.split('.');
-          nameSegments.forEach(segment => {
-              // the first element will be "" since pathName starts with "/"
-              // also, ignore validating the path parameters
-              if (segment !== '') {                
-                checkCase.checkCaseConventionOrAlternativeCase(segment, caseConvention, checkStatus, 
-                  caseConventionAlternative, checkAlternativeParameterCaseConvention, 
-                  messages, path, 'Parameter names', 'CTMO.STANDARD-CODAGE-19');
-              }
-          });
+          if (checkHeaderCaseConvention !== 'off') {
+            const caseConventionValue = config.header_name_case_convention[1];
+            const isCorrectCase = checkCase(obj.name, caseConventionValue);
+            if (!isCorrectCase) {
+              messages.addTypedMessage(
+                path,
+                `HTTP Header name must follow case convention: '${obj.name}' doesn't respect ${checkCase.getCaseConventionExample(caseConventionValue)}.`,
+                checkHeaderCaseConvention,
+                'convention',
+                'IETF.RFC.6648'
+              );
+            }
+          }
+
+          const checkHeaderWithX = config.header_starting_with_x;
+          if (checkHeaderWithX !== 'off') {
+            if (headerStartingWithXRegex.test(obj.name)) {
+              messages.addTypedMessage(
+                path,
+                `HTTP Header name must not start with 'X-*' : '${obj.name}'`,
+                checkHeaderWithX,
+                'convention',
+                'IETF.RFC.6648'
+              );
+            }
+          }
+
+
+        } else {
+          //for non header parameters
+          const checkStatus = config.param_name_case_convention[0];
+
+          if (checkStatus !== 'off') {
+            const caseConvention = config.param_name_case_convention[1];        
+            let checkAlternativeParameterCaseConvention = 'off';
+            let caseConventionAlternative;
+            if (config.param_name_alternative_case_convention) {
+              checkAlternativeParameterCaseConvention = config.param_name_alternative_case_convention[0];
+                if (checkAlternativeParameterCaseConvention != 'off') {
+                    caseConventionAlternative = config.param_name_alternative_case_convention[1];
+                }
+            }
+            
+            // Relax snakecase check to allow names with "." and names like "filter[paramname]"
+            let paramName = obj.name;
+            paramName = paramName.replace('[','.');
+            paramName = paramName.replace(']','.');
+            const nameSegments = paramName.split('.');
+            nameSegments.forEach(segment => {
+                // the first element will be "" since pathName starts with "/"
+                // also, ignore validating the path parameters
+                if (segment !== '') {                
+                  checkCase.checkCaseConventionOrAlternativeCase(segment, caseConvention, checkStatus, 
+                    caseConventionAlternative, checkAlternativeParameterCaseConvention, 
+                    messages, path, 'Parameter names', 'CTMO.STANDARD-CODAGE-19');
+                }
+            });
+          }
         }
 
       }
