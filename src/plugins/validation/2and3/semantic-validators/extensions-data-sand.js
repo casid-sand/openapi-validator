@@ -457,10 +457,9 @@ function checkExtensionValue(jsObject, pathToObjectArray, extensionDefinition, m
 
 function getStringValueNormalized(stringToNormalize) {
 
+    let normalizedString = "";
     if (stringToNormalize !== null && stringToNormalize !== undefined) {
-        const normalizedString = stringToNormalize.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-        return normalizedString;
-    } else {
-        return null;
-    }
+        normalizedString = stringToNormalize.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    } 
+    return normalizedString;
 }

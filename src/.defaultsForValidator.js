@@ -93,6 +93,7 @@ const defaults = {
       'property_alternative_case_convention': [ 'off', 'lower_camel_case'],
       'property_case_collision': 'error',
       'enum_case_convention': [ 'warning', 'lower_snake_case'],
+      'enum_alternative_case_convention': [ 'off', 'lower_camel_case'],
       'undefined_required_properties': 'warning'
     },
     'walker': {

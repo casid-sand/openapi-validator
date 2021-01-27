@@ -95,7 +95,7 @@ module.exports.validate = function({ resolvedSpec, jsSpec }, config) {
           const binaryStringStatus = configSchemas.json_or_param_binary_string;
           if (binaryStringStatus !== 'off') {
             for (const mimeType of requestBodyMimeTypes) {
-              if (mimeType === 'application/json') {
+              if (mimeType === 'application/json' || mimeType === 'application/hal+json' || mimeType === 'application/problem+json') {
                 const schemaPath = `paths.${pathName}.${opName}.requestBody.content.${mimeType}.schema`;
                 const octetSequencePaths = findOctetSequencePaths(
                   requestBodyContent[mimeType].schema,
@@ -136,13 +136,14 @@ module.exports.validate = function({ resolvedSpec, jsSpec }, config) {
 
                   const isJson =
                     responseContent === 'application/json' ||
-                    responseContent === 'application/hal+json'
+                    responseContent === 'application/hal+json' ||
+                    responseContent === 'application/problem+json';
 
                     if (!isJson) {
                       if (responseContent.includes('json')) {
                           messages.addTypedMessage(
                               `paths.${pathName}.${opName}.responses.${responseCode}.content.${responseContent}`,
-                              `JSON Content-type must be 'application/json' or 'application/hal+json', without charset.`,
+                              `JSON Content-type must be 'application/json' or 'application/hal+json' or 'application/problem+json', without charset.`,
                               `warning`,
                               'convention',
                               'CTMO.STANDARD-CODAGE-15'
@@ -150,7 +151,7 @@ module.exports.validate = function({ resolvedSpec, jsSpec }, config) {
                       } else {
                           messages.addTypedMessage(
                               `paths.${pathName}.${opName}.responses.${responseCode}.content.${responseContent}`,
-                              `Content-Type must be JSON ('application/json' or 'application/hal+json').`,
+                              `Content-Type must be JSON ('application/json' or 'application/hal+json' or 'application/problem+json').`,
                               checkJSon,
                               'convention',
                               'CTMO.STANDARD-CODAGE-15'
@@ -172,13 +173,14 @@ module.exports.validate = function({ resolvedSpec, jsSpec }, config) {
 
                 const isJson =
                   requestContent === 'application/json' ||
-                  requestContent === 'application/hal+json'
+                  requestContent === 'application/hal+json' ||
+                  requestContent === 'application/problem+json';
 
                   if (!isJson) {
                     if (requestContent.includes('json')) {
                         messages.addTypedMessage(
                             `paths.${pathName}.${opName}.requestBody.content.${requestContent}`,
-                            `JSON Content-type must be 'application/json' or 'application/hal+json', without charset.`,
+                            `JSON Content-type must be 'application/json' or 'application/hal+json' or 'application/problem+json', without charset.`,
                             `warning`,
                             'convention',
                             'CTMO.STANDARD-CODAGE-15'
@@ -186,7 +188,7 @@ module.exports.validate = function({ resolvedSpec, jsSpec }, config) {
                     } else {
                         messages.addTypedMessage(
                             `paths.${pathName}.${opName}.requestBody.content.${requestContent}`,
-                            `Content-Type must be JSON ('application/json' or 'application/hal+json').`,
+                            `Content-Type must be JSON ('application/json' or 'application/hal+json' or 'application/problem+json').`,
                             checkJSon,
                             'convention',
                             'CTMO.STANDARD-CODAGE-15'

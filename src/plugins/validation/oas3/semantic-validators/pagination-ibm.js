@@ -44,7 +44,7 @@ module.exports.validate = function({ resolvedSpec }, config) {
     );
     // Now get the json content of that response
     const content = resp && operation.responses[resp].content;
-    const jsonResponse = content && content['application/json'];
+    const jsonResponse = content && (content['application/json'] || content['application/hal+json'] || content['application/problem+json']);
 
     // Can't check response schema for array property, so skip this path
     if (

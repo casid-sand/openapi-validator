@@ -1930,15 +1930,15 @@ describe('validation plugin - semantic - schema-ibm - OpenAPI 3', () => {
       '2'
     ]);
     expect(res.warnings[0].message).toEqual(
-      "Enum values must follow case convention: 'lower_snake_case'."
+      "Enum values must follow case convention: 'darkBlue' doesn't respect 'lower_snake_case'."
     );
   });
 
-  it('should return a warning when an enum value does not follow enum_case_convention[1]=lower_snake_case', () => {
+  it('should return an error when an enum value does not follow enum_case_convention[1]=lower_snake_case', () => {
     const customConfig = {
       schemas: {
         snake_case_only: 'off',
-        enum_case_convention: ['warning', 'lower_snake_case']
+        enum_case_convention: ['error', 'lower_snake_case']
       }
     };
 
@@ -1966,9 +1966,9 @@ describe('validation plugin - semantic - schema-ibm - OpenAPI 3', () => {
     };
 
     const res = validate({ jsSpec: spec, isOAS3: true }, customConfig);
-    expect(res.errors.length).toEqual(0);
-    expect(res.warnings.length).toEqual(1);
-    expect(res.warnings[0].path).toEqual([
+    expect(res.warnings.length).toEqual(0);
+    expect(res.errors.length).toEqual(1);
+    expect(res.errors[0].path).toEqual([
       'paths',
       '/some/path/{id}',
       'get',
@@ -1978,16 +1978,17 @@ describe('validation plugin - semantic - schema-ibm - OpenAPI 3', () => {
       'enum',
       '1'
     ]);
-    expect(res.warnings[0].message).toEqual(
-      "Enum values must follow case convention: 'lower_snake_case'."
+    expect(res.errors[0].message).toEqual(
+      "Enum values must follow case convention: 'enumValues' doesn't respect 'lower_snake_case'."
     );
   });
 
-  it('should return a warning when an enum value does not follow enum_case_convention[1]=lower_snake_case', () => {
+  it('should return error when an enum value does not follow enum_case_convention[1]=lower_spinal_case and enum_alternative_case_convention=all_snake_case', () => {
     const customConfig = {
       schemas: {
         snake_case_only: 'off',
-        enum_case_convention: ['warning', 'lower_snake_case']
+        enum_case_convention: ['error', 'lower_spinal_case'],
+        enum_alternative_case_convention: ['warning', 'all_snake_case']
       }
     };
 
@@ -2000,7 +2001,7 @@ describe('validation plugin - semantic - schema-ibm - OpenAPI 3', () => {
             color: {
               type: 'string',
               description: 'some color',
-              enum: ['blue', 'light_blue', 'darkBlue']
+              enum: ['blue', 'darker-blue', 'LIGHT_BLUE', 'dark_blue', 'lighterBlue']
             }
           }
         }
@@ -2008,8 +2009,20 @@ describe('validation plugin - semantic - schema-ibm - OpenAPI 3', () => {
     };
 
     const res = validate({ jsSpec: spec, isOAS3: true }, customConfig);
-    expect(res.errors.length).toEqual(0);
-    expect(res.warnings.length).toEqual(1);
+    expect(res.errors.length).toEqual(1);
+    expect(res.errors[0].path).toEqual([
+      'definitions',
+      'Thing',
+      'properties',
+      'color',
+      'enum',
+      '4'
+    ]);
+    expect(res.errors[0].message).toEqual(
+      "Enum values must follow case convention: 'lighterBlue' doesn't respect 'spinal-case' recommended, or eventually 'lower_snake_case' or 'UPPER_SNAKE_CASE'."
+    );
+
+    expect(res.warnings.length).toEqual(2);
     expect(res.warnings[0].path).toEqual([
       'definitions',
       'Thing',
@@ -2019,15 +2032,27 @@ describe('validation plugin - semantic - schema-ibm - OpenAPI 3', () => {
       '2'
     ]);
     expect(res.warnings[0].message).toEqual(
-      "Enum values must follow case convention: 'lower_snake_case'."
+      "Enum values should follow case convention: 'LIGHT_BLUE' doesn't respect 'spinal-case' recommended."
+    );
+    expect(res.warnings[1].path).toEqual([
+      'definitions',
+      'Thing',
+      'properties',
+      'color',
+      'enum',
+      '3'
+    ]);
+    expect(res.warnings[1].message).toEqual(
+      "Enum values should follow case convention: 'dark_blue' doesn't respect 'spinal-case' recommended."
     );
   });
 
-  it('should return a warning when an enum value does not follow enum_case_convention[1]=lower_snake_case', () => {
+  it('should return a warning when an enum value does not follow enum_case_convention[1]=lower_snake_case and enum_alternative_case_convention=all_snake_case', () => {
     const customConfig = {
       schemas: {
         snake_case_only: 'off',
-        enum_case_convention: ['warning', 'lower_snake_case']
+        enum_case_convention: ['warning', 'all_snake_case'],
+        enum_alternative_case_convention: ['warning', 'lower_spinal_case']
       }
     };
 
@@ -2045,7 +2070,7 @@ describe('validation plugin - semantic - schema-ibm - OpenAPI 3', () => {
                 items: {
                   type: 'string',
                   description: 'the values',
-                  enum: ['all', 'enumValues', 'possible']
+                  enum: ['all', 'camelValue', 'spinal-value', 'UPPER_SNAKE', 'lower_snake']
                 }
               }
             ]
@@ -2068,7 +2093,7 @@ describe('validation plugin - semantic - schema-ibm - OpenAPI 3', () => {
       '1'
     ]);
     expect(res.warnings[0].message).toEqual(
-      "Enum values must follow case convention: 'lower_snake_case'."
+      "Enum values must follow case convention: 'camelValue' doesn't respect 'lower_snake_case' or 'UPPER_SNAKE_CASE' or 'spinal-case'."
     );
   });
 

@@ -48,6 +48,7 @@ const parameterRegex = /^{.*}$/;
 const pluralFirstWordLowerCase = /^[a-z][a-z0-9]*[sxz](?:[\_\-\.][a-z0-9]+)*$/; // example : learnings_opt_out or learningx-opt-out or learningz.opt.Out
 const pluralFirstWordCamelCase = /^[a-zA-Z][a-z0-9]*[sxz](?:[A-Z][a-z0-9]+)*$/; // example : learningxOptOut or LearningsOptOut
 
+const reservedWords = ['api', 'health', 'metrics'];
 
 module.exports.validate = function({ resolvedSpec }, config) {
   const messages = new MessageCarrier();
@@ -94,13 +95,15 @@ module.exports.validate = function({ resolvedSpec }, config) {
                 );
             }
 
-            //check if root path (number 2) is the version
+            //check if root path (number 1), or if it's the version or if it's a reserved Word
             if (depthPath > 1) {
-                if (! (depthPath == 2 && versionInPathRegex.test(substr.toLowerCase()))) {
+                if (! (versionInPathRegex.test(substr.toLowerCase()))
+                    && ! (reservedWords.includes(substr.toLowerCase()))) {
+                    
                     numberOfLevels += 1;
 
-                    //check all path elements plural, except parameters and version
-                    if (substr.length > 0 && !parameterRegex.test(substr) && !versionInPathRegex.test(substr.toLowerCase())) {
+                    //check all path elements plural, except parameters
+                    if (substr.length > 0 && !parameterRegex.test(substr)) {
                         const lastPathChar = substr.charAt(substr.length-1).toLowerCase();
 
                         // Assertation 7
@@ -132,7 +135,7 @@ module.exports.validate = function({ resolvedSpec }, config) {
                     if ( (numberOfLevels % 2 == 0) != parameterRegex.test(substr) ) {
                         resourcesAlternated = false;
                     }
-                }   
+                }
             }
         });
 

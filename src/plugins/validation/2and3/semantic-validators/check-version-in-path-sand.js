@@ -10,6 +10,8 @@ const getVersion = require('../../../../cli-validator/utils/getOpenApiVersion');
 const versionInPathRegex = /^(?:v(?:ersion)?[\_\-\.]?)?(\d+)(\.\d+)?(\.\d+)?$/;
 const versionNameRegex = /^(?:v(?:ersion)?[\_\-\. ]*)?(\d+)(?:\.(\d+))?(?:\.(\d+))?(?:\.(\d+))?(.*)$/;
 
+const reservedPathsWithoutVersion = ['health', 'metrics'];
+
 module.exports.validate = function({ jsSpec }, config) {
     const messages = new MessageCarrier();
 
@@ -105,7 +107,6 @@ module.exports.validate = function({ jsSpec }, config) {
                         if (serverUrl && typeof serverUrl === "string" && serverUrl.toString().trim().length > 0) {
 
                             let hasVersionElementInServer = false;
-                            let hasCorrectVersionInServer = false;
 
                             //parse each url element : separates by /
                             serverUrl.split('/').map(serverUrlElement => {
@@ -132,7 +133,6 @@ module.exports.validate = function({ jsSpec }, config) {
                                             const hasCorrectVersionNumber = isVersionSimilar(serverUrlElement, apiversionComponents);
 
                                             if (hasCorrectVersionNumber === true) {
-                                                hasCorrectVersionInServer= true;
                                             } else {
                                                 messages.addTypedMessage(
                                                     [`servers`, `${i}`, 'url'],
@@ -142,9 +142,7 @@ module.exports.validate = function({ jsSpec }, config) {
                                                     'CTMO.Regle-14'
                                                 );
                                             }
-                                        } else {
-                                            hasCorrectVersionInServer = true;
-                                        }
+                                        } 
                                     }
                                 }
                                 
@@ -196,12 +194,14 @@ module.exports.validate = function({ jsSpec }, config) {
                 const pathNames = Object.keys(jsSpec.paths);
                 pathNames.forEach(pathName => {
                     let pathHasVersion = false;
+                    let pathHasReservedWord = false;
 
+                    let depthPath = 0;
                     //parse each url element : separates by /
                     pathName.split('/').map(pathElement => {
 
                         if (pathElement !== "") {
-                        
+                            depthPath += 1;
                             pathElement = pathElement.toLowerCase();
 
                             if (versionInPathRegex.test(pathElement)) {
@@ -246,12 +246,15 @@ module.exports.validate = function({ jsSpec }, config) {
                                 } else {
                                     hasOnePathWithVersion = true;
                                 }
-                            } 
+                            } else if (reservedPathsWithoutVersion.includes(pathElement) && depthPath === 1 ) {
+                                //if starts with a tecnical reserved path
+                                pathHasReservedWord = true;
+                            }
                         }
                     });
 
-                    //at least one path without version
-                    if (pathHasVersion === false) {
+                    //at least one path without version and not a reserved path
+                    if (pathHasVersion === false && pathHasReservedWord === false) {
                         hasOnePathWithoutVersion = true;
                     }
                 });

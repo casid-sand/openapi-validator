@@ -631,7 +631,8 @@ describe('validation plugin - semantic - check-version in path for swagger2', ()
     expect(res.warnings.length).toEqual(0);
   });
 
-  it('should be errors with no version in basePath and only in one path', () => {
+
+  it('should be errors with no version in basePath and only in one path and a technical path without version', () => {
     const spec = {
       swagger: '2.0',
       info: {
@@ -651,7 +652,11 @@ describe('validation plugin - semantic - check-version in path for swagger2', ()
           },
         "/pathTwo": {
           "get": {
-          },
+          }
+        },
+        "/metrics": {
+          "get": {
+          }
         }
       }
     };

@@ -105,7 +105,8 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
   // properties that have the same name but an inconsistent type.
   const propertiesToCompare = {};
 
-  let caseConventionAlternative = config.property_alternative_case_convention;
+  let propertyCasePropConventionAlternative = config.property_alternative_case_convention;
+  let enumCasePropConventionAlternative = config.enum_alternative_case_convention;
 
   schemas.forEach(({ schema, path }) => {
        
@@ -131,7 +132,7 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
             schema,
             path,
             config.property_case_convention,
-            caseConventionAlternative,
+            propertyCasePropConventionAlternative,
             messages
           );
         }
@@ -154,6 +155,7 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
             schema,
             path,
             config.enum_case_convention,
+            enumCasePropConventionAlternative,
             messages
           );
         }
@@ -601,10 +603,20 @@ function checkEnumCaseConvention(
   schema,
   contextPath,
   caseConvention,
+  alternativeCaseConvention,
   messages
 ) {
   if (!schema.enum || !caseConvention) {
     return;
+  }
+
+  let checkAlternativeEnumCaseConvention = 'off';
+  let enumCaseConventionAlternative;
+  if (alternativeCaseConvention) {
+    checkAlternativeEnumCaseConvention = alternativeCaseConvention[0];
+      if (checkAlternativeEnumCaseConvention != 'off') {
+        enumCaseConventionAlternative = alternativeCaseConvention[1];
+      }
   }
 
   for (let i = 0; i < schema.enum.length; i++) {
@@ -613,16 +625,10 @@ function checkEnumCaseConvention(
       const checkStatus = caseConvention[0] || 'off';
       if (checkStatus.match('error|warning')) {
         const caseConventionValue = caseConvention[1];
-        const isCorrectCase = checkCase(enumValue, caseConventionValue);
-        if (!isCorrectCase) {
-          messages.addTypedMessage(
-            contextPath.concat(['enum', i.toString()]),
-            `Enum values must follow case convention: ${checkCase.getCaseConventionExample(caseConventionValue)}.`,
-            checkStatus,
-            'convention',
-             'CTMO.STANDARD-CODAGE-19'
-          );
-        }
+
+        checkCase.checkCaseConventionOrAlternativeCase(enumValue, caseConventionValue, checkStatus, 
+          enumCaseConventionAlternative, checkAlternativeEnumCaseConvention, 
+          messages, contextPath.concat(['enum', i.toString()]), 'Enum values', 'CTMO.STANDARD-CODAGE-19');
       }
     }
   }

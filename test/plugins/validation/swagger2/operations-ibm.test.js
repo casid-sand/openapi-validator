@@ -567,7 +567,7 @@ describe('validation plugin - semantic - operations-ibm - swagger2', function() 
           post: {
             summary: 'this is a summary',
             operationId: 'operationId',
-            consumes: ['application/json','text/json'],
+            consumes: ['application/json','text/json', 'application/problem+json'],
             produces: ['application/json;charset=UTF-8'],
             parameters: [
               {
@@ -602,9 +602,9 @@ describe('validation plugin - semantic - operations-ibm - swagger2', function() 
     const res = validate({ jsSpec: spec }, config);
     expect(res.warnings.length).toEqual(2);
     expect(res.warnings[0].path).toEqual('paths./CoolPath.post.produces.0');
-    expect(res.warnings[0].message).toEqual(`JSON Operation produces Content-type must be 'application/json' or 'application/hal+json', without charset.`);
+    expect(res.warnings[0].message).toEqual(`JSON Operation produces Content-type must be 'application/json' or 'application/hal+json' or 'application/problem+json', without charset.`);
     expect(res.warnings[1].path).toEqual('paths./CoolPath.post.consumes.1');
-    expect(res.warnings[1].message).toEqual(`JSON Operation consumes Content-type must be 'application/json' or 'application/hal+json', without charset.`);
+    expect(res.warnings[1].message).toEqual(`JSON Operation consumes Content-type must be 'application/json' or 'application/hal+json' or 'application/problem+json', without charset.`);
     expect(res.errors.length).toEqual(0);
   });
 
@@ -657,9 +657,9 @@ describe('validation plugin - semantic - operations-ibm - swagger2', function() 
     const res = validate({ jsSpec: spec }, config);
     expect(res.errors.length).toEqual(2);
     expect(res.errors[0].path).toEqual('paths./CoolPath.post.produces.0');
-    expect(res.errors[0].message).toEqual(`Operation produces Content-Type must be JSON ('application/json' or 'application/hal+json').`);
+    expect(res.errors[0].message).toEqual(`Operation produces Content-Type must be JSON ('application/json' or 'application/hal+json' or 'application/problem+json').`);
     expect(res.errors[1].path).toEqual('paths./CoolPath.post.consumes.0');
-    expect(res.errors[1].message).toEqual(`Operation consumes Content-Type must be JSON ('application/json' or 'application/hal+json').`);
+    expect(res.errors[1].message).toEqual(`Operation consumes Content-Type must be JSON ('application/json' or 'application/hal+json' or 'application/problem+json').`);
     expect(res.warnings.length).toEqual(0);
   });
 

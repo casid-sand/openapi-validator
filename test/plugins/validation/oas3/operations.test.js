@@ -921,13 +921,13 @@ describe('validation plugin - semantic - operations - oas3', function() {
     const res = validate({ resolvedSpec: spec, jsSpec: spec }, config);
     expect(res.errors.length).toEqual(0);
     expect(res.warnings.length).toEqual(4);
-    expect(res.warnings[0].message).toEqual(`JSON Content-type must be 'application/json' or 'application/hal+json', without charset.`);
+    expect(res.warnings[0].message).toEqual(`JSON Content-type must be 'application/json' or 'application/hal+json' or 'application/problem+json', without charset.`);
     expect(res.warnings[0].path).toEqual('paths./pets.post.responses.200.content.text/json');
-    expect(res.warnings[1].message).toEqual(`JSON Content-type must be 'application/json' or 'application/hal+json', without charset.`);
+    expect(res.warnings[1].message).toEqual(`JSON Content-type must be 'application/json' or 'application/hal+json' or 'application/problem+json', without charset.`);
     expect(res.warnings[1].path).toEqual('paths./pets.post.responses.200.content.application/json;charset=UTF-8');
-    expect(res.warnings[2].message).toEqual(`JSON Content-type must be 'application/json' or 'application/hal+json', without charset.`);
+    expect(res.warnings[2].message).toEqual(`JSON Content-type must be 'application/json' or 'application/hal+json' or 'application/problem+json', without charset.`);
     expect(res.warnings[2].path).toEqual('paths./pets.post.requestBody.content.application/json;charset=UTF-8');
-    expect(res.warnings[3].message).toEqual(`JSON Content-type must be 'application/json' or 'application/hal+json', without charset.`);
+    expect(res.warnings[3].message).toEqual(`JSON Content-type must be 'application/json' or 'application/hal+json' or 'application/problem+json', without charset.`);
     expect(res.warnings[3].path).toEqual('paths./pets.post.requestBody.content.text/json');
     expect(res.errors.length).toEqual(0);
   });
@@ -1045,13 +1045,13 @@ describe('validation plugin - semantic - operations - oas3', function() {
 
     const res = validate({ resolvedSpec: spec, jsSpec: spec }, config);
     expect(res.errors.length).toEqual(4);
-    expect(res.errors[0].message).toEqual(`Content-Type must be JSON ('application/json' or 'application/hal+json').`);
+    expect(res.errors[0].message).toEqual(`Content-Type must be JSON ('application/json' or 'application/hal+json' or 'application/problem+json').`);
     expect(res.errors[0].path).toEqual('paths./pets.post.responses.200.content.application/xml');
-    expect(res.errors[1].message).toEqual(`Content-Type must be JSON ('application/json' or 'application/hal+json').`);
+    expect(res.errors[1].message).toEqual(`Content-Type must be JSON ('application/json' or 'application/hal+json' or 'application/problem+json').`);
     expect(res.errors[1].path).toEqual('paths./pets.post.responses.200.content.text/html');
-    expect(res.errors[2].message).toEqual(`Content-Type must be JSON ('application/json' or 'application/hal+json').`);
+    expect(res.errors[2].message).toEqual(`Content-Type must be JSON ('application/json' or 'application/hal+json' or 'application/problem+json').`);
     expect(res.errors[2].path).toEqual('paths./pets.post.requestBody.content.text/html');
-    expect(res.errors[3].message).toEqual(`Content-Type must be JSON ('application/json' or 'application/hal+json').`);
+    expect(res.errors[3].message).toEqual(`Content-Type must be JSON ('application/json' or 'application/hal+json' or 'application/problem+json').`);
     expect(res.errors[3].path).toEqual('paths./pets.post.requestBody.content.application/xml');
     expect(res.warnings.length).toEqual(0);
   });

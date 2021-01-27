@@ -8,7 +8,8 @@ let swagger_file_name;
 
 swagger_file_name = 'openapi3-test.yaml';
 swagger_file_name = 'swagger-test.yml';
-swagger_file_name = 'Ccpm - v1.1-anonym-temp.yaml';
+swagger_file_name = 'CMAn-NOE-v1.0-08.01-VA-API_Serveur_Rebond_Axone -anonym-temp.yaml';
+swagger_file_name = 'openapi-api-impl-demo-v0.0.3.yml';
 let dir_path = './test/mock-validation/input/';
 
 //swagger_file_name = "missing-object.yml"

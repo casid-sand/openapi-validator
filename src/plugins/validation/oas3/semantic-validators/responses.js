@@ -129,7 +129,7 @@ function validateNoBinaryStringsInResponse(
     const responseBodyContent = responseObj[responseCode].content;
     if (responseBodyContent) {
       Object.keys(responseBodyContent).forEach(function(mimeType) {
-        if (mimeType === 'application/json') {
+        if (mimeType === 'application/json' || mimeType === 'application/hal+json' || mimeType === 'application/problem+json') {
           const schemaPath = path.concat([
             responseCode,
             'content',

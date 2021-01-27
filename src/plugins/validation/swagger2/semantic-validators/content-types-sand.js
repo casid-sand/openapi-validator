@@ -3,7 +3,12 @@
 
 const { isArray } = require('lodash');
 const MessageCarrier = require('../../../utils/messageCarrier');
-//const contentTypesChecker = require('./content-types');
+
+const MimeTypeJsonArray = [
+    'application/json',  
+    'application/hal+json',
+    'application/problem+json'
+]
 
 module.exports.validate = function({ jsSpec }, config) {
 
@@ -39,15 +44,13 @@ module.exports.validateContentTypeList = function (contentTypeList, checkTypeLev
                 let typeItem = contentTypeList[i];
                 if (typeof typeItem === 'string') {
                 
-                    const isJson =
-                        typeItem === 'application/json' ||
-                        typeItem === 'application/hal+json'
+                    const isJson = MimeTypeJsonArray.includes(typeItem);
             
                     if (!isJson) {
                         if (typeItem.includes('json')) {
                             messages.addTypedMessage(
                                 `${pathToObject}.${i}`,
-                                `JSON ${consumeOrProduceName} Content-type must be 'application/json' or 'application/hal+json', without charset.`,
+                                `JSON ${consumeOrProduceName} Content-type must be 'application/json' or 'application/hal+json' or 'application/problem+json', without charset.`,
                                 `warning`,
                                 'convention',
                                 'CTMO.STANDARD-CODAGE-15'
@@ -55,7 +58,7 @@ module.exports.validateContentTypeList = function (contentTypeList, checkTypeLev
                         } else {
                             messages.addTypedMessage(
                                 `${pathToObject}.${i}`,
-                                `${consumeOrProduceName} Content-Type must be JSON ('application/json' or 'application/hal+json').`,
+                                `${consumeOrProduceName} Content-Type must be JSON ('application/json' or 'application/hal+json' or 'application/problem+json').`,
                                 checkTypeLevel,
                                 'convention',
                                 'CTMO.STANDARD-CODAGE-15'

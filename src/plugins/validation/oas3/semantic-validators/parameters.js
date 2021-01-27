@@ -71,7 +71,7 @@ module.exports.validate = function({ jsSpec }, config) {
         );
         if (obj.content) {
           Object.keys(obj.content).forEach(function(mimeType) {
-            if (mimeType === 'application/json') {
+            if (mimeType === 'application/json' || mimeType === 'application/hal+json' || mimeType === 'application/problem+json') {
               const paramContentPath = path.concat([
                 'content',
                 mimeType,

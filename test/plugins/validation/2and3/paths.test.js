@@ -728,7 +728,35 @@ describe('validation plugin - semantic - paths', function() {
                         type: 'string'
                         }
                     ]
-                    }
+                  },
+                  '/api/pets/{id}': {
+                    parameters: [
+                        {
+                        in: 'path',
+                        name: 'id',
+                        description:
+                            'bad parameter but should be caught by another validator, not here',
+                        type: 'string'
+                        }
+                    ]
+                  },
+                  '/api/v1/pets/{id}': {
+                    parameters: [
+                        {
+                        in: 'path',
+                        name: 'id',
+                        description:
+                            'bad parameter but should be caught by another validator, not here',
+                        type: 'string'
+                        }
+                    ]
+                  },
+                  '/health': {
+                    parameters: []
+                  },
+                  '/health/status': {
+                    parameters: []
+                  }
             }
         };
 

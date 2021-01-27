@@ -494,7 +494,7 @@ it('should return 1 error if email is not email adress', () => {
       info: {
         title: '32',
         version: 'v2.0',
-        description: 'toto',
+        description: 'shorter than 50 characters',
         contact: {
             email: "toto@test.com",
             name: "toto"
@@ -507,7 +507,7 @@ it('should return 1 error if email is not email adress', () => {
     expect(res.warnings.length).toEqual(1);
     expect(res.warnings[0].path).toEqual(['info', 'description']);
     expect(res.warnings[0].message).toEqual(
-    	'API description should be longer than 100 characters.'
+    	'API description should be longer than 50 characters.'
     );
     expect(res.warnings[0].type).toEqual(
     	'documentation'
@@ -525,7 +525,7 @@ it('should return 1 error if email is not email adress', () => {
       info: {
         title: '32',
         version: 'v2.0',
-        description: 'a description that is longer than 50 characters and enough for reading by a consumer of API to understanddescription longer than 100 characters and enough',
+        description: 'a description that is longer than 50 characters and enough for reading by a consumer of API to understand description',
         contact: {
             email: "toto@test.com",
             name: "toto"

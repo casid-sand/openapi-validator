@@ -101,10 +101,10 @@ module.exports.validate = function({ jsSpec }, config) {
                     'D19.15'
                 );
             } else {
-                if (description.length < 100) {
+                if (description.length < 50) {
                     messages.addTypedMessage(
                         ['info', 'description'],
-                        'API description should be longer than 100 characters.',
+                        'API description should be longer than 50 characters.',
                         'warning',
                         'documentation',
                         'D19.15'

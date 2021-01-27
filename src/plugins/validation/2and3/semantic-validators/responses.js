@@ -21,7 +21,9 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
 
             if (
               mediaType.schema &&
-              mediaTypeKey.startsWith('application/json')
+              (mediaTypeKey.startsWith('application/json')
+              || mediaTypeKey === 'application/hal+json'
+              || mediaTypeKey === 'application/problem+json')
             ) {
               const hasCombinedSchema =
                 mediaType.schema.allOf ||

@@ -104,6 +104,10 @@
       "property_case_collision": "error",
       "enum_case_convention": [
         "warning",
+        "lower_spinal_case"
+      ],
+      "enum_alternative_case_convention": [
+        "warning",
         "all_snake_case"
       ],
       "undefined_required_properties": "warning"
