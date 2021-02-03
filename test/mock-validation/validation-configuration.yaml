@@ -18,7 +18,7 @@
       "no_summary": "off",
       "neither_description_nor_summary": "warning",
       "no_array_responses": "error",
-      "parameter_order": "warning",
+      "parameter_order": "off",
       "undefined_tag": "warning",
       "unused_tag": "warning",
       "operation_id_naming_convention": "off"
