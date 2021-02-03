@@ -17,7 +17,7 @@
       ],
       "no_summary": "off",
       "neither_description_nor_summary": "warning",
-      "no_array_responses": "error",
+      "no_array_responses": "warning",
       "parameter_order": "off",
       "undefined_tag": "warning",
       "unused_tag": "warning",
@@ -125,14 +125,14 @@
       "no_consumes_for_put_or_post": "warning",
       "get_op_has_consumes": "off",
       "no_produces": "warning",
-      "content_not_in_json": "error"
+      "wrong_content_type": "error"
     }
   },
   "oas3": {
     "operations": {
       "no_request_body_content": "error",
       "no_request_body_name": "off",
-      "content_not_in_json": "error"
+      "wrong_content_type": "error"
     },
     "parameters": {
       "no_in_property": "error",

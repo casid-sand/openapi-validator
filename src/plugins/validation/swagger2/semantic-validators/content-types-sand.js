@@ -3,78 +3,26 @@
 
 const { isArray } = require('lodash');
 const MessageCarrier = require('../../../utils/messageCarrier');
+const contentTypesChecker = require('../../../utils/contentTypesChecker');
 
-const MimeTypeJsonArray = [
-    'application/json',  
-    'application/hal+json',
-    'application/problem+json'
-]
+const jsonContentTypes = ['application/json','application/hal+json', 'application/problem+json'];
+const recommendedContentTypes = jsonContentTypes;
+const allowedContentTypes = ['text/xml','application/yaml', 'text/csv', 'text/plain', 'application/pdf'];
 
 module.exports.validate = function({ jsSpec }, config) {
 
     const messages = new MessageCarrier();
 
-    if (config.operations && config.operations.content_not_in_json) {
-        const checkJSon = config.operations.content_not_in_json;
+    if (config.operations && config.operations.wrong_content_type) {
+        const checkJSon = config.operations.wrong_content_type;
         if (checkJSon != 'off') {
             
             const globalProducesList = jsSpec.produces;
             const globalConsumesList = jsSpec.consumes;
-            this.validateContentTypeList(globalProducesList, checkJSon, 'Global produces', 'produces', messages);
-            this.validateContentTypeList(globalConsumesList, checkJSon, 'Global consumes', 'consumes', messages);
+            contentTypesChecker.validateContentTypeList(globalProducesList, checkJSon, 'Global produces', 'produces', messages);
+            contentTypesChecker.validateContentTypeList(globalConsumesList, checkJSon, 'Global consumes', 'consumes', messages);
         }
     }
 
     return messages;
 };
-
-module.exports.validateContentTypeList = function (contentTypeList, checkTypeLevel, consumeOrProduceName, pathToObject, messages) {
-    if (contentTypeList !== undefined) {
-        if (!isArray(contentTypeList)) {
-            messages.addTypedMessage(
-                `${pathToObject}`,
-                `${consumeOrProduceName} Content-Types must be an array.`,
-                checkTypeLevel,
-                'convention',
-                'CTMO.STANDARD-CODAGE-15'
-            );
-        } else {
-    
-            for (let i = 0, len = contentTypeList.length; i < len; i++) {
-                let typeItem = contentTypeList[i];
-                if (typeof typeItem === 'string') {
-                
-                    const isJson = MimeTypeJsonArray.includes(typeItem);
-            
-                    if (!isJson) {
-                        if (typeItem.includes('json')) {
-                            messages.addTypedMessage(
-                                `${pathToObject}.${i}`,
-                                `JSON ${consumeOrProduceName} Content-type must be 'application/json' or 'application/hal+json' or 'application/problem+json', without charset.`,
-                                `warning`,
-                                'convention',
-                                'CTMO.STANDARD-CODAGE-15'
-                            );
-                        } else {
-                            messages.addTypedMessage(
-                                `${pathToObject}.${i}`,
-                                `${consumeOrProduceName} Content-Type must be JSON ('application/json' or 'application/hal+json' or 'application/problem+json').`,
-                                checkTypeLevel,
-                                'convention',
-                                'CTMO.STANDARD-CODAGE-15'
-                            );
-                        }
-                    }
-                } else {
-                    messages.addTypedMessage(
-                        `${pathToObject}.${i}`,
-                        `${consumeOrProduceName} Content-Type must be a string.`,
-                        checkTypeLevel,
-                        'convention',
-                        'CTMO.STANDARD-CODAGE-15'
-                    );
-                }
-            }
-        }
-    }
-  }

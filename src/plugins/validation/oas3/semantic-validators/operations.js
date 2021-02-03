@@ -19,6 +19,7 @@ const { hasRefProperty } = require('../../../utils');
 const MessageCarrier = require('../../../utils/messageCarrier');
 const findOctetSequencePaths = require('../../../utils/findOctetSequencePaths')
   .findOctetSequencePaths;
+const contentTypesChecker = require('../../../utils/contentTypesChecker');
 
 module.exports.validate = function({ resolvedSpec, jsSpec }, config) {
   const messages = new MessageCarrier();
@@ -54,9 +55,7 @@ module.exports.validate = function({ resolvedSpec, jsSpec }, config) {
           // request body has content
           const firstMimeType = requestBodyMimeTypes[0]; // code generation uses the first mime type
           const oneContentType = requestBodyMimeTypes.length === 1;
-          const isJson =
-            firstMimeType === 'application/json' ||
-            firstMimeType.endsWith('+json');
+          const isJson = contentTypesChecker.contentTypeIsJson(firstMimeType);
 
           const hasArraySchema =
             requestBodyContent[firstMimeType].schema &&
@@ -95,7 +94,7 @@ module.exports.validate = function({ resolvedSpec, jsSpec }, config) {
           const binaryStringStatus = configSchemas.json_or_param_binary_string;
           if (binaryStringStatus !== 'off') {
             for (const mimeType of requestBodyMimeTypes) {
-              if (mimeType === 'application/json' || mimeType === 'application/hal+json' || mimeType === 'application/problem+json') {
+              if (contentTypesChecker.contentTypeIsJson(mimeType)) {
                 const schemaPath = `paths.${pathName}.${opName}.requestBody.content.${mimeType}.schema`;
                 const octetSequencePaths = findOctetSequencePaths(
                   requestBodyContent[mimeType].schema,
@@ -122,8 +121,8 @@ module.exports.validate = function({ resolvedSpec, jsSpec }, config) {
     each(allOperations, (op, opName) => {
 
       //Assertation 4 and 5
-      if (config.operations && config.operations.content_not_in_json) {
-        const checkJSon = config.operations.content_not_in_json;
+      if (config.operations && config.operations.wrong_content_type) {
+        const checkJSon = config.operations.wrong_content_type;
         if (checkJSon != 'off') {
           const responsesCodes = op.responses;
           if (responsesCodes !== null && responsesCodes !== undefined) {
@@ -134,30 +133,7 @@ module.exports.validate = function({ resolvedSpec, jsSpec }, config) {
                 const responsesContentsKeys = Object.keys(responsesContents);
                 responsesContentsKeys.forEach(responseContent => {
 
-                  const isJson =
-                    responseContent === 'application/json' ||
-                    responseContent === 'application/hal+json' ||
-                    responseContent === 'application/problem+json';
-
-                    if (!isJson) {
-                      if (responseContent.includes('json')) {
-                          messages.addTypedMessage(
-                              `paths.${pathName}.${opName}.responses.${responseCode}.content.${responseContent}`,
-                              `JSON Content-type must be 'application/json' or 'application/hal+json' or 'application/problem+json', without charset.`,
-                              `warning`,
-                              'convention',
-                              'CTMO.STANDARD-CODAGE-15'
-                          );
-                      } else {
-                          messages.addTypedMessage(
-                              `paths.${pathName}.${opName}.responses.${responseCode}.content.${responseContent}`,
-                              `Content-Type must be JSON ('application/json' or 'application/hal+json' or 'application/problem+json').`,
-                              checkJSon,
-                              'convention',
-                              'CTMO.STANDARD-CODAGE-15'
-                          );
-                      }
-                  }
+                    contentTypesChecker.validateContentType(responseContent, checkJSon, 'Response', `paths.${pathName}.${opName}.responses.${responseCode}.content.${responseContent}`, messages);
 
                 });
               }
@@ -171,30 +147,7 @@ module.exports.validate = function({ resolvedSpec, jsSpec }, config) {
               const requestContentsKeys = Object.keys(requestContents);
               requestContentsKeys.forEach(requestContent => {
 
-                const isJson =
-                  requestContent === 'application/json' ||
-                  requestContent === 'application/hal+json' ||
-                  requestContent === 'application/problem+json';
-
-                  if (!isJson) {
-                    if (requestContent.includes('json')) {
-                        messages.addTypedMessage(
-                            `paths.${pathName}.${opName}.requestBody.content.${requestContent}`,
-                            `JSON Content-type must be 'application/json' or 'application/hal+json' or 'application/problem+json', without charset.`,
-                            `warning`,
-                            'convention',
-                            'CTMO.STANDARD-CODAGE-15'
-                        );
-                    } else {
-                        messages.addTypedMessage(
-                            `paths.${pathName}.${opName}.requestBody.content.${requestContent}`,
-                            `Content-Type must be JSON ('application/json' or 'application/hal+json' or 'application/problem+json').`,
-                            checkJSon,
-                            'convention',
-                            'CTMO.STANDARD-CODAGE-15'
-                        );
-                    }
-                }
+                contentTypesChecker.validateContentType(requestContent, checkJSon, 'Request body', `paths.${pathName}.${opName}.requestBody.content.${requestContent}`, messages);
 
               });
             }

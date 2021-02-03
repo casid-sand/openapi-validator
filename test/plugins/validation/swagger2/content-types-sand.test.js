@@ -6,7 +6,7 @@ describe('validation plugin - semantic - content-types - swagger2', function() {
   it('should not complain when json produces and consumes is used', function() {
     const config = {
       operations: {
-        content_not_in_json: 'error'
+        wrong_content_type: 'error'
       }
     };
 
@@ -56,7 +56,7 @@ describe('validation plugin - semantic - content-types - swagger2', function() {
   it('should complain when text/json is used or Json with charset', function() {
     const config = {
       operations: {
-        content_not_in_json: 'error'
+        wrong_content_type: 'error'
       }
     };
 
@@ -111,7 +111,7 @@ describe('validation plugin - semantic - content-types - swagger2', function() {
   it('should complain when text or xml is used', function() {
     const config = {
       operations: {
-        content_not_in_json: 'error'
+        wrong_content_type: 'error'
       }
     };
 
@@ -165,7 +165,7 @@ describe('validation plugin - semantic - content-types - swagger2', function() {
   it('should complain when consumes or produces are malformed', function() {
     const config = {
       operations: {
-        content_not_in_json: 'error'
+        wrong_content_type: 'error'
       }
     };
 

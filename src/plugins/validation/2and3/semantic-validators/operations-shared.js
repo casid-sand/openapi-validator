@@ -96,7 +96,7 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
               if (isArray) {
                 messages.addTypedMessage(
                   `paths.${pathKey}.${opKey}.responses.${name}.content.${contentType}.schema`,
-                  'Arrays MUST NOT be returned as the top-level structure in a response body : create an object with data and metadata for collection.',
+                  'Arrays MUST NOT be returned as the top-level structure in a response body : create an object with data and metadata for collection (except if collection contains less than 50 items).',
                   checkStatusArrRes,
                   'structural',
                   'CTMO.STANDARD-CODAGE-16'
@@ -111,7 +111,7 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
             if (isArray) {
               messages.addTypedMessage(
                 `paths.${pathKey}.${opKey}.responses.${name}.schema`,
-                'Arrays MUST NOT be returned as the top-level structure in a response body : create an object with data and metadata for collection.',
+                'Arrays MUST NOT be returned as the top-level structure in a response body : create an object with data and metadata for collection (except if collection contains less than 50 items).',
                 checkStatusArrRes,
                 'structural',
                 'CTMO.STANDARD-CODAGE-16'

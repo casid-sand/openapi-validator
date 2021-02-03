@@ -13,7 +13,7 @@ const includes = require('lodash/includes');
 const map = require('lodash/map');
 const pick = require('lodash/pick');
 const MessageCarrier = require('../../../utils/messageCarrier');
-const contentTypesChecker = require('./content-types-sand');
+const contentTypesChecker = require('../../../utils/contentTypesChecker');
 
 module.exports.validate = function({ jsSpec }, config) {
   const messages = new MessageCarrier();
@@ -119,8 +119,8 @@ module.exports.validate = function({ jsSpec }, config) {
         }
       }
 
-      if (config.operations && config.operations.content_not_in_json) {
-        const checkJSon = config.operations.content_not_in_json;
+      if (config.operations && config.operations.wrong_content_type) {
+        const checkJSon = config.operations.wrong_content_type;
         if (checkJSon != 'off') {
             const producesList = op.produces;
             const consumesList = op.consumes;
