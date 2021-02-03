@@ -117,7 +117,7 @@ describe('validation plugin - semantic - content-types - swagger2', function() {
 
     const spec = {
       consumes: ['text/html'],
-      produces: ['application/xml'],
+      produces: ['application/xml', 'text/xml', 'application/yaml', 'text/plain', 'text/csv', 'application/pdf'],
       paths: {
         '/CoolPath': {
           post: {
@@ -154,12 +154,23 @@ describe('validation plugin - semantic - content-types - swagger2', function() {
     };
 
     const res = contentTypesValidator.validate({ jsSpec: spec }, config);
-    expect(res.errors.length).toEqual(2);
-    expect(res.errors[0].path).toEqual('produces.0');
-    expect(res.errors[0].message).toEqual(`Global produces Content-Type must be JSON ('application/json' or 'application/hal+json' or 'application/problem+json').`);
-    expect(res.errors[1].path).toEqual('consumes.0');
-    expect(res.errors[1].message).toEqual(`Global consumes Content-Type must be JSON ('application/json' or 'application/hal+json' or 'application/problem+json').`);
-    expect(res.warnings.length).toEqual(0);
+    expect(res.errors.length).toEqual(1);
+    expect(res.errors[0].path).toEqual('consumes.0');
+    expect(res.errors[0].message).toEqual(`Global consumes Content-Type must be JSON ('application/json' or 'application/hal+json' or 'application/problem+json').`);
+    expect(res.warnings.length).toEqual(6);
+    expect(res.warnings[0].path).toEqual('produces.0');
+    expect(res.warnings[0].message).toEqual(`Global produces Content-Type should be JSON ('application/json' or 'application/hal+json' or 'application/problem+json'), instead of other allowed content-types ('text/xml' or 'application/xml' or 'application/yaml' or 'text/csv' or 'text/plain' or 'application/pdf').`);
+    expect(res.warnings[1].path).toEqual('produces.1');
+    expect(res.warnings[1].message).toEqual(`Global produces Content-Type should be JSON ('application/json' or 'application/hal+json' or 'application/problem+json'), instead of other allowed content-types ('text/xml' or 'application/xml' or 'application/yaml' or 'text/csv' or 'text/plain' or 'application/pdf').`);
+    expect(res.warnings[2].path).toEqual('produces.2');
+    expect(res.warnings[2].message).toEqual(`Global produces Content-Type should be JSON ('application/json' or 'application/hal+json' or 'application/problem+json'), instead of other allowed content-types ('text/xml' or 'application/xml' or 'application/yaml' or 'text/csv' or 'text/plain' or 'application/pdf').`);
+    expect(res.warnings[3].path).toEqual('produces.3');
+    expect(res.warnings[3].message).toEqual(`Global produces Content-Type should be JSON ('application/json' or 'application/hal+json' or 'application/problem+json'), instead of other allowed content-types ('text/xml' or 'application/xml' or 'application/yaml' or 'text/csv' or 'text/plain' or 'application/pdf').`);
+    expect(res.warnings[4].path).toEqual('produces.4');
+    expect(res.warnings[4].message).toEqual(`Global produces Content-Type should be JSON ('application/json' or 'application/hal+json' or 'application/problem+json'), instead of other allowed content-types ('text/xml' or 'application/xml' or 'application/yaml' or 'text/csv' or 'text/plain' or 'application/pdf').`);
+    expect(res.warnings[5].path).toEqual('produces.5');
+    expect(res.warnings[5].message).toEqual(`Global produces Content-Type should be JSON ('application/json' or 'application/hal+json' or 'application/problem+json'), instead of other allowed content-types ('text/xml' or 'application/xml' or 'application/yaml' or 'text/csv' or 'text/plain' or 'application/pdf').`);
+    
   });
 
   it('should complain when consumes or produces are malformed', function() {

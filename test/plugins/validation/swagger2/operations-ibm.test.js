@@ -622,8 +622,8 @@ describe('validation plugin - semantic - operations-ibm - swagger2', function() 
           post: {
             summary: 'this is a summary',
             operationId: 'operationId',
-            consumes: ['text/html'],
-            produces: ['application/xml'],
+            consumes: ['application/xml'],
+            produces: ['text/html'],
             parameters: [
               {
                 name: 'Parameter',
@@ -655,12 +655,13 @@ describe('validation plugin - semantic - operations-ibm - swagger2', function() 
     };
 
     const res = validate({ jsSpec: spec }, config);
-    expect(res.errors.length).toEqual(2);
+    expect(res.errors.length).toEqual(1);
     expect(res.errors[0].path).toEqual('paths./CoolPath.post.produces.0');
     expect(res.errors[0].message).toEqual(`Operation produces Content-Type must be JSON ('application/json' or 'application/hal+json' or 'application/problem+json').`);
-    expect(res.errors[1].path).toEqual('paths./CoolPath.post.consumes.0');
-    expect(res.errors[1].message).toEqual(`Operation consumes Content-Type must be JSON ('application/json' or 'application/hal+json' or 'application/problem+json').`);
-    expect(res.warnings.length).toEqual(0);
+    expect(res.warnings.length).toEqual(1);
+    expect(res.warnings[0].path).toEqual('paths./CoolPath.post.consumes.0');
+    expect(res.warnings[0].message).toEqual(`Operation consumes Content-Type should be JSON ('application/json' or 'application/hal+json' or 'application/problem+json'), instead of other allowed content-types ('text/xml' or 'application/xml' or 'application/yaml' or 'text/csv' or 'text/plain' or 'application/pdf').`);
+    
   });
 
   

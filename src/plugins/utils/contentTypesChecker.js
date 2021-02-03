@@ -5,7 +5,7 @@ const { isArray } = require('lodash');
 
 const jsonContentTypes = ['application/json','application/hal+json', 'application/problem+json'];
 const recommendedContentTypes = jsonContentTypes;
-const allowedContentTypes = ['text/xml','application/yaml', 'text/csv', 'text/plain', 'application/pdf'];
+const allowedContentTypes = ['text/xml','application/xml','application/yaml', 'text/csv', 'text/plain', 'application/pdf'];
 
 
 module.exports.contentTypeIsJson = function (contentType) {
@@ -41,25 +41,40 @@ module.exports.validateContentTypeList = function (contentTypeList, checkTypeLev
 module.exports.validateContentType = function (contentType, checkTypeLevel, consumeOrProduceName, pathToObject, messages) {
     if (typeof contentType === 'string') {
                 
-        const isJson = recommendedContentTypes.includes(contentType);
+        const isRecommended = recommendedContentTypes.includes(contentType);
 
-        if (!isJson) {
+        if (!isRecommended) {
+            
             if (contentType.includes('json')) {
                 messages.addTypedMessage(
                     `${pathToObject}`,
-                    `JSON ${consumeOrProduceName} Content-type must be ${this.stringifyRecommendedContentTypes()}, without charset.`,
+                    `JSON ${consumeOrProduceName} Content-type must be ${this.stringifyContentTypes(recommendedContentTypes)}, without charset.`,
                     `warning`,
                     'convention',
                     'CTMO.STANDARD-CODAGE-15'
                 );
             } else {
-                messages.addTypedMessage(
-                    `${pathToObject}`,
-                    `${consumeOrProduceName} Content-Type must be JSON (${this.stringifyRecommendedContentTypes()}).`,
-                    checkTypeLevel,
-                    'convention',
-                    'CTMO.STANDARD-CODAGE-15'
-                );
+
+                const isAllowed = allowedContentTypes.includes(contentType);
+
+                if (isAllowed) {
+                    //if content allowed but not recommended : warning only
+                    messages.addTypedMessage(
+                        `${pathToObject}`,
+                        `${consumeOrProduceName} Content-Type should be JSON (${this.stringifyContentTypes(recommendedContentTypes)}), instead of other allowed content-types (${this.stringifyContentTypes(allowedContentTypes)}).`,
+                        'warning',
+                        'convention',
+                        'CTMO.STANDARD-CODAGE-15'
+                    );
+                } else {
+                    messages.addTypedMessage(
+                        `${pathToObject}`,
+                        `${consumeOrProduceName} Content-Type must be JSON (${this.stringifyContentTypes(recommendedContentTypes)}).`,
+                        checkTypeLevel,
+                        'convention',
+                        'CTMO.STANDARD-CODAGE-15'
+                    );
+                }
             }
         }
     } else {
@@ -74,9 +89,9 @@ module.exports.validateContentType = function (contentType, checkTypeLevel, cons
 }
 
 
-module.exports.stringifyRecommendedContentTypes = function  () {
+module.exports.stringifyContentTypes = function  (contentTypesList) {
     let result = ""
-    recommendedContentTypes.forEach(contentTypes => {
+    contentTypesList.forEach(contentTypes => {
         if (result !== "") {
             result = `${result} or `;
         }
