@@ -84,12 +84,34 @@ module.exports.validate = function({ resolvedSpec }, config) {
           );
         } else {
           for (const statusCode of successCodes) {
-            if (statusCode !== '204' && !obj[statusCode].content) {
-              messages.addMessage(
-                path.concat([statusCode]),
-                `A ${statusCode} response should include a response body. Use 204 for responses without content.`,
-                config.no_response_body
-              );
+            let hasLocationHeader = false;
+            const headers = obj[statusCode].headers;
+            if (headers) {
+                const headerNames = Object.keys(headers);
+                headerNames.forEach(header => {
+                    if (header === 'Location') {
+                        hasLocationHeader = true;
+                    }
+                });
+            }
+            
+            if (statusCode !== '204' && !obj[statusCode].content) {             
+
+                if (statusCode !== '201') {
+                    messages.addMessage(
+                        path.concat([statusCode]),
+                        `A ${statusCode} response should include a response body. Use 204 for responses without content.`,
+                        config.no_response_body
+                    );
+                } else {
+                    if (!hasLocationHeader) {
+                        messages.addMessage(
+                            path.concat([statusCode]),
+                            `A 201 response should include a response body or a 'Location' header. Use 204 for responses without content.`,
+                            config.no_response_body
+                        );
+                    }
+                }
             } else if (statusCode === '204' && obj[statusCode].content) {
               messages.addMessage(
                 path.concat(['204', 'content']),

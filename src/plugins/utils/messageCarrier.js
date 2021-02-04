@@ -68,7 +68,7 @@ module.exports = class MessageCarrier {
     this.displayMessage("warning", number);
   }
 
-  displayErro(number) {
+  displayError(number) {
     this.displayMessage("error", number);
   }
 };

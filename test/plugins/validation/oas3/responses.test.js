@@ -485,6 +485,68 @@ describe('validation plugin - semantic - responses - oas3', function() {
     );
   });
 
+  it('should not complain when a 201 success does not have response body but has a Location header', function() {
+    const spec = {
+      paths: {
+        '/example': {
+          get: {
+            summary: 'this is a summary',
+            operationId: 'operationId',
+            responses: {
+              '201': {
+                description: 'successful operation call with no response body',
+                headers: {
+                    Location: {
+                      description: 'hi',
+                      schema: {
+                        type: 'string'
+                      }
+                    }
+                }
+              }
+            }
+          }
+        }
+      }
+    };
+
+    const res = validate({ resolvedSpec: spec }, config);
+    res.displayWarning(0);
+    expect(res.warnings.length).toEqual(0);
+    expect(res.errors.length).toEqual(0);
+  });
+
+  it('should complain when a 201 success does not have response body or Location header', function() {
+    const spec = {
+      paths: {
+        '/example': {
+          get: {
+            summary: 'this is a summary',
+            operationId: 'operationId',
+            responses: {
+              '201': {
+                description: 'successful operation call with no response body'
+              }
+            }
+          }
+        }
+      }
+    };
+
+    const res = validate({ resolvedSpec: spec }, config);
+    expect(res.warnings.length).toEqual(1);
+    expect(res.warnings[0].path).toEqual([
+      'paths',
+      '/example',
+      'get',
+      'responses',
+      '201'
+    ]);
+    expect(res.warnings[0].message).toEqual(
+      `A 201 response should include a response body or a 'Location' header. Use 204 for responses without content.`
+    );
+  });
+
   it('should issue multiple warnings when multiple non-204 successes do not have response bodies', function() {
     const spec = {
       paths: {
