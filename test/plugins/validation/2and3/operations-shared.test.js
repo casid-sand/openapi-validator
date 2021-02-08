@@ -7,6 +7,10 @@ const {
 const config = require('../../../../src/.defaultsForValidator').defaults.shared;
 
 describe('validation plugin - semantic - operations-shared', function() {
+
+  config.common.header_name_case_convention[0] = 'error';
+  config.common.header_starting_with_x = 'error';
+
   describe('Swagger 2', function() {
     it('should complain about a non-unique (name + in combination) parameters', function() {
       const spec = {
@@ -1118,6 +1122,178 @@ describe('validation plugin - semantic - operations-shared', function() {
 
       expect(res.errors[0].path).toEqual('paths./resource.post.$ref');
       expect(res.errors[0].message).toEqual('$ref found in illegal location');
+    });
+
+    it('should complain with incorrect headers in encoding object', function() {
+      const resolvedSpec = {
+        paths: {
+          '/resource': {
+            post: {
+              "summary": "toto",
+              "operationId": "post_resource",
+              "requestBody": {
+                "content": {
+                    "multipart": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                        "id": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "address": {
+                            "type": "object",
+                            "properties": {}
+                        },
+                        "historyMetadata": {
+                            "description": "metadata in XML format",
+                            "type": "object",
+                            "properties": {}
+                        },
+                        "profileImage": {
+                            "type": "string",
+                            "format": "binary"
+                        }
+                        }
+                    },
+                    "encoding": {
+                        "historyMetadata": {
+                            "contentType": "application/xml; charset=utf-8",
+                            "headers": {
+                                "X-Rate-Rate": {
+                                "description": "The number of allowed requests in the current period",
+                                "schema": {
+                                    "type": "integer"
+                                }
+                                }
+                            }
+                        },
+                        "profileImage": {
+                            "contentType": "image/png, image/jpeg",
+                            "headers": {
+                                "Rate_Limit": {
+                                "description": "The number of allowed requests in the current period",
+                                "schema": {
+                                    "type": "integer"
+                                }
+                                },
+                                "MyOrga-MaximumSize": {
+                                "description": "The number of allowed requests in the current period",
+                                "schema": {
+                                    "type": "integer"
+                                }
+                                }
+                            }
+                        }
+                    }
+                    }
+                }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The videogame has been modified.",
+                        "content": {
+                        "application/json": {
+                            "schema": {
+                            "$ref": "#/components/schemas/VideoGame"
+                            }
+                        },
+                        "application/yaml": {
+                            "schema": {
+                            "$ref": "#/components/schemas/VideoGame"
+                            }
+                        }
+                        }
+                    }
+                    }
+            }
+          }
+        }
+      };
+
+      const res = validate({ resolvedSpec: resolvedSpec, isOAS3: true }, config);
+      expect(res.errors.length).toEqual(2);
+      expect(res.warnings.length).toEqual(0);
+
+      expect(res.errors[0].path).toEqual(['paths','/resource','post','requestBody','content','multipart','encoding','historyMetadata','headers','X-Rate-Rate']);
+      expect(res.errors[0].message).toEqual("HTTP Header name must not start with 'X-*' : 'X-Rate-Rate'.");
+      expect(res.errors[1].path).toEqual(['paths','/resource','post','requestBody','content','multipart','encoding','profileImage','headers','Rate_Limit']);
+      expect(res.errors[1].message).toEqual(`HTTP Header name must follow case convention: 'Rate_Limit' doesn't respect 'Spinal-FirstLetterUpper-Case'.`);
+    });
+
+    it('should not complain', function() {
+      const resolvedSpec = {
+        paths: {
+          '/resource': {
+            post: {
+              "summary": "toto",
+              "operationId": "post_resource",
+              "requestBody": {
+                "content": {
+                    "multipart": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                        "id": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "address": {
+                            "type": "object",
+                            "properties": {}
+                        },
+                        "historyMetadata": {
+                            "description": "metadata in XML format",
+                            "type": "object",
+                            "properties": {}
+                        },
+                        "profileImage": {
+                            "type": "string",
+                            "format": "binary"
+                        }
+                        }
+                    },
+                    "encoding": {
+                        "profileImage": {
+                            "contentType": "image/png, image/jpeg",
+                            "headers": {
+                                "MyOrga-MaximumSize": {
+                                "description": "The number of allowed requests in the current period",
+                                "schema": {
+                                    "type": "integer"
+                                }
+                                }
+                            }
+                        }
+                    }
+                    }
+                }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The videogame has been modified.",
+                        "content": {
+                        "application/json": {
+                            "schema": {
+                            "$ref": "#/components/schemas/VideoGame"
+                            }
+                        },
+                        "application/yaml": {
+                            "schema": {
+                            "$ref": "#/components/schemas/VideoGame"
+                            }
+                        }
+                        }
+                    }
+                    }
+            }
+          }
+        }
+      };
+
+      const res = validate({ resolvedSpec: resolvedSpec, isOAS3: true }, config);
+      expect(res.errors.length).toEqual(0);
+      expect(res.warnings.length).toEqual(0);
     });
   });
 });

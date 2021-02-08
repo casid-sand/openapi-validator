@@ -4,13 +4,17 @@ const dateTime = require('node-datetime');
 const program = {};
 let exitcode;
 
+let dir_path = './test/mock-validation/input/';
 let swagger_file_name;
 
 swagger_file_name = 'openapi3-test.yaml';
 swagger_file_name = 'swagger-test.yml';
-swagger_file_name = 'CMAn-NOE-v1.0-08.01-VA-API_Serveur_Rebond_Axone -anonym-temp.yaml';
+
+swagger_file_name = 'CMan.yaml';
+swagger_file_name = 'Swagger-ds.yml';
 swagger_file_name = 'openapi-demo.yml';
-let dir_path = './test/mock-validation/input/';
+swagger_file_name = 'openapi-demo.yml';
+
 
 //swagger_file_name = "missing-object.yml"
 //dir_path = "./test/cli-validator/mockFiles/";

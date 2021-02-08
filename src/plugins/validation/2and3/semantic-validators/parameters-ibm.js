@@ -9,6 +9,7 @@
 // http://watson-developer-cloud.github.io/api-guidelines/swagger-coding-style#do-not-explicitly-define-a-content-type-header-parameter
 
 const { checkCase, isParameterObject, walk } = require('../../../utils');
+const headerNameChecker = require('../../../utils/headerNameChecker');
 const MessageCarrier = require('../../../utils/messageCarrier');
 
 const headerStartingWithXRegex = /^([xX])(([-_\.A-Z]))/;
@@ -16,7 +17,18 @@ const headerStartingWithXRegex = /^([xX])(([-_\.A-Z]))/;
 module.exports.validate = function({ jsSpec, isOAS3 }, config) {
   const messages = new MessageCarrier();
 
-  config = config.parameters;
+  let checkHeaderCaseConvention = 'off';
+  let headerCaseConventionValue;
+  let checkHeaderWithX = 'off';
+  if (config.common) {
+    if (config.common.header_name_case_convention && Array.isArray(config.common.header_name_case_convention)) {
+        checkHeaderCaseConvention = config.common.header_name_case_convention[0];
+        if (checkHeaderCaseConvention !== 'off') {
+            headerCaseConventionValue = config.common.header_name_case_convention[1];
+        }
+    }
+    checkHeaderWithX = config.common.header_starting_with_x;
+  }
 
   walk(jsSpec, [], function(obj, path) {
     // skip parameters within operations that are excluded
@@ -35,7 +47,7 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
         messages.addTypedMessage(
           path,
           'Parameter objects must have a `description` field.',
-          config.no_parameter_description,
+          config.parameters.no_parameter_description,
           'documentation',
           'D19.15'
         );
@@ -49,48 +61,20 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
               
         if (isHeaderParameter) {
           //for header parameters
-          const checkHeaderCaseConvention = config.header_name_case_convention[0];
-
-          if (checkHeaderCaseConvention !== 'off') {
-            const caseConventionValue = config.header_name_case_convention[1];
-            const isCorrectCase = checkCase(obj.name, caseConventionValue);
-            if (!isCorrectCase) {
-              messages.addTypedMessage(
-                path,
-                `HTTP Header name must follow case convention: '${obj.name}' doesn't respect ${checkCase.getCaseConventionExample(caseConventionValue)}.`,
-                checkHeaderCaseConvention,
-                'convention',
-                'IETF.RFC.6648'
-              );
-            }
-          }
-
-          const checkHeaderWithX = config.header_starting_with_x;
-          if (checkHeaderWithX !== 'off') {
-            if (headerStartingWithXRegex.test(obj.name)) {
-              messages.addTypedMessage(
-                path,
-                `HTTP Header name must not start with 'X-*' : '${obj.name}'`,
-                checkHeaderWithX,
-                'convention',
-                'IETF.RFC.6648'
-              );
-            }
-          }
-
+          headerNameChecker.checkHeaderName(obj.name, checkHeaderCaseConvention, headerCaseConventionValue, checkHeaderWithX, path, messages);
 
         } else {
           //for non header parameters
-          const checkStatus = config.param_name_case_convention[0];
+          const checkStatus = config.parameters.param_name_case_convention[0];
 
           if (checkStatus !== 'off') {
-            const caseConvention = config.param_name_case_convention[1];        
+            const caseConvention = config.parameters.param_name_case_convention[1];        
             let checkAlternativeParameterCaseConvention = 'off';
             let caseConventionAlternative;
-            if (config.param_name_alternative_case_convention) {
-              checkAlternativeParameterCaseConvention = config.param_name_alternative_case_convention[0];
+            if (config.parameters.param_name_alternative_case_convention) {
+              checkAlternativeParameterCaseConvention = config.parameters.param_name_alternative_case_convention[0];
                 if (checkAlternativeParameterCaseConvention != 'off') {
-                    caseConventionAlternative = config.param_name_alternative_case_convention[1];
+                    caseConventionAlternative = config.parameters.param_name_alternative_case_convention[1];
                 }
             }
             
@@ -115,7 +99,7 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
 
       if (isParameter && isHeaderParameter) {
         // check for content-type defined in a header parameter (CT = content-type)
-        const checkStatusCT = config.content_type_parameter;
+        const checkStatusCT = config.parameters.content_type_parameter;
         const definesContentType = obj.name.toLowerCase() === 'content-type';
         let messageCT = 'Parameters must not explicitly define `Content-Type`.';
         messageCT = isOAS3
@@ -126,7 +110,7 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
         }
 
         // check for accept-type defined in a header parameter (AT = accept-type)
-        const checkStatusAT = config.accept_type_parameter;
+        const checkStatusAT = config.parameters.accept_type_parameter;
         const definesAcceptType = obj.name.toLowerCase() === 'accept';
         let messageAT = 'Parameters must not explicitly define `Accept`.';
         messageAT = isOAS3
@@ -137,7 +121,7 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
         }
 
         // check for Authorization defined in a header parameter
-        const checkStatusAuth = config.authorization_parameter;
+        const checkStatusAuth = config.parameters.authorization_parameter;
         const definesAuth = obj.name.toLowerCase() === 'authorization';
         let messageAuth =
           'Parameters must not explicitly define `Authorization`.';
@@ -167,7 +151,7 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
         messages.addMessage(
           path,
           'Required parameters should not specify default values.',
-          config.required_param_has_default
+          config.parameters.required_param_has_default
         );
       }
     }

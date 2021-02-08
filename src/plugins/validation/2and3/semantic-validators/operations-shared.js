@@ -14,17 +14,34 @@
 // All required parameters of an operation are listed before any optional parameters.
 // http://watson-developer-cloud.github.io/api-guidelines/swagger-coding-style#parameter-order
 
+// Assertation :
+// check header names in "encoding" object
+
 const pick = require('lodash/pick');
 const map = require('lodash/map');
 const each = require('lodash/each');
 const findIndex = require('lodash/findIndex');
 const { checkCase, hasRefProperty } = require('../../../utils');
 const MessageCarrier = require('../../../utils/messageCarrier');
+const headerNameChecker = require('../../../utils/headerNameChecker');
 
 module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
   const messages = new MessageCarrier();
 
-  config = config.operations;
+  configOperations = config.operations;
+
+  let checkHeaderWithX = 'off';
+  let headerCaseConventionValue;
+  let checkHeaderCaseConvention = 'off';
+  if (config.common) {
+    checkHeaderWithX = config.common.header_starting_with_x;
+    if (config.common.header_name_case_convention && Array.isArray(config.common.header_name_case_convention)) {
+      checkHeaderCaseConvention = config.common.header_name_case_convention[0];
+      if (checkHeaderCaseConvention !== 'off') {
+        headerCaseConventionValue = config.common.header_name_case_convention[1];
+      }
+    }
+  }
 
   const globalTags = resolvedSpec.tags || [];
   const hasGlobalTags = !!globalTags.length;
@@ -84,7 +101,7 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
       });
 
       // Arrays MUST NOT be returned as the top-level structure in a response body.
-      const checkStatusArrRes = config.no_array_responses;
+      const checkStatusArrRes = configOperations.no_array_responses;
       if (checkStatusArrRes !== 'off') {
         each(op.responses, (response, name) => {
           if (isOAS3) {
@@ -120,6 +137,35 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
           }
         });
       }
+      
+      //check header names in encoding object in oas3
+      if (isOAS3 === true) {
+        if (op.requestBody) {
+            const requestBodyContent = op.requestBody.content;
+            const requestBodyMimeTypes =
+                op.requestBody.content && Object.keys(requestBodyContent);
+            if (requestBodyContent &&requestBodyMimeTypes.length) {
+                for (const mimeType of requestBodyMimeTypes) {
+                    const requestBodyContentDefinition = requestBodyContent[mimeType];
+
+                    if (requestBodyContentDefinition.encoding) {
+                        const encodedParameters = Object.keys(requestBodyContentDefinition.encoding);
+                        encodedParameters.forEach(encodedParameterName => {
+                            const encodedParameter = requestBodyContentDefinition.encoding[encodedParameterName];
+                            if (encodedParameter.headers) {
+                                const parameterHeaders = Object.keys(encodedParameter.headers);
+                                parameterHeaders.forEach(paramHeaderName => {
+                                    headerNameChecker.checkHeaderName(paramHeaderName, checkHeaderCaseConvention, headerCaseConventionValue, checkHeaderWithX, 
+                                        ['paths', pathKey, opKey, 'requestBody', 'content', mimeType, 'encoding', encodedParameterName, 'headers', paramHeaderName],
+                                        messages);
+                                });
+                            }
+                        });
+                    }
+                }
+            }
+        }
+      }
 
       const hasOperationId =
         op.operationId &&
@@ -129,13 +175,13 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
         messages.addTypedMessage(
           `paths.${pathKey}.${opKey}.operationId`,
           'Operations must have a non-empty `operationId`.',
-          config.no_operation_id,
+          configOperations.no_operation_id,
           'structural'
         );
       } else {
         // check operationId for case convention
-        const checkStatus = config.operation_id_case_convention[0];
-        const caseConvention = config.operation_id_case_convention[1];
+        const checkStatus = configOperations.operation_id_case_convention[0];
+        const caseConvention = configOperations.operation_id_case_convention[1];
         const isCorrectCase = checkCase(op.operationId, caseConvention);
         if (!isCorrectCase) {
           messages.addTypedMessage(
@@ -153,7 +199,7 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
             messages.addTypedMessage(
               `paths.${pathKey}.${opKey}.tags`,
               'tag is not defined at the global level: ' + op.tags[i],
-              config.undefined_tag,
+              configOperations.undefined_tag,
               'structural'
             );
           } else {
@@ -166,23 +212,23 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
         op.summary && op.summary.length > 0 && !!op.summary.toString().trim();
       const hasDescription =
         op.description && op.description.length > 0 && !!op.description.toString().trim();
-      if (config.no_summary != 'off') {
+      if (configOperations.no_summary != 'off') {
         if (!hasSummary) {
           messages.addTypedMessage(
             `paths.${pathKey}.${opKey}.summary`,
             'Operations must have a non-empty `summary` field.',
-            config.no_summary,
+            configOperations.no_summary,
             'documentation'
           );
         }
       }
 
-      if (config.neither_description_nor_summary != 'off') {
+      if (configOperations.neither_description_nor_summary != 'off') {
         if (!hasSummary && !hasDescription) {
           messages.addTypedMessage(
             `paths.${pathKey}.${opKey}`,
             'Operations must have a non-empty `summary` field or a non-empty `description` field.',
-            config.neither_description_nor_summary,
+            configOperations.neither_description_nor_summary,
             'documentation'
           );
         }
@@ -190,7 +236,7 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
 
       // this should be good with resolved spec, but double check
       // All required parameters of an operation are listed before any optional parameters.
-      const checkStatusParamOrder = config.parameter_order;
+      const checkStatusParamOrder = configOperations.parameter_order;
       if (checkStatusParamOrder !== 'off') {
         if (op.parameters && op.parameters.length > 0) {
           let firstOptional = -1;
@@ -220,7 +266,7 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
     messages.addTypedMessage(
       `tags`,
       `A tag is defined but never used: ${tagName}`,
-      config.unused_tag,
+      configOperations.unused_tag,
       'convention'
     );
   });

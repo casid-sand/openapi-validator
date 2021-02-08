@@ -94,20 +94,21 @@ module.exports.validate = function({ resolvedSpec, jsSpec }, config) {
           const binaryStringStatus = configSchemas.json_or_param_binary_string;
           if (binaryStringStatus !== 'off') {
             for (const mimeType of requestBodyMimeTypes) {
-              if (contentTypesChecker.contentTypeIsJson(mimeType)) {
-                const schemaPath = `paths.${pathName}.${opName}.requestBody.content.${mimeType}.schema`;
-                const octetSequencePaths = findOctetSequencePaths(
-                  requestBodyContent[mimeType].schema,
-                  schemaPath
-                );
-                for (const p of octetSequencePaths) {
-                  messages.addMessage(
-                    p,
-                    'JSON request/response bodies should not contain binary (type: string, format: binary) values.',
-                    binaryStringStatus
-                  );
+                const requestBodyContentDefinition = requestBodyContent[mimeType];
+                if (contentTypesChecker.contentTypeIsJson(mimeType)) {
+                    const schemaPath = `paths.${pathName}.${opName}.requestBody.content.${mimeType}.schema`;
+                    const octetSequencePaths = findOctetSequencePaths(
+                        requestBodyContentDefinition.schema,
+                        schemaPath
+                    );
+                    for (const path of octetSequencePaths) {
+                        messages.addMessage(
+                            path,
+                            'JSON request/response bodies should not contain binary (type: string, format: binary) values.',
+                            binaryStringStatus
+                        );
+                    }
                 }
-              }
             }
           }
 
@@ -146,9 +147,7 @@ module.exports.validate = function({ resolvedSpec, jsSpec }, config) {
             if (requestContents !== null && requestContents !== undefined) {
               const requestContentsKeys = Object.keys(requestContents);
               requestContentsKeys.forEach(requestContent => {
-
                 contentTypesChecker.validateContentType(requestContent, checkJSon, 'Request body', `paths.${pathName}.${opName}.requestBody.content.${requestContent}`, messages);
-
               });
             }
           }

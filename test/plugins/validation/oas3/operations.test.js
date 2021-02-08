@@ -2,9 +2,10 @@ const expect = require('expect');
 const {
   validate
 } = require('../../../../src/plugins/validation/oas3/semantic-validators/operations');
-const config = require('../../../../src/.defaultsForValidator').defaults.oas3;
+const configOas3 = require('../../../../src/.defaultsForValidator').defaults.oas3;
 
 describe('validation plugin - semantic - operations - oas3', function() {
+
   it('should complain about a request body not having a content field', function() {
     const spec = {
       paths: {
@@ -20,7 +21,7 @@ describe('validation plugin - semantic - operations - oas3', function() {
       }
     };
 
-    const res = validate({ resolvedSpec: spec, jsSpec: spec }, config);
+    const res = validate({ resolvedSpec: spec, jsSpec: spec }, configOas3);
     expect(res.errors.length).toEqual(1);
     expect(res.errors[0].path).toEqual('paths./pets.post.requestBody');
     expect(res.errors[0].message).toEqual(
@@ -54,7 +55,7 @@ describe('validation plugin - semantic - operations - oas3', function() {
       }
     };
 
-    const res = validate({ resolvedSpec: spec, jsSpec: spec }, config);
+    const res = validate({ resolvedSpec: spec, jsSpec: spec }, configOas3);
     expect(res.warnings.length).toEqual(1);
     expect(res.warnings[0].path).toEqual('paths./pets.post');
     expect(res.warnings[0].message).toEqual(
@@ -85,7 +86,7 @@ describe('validation plugin - semantic - operations - oas3', function() {
       }
     };
 
-    const res = validate({ resolvedSpec: spec, jsSpec: spec }, config);
+    const res = validate({ resolvedSpec: spec, jsSpec: spec }, configOas3);
     expect(res.warnings.length).toEqual(0);
     expect(res.errors.length).toEqual(0);
   });
@@ -112,7 +113,7 @@ describe('validation plugin - semantic - operations - oas3', function() {
       }
     };
 
-    const res = validate({ resolvedSpec: spec, jsSpec: spec }, config);
+    const res = validate({ resolvedSpec: spec, jsSpec: spec }, configOas3);
     expect(res.warnings.length).toEqual(0);
     expect(res.errors.length).toEqual(0);
   });
@@ -140,7 +141,7 @@ describe('validation plugin - semantic - operations - oas3', function() {
       }
     };
 
-    const res = validate({ resolvedSpec: spec, jsSpec: spec }, config);
+    const res = validate({ resolvedSpec: spec, jsSpec: spec }, configOas3);
     expect(res.warnings.length).toEqual(0);
     expect(res.errors.length).toEqual(0);
   });
@@ -172,7 +173,7 @@ describe('validation plugin - semantic - operations - oas3', function() {
       }
     };
 
-    const res = validate({ resolvedSpec: spec, jsSpec: spec }, config);
+    const res = validate({ resolvedSpec: spec, jsSpec: spec }, configOas3);
     expect(res.warnings.length).toEqual(0);
     expect(res.errors.length).toEqual(0);
   });
@@ -212,7 +213,7 @@ describe('validation plugin - semantic - operations - oas3', function() {
       }
     };
 
-    const res = validate({ resolvedSpec, jsSpec }, config);
+    const res = validate({ resolvedSpec, jsSpec }, configOas3);
     expect(res.warnings.length).toEqual(0);
     expect(res.errors.length).toEqual(0);
   });
@@ -242,7 +243,7 @@ describe('validation plugin - semantic - operations - oas3', function() {
       }
     };
 
-    const res = validate({ resolvedSpec: spec, jsSpec: spec }, config);
+    const res = validate({ resolvedSpec: spec, jsSpec: spec }, configOas3);
     expect(res.warnings.length).toEqual(1);
     expect(res.warnings[0].path).toEqual('paths./other.pets.post');
     expect(res.warnings[0].message).toEqual(
@@ -286,7 +287,7 @@ describe('validation plugin - semantic - operations - oas3', function() {
       }
     };
 
-    const res = validate({ jsSpec, resolvedSpec, isOAS3: true }, config);
+    const res = validate({ jsSpec, resolvedSpec, isOAS3: true }, configOas3);
     expect(res.errors.length).toEqual(0);
     expect(res.warnings.length).toEqual(0);
   });
@@ -323,7 +324,7 @@ describe('validation plugin - semantic - operations - oas3', function() {
       }
     };
 
-    const res = validate({ resolvedSpec: spec, jsSpec: spec }, config);
+    const res = validate({ resolvedSpec: spec, jsSpec: spec }, configOas3);
     expect(res.warnings.length).toEqual(0);
   });
 
@@ -351,7 +352,7 @@ describe('validation plugin - semantic - operations - oas3', function() {
       }
     };
 
-    const res = validate({ resolvedSpec: spec, jsSpec: spec }, config);
+    const res = validate({ resolvedSpec: spec, jsSpec: spec }, configOas3);
     expect(res.warnings.length).toEqual(1);
     expect(res.warnings[0].message).toEqual(
       'JSON request/response bodies should not contain binary (type: string, format: binary) values.'
@@ -394,7 +395,7 @@ describe('validation plugin - semantic - operations - oas3', function() {
       }
     };
 
-    const res = validate({ resolvedSpec: spec, jsSpec: spec }, config);
+    const res = validate({ resolvedSpec: spec, jsSpec: spec }, configOas3);
     expect(res.warnings.length).toEqual(1);
     expect(res.warnings[0].message).toEqual(
       'JSON request/response bodies should not contain binary (type: string, format: binary) values.'
@@ -446,7 +447,7 @@ describe('validation plugin - semantic - operations - oas3', function() {
       }
     };
 
-    const res = validate({ resolvedSpec: spec, jsSpec: spec }, config);
+    const res = validate({ resolvedSpec: spec, jsSpec: spec }, configOas3);
     expect(res.warnings.length).toEqual(2);
     expect(res.warnings[0].message).toEqual(
       'JSON request/response bodies should not contain binary (type: string, format: binary) values.'
@@ -491,7 +492,7 @@ describe('validation plugin - semantic - operations - oas3', function() {
       }
     };
 
-    const res = validate({ resolvedSpec: spec, jsSpec: spec }, config);
+    const res = validate({ resolvedSpec: spec, jsSpec: spec }, configOas3);
     expect(res.warnings.length).toEqual(1);
     expect(res.warnings[0].message).toEqual(
       'JSON request/response bodies should not contain binary (type: string, format: binary) values.'
@@ -542,7 +543,7 @@ describe('validation plugin - semantic - operations - oas3', function() {
       }
     };
 
-    const res = validate({ resolvedSpec: spec, jsSpec: spec }, config);
+    const res = validate({ resolvedSpec: spec, jsSpec: spec }, configOas3);
     expect(res.warnings.length).toEqual(1);
     expect(res.warnings[0].message).toEqual(
       'JSON request/response bodies should not contain binary (type: string, format: binary) values.'
@@ -605,7 +606,7 @@ describe('validation plugin - semantic - operations - oas3', function() {
       }
     };
 
-    const res = validate({ resolvedSpec: spec, jsSpec: spec }, config);
+    const res = validate({ resolvedSpec: spec, jsSpec: spec }, configOas3);
     expect(res.warnings.length).toEqual(3);
     expect(res.warnings[0].message).toEqual(
       'JSON request/response bodies should not contain binary (type: string, format: binary) values.'
@@ -674,7 +675,7 @@ describe('validation plugin - semantic - operations - oas3', function() {
       }
     };
 
-    const res = validate({ resolvedSpec: spec, jsSpec: spec }, config);
+    const res = validate({ resolvedSpec: spec, jsSpec: spec }, configOas3);
     expect(res.warnings.length).toEqual(2);
     expect(res.warnings[0].message).toEqual(
       'JSON request/response bodies should not contain binary (type: string, format: binary) values.'
@@ -691,7 +692,7 @@ describe('validation plugin - semantic - operations - oas3', function() {
   });
 
   it('should not complain when json, or hal+json is used in request or response', function() {
-    config.operations.wrong_content_type = 'error';
+    configOas3.operations.wrong_content_type = 'error';
 
     
     const spec = {
@@ -802,13 +803,13 @@ describe('validation plugin - semantic - operations - oas3', function() {
       }
     };
 
-    const res = validate({ resolvedSpec: spec, jsSpec: spec }, config);
+    const res = validate({ resolvedSpec: spec, jsSpec: spec }, configOas3);
     expect(res.warnings.length).toEqual(0);
     expect(res.errors.length).toEqual(0);
   });
 
   it('should complain warnings when text/json, or json with charset is used', function() {
-    config.operations.wrong_content_type = 'error';
+    configOas3.operations.wrong_content_type = 'error';
     
     const spec = {
       paths: {
@@ -918,7 +919,7 @@ describe('validation plugin - semantic - operations - oas3', function() {
       }
     };
 
-    const res = validate({ resolvedSpec: spec, jsSpec: spec }, config);
+    const res = validate({ resolvedSpec: spec, jsSpec: spec }, configOas3);
     expect(res.errors.length).toEqual(0);
     expect(res.warnings.length).toEqual(4);
     expect(res.warnings[0].message).toEqual(`JSON Response Content-type must be 'application/json' or 'application/hal+json' or 'application/problem+json', without charset.`);
@@ -933,7 +934,7 @@ describe('validation plugin - semantic - operations - oas3', function() {
   });
 
   it('should complain when text/json or xml is used', function() {
-    config.operations.wrong_content_type = 'error';
+    configOas3.operations.wrong_content_type = 'error';
     
     const spec = {
       paths: {
@@ -1043,7 +1044,7 @@ describe('validation plugin - semantic - operations - oas3', function() {
       }
     };
 
-    const res = validate({ resolvedSpec: spec, jsSpec: spec }, config);
+    const res = validate({ resolvedSpec: spec, jsSpec: spec }, configOas3);
     expect(res.errors.length).toEqual(2);
     
     expect(res.errors[0].message).toEqual(`Response Content-Type must be JSON ('application/json' or 'application/hal+json' or 'application/problem+json').`);

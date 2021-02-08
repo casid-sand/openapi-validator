@@ -19,7 +19,17 @@ const configWithAlternative = {
 };
 
 const configForHeaders = {
-  parameters: {
+    parameters: {
+        "param_name_case_convention": [
+            "error",
+            "k8s_camel_case"
+        ],
+        "param_name_alternative_case_convention": [
+            "warning",
+            "lower_snake_case"
+        ]
+    },
+    common: {
         "header_name_case_convention": [
             "error",
             "spinal_first_upper_case"
@@ -792,20 +802,20 @@ describe('validation plugin - semantic - parameters-ibm', () => {
       expect(res.errors[1].path).toEqual(["paths", "/pets", "get", "parameters", "1"]);
       expect(res.errors[1].type).toEqual("convention");
       expect(res.errors[1].rule).toEqual("IETF.RFC.6648");
-      expect(res.errors[1].message).toEqual("HTTP Header name must not start with 'X-*' : 'xHeader-Name'");
+      expect(res.errors[1].message).toEqual("HTTP Header name must not start with 'X-*' : 'xHeader-Name'.");
 
       expect(res.errors[2].path).toEqual(["paths", "/pets", "get", "parameters", "2"]);
-      expect(res.errors[2].message).toEqual("HTTP Header name must not start with 'X-*' : 'XCamelCaseHeader'");
+      expect(res.errors[2].message).toEqual("HTTP Header name must not start with 'X-*' : 'XCamelCaseHeader'.");
       
       expect(res.errors[3].path).toEqual(["paths", "/pets", "get", "parameters", "3"]);
       expect(res.errors[3].message).toEqual("HTTP Header name must follow case convention: 'x_snake_case_header' doesn't respect 'Spinal-FirstLetterUpper-Case'.");
       expect(res.errors[4].path).toEqual(["paths", "/pets", "get", "parameters", "3"]);
-      expect(res.errors[4].message).toEqual("HTTP Header name must not start with 'X-*' : 'x_snake_case_header'");
+      expect(res.errors[4].message).toEqual("HTTP Header name must not start with 'X-*' : 'x_snake_case_header'.");
 
       expect(res.errors[5].path).toEqual(["parameters", "headerwithx"]);
       expect(res.errors[5].message).toEqual("HTTP Header name must follow case convention: 'X-data-authorization-header' doesn't respect 'Spinal-FirstLetterUpper-Case'.");
       expect(res.errors[6].path).toEqual(["parameters", "headerwithx"]);
-      expect(res.errors[6].message).toEqual("HTTP Header name must not start with 'X-*' : 'X-data-authorization-header'");
+      expect(res.errors[6].message).toEqual("HTTP Header name must not start with 'X-*' : 'X-data-authorization-header'.");
 
       expect(res.warnings.length).toEqual(0);
     });

@@ -20,6 +20,8 @@ const lowerDashCase = /^[a-z][a-z0-9]*(-[a-z0-9]+)*$/; // example : learning-opt
 const upperDashCase = /^[A-Z][A-Z0-9]*(-[A-Z0-9]+)*$/; // example : LEARNING-OPT-OUT
 const spinalFirstUpperCase = /^([A-Z][a-z0-9]*)+(-([A-Z][a-z0-9]*)+)*$/; // example : Learning-Opt-Out
 
+const headerStartingWithXRegex = /^([xX])(([-_\.A-Z]))/;
+
 module.exports = (string, convention) => {
   switch (convention) {
     case 'lower_snake_case':
@@ -230,3 +232,4 @@ module.exports.getCaseConventionExample = function (convention) {
       return `Unsupported case: ${convention}`;
   }
 };
+

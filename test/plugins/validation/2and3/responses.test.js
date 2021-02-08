@@ -6,7 +6,12 @@ const {
 const config = require('../../../../src/.defaultsForValidator').defaults.shared;
 
 describe('validation plugin - semantic - responses', function() {
+  
+  config.common.header_name_case_convention[0] = 'error';
+  config.common.header_starting_with_x = 'error';
+
   describe('inline response schemas', function() {
+
     describe('Swagger 2', function() {
       it('should not complain for a valid response', function() {
         const spec = {
@@ -271,6 +276,7 @@ describe('validation plugin - semantic - responses', function() {
         expect(res.warnings.length).toEqual(0);
         expect(res.errors.length).toEqual(0);
       });
+
       it('should complain about an inline schema', function() {
         const spec = {
           paths: {
@@ -569,5 +575,176 @@ describe('validation plugin - semantic - responses', function() {
         expect(res.errors.length).toEqual(0);
       });
     });
+  });
+
+    describe('headers', function() {
+      
+        describe('Swagger 2', function() {
+
+            it('should complain for a response with incorrect headers', function() {
+                const spec = {
+                    paths: {
+                        '/stuff': {
+                        get: {
+                            summary: 'list stuff',
+                            operationId: 'listStuff',
+                            produces: ['application/json'],
+                            responses: {
+                            200: {
+                                description: 'successful operation',
+                                schema: {
+                                    $ref: '#/definitions/ListStuffResponseModel'
+                                },
+                                headers:{
+                                    Location: {
+                                        type: "string"
+                                    },
+                                    'X-Test':{
+                                        type: "string"
+                                    },
+                                    toto_test:{
+                                        type: "integer"
+                                    }
+                                }
+                            }
+                            }
+                        }
+                        }
+                    }
+                };
+
+                const res = validate({ jsSpec: spec }, config);
+                expect(res.warnings.length).toEqual(0);
+                expect(res.errors.length).toEqual(2);
+                expect(res.errors[0].message).toEqual("HTTP Header name must not start with 'X-*' : 'X-Test'.");
+                expect(res.errors[0].path).toEqual(['paths', '/stuff','get','responses','200','headers','X-Test']);
+                expect(res.errors[1].message).toEqual("HTTP Header name must follow case convention: 'toto_test' doesn't respect 'Spinal-FirstLetterUpper-Case'.");
+                expect(res.errors[1].path).toEqual(['paths', '/stuff','get','responses','200','headers','toto_test']);
+            });
+
+            it('should not complain for a response with correct headers', function() {
+                const spec = {
+                    paths: {
+                        '/stuff': {
+                        get: {
+                            summary: 'list stuff',
+                            operationId: 'listStuff',
+                            produces: ['application/json'],
+                            responses: {
+                            200: {
+                                description: 'successful operation',
+                                schema: {
+                                $ref: '#/definitions/ListStuffResponseModel'
+                                },
+                                headers:{
+                                    Location: {
+                                        type: "string"
+                                    },
+                                    'MyOrga-Authent-Login':{
+                                        type: "string"
+                                    }
+                                }
+                            }
+                            }
+                        }
+                        }
+                    }
+                };
+
+                const res = validate({ jsSpec: spec }, config);
+                expect(res.warnings.length).toEqual(0);
+                expect(res.errors.length).toEqual(0);
+            });
+
+        });
+
+        describe('OpenAPI 3', function() {
+            it('should complain for a response with incorrect headers', function() {
+                const spec = {
+                    paths: {
+                        '/stuff': {
+                            get: {
+                                summary: 'list stuff',
+                                operationId: 'listStuff',
+                                responses: {
+                                    '200': {
+                                        description: 'successful operation',
+                                        content: {
+                                            'multipart/mixed': {
+                                                schema: {
+                                                $ref: '#/definitions/ListStuffResponseModel'
+                                                },
+                                            }
+                                        },
+                                        headers:{
+                                            Location: {
+                                                schema:{
+                                                    type: "string"}
+                                            },
+                                            'X-Test':{
+                                                schema: {
+                                                    type: "string"}
+                                            },
+                                            toto_test:{
+                                                schema:{
+                                                    type: "integer"}
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+                
+
+                const res = validate({ jsSpec: spec, isOAS3: true  }, config);
+                expect(res.warnings.length).toEqual(0);
+                expect(res.errors.length).toEqual(2);
+                expect(res.errors[0].message).toEqual("HTTP Header name must not start with 'X-*' : 'X-Test'.");
+                expect(res.errors[0].path).toEqual(['paths', '/stuff','get','responses','200','headers','X-Test']);
+                expect(res.errors[1].message).toEqual("HTTP Header name must follow case convention: 'toto_test' doesn't respect 'Spinal-FirstLetterUpper-Case'.");
+                expect(res.errors[1].path).toEqual(['paths', '/stuff','get','responses','200','headers','toto_test']);
+            });
+
+            it('should not complain for a response with correct headers', function() {
+                const spec = {
+                    paths: {
+                        '/stuff': {
+                            get: {
+                                summary: 'list stuff',
+                                operationId: 'listStuff',
+                                responses: {
+                                    '200': {
+                                        description: 'successful operation',
+                                        content: {
+                                            'multipart/mixed': {
+                                                schema: {
+                                                $ref: '#/definitions/ListStuffResponseModel'
+                                                },
+                                            }
+                                        },
+                                        headers:{
+                                            Location: {
+                                                schema:{
+                                                    type: "integer"}
+                                            },
+                                            'MyOrga-Authent-Login':{
+                                                schema: {
+                                                    type: "string"}
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+
+                const res = validate({ jsSpec: spec, isOAS3: true  }, config);
+                expect(res.warnings.length).toEqual(0);
+                expect(res.errors.length).toEqual(0);
+            });
+        });
   });
 });

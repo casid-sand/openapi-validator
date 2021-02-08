@@ -511,7 +511,6 @@ describe('validation plugin - semantic - responses - oas3', function() {
     };
 
     const res = validate({ resolvedSpec: spec }, config);
-    res.displayWarning(0);
     expect(res.warnings.length).toEqual(0);
     expect(res.errors.length).toEqual(0);
   });
