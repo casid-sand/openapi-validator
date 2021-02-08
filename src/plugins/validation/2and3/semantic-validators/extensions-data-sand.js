@@ -123,7 +123,7 @@ module.exports.validate = function({ jsSpec }, config) {
                                     hasError = true;
                                     messages.addTypedMessage(
                                         ['paths', pathName, operationName, isFileExtenstionName],
-                                        `'${isFileExtenstionName}' value must be a non-empty string.`,
+                                        `Extension '${isFileExtenstionName}' value must be a non-empty string.`,
                                         checkDataExtension,
                                         'convention',
                                         'CTMO.STANDARD-CODAGE-23'
@@ -243,7 +243,7 @@ module.exports.validate = function({ jsSpec }, config) {
                     if (xSourceAcceptedValues.indexOf(xsourceValue) === -1) {
                         messages.addTypedMessage(
                             ['info', sourceExtensionName],
-                            `'${sourceExtensionName}' value must be one of ${xSourceAcceptedValues.toString()}.`,
+                            `Extension '${sourceExtensionName}' value must be one of ${xSourceAcceptedValues.toString()}.`,
                             checkDataExtension,
                             'convention',
                             'CTMO.STANDARD-CODAGE-23'
@@ -254,7 +254,7 @@ module.exports.validate = function({ jsSpec }, config) {
             if (!hasXSource) {
                 messages.addTypedMessage(
                     ['info', sourceExtensionName],
-                    `'${sourceExtensionName}' value must be defined and a non-empty string.`,
+                    `Extension '${sourceExtensionName}' value must be defined and a non-empty string.`,
                     checkDataExtension,
                     'convention',
                     'CTMO.STANDARD-CODAGE-23'
@@ -275,7 +275,7 @@ module.exports.validate = function({ jsSpec }, config) {
                         if (xSourceAcceptedValues.indexOf(xsourceValue) === -1) {
                             messages.addTypedMessage(
                                 ['info', sourceExtensionName],
-                                `'${sourceExtensionName}' value must be one of ${xSourceAcceptedValues.toString()}.`,
+                                `Extension '${sourceExtensionName}' value must be one of ${xSourceAcceptedValues.toString()}.`,
                                 checkDataExtension,
                                 'convention',
                                 'CTMO.STANDARD-CODAGE-23'
@@ -302,7 +302,7 @@ module.exports.validate = function({ jsSpec }, config) {
                         if (xSourceAcceptedValues.indexOf(serverSourceValue) === -1) {
                             messages.addTypedMessage(
                                 ['servers', `${i}`],
-                                `'${sourceExtensionName}' value must be one of ${xSourceAcceptedValues.toString()}.`,
+                                `Extension '${sourceExtensionName}' value must be one of ${xSourceAcceptedValues.toString()}.`,
                                 checkDataExtension,
                                 'convention',
                                 'CTMO.STANDARD-CODAGE-23'
@@ -312,7 +312,7 @@ module.exports.validate = function({ jsSpec }, config) {
                         if (hasXSourceInInfo) {
                             messages.addTypedMessage(
                                 [`servers`, `${i}`],
-                                `'${sourceExtensionName}' identifier is duplicate in server and in 'info'.`,
+                                `Extension '${sourceExtensionName}' identifier is duplicate in server and in 'info'.`,
                                 checkDataExtension,
                                 'convention',
                                 'CTMO.STANDARD-CODAGE-23'
@@ -331,7 +331,7 @@ module.exports.validate = function({ jsSpec }, config) {
                             const serverNum = arrayServersWithoutSource[i];
                             messages.addTypedMessage(
                                 ['servers', `${serverNum}`],
-                                `'${sourceExtensionName}' value must be defined and a non-empty string.`,
+                                `Extension '${sourceExtensionName}' value must be defined and a non-empty string.`,
                                 checkDataExtension,
                                 'convention',
                                 'CTMO.STANDARD-CODAGE-23'
@@ -340,7 +340,7 @@ module.exports.validate = function({ jsSpec }, config) {
                     } else {
                         messages.addTypedMessage(
                             ['servers'],
-                            `'${sourceExtensionName}' value must be defined and a non-empty string on each 'server', or in 'info'.`,
+                            `Extension '${sourceExtensionName}' value must be defined and a non-empty string on each 'server', or in 'info'.`,
                             checkDataExtension,
                             'convention',
                             'CTMO.STANDARD-CODAGE-23'
@@ -353,7 +353,7 @@ module.exports.validate = function({ jsSpec }, config) {
             if (!hasOneServer && !hasXSourceInInfo) {
                 messages.addTypedMessage(
                     ['servers'],
-                    `'${sourceExtensionName}' value must be defined in 'servers'.`,
+                    `Extension '${sourceExtensionName}' value must be defined in 'servers'.`,
                     checkDataExtension,
                     'convention',
                     'CTMO.STANDARD-CODAGE-23'
@@ -408,7 +408,7 @@ function checkExtensionValue(jsObject, pathToObjectArray, extensionDefinition, m
                 hasError = true;
                 messages.addTypedMessage(
                     pathToObjectArray,
-                    `'${extensionDefinition.name}' value must be a non-empty string.`,
+                    `Extension '${extensionDefinition.name}' value must be a non-empty string.`,
                     messageLevel,
                     'convention',
                     'CTMO.STANDARD-CODAGE-23'
@@ -422,7 +422,7 @@ function checkExtensionValue(jsObject, pathToObjectArray, extensionDefinition, m
                         hasCorrectExtensionValue = false;
                         messages.addTypedMessage(
                             pathToObjectArray,
-                            `'${extensionDefinition.name}' value must be one of ${extensionDefinition.values.toString()}.`,
+                            `Extension '${extensionDefinition.name}' value must be one of ${extensionDefinition.values.toString()}.`,
                             messageLevel,
                             'convention',
                             'CTMO.STANDARD-CODAGE-23'
@@ -436,7 +436,7 @@ function checkExtensionValue(jsObject, pathToObjectArray, extensionDefinition, m
                 hasCorrectExtensionValue = false;
                 messages.addTypedMessage(
                     pathToObjectArray,
-                    `'${extensionDefinition.name}' value must be a number.`,
+                    `Extension '${extensionDefinition.name}' value must be a number.`,
                     messageLevel,
                     'convention',
                     'CTMO.STANDARD-CODAGE-23'

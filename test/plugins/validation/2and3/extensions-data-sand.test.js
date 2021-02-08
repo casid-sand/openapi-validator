@@ -69,52 +69,52 @@ describe('validation plugin - semantic - extension data - incorrect values', () 
     const res = validate({ jsSpec: spec }, config);
     expect(res.errors.length).toEqual(20);
     expect(res.errors[0].path).toEqual(['info', 'x-data-access-authorization']);
-    expect(res.errors[0].message).toContain("'x-data-access-authorization' value must be one of");
+    expect(res.errors[0].message).toContain("Extension 'x-data-access-authorization' value must be one of");
     expect(res.errors[0].type).toEqual('convention');
     expect(res.errors[0].rule).toEqual('CTMO.STANDARD-CODAGE-23');
 
     expect(res.errors[1].path).toEqual(['info', 'x-data-access-network']);
-    expect(res.errors[1].message).toEqual("'x-data-access-network' value must be a non-empty string.");
+    expect(res.errors[1].message).toEqual("Extension 'x-data-access-network' value must be a non-empty string.");
     expect(res.errors[2].path).toEqual(['info', 'x-data-security-classification']);
-    expect(res.errors[2].message).toEqual("'x-data-security-classification' value must be a non-empty string.");
+    expect(res.errors[2].message).toEqual("Extension 'x-data-security-classification' value must be a non-empty string.");
     expect(res.errors[3].path).toEqual(['info', 'x-data-security-mention']);
-    expect(res.errors[3].message).toContain("'x-data-security-mention' value must be one of");
+    expect(res.errors[3].message).toContain("Extension 'x-data-security-mention' value must be one of");
     expect(res.errors[4].path).toEqual(['info', 'x-data-use-constraint']);
-    expect(res.errors[4].message).toContain("'x-data-use-constraint' value must be one of");
+    expect(res.errors[4].message).toContain("Extension 'x-data-use-constraint' value must be one of");
 
     expect(res.errors[5].path).toEqual(['info', 'x-maximum-request-bandwidth']);
-    expect(res.errors[5].message).toEqual("'x-maximum-request-bandwidth' value must be a number.");
+    expect(res.errors[5].message).toEqual("Extension 'x-maximum-request-bandwidth' value must be a number.");
     expect(res.errors[6].path).toEqual(['info', 'x-maximum-request-rate']);
-    expect(res.errors[6].message).toEqual("'x-maximum-request-rate' value must be a number.");
+    expect(res.errors[6].message).toEqual("Extension 'x-maximum-request-rate' value must be a number.");
     expect(res.errors[7].path).toEqual(['info', 'x-maximum-request-size']);
-    expect(res.errors[7].message).toEqual("'x-maximum-request-size' value must be a number.");
+    expect(res.errors[7].message).toEqual("Extension 'x-maximum-request-size' value must be a number.");
     expect(res.errors[8].path).toEqual(['info', 'x-maximum-response-size']);
-    expect(res.errors[8].message).toEqual("'x-maximum-response-size' value must be a number.");
+    expect(res.errors[8].message).toEqual("Extension 'x-maximum-response-size' value must be a number.");
 
     expect(res.errors[9].path).toEqual(['paths', '/pathOne', 'x-data-security-classification']);
-    expect(res.errors[9].message).toContain("'x-data-security-classification' value must be one of");
+    expect(res.errors[9].message).toContain("Extension 'x-data-security-classification' value must be one of");
     expect(res.errors[10].path).toEqual(['paths', '/pathOne', 'x-data-use-constraint']);
-    expect(res.errors[10].message).toEqual("'x-data-use-constraint' value must be a non-empty string.");
+    expect(res.errors[10].message).toEqual("Extension 'x-data-use-constraint' value must be a non-empty string.");
     expect(res.errors[11].path).toEqual(['paths', '/pathOne',  'x-maximum-request-rate']);
-    expect(res.errors[11].message).toEqual("'x-maximum-request-rate' value must be a number.");
+    expect(res.errors[11].message).toEqual("Extension 'x-maximum-request-rate' value must be a number.");
     expect(res.errors[12].path).toEqual(['paths', '/pathOne',  'x-maximum-response-size']);
-    expect(res.errors[12].message).toEqual("'x-maximum-response-size' value must be a number.");
+    expect(res.errors[12].message).toEqual("Extension 'x-maximum-response-size' value must be a number.");
 
     expect(res.errors[13].path).toEqual(['paths', '/pathTwo', 'get', 'x-data-access-network']);
-    expect(res.errors[13].message).toContain("'x-data-access-network' value must be one of");
+    expect(res.errors[13].message).toContain("Extension 'x-data-access-network' value must be one of");
     expect(res.errors[14].path).toEqual(['paths', '/pathTwo', 'get', 'x-data-security-mention']);
-    expect(res.errors[14].message).toEqual("'x-data-security-mention' value must be a non-empty string.");
+    expect(res.errors[14].message).toEqual("Extension 'x-data-security-mention' value must be a non-empty string.");
     expect(res.errors[15].path).toEqual(['paths', '/pathTwo', 'get',  'x-maximum-request-bandwidth']);
-    expect(res.errors[15].message).toEqual("'x-maximum-request-bandwidth' value must be a number.");
+    expect(res.errors[15].message).toEqual("Extension 'x-maximum-request-bandwidth' value must be a number.");
     expect(res.errors[16].path).toEqual(['paths', '/pathTwo', 'get',  'x-maximum-request-size']);
-    expect(res.errors[16].message).toEqual("'x-maximum-request-size' value must be a number.");
+    expect(res.errors[16].message).toEqual("Extension 'x-maximum-request-size' value must be a number.");
     expect(res.errors[17].path).toEqual(['paths', '/pathTwo', 'get', 'x-data-is-file']);
-    expect(res.errors[17].message).toEqual("'x-data-is-file' value must be a non-empty string.");
+    expect(res.errors[17].message).toEqual("Extension 'x-data-is-file' value must be a non-empty string.");
 
     expect(res.errors[18].path).toEqual(['servers','0']);
-    expect(res.errors[18].message).toContain("'x-source' value must be one of");
+    expect(res.errors[18].message).toContain("Extension 'x-source' value must be one of");
     expect(res.errors[19].path).toEqual(['servers','1']);
-    expect(res.errors[19].message).toContain("'x-source' value must be one of");
+    expect(res.errors[19].message).toContain("Extension 'x-source' value must be one of");
 
     expect(res.warnings.length).toEqual(0);
   });
@@ -174,7 +174,7 @@ describe('validation plugin - semantic - extension data - incorrect values', () 
     expect(res.errors[1].path).toEqual(['info', 'x-data-security-mention']);
     expect(res.errors[1].message).toContain("'x-data-security-mention' value must be one of");
     expect(res.errors[2].path).toEqual(['info', 'x-source']);
-    expect(res.errors[2].message).toContain("'x-source' value must be one of");
+    expect(res.errors[2].message).toContain("Extension 'x-source' value must be one of");
 
     expect(res.warnings.length).toEqual(0);
   });
@@ -223,7 +223,7 @@ describe('validation plugin - semantic - extension data - missing values', () =>
     expect(res.errors[0].path).toEqual(['info', 'x-data-use-constraint'] );
     expect(res.errors[0].message).toEqual("Extension value must be defined in object 'info', 'path' or 'operation' : 'x-data-use-constraint' (recommended on 'info' object).");
     expect(res.errors[1].path).toEqual(['servers','1']);
-    expect(res.errors[1].message).toEqual("'x-source' value must be defined and a non-empty string.");
+    expect(res.errors[1].message).toEqual("Extension 'x-source' value must be defined and a non-empty string.");
   });
 
   //this is for openapi object
@@ -262,7 +262,7 @@ describe('validation plugin - semantic - extension data - missing values', () =>
     expect(res.errors.length).toEqual(1);
     expect(res.warnings.length).toEqual(0);
     expect(res.errors[0].path).toEqual(['servers']);
-    expect(res.errors[0].message).toEqual("'x-source' value must be defined and a non-empty string on each 'server', or in 'info'.");
+    expect(res.errors[0].message).toEqual("Extension 'x-source' value must be defined and a non-empty string on each 'server', or in 'info'.");
   });
 
   //this is for openapi object
@@ -303,9 +303,9 @@ describe('validation plugin - semantic - extension data - missing values', () =>
     expect(res.errors.length).toEqual(2);
     expect(res.warnings.length).toEqual(0);
     expect(res.errors[0].path).toEqual(['info', 'x-source']);
-    expect(res.errors[0].message).toContain("'x-source' value must be one of");
+    expect(res.errors[0].message).toContain("Extension 'x-source' value must be one of");
     expect(res.errors[1].path).toEqual(['servers', '1']);
-    expect(res.errors[1].message).toEqual("'x-source' identifier is duplicate in server and in 'info'.");
+    expect(res.errors[1].message).toEqual("Extension 'x-source' identifier is duplicate in server and in 'info'.");
   });
 
     //this is for openapi object
@@ -497,7 +497,7 @@ describe('validation plugin - semantic - extension data - missing values', () =>
       expect(res.errors[0].path).toEqual(['info', 'x-data-security-mention']);
       expect(res.errors[0].message).toEqual("Extension value must be defined in object 'info', 'path' or 'operation' : 'x-data-security-mention' (recommended on 'info' object).");
       expect(res.errors[1].path).toEqual(['info', 'x-source']);
-      expect(res.errors[1].message).toEqual("'x-source' value must be defined and a non-empty string.");
+      expect(res.errors[1].message).toEqual("Extension 'x-source' value must be defined and a non-empty string.");
     });
 
   //this is for openapi object
@@ -540,7 +540,7 @@ describe('validation plugin - semantic - extension data - missing values', () =>
     expect(res.errors[3].message).toEqual("Extension value must be defined in object 'info', 'path' or 'operation' : 'x-data-security-mention' (recommended on 'info' object).");
     expect(res.errors[4].message).toEqual("Extension value must be defined in object 'info', 'path' or 'operation' : 'x-data-use-constraint' (recommended on 'info' object).");
     expect(res.errors[5].path).toEqual(['servers'] );
-    expect(res.errors[5].message).toEqual("'x-source' value must be defined in 'servers'.");
+    expect(res.errors[5].message).toEqual("Extension 'x-source' value must be defined in 'servers'.");
   });
 
   //this is for openapi object
@@ -574,7 +574,7 @@ describe('validation plugin - semantic - extension data - missing values', () =>
     expect(res.errors[3].message).toEqual("Extension value must be defined in object 'info', 'path' or 'operation' : 'x-data-security-mention' (recommended on 'info' object).");
     expect(res.errors[4].message).toEqual("Extension value must be defined in object 'info', 'path' or 'operation' : 'x-data-use-constraint' (recommended on 'info' object).");
     expect(res.errors[5].path).toEqual(['info', 'x-source']);
-    expect(res.errors[5].message).toEqual("'x-source' value must be defined and a non-empty string.");
+    expect(res.errors[5].message).toEqual("Extension 'x-source' value must be defined and a non-empty string.");
   });
 
   //this is for openapi object

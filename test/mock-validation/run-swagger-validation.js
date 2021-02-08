@@ -13,7 +13,7 @@ swagger_file_name = 'swagger-test.yml';
 swagger_file_name = 'CMan.yaml';
 swagger_file_name = 'Swagger-ds.yml';
 swagger_file_name = 'openapi-demo.yml';
-swagger_file_name = 'openapi-demo.yml';
+swagger_file_name = 'openapi-demo.yaml';
 
 
 //swagger_file_name = "missing-object.yml"
