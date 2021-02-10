@@ -12,8 +12,9 @@ swagger_file_name = 'swagger-test.yml';
 
 swagger_file_name = 'CMan.yaml';
 swagger_file_name = 'Swagger-ds.yml';
-swagger_file_name = 'openapi-demo.yml';
-swagger_file_name = 'openapi-demo.yaml';
+swagger_file_name = 'swagger-DNA-2-12-2020-IntradefToInternet.yml';
+swagger_file_name = 'swagger-SourceWebRH-v0.1-2020-10-01-anonym.yml';
+//swagger_file_name = 'openapi-demo.yaml';
 
 
 //swagger_file_name = "missing-object.yml"

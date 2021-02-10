@@ -52,7 +52,7 @@ module.exports.validate = function({ resolvedSpec }, config) {
       } else {
         for (const statusCode of statusCodes) {
           if (!obj[statusCode].description) {
-            messages.addMessage(
+            messages.addTypedMessage(
               path.concat([statusCode]),
               `All responses must include a description.`,
               'error',
