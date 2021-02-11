@@ -97,27 +97,6 @@ module.exports.validate = function({ resolvedSpec }) {
           'error',
           'structural'
         );
-      } else if (flows.authorizationCode && !flows.authorizationCode.tokenUrl) {
-        messages.addTypedMessage(
-          path + '.flows.authorizationCode',
-          "flow must have required 'tokenUrl' property if type is `authorizationCode`",
-          'error',
-          'structural'
-        );
-      } else if (flows.password && !flows.password.tokenUrl) {
-        messages.addTypedMessage(
-          path + '.flows.password',
-          "flow must have required 'tokenUrl' property if type is `password`",
-          'error',
-          'structural'
-        );
-      } else if (flows.clientCredentials && !flows.clientCredentials.tokenUrl) {
-        messages.addTypedMessage(
-          path + '.flows.clientCredentials',
-          "flow must have required 'tokenUrl' property if type is  `clientCredentials`",
-          'error',
-          'structural'
-        );
       } else if (
         !flows.implicit &&
         !flows.authorizationCode &&
@@ -126,7 +105,7 @@ module.exports.validate = function({ resolvedSpec }) {
       ) {
         messages.addTypedMessage(
           path + '.flows',
-          "oauth2 authorization `flows` must have one of the following properties: 'implicit', 'password', 'clientCredentials' or 'authorizationCode'",
+          "oauth2 authorization `flows` must have one of the following properties: 'implicit', 'password', 'clientCredentials' or 'authorizationCode'.",
           'error',
           'structural'
         );
@@ -135,7 +114,7 @@ module.exports.validate = function({ resolvedSpec }) {
         if (!authorizationUrl) {
           messages.addTypedMessage(
             path + '.flows.implicit',
-            "oauth2 implicit flow must have required 'authorizationUrl' property",
+            "oauth2 authorization implicit flow must have required 'authorizationUrl' property.",
             'error',
             'structural'
           );
@@ -148,12 +127,36 @@ module.exports.validate = function({ resolvedSpec }) {
             'structural'
           );
         }
+        if (flows.implicit.tokenUrl) {
+          messages.addTypedMessage(
+            path + '.flows.implicit.tokenUrl',
+            "oauth2 authorization implicit flow must not have 'tokenUrl' property.",
+            'error',
+            'structural'
+          );
+        }
       } else if (flows.authorizationCode) {
         const authorizationUrl = flows.authorizationCode.authorizationUrl;
         if (!authorizationUrl) {
           messages.addTypedMessage(
-            path + 'flows.authorizationCode',
-            "oauth2 authorizationCode flow must have required 'authorizationUrl' property.",
+            path + '.flows.authorizationCode',
+            "oauth2 authorization authorizationCode flow must have required 'authorizationUrl' property.",
+            'error',
+            'structural'
+          );
+        }
+        if (!flows.authorizationCode.tokenUrl) {
+          messages.addTypedMessage(
+            path + '.flows.authorizationCode',
+            "oauth2 authorization authorizationCode flow must have required 'tokenUrl' property.",
+            'error',
+            'structural'
+          );
+        }
+        if (!flows.authorizationCode.scopes) {
+          messages.addTypedMessage(
+            path + '.flows.authorizationCode',
+            "oauth2 authorization authorizationCode flow must have required 'scopes' property.",
             'error',
             'structural'
           );
@@ -168,11 +171,46 @@ module.exports.validate = function({ resolvedSpec }) {
             'structural'
           );
         }
+        if (!flows.password.scopes) {
+          messages.addTypedMessage(
+            path + '.flows.password',
+            "oauth2 authorization password flow must have required 'scopes' property.",
+            'error',
+            'structural'
+          );
+        }
+        const authorizationUrl = flows.password.authorizationUrl;
+        if (authorizationUrl) {
+          messages.addTypedMessage(
+            path + '.flows.password.authorizationUrl',
+            "oauth2 authorization password flow must not have 'authorizationUrl' property.",
+            'error',
+            'structural'
+          );
+        }
       } else if (flows.clientCredentials) {
-        if (!flows.clientCredentials.tokenUrl) {
+        const tokenUrl = flows.clientCredentials.tokenUrl;
+        if (!tokenUrl) {
           messages.addTypedMessage(
             path + '.flows.clientCredentials',
             "oauth2 authorization clientCredentials flow must have required 'tokenUrl' property.",
+            'error',
+            'structural'
+          );
+        }
+        if (!flows.clientCredentials.scopes) {
+          messages.addTypedMessage(
+            path + '.flows.clientCredentials',
+            "oauth2 authorization clientCredentials flow must have required 'scopes' property.",
+            'error',
+            'structural'
+          );
+        }
+        const authorizationUrl = flows.clientCredentials.authorizationUrl;
+        if (authorizationUrl) {
+          messages.addTypedMessage(
+            path + '.flows.clientCredentials.authorizationUrl',
+            "oauth2 authorization clientCredentials flow must not have 'authorizationUrl' property.",
             'error',
             'structural'
           );

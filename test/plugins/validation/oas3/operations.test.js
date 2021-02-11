@@ -50,6 +50,24 @@ describe('validation plugin - semantic - operations - oas3', function() {
                 }
               }
             }
+          },
+          patch: {
+            'x-sdk-exclude': true,
+            summary: 'this is a summary',
+            operationId: 'operationId',
+            requestBody: {
+              description: 'body for request',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'array',
+                    items: {
+                      type: 'string'
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }

@@ -194,6 +194,37 @@ describe('validation plugin - semantic - paths', function() {
         expect(res.warnings).toEqual([]);
       });
 
+      it('should return one problem for an name + in collision', function() {
+        const spec = {
+          paths: {
+            '/CoolPath/{count}': {
+              parameters: [
+                {
+                  name: 'count',
+                  in: 'path'
+                },
+                {
+                  name: 'duplicateParam',
+                  in: 'query'
+                },
+                {
+                  name: 'duplicateParam',
+                  in: 'query'
+                }
+              ]
+            }
+          }
+        };
+
+        const res = validate({ resolvedSpec: spec }, defaultConfig);
+        expect(res.errors.length).toEqual(1);
+        expect(res.errors[0].message).toEqual(
+          `Path parameters must have unique 'name' + 'in' properties`
+        );
+        expect(res.errors[0].path).toEqual('paths./CoolPath/{count}.parameters[2]');
+        expect(res.warnings).toEqual([]);
+      });
+
       it('should return no problems for an name collision only', function() {
         const spec = {
           paths: {

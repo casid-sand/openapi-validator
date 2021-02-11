@@ -1254,4 +1254,78 @@ describe('validation plugin - semantic - pagaination - oas3', function() {
       );
     });
   });
+
+  describe('configuration test', function() {
+    it('should not complain if rule is off', function() {
+      
+      config.pagination.pagination_style = 'off';
+
+      const spec = {
+        paths: {
+          '/resources': {
+            get: {
+              summary: 'this is a summary',
+              operationId: 'operationId',
+              parameters: [
+                {
+                  name: 'limit',
+                  in: 'query',
+                  description: 'limit',
+                  required: false,
+                  schema: {
+                    type: 'integer',
+                    default: 10,
+                    maximum: 50
+                  }
+                },
+                {
+                  name: 'offset',
+                  in: 'query',
+                  description: 'offset',
+                  schema: {
+                    type: 'integer'
+                  }
+                }
+              ],
+              responses: {
+                '200': {
+                  content: {
+                    'application/json': {
+                      schema: {
+                        description: '',
+                        type: 'object',
+                        required: ['items', 'limit', 'offset'],
+                        properties: {
+                          items: {
+                            description: '',
+                            type: 'array',
+                            items: {
+                              type: 'object'
+                            }
+                          },
+                          limit: {
+                            description: 'limit',
+                            type: 'integer'
+                          },
+                          offset: {
+                            description: 'offset',
+                            type: 'integer'
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      };
+
+      const res = validate({ resolvedSpec: spec, isOAS3: true }, config);
+      expect(res.warnings.length).toEqual(0);
+      expect(res.errors.length).toEqual(0);
+    });
+  });
+
 });

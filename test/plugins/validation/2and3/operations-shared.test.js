@@ -397,6 +397,36 @@ describe('validation plugin - semantic - operations-shared', function() {
       expect(res.errors.length).toEqual(0);
     });
 
+    it('should not complain about a path with x-', function() {
+      const spec = {
+        paths: {
+          'x-CoolPath': {
+            put: {
+              summary: '  ',
+              parameters: [
+                {
+                  name: 'BadParameter',
+                  in: 'body',
+                  schema: {
+                    required: ['Property'],
+                    properties: [
+                      {
+                        name: 'Property'
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      };
+
+      const res = validate({ resolvedSpec: spec }, config);
+      expect(res.warnings.length).toEqual(0);
+      expect(res.errors.length).toEqual(0);
+    });
+
     it('should complain about an anonymous array response model', function() {
       const spec = {
         paths: {

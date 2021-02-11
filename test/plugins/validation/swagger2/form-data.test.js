@@ -5,9 +5,9 @@ const {
 
 describe('validation plugin - semantic - form data', function() {
   describe('/parameters/...', function() {
-    describe('in: formdata + in: body', function() {
+    describe.skip('in: formdata + in: body', function() {
       // Already covered in validators/operations.js
-      it.skip('should complain about having both in the same parameter', function() {
+      it('should complain about having both in the same parameter', function() {
         const spec = {
           parameters: {
             CoolParam: [{ in: 'query' }, { in: 'body' }, { in: 'formData' }]
@@ -15,13 +15,10 @@ describe('validation plugin - semantic - form data', function() {
         };
 
         const res = validate({ resolvedSpec: spec });
-        expect(res.errors).toEqual([
-          {
-            message:
-              'Parameters cannot have `in` values of both "body" and "formData", as "formData" _will_ be the body',
-            path: 'parameters.CoolParam.1'
-          }
-        ]);
+        expect(res.errors.length).toEqual(1);
+        expect(res.warnings.length).toEqual(0);
+        expect(res.errors[0].message).toEqual('Parameters cannot have `in` values of both "body" and "formData", as "formData" _will_ be the body');
+        expect(res.errors[0].path).toEqual('parameters.CoolParam[1]');
       });
     });
 
@@ -30,7 +27,8 @@ describe('validation plugin - semantic - form data', function() {
         const spec = {
           parameters: {
             CoolParam: [{ in: 'formdata' }],
-            queryParam: [{ in: 'formData' }]
+            queryParam: [{ in: 'formData' }],
+            testParam: [{ in: 'query' }]
           }
         };
 
@@ -67,12 +65,13 @@ describe('validation plugin - semantic - form data', function() {
     });
 
     // Already covered in validators/operations.js
-    describe.skip('in: formdata + in: body', function() {
+    describe('in: formdata + in: body', function() {
       it('should complain about having both in the same parameter', function() {
         const spec = {
           paths: {
             '/some': {
               post: {
+                consumes: ['multipart/form-data'],
                 parameters: [
                   { in: 'query' },
                   { in: 'body' },

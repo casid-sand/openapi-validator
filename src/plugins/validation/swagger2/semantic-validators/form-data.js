@@ -48,9 +48,9 @@ module.exports.validate = function({ resolvedSpec }) {
 
       // Check for formdata ( typos )
       assertationTypo(obj, path);
+      assertationOne(obj, path);
 
       return (
-        // assertationOne(obj, path)
         assertationTwo(obj, path, opItem) || assertationThree(obj, path, opItem)
       );
     }

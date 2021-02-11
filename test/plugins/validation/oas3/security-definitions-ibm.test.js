@@ -146,6 +146,7 @@ describe('if the type is `oauth2` then it should have flows and flows should fol
       "oauth2 authorization must have required 'flows' property" //////recieved
     );
   });
+
   it('should have `authorizationUrl` if flows is `implicit`', function() {
     const spec = {
       components: {
@@ -155,7 +156,6 @@ describe('if the type is `oauth2` then it should have flows and flows should fol
             flows: {
               implicit: {
                 authurl: 'not real url',
-                scopes: {}
               }
             }
           }
@@ -164,16 +164,15 @@ describe('if the type is `oauth2` then it should have flows and flows should fol
     };
 
     const res = validate({ resolvedSpec: spec });
-    expect(res.errors.length).toEqual(1);
+    expect(res.errors.length).toEqual(2);
     expect(res.warnings.length).toEqual(0);
-    expect(res.errors[0].path).toEqual(
-      'securitySchemes.SecuritySchemeModel.flows.implicit'
-    );
-    expect(res.errors[0].message).toEqual(
-      "oauth2 implicit flow must have required 'authorizationUrl' property"
-    );
+    expect(res.errors[0].path).toEqual('securitySchemes.SecuritySchemeModel.flows.implicit');
+    expect(res.errors[0].message).toEqual("oauth2 authorization implicit flow must have required 'authorizationUrl' property.");
+    expect(res.errors[1].path).toEqual('securitySchemes.SecuritySchemeModel.flows.implicit');
+    expect(res.errors[1].message).toEqual("oauth2 authorization implicit flow must have required 'scopes' property.");
   });
-  it('should have `authorizationUrl` and `tokenUrl` if type is `oauth2` and flow is `authorizationCode`', function() {
+
+  it('should have `authorizationUrl`, `scopes` and `tokenUrl` if type is `oauth2` and flow is `authorizationCode`', function() {
     const spec = {
       components: {
         securitySchemes: {
@@ -181,6 +180,83 @@ describe('if the type is `oauth2` then it should have flows and flows should fol
             type: 'oauth2',
             flows: {
               authorizationCode: {
+                refreshUrl: 'https://example.com/api/oauth/dialog',
+              }
+            }
+          }
+        }
+      }
+    };
+
+    const res = validate({ resolvedSpec: spec });
+    expect(res.errors.length).toEqual(3);
+    expect(res.warnings.length).toEqual(0);
+    expect(res.errors[0].path).toEqual('securitySchemes.SecuritySchemeModel.flows.authorizationCode');
+    expect(res.errors[0].message).toEqual("oauth2 authorization authorizationCode flow must have required 'authorizationUrl' property.");
+    expect(res.errors[1].path).toEqual('securitySchemes.SecuritySchemeModel.flows.authorizationCode');
+    expect(res.errors[1].message).toEqual("oauth2 authorization authorizationCode flow must have required 'tokenUrl' property.");
+    expect(res.errors[2].path).toEqual('securitySchemes.SecuritySchemeModel.flows.authorizationCode');
+    expect(res.errors[2].message).toEqual("oauth2 authorization authorizationCode flow must have required 'scopes' property.");
+  });
+
+  it('should have `scopes` and `tokenUrl` if type is `oauth2` and flow is `password`', function() {
+    const spec = {
+      components: {
+        securitySchemes: {
+          SecuritySchemeModel: {
+            type: 'oauth2',
+            flows: {
+              password: {
+                refreshUrl: 'https://example.com/api/oauth/dialog',
+              }
+            }
+          }
+        }
+      }
+    };
+
+    const res = validate({ resolvedSpec: spec });
+    expect(res.errors.length).toEqual(2);
+    expect(res.warnings.length).toEqual(0);
+    expect(res.errors[0].path).toEqual('securitySchemes.SecuritySchemeModel.flows.password');
+    expect(res.errors[0].message).toEqual("oauth2 authorization password flow must have required 'tokenUrl' property.");
+    expect(res.errors[1].path).toEqual('securitySchemes.SecuritySchemeModel.flows.password');
+    expect(res.errors[1].message).toEqual("oauth2 authorization password flow must have required 'scopes' property.");
+  });
+
+  it('should have `scopes` and `tokenUrl` if type is `oauth2` and flow is `clientCredentials`', function() {
+    const spec = {
+      components: {
+        securitySchemes: {
+          SecuritySchemeModel: {
+            type: 'oauth2',
+            flows: {
+              clientCredentials: {
+                refreshUrl: 'https://example.com/api/oauth/dialog',
+              }
+            }
+          }
+        }
+      }
+    };
+
+    const res = validate({ resolvedSpec: spec });
+    expect(res.errors.length).toEqual(2);
+    expect(res.warnings.length).toEqual(0);
+    expect(res.errors[0].path).toEqual('securitySchemes.SecuritySchemeModel.flows.clientCredentials');
+    expect(res.errors[0].message).toEqual("oauth2 authorization clientCredentials flow must have required 'tokenUrl' property.");
+    expect(res.errors[1].path).toEqual('securitySchemes.SecuritySchemeModel.flows.clientCredentials');
+    expect(res.errors[1].message).toEqual("oauth2 authorization clientCredentials flow must have required 'scopes' property.");
+  });
+
+  it('should not complain for good implicit authorization', function() {
+    const spec = {
+      components: {
+        securitySchemes: {
+          SecuritySchemeModel: {
+            type: 'oauth2',
+            flows: {
+              implicit: {
                 authorizationUrl: 'https://example.com/api/oauth/dialog',
                 scopes: {}
               }
@@ -191,15 +267,152 @@ describe('if the type is `oauth2` then it should have flows and flows should fol
     };
 
     const res = validate({ resolvedSpec: spec });
+    expect(res.errors.length).toEqual(0);
+    expect(res.warnings.length).toEqual(0);
+  });
+
+  it('should not complain for good authorizationCode flow', function() {
+    const spec = {
+      components: {
+        securitySchemes: {
+          SecuritySchemeModel: {
+            type: 'oauth2',
+            flows: {
+              authorizationCode: {
+                authorizationUrl: 'https://example.com/api/oauth/dialog',
+                tokenUrl: 'https://example.com/api/oauth/dialog',
+                scopes: {}
+              }
+            }
+          }
+        }
+      }
+    };
+
+    const res = validate({ resolvedSpec: spec });
+    expect(res.errors.length).toEqual(0);
+    expect(res.warnings.length).toEqual(0);
+  });
+
+  it('should not complain for good password flow', function() {
+    const spec = {
+      components: {
+        securitySchemes: {
+          SecuritySchemeModel: {
+            type: 'oauth2',
+            flows: {
+              password: {
+                tokenUrl: 'https://example.com/api/oauth/dialog',
+                scopes: {}
+              }
+            }
+          }
+        }
+      }
+    };
+
+    const res = validate({ resolvedSpec: spec });
+    expect(res.errors.length).toEqual(0);
+    expect(res.warnings.length).toEqual(0);
+  });
+
+  it('should not complain for good clientCredentials flow', function() {
+    const spec = {
+      components: {
+        securitySchemes: {
+          SecuritySchemeModel: {
+            type: 'oauth2',
+            flows: {
+              clientCredentials: {
+                tokenUrl: 'https://example.com/api/oauth/dialog',
+                scopes: {}
+              }
+            }
+          }
+        }
+      }
+    };
+
+    const res = validate({ resolvedSpec: spec });
+    expect(res.errors.length).toEqual(0);
+    expect(res.warnings.length).toEqual(0);
+  });
+
+  it('should complain for implicit flow with tokenUrl', function() {
+    const spec = {
+      components: {
+        securitySchemes: {
+          SecuritySchemeModel: {
+            type: 'oauth2',
+            flows: {
+              implicit: {
+                authorizationUrl: 'https://example.com/api/oauth/dialog',
+                scopes: {},
+                tokenUrl: 'https://example.com/api/oauth/dialog'
+              }
+            }
+          }
+        }
+      }
+    };
+
+    const res = validate({ resolvedSpec: spec });
     expect(res.errors.length).toEqual(1);
     expect(res.warnings.length).toEqual(0);
-    expect(res.errors[0].path).toEqual(
-      'securitySchemes.SecuritySchemeModel.flows.authorizationCode'
-    );
-    expect(res.errors[0].message).toEqual(
-      "flow must have required 'tokenUrl' property if type is `authorizationCode`"
-    );
+    expect(res.errors[0].path).toEqual('securitySchemes.SecuritySchemeModel.flows.implicit.tokenUrl');
+    expect(res.errors[0].message).toEqual("oauth2 authorization implicit flow must not have 'tokenUrl' property.");
   });
+
+  it('should complain for password flow with authorizationUrl', function() {
+    const spec = {
+      components: {
+        securitySchemes: {
+          SecuritySchemeModel: {
+            type: 'oauth2',
+            flows: {
+              password: {
+                authorizationUrl: 'https://example.com/api/oauth/dialog',
+                tokenUrl: 'https://example.com/api/oauth/dialog',
+                scopes: {}
+              }
+            }
+          }
+        }
+      }
+    };
+
+    const res = validate({ resolvedSpec: spec });
+    expect(res.errors.length).toEqual(1);
+    expect(res.warnings.length).toEqual(0);
+    expect(res.errors[0].path).toEqual('securitySchemes.SecuritySchemeModel.flows.password.authorizationUrl');
+    expect(res.errors[0].message).toEqual("oauth2 authorization password flow must not have 'authorizationUrl' property.");
+  });
+
+  it('should complain for clientCredentials flow with authorizationUrl', function() {
+    const spec = {
+      components: {
+        securitySchemes: {
+          SecuritySchemeModel: {
+            type: 'oauth2',
+            flows: {
+              clientCredentials: {
+                authorizationUrl: 'https://example.com/api/oauth/dialog',
+                tokenUrl: 'https://example.com/api/oauth/dialog',
+                scopes: {}
+              }
+            }
+          }
+        }
+      }
+    };
+
+    const res = validate({ resolvedSpec: spec });
+    expect(res.errors.length).toEqual(1);
+    expect(res.warnings.length).toEqual(0);
+    expect(res.errors[0].path).toEqual('securitySchemes.SecuritySchemeModel.flows.clientCredentials.authorizationUrl');
+    expect(res.errors[0].message).toEqual("oauth2 authorization clientCredentials flow must not have 'authorizationUrl' property.");
+  });
+
   it('should have `scopes` defined as an object if type is `oauth2`', function() {
     const spec = {
       components: {
@@ -229,6 +442,30 @@ describe('if the type is `oauth2` then it should have flows and flows should fol
       "oauth2 authorization implicit flow must have required 'scopes' property."
     );
   });
+
+  it('should have one flow type`', function() {
+    const spec = {
+      components: {
+        securitySchemes: {
+          SecuritySchemeModel: {
+            type: 'oauth2',
+            in: 'cookie',
+            name: 'cookie',
+            scheme: 'Basic',
+            flows: {
+            }
+          }
+        }
+      }
+    };
+
+    const res = validate({ resolvedSpec: spec });
+    expect(res.errors.length).toEqual(1);
+    expect(res.warnings.length).toEqual(0);
+    expect(res.errors[0].path).toEqual('securitySchemes.SecuritySchemeModel.flows');
+    expect(res.errors[0].message).toEqual("oauth2 authorization `flows` must have one of the following properties: 'implicit', 'password', 'clientCredentials' or 'authorizationCode'.");
+  });
+
 });
 
 describe('if `type` is `http`, then scheme property must be defined and `name` and `in` must not', function() {

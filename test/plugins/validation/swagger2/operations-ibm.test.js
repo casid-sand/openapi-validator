@@ -32,6 +32,47 @@ describe('validation plugin - semantic - operations-ibm - swagger2', function() 
                 }
               }
             ]
+          },
+          post: {
+            'x-sdk-exclude': true,
+            summary: 'this is a summary',
+            operationId: 'operationId',
+            produces: ['application/json'],
+            parameters: [
+              {
+                name: 'BadParameter',
+                in: 'body',
+                schema: {
+                  required: ['Property'],
+                  properties: [
+                    {
+                      name: 'Property'
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        'x-CoolPath': {
+          put: {
+            summary: 'this is a summary',
+            operationId: 'operationId',
+            produces: ['application/json'],
+            parameters: [
+              {
+                name: 'BadParameter',
+                in: 'body',
+                schema: {
+                  required: ['Property'],
+                  properties: [
+                    {
+                      name: 'Property'
+                    }
+                  ]
+                }
+              }
+            ]
           }
         }
       }

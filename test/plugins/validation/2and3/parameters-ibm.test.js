@@ -72,6 +72,29 @@ describe('validation plugin - semantic - parameters-ibm', () => {
       );
     });
 
+    it('should not complain for x-sdk-exclude operation', () => {
+      const spec = {
+        paths: {
+          '/pets': {
+            get: {
+              parameters: [
+                {
+                  'x-sdk-exclude': true,
+                  name: 'name',
+                  in: 'query',
+                  type: 'string'
+                }
+              ]
+            }
+          }
+        }
+      };
+
+      const res = validate({ jsSpec: spec }, config);
+      expect(res.warnings.length).toEqual(0);
+      expect(res.errors.length).toEqual(0);
+    });
+
     it('should return an error when snake case is not used', () => {
       const spec = {
         paths: {
