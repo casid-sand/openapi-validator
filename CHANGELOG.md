@@ -1,3 +1,46 @@
+## [0.34.1](https://github.com/IBM/openapi-validator/compare/v0.34.0...v0.34.1) (2021-01-27)
+
+
+### Bug Fixes
+
+* allow rules with flexible second options ([2b1d876](https://github.com/IBM/openapi-validator/commit/2b1d876f2e46d54471f75fe9fa31b58ce48665f7))
+
+# [0.34.0](https://github.com/IBM/openapi-validator/compare/v0.33.2...v0.34.0) (2021-01-26)
+
+
+### Features
+
+* exclude common inconsistent property names ([#230](https://github.com/IBM/openapi-validator/issues/230)) ([d1b9909](https://github.com/IBM/openapi-validator/commit/d1b9909c3c99ddf7dd687b2ddd8f1f8f944f0347))
+
+## [0.33.2](https://github.com/IBM/openapi-validator/compare/v0.33.1...v0.33.2) (2021-01-11)
+
+
+### Bug Fixes
+
+* allow null values for default property ([#227](https://github.com/IBM/openapi-validator/issues/227)) ([b7e2aa8](https://github.com/IBM/openapi-validator/commit/b7e2aa8326e4c95856d1c4ca482f11f6ace494fe))
+
+## [0.33.1](https://github.com/IBM/openapi-validator/compare/v0.33.0...v0.33.1) (2021-01-04)
+
+
+### Bug Fixes
+
+* specify rule name for all configurable rules ([38526f3](https://github.com/IBM/openapi-validator/commit/38526f3e34c70eeeb540ba20065e120cc155d48a))
+
+# [0.33.0](https://github.com/IBM/openapi-validator/compare/v0.32.0...v0.33.0) (2020-12-30)
+
+
+### Features
+
+* command line option to print config option associated with each message ([7a56dde](https://github.com/IBM/openapi-validator/commit/7a56ddeb4cc54c7cdb3a6b1316001ab5659158b2))
+
+# [0.32.0](https://github.com/IBM/openapi-validator/compare/v0.31.1...v0.32.0) (2020-12-28)
+
+
+### Features
+
+* **spectral:** allow spectral ruleset file to be specified with command line option ([db60c11](https://github.com/IBM/openapi-validator/commit/db60c11e9bd218e99071a63b110ffd7daf8c42ba))
+* **spectral:** rework default spectral rules and expose as static "ibm:oas" ruleset ([cafad9e](https://github.com/IBM/openapi-validator/commit/cafad9e15671df4e52b5e477a12b92abd25e5e30))
+
 ## [0.31.1](https://github.com/IBM/openapi-validator/compare/v0.31.0...v0.31.1) (2020-10-23)
 
 

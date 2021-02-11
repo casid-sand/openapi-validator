@@ -189,7 +189,8 @@ function generateFormatErrors(schema, contextPath, config, isOAS3, messages) {
       messages.addMessage(
         contextPath.concat(['items', 'type']),
         'Array properties should avoid having items of type array.',
-        checkStatus
+        checkStatus,
+        'array_of_arrays'
       );
     }
   }
@@ -206,7 +207,8 @@ function typeFormatErrors(obj, path, isOAS3, messages, checkStatus) {
     messages.addMessage(
       path.concat(['format']),
       'Format defined without a type.',
-      checkStatus
+      checkStatus,
+      'invalid_type_format_pair'
     );
   }
 
@@ -247,7 +249,8 @@ function typeFormatErrors(obj, path, isOAS3, messages, checkStatus) {
           `Schema of type integer should use one of the following formats: ${validIntegerFormats.join(
             ', '
           )}.`,
-          checkStatus
+          checkStatus,
+          'invalid_type_format_pair'
         );
       }
       break;
@@ -261,7 +264,8 @@ function typeFormatErrors(obj, path, isOAS3, messages, checkStatus) {
           `Schema of type number should use one of the following formats: ${validNumberFormats.join(
             ', '
           )}.`,
-          checkStatus
+          checkStatus,
+          'invalid_type_format_pair'
         );
       }
       break;
@@ -275,7 +279,8 @@ function typeFormatErrors(obj, path, isOAS3, messages, checkStatus) {
           `Schema of type string should use one of the following formats: ${validStringFormats.join(
             ', '
           )}.`,
-          checkStatus
+          checkStatus,
+          'invalid_type_format_pair'
         );
       }
       break;
@@ -285,7 +290,8 @@ function typeFormatErrors(obj, path, isOAS3, messages, checkStatus) {
         messages.addMessage(
           path.concat(['type']),
           `Schema of type boolean should not have a format.`,
-          checkStatus
+          checkStatus,
+          'invalid_type_format_pair'
         );
       }
       break;
@@ -295,7 +301,8 @@ function typeFormatErrors(obj, path, isOAS3, messages, checkStatus) {
         messages.addMessage(
           path.concat(['type']),
           'Schema of type object should not have a format.',
-          checkStatus
+          checkStatus,
+          'invalid_type_format_pair'
         );
       }
       break;
@@ -305,7 +312,8 @@ function typeFormatErrors(obj, path, isOAS3, messages, checkStatus) {
         messages.addMessage(
           path.concat(['type']),
           'Schema of type array should not have a format.',
-          checkStatus
+          checkStatus,
+          'invalid_type_format_pair'
         );
       }
       break;
@@ -317,13 +325,15 @@ function typeFormatErrors(obj, path, isOAS3, messages, checkStatus) {
         messages.addMessage(
           path.concat(['type']),
           'File type only valid for swagger2 and must be used as root schema.',
-          checkStatus
+          checkStatus,
+          'invalid_type_format_pair'
         );
       } else if (obj.in && obj.in !== 'formData') {
         messages.addMessage(
           path.concat(['type']),
           'File type parameter must use in: formData.',
-          checkStatus
+          checkStatus,
+          'invalid_type_format_pair'
         );
       }
       // Format should not be defined for schema of type file.
@@ -333,7 +343,8 @@ function typeFormatErrors(obj, path, isOAS3, messages, checkStatus) {
         messages.addMessage(
           path.concat(['type']),
           'Schema of type file should not have a format.',
-          checkStatus
+          checkStatus,
+          'invalid_type_format_pair'
         );
       }
       break;
@@ -342,7 +353,8 @@ function typeFormatErrors(obj, path, isOAS3, messages, checkStatus) {
       messages.addMessage(
         path.concat(['type']),
         `Invalid type. Valid types are: ${validTypes.join(', ')}.`,
-        checkStatus
+        checkStatus,
+        'invalid_type_format_pair'
       );
   }
 }
@@ -375,6 +387,7 @@ function generateDescriptionWarnings(
       contextPath,
       'Schema must have a non-empty description.',
       config.no_schema_description,
+      'no_schema_description',
       'documentation',
       'D19.15'
     );
@@ -401,6 +414,7 @@ function generateDescriptionWarnings(
         path,
         'Schema properties must have a description with content in it.',
         config.no_property_description,
+        'no_property_description',
         'documentation',
         'D19.15'
       );
@@ -411,7 +425,8 @@ function generateDescriptionWarnings(
         messages.addMessage(
           path,
           'Not all languages use JSON, so descriptions should not state that the model is a JSON object.',
-          config.description_mentions_json
+          config.description_mentions_json,
+          'description_mentions_json'
         );
       }
     }
@@ -437,7 +452,8 @@ function checkPropNames(schema, contextPath, config, messages) {
         messages.addMessage(
           contextPath.concat(['properties', propName]),
           'Property names must be lower snake case.',
-          checkStatus
+          checkStatus,
+          'snake_case_only'
         );
       }
     }
@@ -474,7 +490,8 @@ function checkPropNamesCaseCollision(
       messages.addMessage(
         contextPath.concat(['properties', propName]),
         `Property name is identical to another property except for the naming convention: ${propName}`,
-        checkStatus
+        checkStatus,
+        'property_case_collision'
       );
     } else {
       prevProps.push(caselessPropName);
@@ -517,7 +534,7 @@ function checkObjectNameCaseConvention(
 
         checkCase.checkCaseConventionOrAlternativeCase(objName, objectCaseConvention, checkStatusObjectNames, 
           objectCaseConventionAlternative, checkAlternativeObjectCaseConvention, 
-          messages, contextPath, 'Object names', 'CTMO.STANDARD-CODAGE-19');
+          messages, contextPath, 'Object names', 'object_name_case_convention', 'CTMO.STANDARD-CODAGE-19');
       }
     }
   }
@@ -564,7 +581,7 @@ function checkPropNamesCaseConvention(
 
       checkCase.checkCaseConventionOrAlternativeCase(propName, caseConventionValue, checkStatus, 
         propertyCaseConventionAlternative, checkAlternativePropertyCaseConvention, 
-        messages, contextPath.concat(['properties', propName]), 'Property names', 'CTMO.STANDARD-CODAGE-19');
+        messages, contextPath.concat(['properties', propName]), 'Property names', 'property_case_convention', 'CTMO.STANDARD-CODAGE-19');
 
     }
   });
@@ -584,7 +601,8 @@ function checkEnumValues(schema, contextPath, config, messages) {
           messages.addTypedMessage(
             contextPath.concat(['enum', i.toString()]),
             'Enum values must be lower snake case.',
-            checkStatus
+            checkStatus,
+            'snake_case_only'
           );
         }
       }
@@ -628,7 +646,7 @@ function checkEnumCaseConvention(
 
         checkCase.checkCaseConventionOrAlternativeCase(enumValue, caseConventionValue, checkStatus, 
           enumCaseConventionAlternative, checkAlternativeEnumCaseConvention, 
-          messages, contextPath.concat(['enum', i.toString()]), 'Enum values', 'CTMO.STANDARD-CODAGE-19');
+          messages, contextPath.concat(['enum', i.toString()]), 'Enum values', 'enum_case_convention', 'CTMO.STANDARD-CODAGE-19');
       }
     }
   }
@@ -669,23 +687,28 @@ function checkProperties(
             messages.addTypedMessage(
               propertiesToCompare[key].path,
               `Property has inconsistent type: ${key}.`,
-              configOption,
+              configOption[0],
+              'inconsistent_property_type',
               'semantic'
             );
           }
           messages.addTypedMessage(
             contextPath.concat(['properties', key]).join('.'),
             `Property has inconsistent type: ${key}.`,
-            configOption,
+            configOption[0],
+            'inconsistent_property_type',
             'semantic'
           );
         }
       } else {
-        propertiesToCompare[key] = {
-          type: value.type,
-          path: contextPath.concat(['properties', key]).join('.'),
-          printed: false
-        };
+        if (configOption && configOption[1] && !configOption[1].includes(key)) {
+          // add property if the name is not excluded
+          propertiesToCompare[key] = {
+            type: value.type,
+            path: contextPath.concat(['properties', key]).join('.'),
+            printed: false
+          };
+        }
       }
     }
   }

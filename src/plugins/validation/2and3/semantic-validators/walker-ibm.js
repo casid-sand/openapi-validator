@@ -21,10 +21,11 @@ module.exports.validate = function({ jsSpec, resolvedSpec }, config) {
 
       // verify description is not empty
       if (description.length === 0 || !description.trim()) {
-        messages.addMessage(
+        messages.addTypedMessage(
           [...path, 'description'],
           'Items with a description must have content in it.',
           config.no_empty_descriptions,
+          'no_empty_descriptions',
           'documentation',
           'D19.15'
         );
@@ -44,7 +45,8 @@ module.exports.validate = function({ jsSpec, resolvedSpec }, config) {
           messages.addMessage(
             [...path, 'description'],
             'Description sibling to $ref matches that of the referenced schema. This is redundant and should be removed.',
-            config.duplicate_sibling_description
+            config.duplicate_sibling_description,
+            'duplicate_sibling_description'
           );
         }
       }
@@ -52,7 +54,7 @@ module.exports.validate = function({ jsSpec, resolvedSpec }, config) {
 
     // check for and flag null values - they are not allowed by the spec and are likely mistakes
     Object.keys(obj).forEach(key => {
-      if (obj[key] === null) {
+      if (key !== 'default' && obj[key] === null) {
         messages.addMessage(
           [...path, key],
           'Null values are not allowed for any property.',

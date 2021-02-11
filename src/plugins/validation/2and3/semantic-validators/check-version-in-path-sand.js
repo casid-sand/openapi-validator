@@ -63,6 +63,7 @@ module.exports.validate = function({ jsSpec }, config) {
                                         [`basePath`],
                                         `Version identifier is duplicate in basePath.`,
                                         'warning',
+                                        'inconsistent_version',
                                         'convention',
                                         'CTMO.Regle-14'
                                     );
@@ -82,6 +83,7 @@ module.exports.validate = function({ jsSpec }, config) {
                                             [`basePath`],
                                             `Version in basePath doesn't match API version : ${basePathElement} doesn't match ${apiVersionString}.`,
                                             checkVersionInPath,
+                                            'inconsistent_version',
                                             'convention',
                                             'CTMO.Regle-14'
                                         );
@@ -121,6 +123,7 @@ module.exports.validate = function({ jsSpec }, config) {
                                                 [`servers`, `${i}`, 'url'],
                                                 `Version identifier is duplicate in url.`,
                                                 'warning',
+                                                'inconsistent_version',
                                                 'convention',
                                                 'CTMO.Regle-14'
                                             );
@@ -138,6 +141,7 @@ module.exports.validate = function({ jsSpec }, config) {
                                                     [`servers`, `${i}`, 'url'],
                                                     `Version in server doesn't match API version : ${serverUrlElement} doesn't match ${apiVersionString}.`,
                                                     checkVersionInPath,
+                                                    'inconsistent_version',
                                                     'convention',
                                                     'CTMO.Regle-14'
                                                 );
@@ -176,6 +180,7 @@ module.exports.validate = function({ jsSpec }, config) {
                                 [`servers`],
                                 `Version must be declared in all servers, or in none, but is missing in elements : ${serversNumberStr}`,
                                 checkVersionInPath,
+                                'inconsistent_version',
                                 'convention',
                                 'CTMO.Regle-14'
                             );
@@ -211,6 +216,7 @@ module.exports.validate = function({ jsSpec }, config) {
                                         ['paths', pathName],
                                         `Version identifier is duplicate in path.`,
                                         'warning',
+                                        'inconsistent_version',
                                         'convention',
                                         'CTMO.Regle-14'
                                     );
@@ -222,6 +228,7 @@ module.exports.validate = function({ jsSpec }, config) {
                                         ['paths', pathName],
                                         `Version identifier of basePath/server is duplicate in path.`,
                                         'warning',
+                                        'inconsistent_version',
                                         'convention',
                                         'CTMO.Regle-14'
                                     );
@@ -239,6 +246,7 @@ module.exports.validate = function({ jsSpec }, config) {
                                             ['paths', pathName],
                                             `Version in path doesn't match API version : ${pathElement} doesn't match ${apiVersionString}.`,
                                             checkVersionInPath,
+                                            'inconsistent_version',
                                             'convention',
                                             'CTMO.Regle-14'
                                         );
@@ -274,6 +282,7 @@ module.exports.validate = function({ jsSpec }, config) {
                                 [elementName],
                                 `Version should be declared in basePath or servers URL, not in paths, or it should be in all paths.`,
                                 checkVersionInPath,
+                                'inconsistent_version',
                                 'convention',
                                 'CTMO.Regle-14'
                             );
@@ -282,6 +291,7 @@ module.exports.validate = function({ jsSpec }, config) {
                                 [elementName],
                                 `Version should be declared in basePath or servers URL, not in paths.`,
                                 'warning',
+                                'inconsistent_version',
                                 'convention',
                                 'CTMO.Regle-14'
                             );
@@ -291,6 +301,7 @@ module.exports.validate = function({ jsSpec }, config) {
                             [elementName],
                             `Version must be defined in basePath/server (recommended), or in each path, but is missing.`,
                             checkVersionInPath,
+                            'inconsistent_version',
                             'convention',
                             'CTMO.Regle-14'
                         );

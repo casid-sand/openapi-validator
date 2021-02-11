@@ -21,10 +21,11 @@ module.exports.validate = function({ jsSpec }, config) {
   const info = jsSpec.info;
   const hasInfo = info && typeof info === 'object';
   if (!hasInfo) {
-    messages.addMessage(
+    messages.addTypedMessage(
       ['info'],
       'API definition must have an `info` object',
       'error',
+      'missing_info',
       'structural'
     );
   } else {
@@ -36,10 +37,12 @@ module.exports.validate = function({ jsSpec }, config) {
       typeof versionValue === 'string' && versionValue.toString().trim().length > 0;
 
     if (!hasTitle) {
-      messages.addMessage(
+      messages.addTypedMessage(
         ['info', 'title'],
         '`info` object must have a string-type `title` field',
-        'error'
+        'error',
+        'missing_title',
+        'structural'
       );
     }
     
@@ -48,6 +51,7 @@ module.exports.validate = function({ jsSpec }, config) {
         ['info', 'version'],
         '`info` object must have a string-type `version` field',
         'error',
+        'missing_version',
         'structural',
         'CTMO.Regle-11'
       );
@@ -69,6 +73,7 @@ module.exports.validate = function({ jsSpec }, config) {
                   ['info', 'version'],
                   '`info` object should have a version number like X.Y.z',
                   'warning',
+                  'wrong_version',
                   'convention',
                   'CTMO.Regle-11'
               );
@@ -79,6 +84,7 @@ module.exports.validate = function({ jsSpec }, config) {
                 ['info', 'version'],
                 '`info` object must have a version number like X.Y.z (or X.Y or X.Y-rc1)',
                 checkVersion,
+                'wrong_version',
                 'convention',
                 'CTMO.Regle-11'
             );
@@ -97,6 +103,7 @@ module.exports.validate = function({ jsSpec }, config) {
                     ['info', 'description'],
                     'API must have a non-empty description.',
                     checkDesc,
+                    'no_api_description',
                     'documentation',
                     'D19.15'
                 );
@@ -106,6 +113,7 @@ module.exports.validate = function({ jsSpec }, config) {
                         ['info', 'description'],
                         'API description should be longer than 50 characters.',
                         'warning',
+                        'no_api_description',
                         'documentation',
                         'D19.15'
                     );
@@ -123,6 +131,7 @@ module.exports.validate = function({ jsSpec }, config) {
             ['info', 'contact'],
             '`info` object must have a `contact` object',
             'error',
+            'missing_contact',
             'structural',
             'CTMO.STANDARD-CODAGE-22'
           );
@@ -140,6 +149,7 @@ module.exports.validate = function({ jsSpec }, config) {
               ['info', 'contact', 'name'],
               '`contact` object must have a string-type `name` field',
               'warning',
+              'wrong_contact_definition',
               'structural',
               'CTMO.STANDARD-CODAGE-22'
             );
@@ -149,6 +159,7 @@ module.exports.validate = function({ jsSpec }, config) {
               ['info', 'contact', 'email'],
               '`contact` object must have a string-type `email` field',
               'error',
+              'wrong_contact_definition',
               'structural',
               'CTMO.STANDARD-CODAGE-22'
             );
@@ -173,6 +184,7 @@ module.exports.validate = function({ jsSpec }, config) {
                             ['info', 'contact', 'email'],
                             `'contact.email' object must have domain : ${emailAddressDomain} - ${emailArray}`,
                             checkEmailAddress,
+                            'wrong_contact_definition',
                             'structural',
                             'CTMO.STANDARD-CODAGE-22'
                         );

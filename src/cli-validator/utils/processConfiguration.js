@@ -100,8 +100,8 @@ const validateConfigObject = function(configObject, chalk) {
           return; // skip statuses for invalid rule
         }
 
-        // check that all statuses are valid (either 'error', 'warning', or 'off')
-        const allowedStatusValues = ['error', 'warning', 'off'];
+        // check that all statuses are valid (either 'error', 'warning', 'info', 'hint' or 'off')
+        const allowedStatusValues = ['error', 'warning', 'info', 'hint', 'off'];
         let userStatus = configObject[spec][category][rule];
 
         // if the rule supports an array in configuration,
@@ -363,6 +363,10 @@ const validateConfigOption = function(userOption, defaultOption) {
       optionType = option;
     }
   });
+  // if optionType doesn't match, there are no predefined options for this rule
+  if (!optionType) {
+    return result;
+  }
   // verify the given option is valid
   if (optionType) {
     const validOptions = configOptions[optionType];
@@ -375,13 +379,16 @@ const validateConfigOption = function(userOption, defaultOption) {
   return result;
 };
 
-const getSpectralRuleset = async function(defaultRuleset) {
+const getSpectralRuleset = async function(rulesetFileOverride, defaultRuleset) {
   // List of ruleset files to search for
   const ruleSetFilesToFind = [
     '.spectral.yaml',
     '.spectral.yml',
     '.spectral.json'
   ];
+  if (rulesetFileOverride) {
+    ruleSetFilesToFind.splice(0, 0, rulesetFileOverride);
+  }
   let ruleSetFile;
 
   // search up the file system for the first ruleset file found

@@ -92,7 +92,7 @@ module.exports = (string, convention) => {
 module.exports.checkCaseConventionOrAlternativeCase = function (stringToTest, 
     defaultCaseConvention, defaultCheckLevel, 
     alternativeCaseConvention, alternativeCheckLevel, 
-    messageCarrier, pathToElement, elementTypeName, ruleIdentifier) {
+    messageCarrier, pathToElement, elementTypeName, ibmRuleIdentifier, customizedRuleIdentifier) {
 
 //switch default and alternative case if alternative is more restrictive than default
 if ((defaultCheckLevel === 'off' || !defaultCheckLevel) && alternativeCheckLevel !== 'off' && alternativeCheckLevel
@@ -131,8 +131,9 @@ if ((defaultCheckLevel === 'off' || !defaultCheckLevel) && alternativeCheckLevel
                     pathToElement,
                     `${elementTypeName} must follow case convention: '${stringToTest}' doesn't respect ${this.getCaseConventionExample(defaultCaseConvention)}.`,
                     messageStatus,
+                    ibmRuleIdentifier,
                     'convention',
-                    ruleIdentifier
+                    customizedRuleIdentifier
                 );
             }
         } else {
@@ -149,8 +150,9 @@ if ((defaultCheckLevel === 'off' || !defaultCheckLevel) && alternativeCheckLevel
                             pathToElement,
                             `${elementTypeName} should follow case convention: '${stringToTest}' doesn't respect ${this.getCaseConventionExample(defaultCaseConvention)} recommended.`,
                             messageStatus,
+                            ibmRuleIdentifier,
                             'convention',
-                            ruleIdentifier
+                            customizedRuleIdentifier
                         );
                     }
                 }
@@ -170,8 +172,9 @@ if ((defaultCheckLevel === 'off' || !defaultCheckLevel) && alternativeCheckLevel
                         pathToElement,
                         messageString,
                         messageStatus,
+                        ibmRuleIdentifier,
                         'convention',
-                        ruleIdentifier
+                        customizedRuleIdentifier
                     );
                 }
             }

@@ -100,7 +100,7 @@ module.exports = function exportReportFile(
     }
   };
 
-  const rulesStats = {};
+  const customizedRulesStats = {};
 
   console.log();
 
@@ -148,23 +148,23 @@ module.exports = function exportReportFile(
             typedStats["untyped"][message] += 1;
         }
 
-        //collect stats for rules
+        //collect stats for customizedRules
         
-        if (!problem.rule) {
-            problem.rule = "standard";           
+        if (!problem.customizedRule) {
+            problem.customizedRule = "standard";           
         }
 
-        if (!rulesStats[problem.rule]) {
-            rulesStats[problem.rule] = {
+        if (!customizedRulesStats[problem.customizedRule]) {
+          customizedRulesStats[problem.customizedRule] = {
                 total: 0
             };
         }
-        rulesStats[problem.rule].total += 1;
+        customizedRulesStats[problem.customizedRule].total += 1;
 
-        if (!rulesStats[problem.rule][message]) {
-            rulesStats[problem.rule][message] = 0;
+        if (!customizedRulesStats[problem.customizedRule][message]) {
+          customizedRulesStats[problem.customizedRule][message] = 0;
         }
-        rulesStats[problem.rule][message] += 1;
+        customizedRulesStats[problem.customizedRule][message] += 1;
 
         // path needs to be an array to get the line number
         if (!Array.isArray(path)) {
@@ -188,10 +188,10 @@ module.exports = function exportReportFile(
         } else {
             problemToAdd.type = "";
         }
-        if (problem.rule) {
-            problemToAdd.rule = problem.rule;
+        if (problem.customizedRule) {
+            problemToAdd.customizedRule = problem.customizedRule;
         } else {
-            problemToAdd.rule = "";
+            problemToAdd.customizedRule = "";
         }
 
         if (type == 'errors') {
@@ -207,7 +207,7 @@ module.exports = function exportReportFile(
   if (reportingStats && (stats.errors.total || stats.warnings.total)) {
     jsonReport.stats = stats;
     jsonReport.stats.statsDetailedByType = typedStats;
-    jsonReport.stats.statsDetailedByRule = rulesStats;
+    jsonReport.stats.statsDetailedByRule = customizedRulesStats;
   }
 
   const writeFile = util.promisify(fs.writeFile);

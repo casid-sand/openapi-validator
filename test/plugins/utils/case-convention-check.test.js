@@ -461,7 +461,7 @@ describe('case convention and alternative check tests', function() {
 
         result = checkCase.checkCaseConventionOrAlternativeCase('stringDefaultCase', 'lower_camel_case', 'error', 
             'lower_spinal_case', 'off', 
-            messages, 'path_to', 'Examples string', 'CTMO.STANDARD-CODAGE-19');
+            messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'CTMO.STANDARD-CODAGE-19');
             
         expect(result).toEqual(true);
         expect(messages.errors.length).toEqual(0);
@@ -475,7 +475,7 @@ describe('case convention and alternative check tests', function() {
         result = checkCase.checkCaseConventionOrAlternativeCase('stringDefaultCase', 
             'lower_spinal_case', 'off', 
             'lower_camel_case', 'warning', 
-            messages, 'path_to', 'Examples string', 'CTMO.STANDARD-CODAGE-19');
+            messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'CTMO.STANDARD-CODAGE-19');
             
         expect(result).toEqual(true);
         expect(messages.errors.length).toEqual(0);
@@ -488,7 +488,7 @@ describe('case convention and alternative check tests', function() {
 
         result = checkCase.checkCaseConventionOrAlternativeCase('stringDefaultCase', 'lower_camel_case', 'error', 
             null, null, 
-            messages, 'path_to', 'Examples string', 'CTMO.STANDARD-CODAGE-19');
+            messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'CTMO.STANDARD-CODAGE-19');
             
         expect(result).toEqual(true);
         expect(messages.errors.length).toEqual(0);
@@ -502,7 +502,7 @@ describe('case convention and alternative check tests', function() {
         result = checkCase.checkCaseConventionOrAlternativeCase('stringDefaultCase', 
             'lower_spinal_case', undefined, 
             'lower_camel_case', 'error', 
-            messages, 'path_to', 'Examples string', 'CTMO.STANDARD-CODAGE-19');
+            messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'CTMO.STANDARD-CODAGE-19');
             
         expect(result).toEqual(true);
         expect(messages.errors.length).toEqual(0);
@@ -516,7 +516,7 @@ describe('case convention and alternative check tests', function() {
         result = checkCase.checkCaseConventionOrAlternativeCase('stringDefault-Case_test', 
             'lower_snake_case', 'off', 
             'lower_spinal_case', 'off', 
-            messages, 'path_to', 'Examples string', 'CTMO.STANDARD-CODAGE-19');
+            messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'CTMO.STANDARD-CODAGE-19');
             
         expect(result).toEqual(true);
         expect(messages.errors.length).toEqual(0);
@@ -529,14 +529,14 @@ describe('case convention and alternative check tests', function() {
 
         result = checkCase.checkCaseConventionOrAlternativeCase('stringDefault-Case_test', 'lower_snake_case', null, 
             'lower_spinal_case', null, 
-            messages, 'path_to', 'Examples string', 'CTMO.STANDARD-CODAGE-19');
+            messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'CTMO.STANDARD-CODAGE-19');
         expect(result).toEqual(true);
         expect(messages.errors.length).toEqual(0);
         expect(messages.warnings.length).toEqual(0);
 
         result = checkCase.checkCaseConventionOrAlternativeCase('stringDefault-Case_test', 'lower_snake_case', undefined, 
             'lower_spinal_case', undefined, 
-            messages, 'path_to', 'Examples string', 'CTMO.STANDARD-CODAGE-19');
+            messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'CTMO.STANDARD-CODAGE-19');
         expect(result).toEqual(true);
         expect(messages.errors.length).toEqual(0);
         expect(messages.warnings.length).toEqual(0);
@@ -548,7 +548,7 @@ describe('case convention and alternative check tests', function() {
 
         result = checkCase.checkCaseConventionOrAlternativeCase('stringDefault-Case_test', 'unsupportedCase', 'error', 
             'lower_spinal_case', null, 
-            messages, 'path_to', 'Examples string', 'CTMO.STANDARD-CODAGE-19');
+            messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'CTMO.STANDARD-CODAGE-19');
         expect(result).toEqual(false);
         expect(messages.errors.length).toEqual(1);
         expect(messages.warnings.length).toEqual(0);
@@ -559,7 +559,7 @@ describe('case convention and alternative check tests', function() {
         let result;
         result = checkCase.checkCaseConventionOrAlternativeCase('stringDefault-Case_test', 'lower_snake_case', 'warning', 
             'unsupportedCase', 'error', 
-            messages, 'path_to', 'Examples string', 'CTMO.STANDARD-CODAGE-19');
+            messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'CTMO.STANDARD-CODAGE-19');
         expect(result).toEqual(false);
         expect(messages.errors.length).toEqual(1);
         expect(messages.warnings.length).toEqual(0);
@@ -570,23 +570,23 @@ describe('case convention and alternative check tests', function() {
 
         result = checkCase.checkCaseConventionOrAlternativeCase('goodstring', 'lower_snake_case', 'warning', 
             'lower_spinal_case', 'warning', 
-            undefined, 'path_to', 'Examples string', 'CTMO.STANDARD-CODAGE-19');
+            undefined, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'CTMO.STANDARD-CODAGE-19');
         expect(result).toEqual(true);
         result = checkCase.checkCaseConventionOrAlternativeCase('stringDefault-Case_test', 'lower_snake_case', 'warning', 
             'lower_spinal_case', 'warning', 
-            undefined, 'path_to', 'Examples string', 'CTMO.STANDARD-CODAGE-19');
+            undefined, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'CTMO.STANDARD-CODAGE-19');
         expect(result).toEqual(false);
         result = checkCase.checkCaseConventionOrAlternativeCase('stringDefault-Case_test', 'lower_snake_case', 'error', 
             'lower_spinal_case', 'error', 
-            undefined, 'path_to', 'Examples string', 'CTMO.STANDARD-CODAGE-19');
+            undefined, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'CTMO.STANDARD-CODAGE-19');
         expect(result).toEqual(false);
         result = checkCase.checkCaseConventionOrAlternativeCase('string-default-case-test', 'lower_snake_case', 'error', 
             'lower_spinal_case', 'warning', 
-            undefined, 'path_to', 'Examples string', 'CTMO.STANDARD-CODAGE-19');
+            undefined, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'CTMO.STANDARD-CODAGE-19');
         expect(result).toEqual(false);
         result = checkCase.checkCaseConventionOrAlternativeCase('stringDefault-Case_test', 'lower_snake_case', undefined, 
             'lower_spinal_case', 'error', 
-            undefined, 'path_to', 'Examples string', 'CTMO.STANDARD-CODAGE-19');
+            undefined, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'CTMO.STANDARD-CODAGE-19');
         expect(result).toEqual(false);
     });
     
@@ -596,7 +596,7 @@ describe('case convention and alternative check tests', function() {
 
         result = checkCase.checkCaseConventionOrAlternativeCase('string_default_case', 'lower_snake_case', 'error', 
             'lower_camel_case', 'error', 
-            messages, 'path_to', 'Examples string', 'CTMO.STANDARD-CODAGE-19');
+            messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'CTMO.STANDARD-CODAGE-19');
             
         expect(result).toEqual(true);
         expect(messages.errors.length).toEqual(0);
@@ -609,7 +609,7 @@ describe('case convention and alternative check tests', function() {
 
         result = checkCase.checkCaseConventionOrAlternativeCase('string_default_case', 'lower_snake_case', 'warning', 
             'lower_camel_case', 'warning', 
-            messages, 'path_to', 'Examples string', 'CTMO.STANDARD-CODAGE-19');
+            messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'CTMO.STANDARD-CODAGE-19');
             
         expect(result).toEqual(true);
         expect(messages.errors.length).toEqual(0);
@@ -623,7 +623,7 @@ describe('case convention and alternative check tests', function() {
         result = checkCase.checkCaseConventionOrAlternativeCase('string_default_case', 
             'lower_snake_case', 'error', 
             'lower_camel_case', 'warning', 
-            messages, 'path_to', 'Examples string', 'CTMO.STANDARD-CODAGE-19');
+            messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'CTMO.STANDARD-CODAGE-19');
             
         expect(result).toEqual(true);
         expect(messages.errors.length).toEqual(0);
@@ -637,7 +637,7 @@ describe('case convention and alternative check tests', function() {
         result = checkCase.checkCaseConventionOrAlternativeCase('string_default_case', 
             'lower_camel_case', 'warning', 
             'lower_snake_case', 'error', 
-            messages, 'path_to', 'Examples string', 'CTMO.STANDARD-CODAGE-19');
+            messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'CTMO.STANDARD-CODAGE-19');
             
         expect(result).toEqual(true);
         expect(messages.errors.length).toEqual(0);
@@ -650,7 +650,7 @@ describe('case convention and alternative check tests', function() {
 
         result = checkCase.checkCaseConventionOrAlternativeCase('stringAlternativeString', 'lower_snake_case', 'error', 
             'lower_camel_case', 'error', 
-            messages, 'path_to', 'Examples string', 'CTMO.STANDARD-CODAGE-19');
+            messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'CTMO.STANDARD-CODAGE-19');
             
         expect(result).toEqual(true);
         expect(messages.errors.length).toEqual(0);
@@ -663,7 +663,7 @@ describe('case convention and alternative check tests', function() {
 
         result = checkCase.checkCaseConventionOrAlternativeCase('stringAlternativeString', 'lower_snake_case', 'warning', 
             'lower_camel_case', 'warning', 
-            messages, 'path_to', 'Examples string', 'CTMO.STANDARD-CODAGE-19');
+            messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'CTMO.STANDARD-CODAGE-19');
             
         expect(result).toEqual(true);
         expect(messages.errors.length).toEqual(0);
@@ -677,7 +677,7 @@ describe('case convention and alternative check tests', function() {
         result = checkCase.checkCaseConventionOrAlternativeCase('stringAlternativeString', 
             'lower_spinal_case', 'error', 
             'lower_camel_case', 'warning', 
-            messages, 'path_to', 'Examples string', 'EXAMPLE_RULE_ID');
+            messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'EXAMPLE_RULE_ID');
             
         expect(result).toEqual(false);
         expect(messages.errors.length).toEqual(0);
@@ -685,7 +685,8 @@ describe('case convention and alternative check tests', function() {
         expect(messages.warnings[0].message).toEqual("Examples string should follow case convention: 'stringAlternativeString' doesn't respect 'spinal-case' recommended.");
         expect(messages.warnings[0].path).toEqual("path_to");
         expect(messages.warnings[0].type).toEqual("convention");
-        expect(messages.warnings[0].rule).toEqual('EXAMPLE_RULE_ID');
+        expect(messages.warnings[0].rule).toEqual('checkCaseConventionOrAlternativeCase');
+        expect(messages.warnings[0].customizedRule).toEqual('EXAMPLE_RULE_ID');
     });
 
     it('should return a warning if string respect alternative case - and different level errors and alternative is second param', function() {
@@ -695,7 +696,7 @@ describe('case convention and alternative check tests', function() {
         result = checkCase.checkCaseConventionOrAlternativeCase('stringAlternativeString', 
             'lower_camel_case', 'warning', 
             'lower_spinal_case', 'error', 
-            messages, 'path_to', 'Examples string', 'EXAMPLE_RULE_ID');
+            messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'EXAMPLE_RULE_ID');
             
         expect(result).toEqual(false);
         expect(messages.errors.length).toEqual(0);
@@ -703,7 +704,8 @@ describe('case convention and alternative check tests', function() {
         expect(messages.warnings[0].message).toEqual("Examples string should follow case convention: 'stringAlternativeString' doesn't respect 'spinal-case' recommended.");
         expect(messages.warnings[0].path).toEqual("path_to");
         expect(messages.warnings[0].type).toEqual("convention");
-        expect(messages.warnings[0].rule).toEqual('EXAMPLE_RULE_ID');
+        expect(messages.warnings[0].rule).toEqual('checkCaseConventionOrAlternativeCase');
+        expect(messages.warnings[0].customizedRule).toEqual('EXAMPLE_RULE_ID');
     });
 
     it('should return error if it does not respect default case - without alternative in second', function() {
@@ -713,7 +715,7 @@ describe('case convention and alternative check tests', function() {
         result = checkCase.checkCaseConventionOrAlternativeCase('stringAlternativeString', 
             'lower_camel_case', 'off', 
             'lower_spinal_case', 'warning', 
-            messages, 'path_to', 'Examples string', 'EXAMPLE_RULE_ID');
+            messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'EXAMPLE_RULE_ID');
             
         expect(result).toEqual(false);
         expect(messages.errors.length).toEqual(0);
@@ -721,7 +723,8 @@ describe('case convention and alternative check tests', function() {
         expect(messages.warnings[0].message).toEqual("Examples string must follow case convention: 'stringAlternativeString' doesn't respect 'spinal-case'.");
         expect(messages.warnings[0].path).toEqual("path_to");
         expect(messages.warnings[0].type).toEqual("convention");
-        expect(messages.warnings[0].rule).toEqual('EXAMPLE_RULE_ID');
+        expect(messages.warnings[0].rule).toEqual('checkCaseConventionOrAlternativeCase');
+        expect(messages.warnings[0].customizedRule).toEqual('EXAMPLE_RULE_ID');
     });
 
     it('should return error if it does not respect default case - without alternative in second', function() {
@@ -731,7 +734,7 @@ describe('case convention and alternative check tests', function() {
         result = checkCase.checkCaseConventionOrAlternativeCase('stringAlternativeString', 
             'lower_spinal_case', 'error', 
             'lower_camel_case', 'off', 
-            messages, 'path_to', 'Examples string', 'EXAMPLE_RULE_ID');
+            messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'EXAMPLE_RULE_ID');
             
         expect(result).toEqual(false);
         expect(messages.warnings.length).toEqual(0);
@@ -739,7 +742,8 @@ describe('case convention and alternative check tests', function() {
         expect(messages.errors[0].message).toEqual("Examples string must follow case convention: 'stringAlternativeString' doesn't respect 'spinal-case'.");
         expect(messages.errors[0].path).toEqual("path_to");
         expect(messages.errors[0].type).toEqual("convention");
-        expect(messages.errors[0].rule).toEqual('EXAMPLE_RULE_ID');
+        expect(messages.errors[0].rule).toEqual('checkCaseConventionOrAlternativeCase');
+        expect(messages.errors[0].customizedRule).toEqual('EXAMPLE_RULE_ID');
     });
     
     it('should return error if it does not respect default case and alternative case - two at same level', function() {
@@ -749,7 +753,7 @@ describe('case convention and alternative check tests', function() {
         result = checkCase.checkCaseConventionOrAlternativeCase('stringAlternative-string_Wrong', 
             'lower_spinal_case', 'error', 
             'all_camel_case', 'error', 
-            messages, 'path_to', 'Examples string', 'EXAMPLE_RULE_ID');
+            messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'EXAMPLE_RULE_ID');
             
         expect(result).toEqual(false);
         expect(messages.warnings.length).toEqual(0);
@@ -757,7 +761,8 @@ describe('case convention and alternative check tests', function() {
         expect(messages.errors[0].message).toEqual("Examples string must follow case convention: 'stringAlternative-string_Wrong' doesn't respect 'spinal-case' or 'camelCase' or 'UpperCamelCase'.");
         expect(messages.errors[0].path).toEqual("path_to");
         expect(messages.errors[0].type).toEqual("convention");
-        expect(messages.errors[0].rule).toEqual('EXAMPLE_RULE_ID');
+        expect(messages.errors[0].rule).toEqual('checkCaseConventionOrAlternativeCase');
+        expect(messages.errors[0].customizedRule).toEqual('EXAMPLE_RULE_ID');
     });
 
     it('should return error if it does not respect default case and alternative case - two at different level', function() {
@@ -767,7 +772,7 @@ describe('case convention and alternative check tests', function() {
         result = checkCase.checkCaseConventionOrAlternativeCase('stringAlternative-string_Wrong', 
             'lower_spinal_case', 'warning', 
             'lower_camel_case', 'error', 
-            messages, 'path_to', 'Examples string', 'EXAMPLE_RULE_ID');
+            messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'EXAMPLE_RULE_ID');
             
         expect(result).toEqual(false);
         expect(messages.warnings.length).toEqual(0);
@@ -775,7 +780,8 @@ describe('case convention and alternative check tests', function() {
         expect(messages.errors[0].message).toEqual("Examples string must follow case convention: 'stringAlternative-string_Wrong' doesn't respect 'camelCase' recommended, or eventually 'spinal-case'.");
         expect(messages.errors[0].path).toEqual("path_to");
         expect(messages.errors[0].type).toEqual("convention");
-        expect(messages.errors[0].rule).toEqual('EXAMPLE_RULE_ID');
+        expect(messages.errors[0].rule).toEqual('checkCaseConventionOrAlternativeCase');
+        expect(messages.errors[0].customizedRule).toEqual('EXAMPLE_RULE_ID');
     });
     
 });

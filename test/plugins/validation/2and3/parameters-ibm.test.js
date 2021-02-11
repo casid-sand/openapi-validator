@@ -797,11 +797,11 @@ describe('validation plugin - semantic - parameters-ibm', () => {
       expect(res.errors.length).toEqual(7);
       expect(res.errors[0].path).toEqual(["paths", "/pets", "get", "parameters", "1"]);
       expect(res.errors[0].type).toEqual("convention");
-      expect(res.errors[0].rule).toEqual("IETF.RFC.6648");
+      expect(res.errors[0].customizedRule).toEqual("IETF.RFC.6648");
       expect(res.errors[0].message).toEqual("HTTP Header name must follow case convention: 'xHeader-Name' doesn't respect 'Spinal-FirstLetterUpper-Case'.");
       expect(res.errors[1].path).toEqual(["paths", "/pets", "get", "parameters", "1"]);
       expect(res.errors[1].type).toEqual("convention");
-      expect(res.errors[1].rule).toEqual("IETF.RFC.6648");
+      expect(res.errors[1].customizedRule).toEqual("IETF.RFC.6648");
       expect(res.errors[1].message).toEqual("HTTP Header name must not start with 'X-*' : 'xHeader-Name'.");
 
       expect(res.errors[2].path).toEqual(["paths", "/pets", "get", "parameters", "2"]);

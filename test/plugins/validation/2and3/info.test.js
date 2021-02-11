@@ -163,7 +163,7 @@ describe('validation plugin - semantic - info', () => {
     expect(res.errors[0].path).toEqual(['info', 'version']);
     expect(res.errors[0].message).toEqual('`info` object must have a version number like X.Y.z (or X.Y or X.Y-rc1)');
     expect(res.errors[0].type).toEqual('convention');
-    expect(res.errors[0].rule).toEqual('CTMO.Regle-11');
+    expect(res.errors[0].customizedRule).toEqual('CTMO.Regle-11');
   });
 
   it('should return 1 warning if version is not x.y.z', () => {
@@ -191,7 +191,7 @@ describe('validation plugin - semantic - info', () => {
     expect(res.warnings[0].path).toEqual(['info', 'version']);
     expect(res.warnings[0].message).toEqual('`info` object should have a version number like X.Y.z');
     expect(res.warnings[0].type).toEqual('convention');
-    expect(res.warnings[0].rule).toEqual('CTMO.Regle-11');
+    expect(res.warnings[0].customizedRule).toEqual('CTMO.Regle-11');
   });
 
   it('should return 1 warning if version is not x.y.z', () => {
@@ -219,7 +219,7 @@ describe('validation plugin - semantic - info', () => {
     expect(res.warnings[0].path).toEqual(['info', 'version']);
     expect(res.warnings[0].message).toEqual('`info` object should have a version number like X.Y.z');
     expect(res.warnings[0].type).toEqual('convention');
-    expect(res.warnings[0].rule).toEqual('CTMO.Regle-11');
+    expect(res.warnings[0].customizedRule).toEqual('CTMO.Regle-11');
   });
 
   it('should be ok if version is good - numbers only', () => {
@@ -422,7 +422,7 @@ describe('validation plugin - semantic - info', () => {
     	"'contact.email' object must have domain "
     );
     expect(res.errors[0].type).toEqual('structural');
-    expect(res.errors[0].rule).toEqual('CTMO.STANDARD-CODAGE-22');
+    expect(res.errors[0].customizedRule).toEqual('CTMO.STANDARD-CODAGE-22');
   });
 
 it('should return 1 error if email is not email adress', () => {
@@ -481,7 +481,7 @@ it('should return 1 error if email is not email adress', () => {
     expect(res.errors[0].type).toEqual(
     	'documentation'
     );
-    expect(res.errors[0].rule).toEqual(
+    expect(res.errors[0].customizedRule).toEqual(
     	'D19.15'
     );
   });
@@ -512,7 +512,7 @@ it('should return 1 error if email is not email adress', () => {
     expect(res.warnings[0].type).toEqual(
     	'documentation'
     );
-    expect(res.warnings[0].rule).toEqual(
+    expect(res.warnings[0].customizedRule).toEqual(
     	'D19.15'
     );
   });

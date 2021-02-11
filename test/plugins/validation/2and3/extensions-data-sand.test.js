@@ -71,7 +71,7 @@ describe('validation plugin - semantic - extension data - incorrect values', () 
     expect(res.errors[0].path).toEqual(['info', 'x-data-access-authorization']);
     expect(res.errors[0].message).toContain("Extension 'x-data-access-authorization' value must be one of");
     expect(res.errors[0].type).toEqual('convention');
-    expect(res.errors[0].rule).toEqual('CTMO.STANDARD-CODAGE-23');
+    expect(res.errors[0].customizedRule).toEqual('CTMO.STANDARD-CODAGE-23');
 
     expect(res.errors[1].path).toEqual(['info', 'x-data-access-network']);
     expect(res.errors[1].message).toEqual("Extension 'x-data-access-network' value must be a non-empty string.");
@@ -533,7 +533,7 @@ describe('validation plugin - semantic - extension data - missing values', () =>
     expect(res.errors[0].path).toEqual(['info', 'x-data-access-authorization'] );
     expect(res.errors[0].message).toEqual("Extension value must be defined in object 'info', 'path' or 'operation' : 'x-data-access-authorization' (recommended on 'info' object).");
     expect(res.errors[0].type).toEqual('convention');
-    expect(res.errors[0].rule).toEqual('CTMO.STANDARD-CODAGE-23');
+    expect(res.errors[0].customizedRule).toEqual('CTMO.STANDARD-CODAGE-23');
     expect(res.errors[1].path).toEqual(['info', 'x-data-access-network'] );
     expect(res.errors[1].message).toEqual("Extension value must be defined in object 'info', 'path' or 'operation' : 'x-data-access-network' (recommended on 'info' object).");
     expect(res.errors[2].message).toEqual("Extension value must be defined in object 'info', 'path' or 'operation' : 'x-data-security-classification' (recommended on 'info' object).");
@@ -567,7 +567,7 @@ describe('validation plugin - semantic - extension data - missing values', () =>
     expect(res.errors[0].path).toEqual(['info', 'x-data-access-authorization'] );
     expect(res.errors[0].message).toEqual("Extension value must be defined in object 'info', 'path' or 'operation' : 'x-data-access-authorization' (recommended on 'info' object).");
     expect(res.errors[0].type).toEqual('convention');
-    expect(res.errors[0].rule).toEqual('CTMO.STANDARD-CODAGE-23');
+    expect(res.errors[0].customizedRule).toEqual('CTMO.STANDARD-CODAGE-23');
     expect(res.errors[1].path).toEqual(['info', 'x-data-access-network'] );
     expect(res.errors[1].message).toEqual("Extension value must be defined in object 'info', 'path' or 'operation' : 'x-data-access-network' (recommended on 'info' object).");
     expect(res.errors[2].message).toEqual("Extension value must be defined in object 'info', 'path' or 'operation' : 'x-data-security-classification' (recommended on 'info' object).");

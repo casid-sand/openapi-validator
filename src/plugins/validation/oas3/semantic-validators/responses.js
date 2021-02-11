@@ -47,7 +47,8 @@ module.exports.validate = function({ resolvedSpec }, config) {
         messages.addMessage(
           path,
           'Each `responses` object MUST have at least one response code.',
-          config.no_response_codes
+          config.no_response_codes,
+          'no_response_codes'
         );
       } else {
         for (const statusCode of statusCodes) {
@@ -56,6 +57,7 @@ module.exports.validate = function({ resolvedSpec }, config) {
               path.concat([statusCode]),
               `All responses must include a description.`,
               'error',
+              'no_response_description',
               'documentation',
               'D19.15'
             );
@@ -65,13 +67,15 @@ module.exports.validate = function({ resolvedSpec }, config) {
             messages.addMessage(
               path.concat(['422']),
               'Should use status code 400 instead of 422 for invalid request payloads.',
-              config.ibm_status_code_guidelines
+              config.ibm_status_code_guidelines,
+              'ibm_status_code_guidelines'
             );
           } else if (statusCode === '302') {
             messages.addMessage(
               path.concat(['302']),
               'Should use status codes 303 or 307 instead of 302.',
-              config.ibm_status_code_guidelines
+              config.ibm_status_code_guidelines,
+              'ibm_status_code_guidelines'
             );
           }
         }
@@ -80,7 +84,8 @@ module.exports.validate = function({ resolvedSpec }, config) {
           messages.addMessage(
             path,
             'Each `responses` object SHOULD have at least one code for a successful response.',
-            config.no_success_response_codes
+            config.no_success_response_codes,
+            'no_success_response_codes'
           );
         } else {
           for (const statusCode of successCodes) {
@@ -101,14 +106,16 @@ module.exports.validate = function({ resolvedSpec }, config) {
                     messages.addMessage(
                         path.concat([statusCode]),
                         `A ${statusCode} response should include a response body. Use 204 for responses without content.`,
-                        config.no_response_body
+                        config.no_response_body,
+                        'no_response_body'
                     );
                 } else {
                     if (!hasLocationHeader) {
                         messages.addMessage(
                             path.concat([statusCode]),
                             `A 201 response should include a response body or a 'Location' header. Use 204 for responses without content.`,
-                            config.no_response_body
+                            config.no_response_body,
+                            'no_response_body'
                         );
                     }
                 }
@@ -166,7 +173,8 @@ function validateNoBinaryStringsInResponse(
             messages.addMessage(
               p,
               'JSON request/response bodies should not contain binary (type: string, format: binary) values.',
-              binaryStringStatus
+              binaryStringStatus,
+              'json_or_param_binary_string'
             );
           }
         }

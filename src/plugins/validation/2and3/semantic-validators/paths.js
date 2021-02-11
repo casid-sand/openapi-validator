@@ -91,7 +91,8 @@ module.exports.validate = function({ resolvedSpec }, config) {
                 messages.addMessage(
                 `paths.${pathName}`,
                 'Partial path templating is not allowed.',
-                'error'
+                'error',
+                'partial_path_templating'
                 );
             }
 
@@ -145,6 +146,7 @@ module.exports.validate = function({ resolvedSpec }, config) {
                 `paths.${pathName}`,
                 `Resources in paths should be plural (with an 's', 'x' or 'z') : ${resourcesMalFormed}.`,
                 checkResourcesPlural,
+                'path_without_plural',
                 'convention',
                 'CTMO.STANDARD-CODAGE-03'
             );
@@ -162,6 +164,7 @@ module.exports.validate = function({ resolvedSpec }, config) {
                 `paths.${pathName}`,
                 `Path must contain 6 depths maximum (3 levels alternating resource and identifier).`,
                 checkPathDepth,
+                'path_depth',
                 'convention',
                 'CTMO.STANDARD-CODAGE-05'
             );
@@ -173,6 +176,7 @@ module.exports.validate = function({ resolvedSpec }, config) {
                 `paths.${pathName}`,
                 `Path must alternate resource type and identifier (eg 'resource/{id}/subresource/{id}').`,
                 checkResourcesAlternated,
+                'path_without_alternate',
                 'convention',
                 'CTMO.STANDARD-CODAGE-04'
             );
@@ -185,6 +189,7 @@ module.exports.validate = function({ resolvedSpec }, config) {
                 `paths.${pathName}`,
                 `Path should not end with a '/'.`,
                 checkFinalSlash,
+                'path_trailing_slash',
                 'convention',
                 'CTMO.STANDARD-CODAGE-11'
             );
@@ -195,7 +200,8 @@ module.exports.validate = function({ resolvedSpec }, config) {
             messages.addMessage(
                 `paths.${pathName}`,
                 'Query strings in paths are not allowed.',
-                'error'
+                'error',
+                'path_query_string'
             );
         }
 
@@ -233,7 +239,8 @@ module.exports.validate = function({ resolvedSpec }, config) {
             messages.addMessage(
                 `paths.${pathName}`,
                 'Equivalent paths are not allowed.',
-                'error'
+                'error',
+                'equivalent_paths'
             );
         }
 
@@ -252,7 +259,8 @@ module.exports.validate = function({ resolvedSpec }, config) {
                 messages.addMessage(
                 `paths.${pathName}.parameters[${i}]`,
                 "Path parameters must have unique 'name' + 'in' properties",
-                'error'
+                'error',
+                'duplicate_parameter'
                 );
             }
         });
@@ -274,7 +282,8 @@ module.exports.validate = function({ resolvedSpec }, config) {
                     `Path parameter was defined but never used: ${
                         parameterDefinition.name
                     }.`,
-                    'error'
+                    'error',
+                    'unused_parameter'
                 );
             }
         });
@@ -288,7 +297,8 @@ module.exports.validate = function({ resolvedSpec }, config) {
             messages.addMessage(
                 `paths.${pathName}`,
                 'Empty path parameter declarations are not valid',
-                'error'
+                'error',
+                'empty_path_parameter'
             );
             }
         });

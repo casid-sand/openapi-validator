@@ -74,7 +74,8 @@ module.exports.validate = function({ jsSpec }, config) {
           messages.addMessage(
             `paths.${pathKey}.${opKey}.consumes`,
             'PUT and POST operations with a body parameter must have a non-empty `consumes` field.',
-            config.operations.no_consumes_for_put_or_post
+            config.operations.no_consumes_for_put_or_post,
+            'no_consumes_for_put_or_post'
           );
         }
       }
@@ -102,6 +103,7 @@ module.exports.validate = function({ jsSpec }, config) {
             `paths.${pathKey}.${opKey}.produces`,
             'Operations must have a non-empty `produces` field.',
             config.operations.no_produces,
+            'no_produces',
             'convention'
           );
         }
@@ -114,7 +116,8 @@ module.exports.validate = function({ jsSpec }, config) {
           messages.addMessage(
             `paths.${pathKey}.${opKey}.consumes`,
             'GET operations should not specify a consumes field.',
-            config.operations.get_op_has_consumes
+            config.operations.get_op_has_consumes,
+            'get_op_has_consumes'
           );
         }
       }

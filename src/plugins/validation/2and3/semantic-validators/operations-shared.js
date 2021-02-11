@@ -115,6 +115,7 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
                   `paths.${pathKey}.${opKey}.responses.${name}.content.${contentType}.schema`,
                   'Arrays MUST NOT be returned as the top-level structure in a response body : create an object with data and metadata for collection (except if collection contains less than 50 items).',
                   checkStatusArrRes,
+                  'no_array_responses',
                   'structural',
                   'CTMO.STANDARD-CODAGE-16'
                 );
@@ -130,6 +131,7 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
                 `paths.${pathKey}.${opKey}.responses.${name}.schema`,
                 'Arrays MUST NOT be returned as the top-level structure in a response body : create an object with data and metadata for collection (except if collection contains less than 50 items).',
                 checkStatusArrRes,
+                'no_array_responses',
                 'structural',
                 'CTMO.STANDARD-CODAGE-16'
               );
@@ -176,6 +178,7 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
           `paths.${pathKey}.${opKey}.operationId`,
           'Operations must have a non-empty `operationId`.',
           configOperations.no_operation_id,
+          'no_operation_id',
           'structural'
         );
       } else {
@@ -188,6 +191,7 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
             `paths.${pathKey}.${opKey}.operationId`,
             `operationIds must follow case convention: ${checkCase.getCaseConventionExample(caseConvention)}.`,
             checkStatus,
+            'operation_id_case_convention',
             'convention'
           );
         }
@@ -200,6 +204,7 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
               `paths.${pathKey}.${opKey}.tags`,
               'tag is not defined at the global level: ' + op.tags[i],
               configOperations.undefined_tag,
+              'undefined_tag',
               'structural'
             );
           } else {
@@ -218,6 +223,7 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
             `paths.${pathKey}.${opKey}.summary`,
             'Operations must have a non-empty `summary` field.',
             configOperations.no_summary,
+            'no_summary',
             'documentation'
           );
         }
@@ -229,6 +235,7 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
             `paths.${pathKey}.${opKey}`,
             'Operations must have a non-empty `summary` field or a non-empty `description` field.',
             configOperations.neither_description_nor_summary,
+            'neither_description_nor_summary',
             'documentation'
           );
         }
@@ -252,6 +259,7 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
                   `paths.${pathKey}.${opKey}.parameters[${indx}]`,
                   'Required parameters should appear before optional parameters.',
                   checkStatusParamOrder,
+                  'parameter_order',
                   'convention'
                 );
               }
@@ -267,6 +275,7 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
       `tags`,
       `A tag is defined but never used: ${tagName}`,
       configOperations.unused_tag,
+      'unused_tag',
       'convention'
     );
   });

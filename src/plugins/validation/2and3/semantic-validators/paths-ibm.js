@@ -38,6 +38,7 @@ module.exports.validate = function({ resolvedSpec }, config) {
       ['paths'],
       'API definition must have an `paths` object',
       'error',
+      'structural_error',
       'structural'
     );
   } else {
@@ -103,10 +104,12 @@ module.exports.validate = function({ resolvedSpec }, config) {
             const checkStatus = config.missing_path_parameter;
             if (checkStatus != 'off') {
                 missingParameters.forEach(name => {
-                messages.addMessage(
+                messages.addTypedMessage(
                     ['paths', pathName, opName, 'parameters'],
                     `Operation must include a path parameter with name: ${name}.`,
-                    checkStatus
+                    checkStatus,
+                    'missing_path_parameter',
+                    'structural'
                 );
                 });
             }
@@ -126,10 +129,12 @@ module.exports.validate = function({ resolvedSpec }, config) {
             const checkStatus = config.missing_path_parameter;
             if (checkStatus != 'off') {
                 missingParameters.forEach(name => {
-                messages.addMessage(
+                messages.addTypedMessage(
                     ['paths', pathName],
                     `Path parameter must be defined at the path or the operation level: ${name}.`,
-                    checkStatus
+                    checkStatus,
+                    'missing_path_parameter',
+                    'structural'
                 );
                 });
             }
@@ -165,7 +170,8 @@ module.exports.validate = function({ resolvedSpec }, config) {
                     ['paths', pathName, op, 'parameters', `${index}`],
                     'Common path parameters should be defined on path object',
                     checkStatus,
-                    'convention'
+                    'duplicate_path_parameter',
+                    'structural'
                     );
                 });
                 }
@@ -185,10 +191,12 @@ module.exports.validate = function({ resolvedSpec }, config) {
             return;
             }
             if (!checkCase(segment, 'lower_snake_case')) {
-            messages.addMessage(
+            messages.addTypedMessage(
                 ['paths', pathName],
                 `Path segments must be lower snake case.`,
-                checkStatus
+                checkStatus,
+                'snake_case_only',
+                'convention'
             );
             }
         });
@@ -205,27 +213,29 @@ module.exports.validate = function({ resolvedSpec }, config) {
                 if (checkAlternativePathCaseConvention != 'off') {
                     caseConventionAlternative = config.paths_alternative_case_convention[1];
                 }
-            }
-
-            if (checkStatusPath !== 'off') {
-                const caseConvention = config.paths_case_convention[1];
-                
-                const segments = pathName.split('/');
-                segments.forEach(segment => {
-                    // the first element will be "" since pathName starts with "/"
-                    // also, ignore validating the path parameters
-                    if (segment !== '' && segment[0] !== '{') {
-                        checkCase.checkCaseConventionOrAlternativeCase(segment, caseConvention, checkStatusPath, 
-                            caseConventionAlternative, checkAlternativePathCaseConvention, 
-                            messages, ['paths', pathName], 'Path segments', 'CTMO.STANDARD-CODAGE-09/10');
-                    }
-
-                });
-            }
         }
+
+        if (checkStatusPath !== 'off') {
+            const caseConvention = config.paths_case_convention[1];
+
+            const segments = pathName.split('/');
+            segments.forEach(segment => {
+                // the first element will be "" since pathName starts with "/"
+                // also, ignore validating the path parameters
+                if (segment !== '' && segment[0] !== '{') {
+                    checkCase.checkCaseConventionOrAlternativeCase(segment, caseConvention, checkStatusPath, 
+                        caseConventionAlternative, checkAlternativePathCaseConvention, 
+                        messages, ['paths', pathName], 'Path segments', 
+                        'paths_case_convention', 'CTMO.STANDARD-CODAGE-09/10');
+                }
+
+            });
         }
-    });
+    }
+    }
+});
   }
 
-  return messages;
+
+return messages;
 };

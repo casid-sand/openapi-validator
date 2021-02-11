@@ -430,7 +430,7 @@ describe('validation plugin - semantic - operations-shared', function() {
         'Arrays MUST NOT be returned as the top-level structure in a response body : create an object with data and metadata for collection (except if collection contains less than 50 items).'
       );
       expect(res.errors[0].type).toEqual('structural');
-      expect(res.errors[0].rule).toEqual('CTMO.STANDARD-CODAGE-16');
+      expect(res.errors[0].customizedRule).toEqual('CTMO.STANDARD-CODAGE-16');
       expect(res.warnings.length).toEqual(0);
     });
 
@@ -941,7 +941,7 @@ describe('validation plugin - semantic - operations-shared', function() {
         'Arrays MUST NOT be returned as the top-level structure in a response body : create an object with data and metadata for collection (except if collection contains less than 50 items).'
       );
       expect(res.errors[0].type).toEqual('structural');
-      expect(res.errors[0].rule).toEqual('CTMO.STANDARD-CODAGE-16');
+      expect(res.errors[0].customizedRule).toEqual('CTMO.STANDARD-CODAGE-16');
       expect(res.warnings.length).toEqual(0);
     });
 

@@ -658,7 +658,7 @@ describe('validation plugin - semantic - schema-ibm - Swagger 2', () => {
       'properties',
       'snake_string'
     ]);
-    expect(res.warnings[0].rule).toEqual("CTMO.STANDARD-CODAGE-19");
+    expect(res.warnings[0].customizedRule).toEqual("CTMO.STANDARD-CODAGE-19");
     expect(res.warnings[0].message).toEqual("Property names must follow case convention: 'snake_string' doesn't respect 'kubernetesAPICase' or 'UPPER_SNAKE_CASE'.");
     expect(res.warnings[1].path).toEqual([
       'definitions',
@@ -807,7 +807,7 @@ describe('validation plugin - semantic - schema-ibm - Swagger 2', () => {
       'spinal-thing'
     ]);
     expect(res.errors[0].message).toEqual("Object names must follow case convention: 'spinal-thing' doesn't respect 'kubernetesAPICase' recommended, or eventually 'lower_snake_case'.");
-    expect(res.errors[0].rule).toEqual("CTMO.STANDARD-CODAGE-19");
+    expect(res.errors[0].customizedRule).toEqual("CTMO.STANDARD-CODAGE-19");
 
     expect(res.warnings.length).toEqual(1);
     expect(res.warnings[0].path).toEqual([
@@ -2178,5 +2178,93 @@ describe('validation plugin - semantic - schema-ibm - OpenAPI 3', () => {
     expect(res.warnings[2].path).toEqual(
       'components.schemas.kid.properties.name'
     );
+  });
+
+  it('should not produce a warning for properties with duplicate common names', () => {
+    const spec = {
+      components: {
+        schemas: {
+          person: {
+            description: 'Produce warnings',
+            properties: {
+              name: {
+                description: 'type integer',
+                type: 'integer'
+              }
+            }
+          },
+          adult: {
+            description: 'Causes first warnings',
+            properties: {
+              code: {
+                description: 'different type',
+                type: 'number'
+              }
+            }
+          },
+          kid: {
+            description: 'Causes second warning',
+            properties: {
+              code: {
+                type: 'string',
+                description: 'differnt type'
+              }
+            }
+          }
+        }
+      }
+    };
+
+    const res = validate({ jsSpec: spec }, config);
+
+    expect(res.warnings.length).toEqual(0);
+    expect(res.errors.length).toEqual(0);
+  });
+
+  it('should not produce a warning for properties with duplicate custom names', () => {
+    const customConfig = {
+      schemas: {
+        inconsistent_property_type: ['warning', ['year']]
+      }
+    };
+
+    const spec = {
+      components: {
+        schemas: {
+          person: {
+            description: 'Produce warnings',
+            properties: {
+              year: {
+                description: 'type integer',
+                type: 'integer'
+              }
+            }
+          },
+          adult: {
+            description: 'Causes first warnings',
+            properties: {
+              year: {
+                description: 'different type',
+                type: 'number'
+              }
+            }
+          },
+          kid: {
+            description: 'Causes second warning',
+            properties: {
+              year: {
+                type: 'string',
+                description: 'differnt type'
+              }
+            }
+          }
+        }
+      }
+    };
+
+    const res = validate({ jsSpec: spec }, customConfig);
+
+    expect(res.warnings.length).toEqual(0);
+    expect(res.errors.length).toEqual(0);
   });
 });

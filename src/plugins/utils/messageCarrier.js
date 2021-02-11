@@ -1,10 +1,14 @@
 'use strict';
 
+const typesArray = ['structural', 'semantic', 'convention', 'documentation'];
+
 module.exports = class MessageCarrier {
   constructor() {
     this._messages = {
       error: [],
-      warning: []
+      warning: [],
+      info: [],
+      hint: []
     };
   }
 
@@ -20,34 +24,52 @@ module.exports = class MessageCarrier {
     return this._messages.warning;
   }
 
-  // status should be 'off', 'error', or 'warning'
-  addMessage(path, message, status) {
-    if (this._messages[status]) {
-      this._messages[status].push({
-        path: path,
-        message: message
-      });
-    }
+  get infos() {
+    return this._messages.info;
   }
 
-  // status should be 'off', 'error', or 'warning'
-  addTypedMessage(path, message, status, type=null, rule=null) {
+  get hints() {
+    return this._messages.hint;
+  }
+
+  // status should be 'off', 'error', 'warning', 'info', or 'hint'
+  // rule is the name of the configOption, 'builtin' by default
+  addMessage(path, message, status, rule = 'builtin') {
     if (this._messages[status]) {
       this._messages[status].push({
         path: path,
         message: message,
-        type: type, /*structural, semantic, convention, documentation*/
         rule: rule
       });
     }
   }
 
-  addMessageWithAuthId(path, message, authId, status) {
+  // status should be 'off', 'error', or 'warning'
+  addTypedMessage(path, message, status, rule = 'builtin', type=null, customizedRule=null) {
+    if (this._messages[status]) {
+
+      if (type !== null && !typesArray.includes(type)) {
+        console.log(`ERROR - Type is not allowed : ${type}`);
+      }
+      this._messages[status].push({
+        path: path,
+        message: message,
+        rule: rule,
+        type: type, /*structural, semantic, convention, documentation*/
+        customizedRule: customizedRule
+      });
+    }
+  }
+
+  // status should be 'off', 'error', 'warning'
+  // rule is the name of the configOption, 'builtin' by default
+  addMessageWithAuthId(path, message, authId, status, rule = 'builtin') {
     if (this._messages[status]) {
       this._messages[status].push({
         path: path,
         message: message,
-        authId: authId
+        authId: authId, 
+        rule: rule
       });
     }
   }

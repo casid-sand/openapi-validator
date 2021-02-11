@@ -10,14 +10,19 @@ module.exports = function print(
   results,
   chalk,
   printValidators,
+  printRuleNames,
   reportingStats,
   originalFile,
   errorsOnly
 ) {
-  const types = errorsOnly ? ['errors'] : ['errors', 'warnings'];
+  const types = errorsOnly
+    ? ['errors']
+    : ['errors', 'warnings', 'infos', 'hints'];
   const colors = {
     errors: 'bgRed',
-    warnings: 'bgYellow'
+    warnings: 'bgYellow',
+    infos: 'bgGrey',
+    hints: 'bgGreen'
   };
 
   // define an object template in the case that statistics reporting is turned on
@@ -27,6 +32,12 @@ module.exports = function print(
     },
     warnings: {
       total: 0
+    },
+    infos: {
+      total: 0
+    },
+    hints: {
+      total: 0
     }
   };
 
@@ -34,7 +45,7 @@ module.exports = function print(
 
   types.forEach(type => {
     let color = colors[type];
-    if (Object.keys(results[type]).length) {
+    if (results[type] && Object.keys(results[type]) && Object.keys(results[type]).length) {
       console.log(chalk[color].bold(`${type}\n`));
     }
 
@@ -75,14 +86,18 @@ module.exports = function print(
         const lineNumber = getLineNumberForPath(originalFile, path);
 
         // print the path array as a dot-separated string
+
         console.log(chalk[color](`  Message :   ${problem.message}`));
+        if (printRuleNames) {
+          console.log(chalk[color](`  Rule    :   ${problem.rule}`));
+        }
         console.log(chalk[color](`  Path    :   ${path.join('.')}`));
         console.log(chalk[color](`  Line    :   ${lineNumber}`));
         if (problem.type) {
             console.log(chalk[color](`  Type :      ${problem.type}`));
         }
-        if (problem.rule) {
-            console.log(chalk[color](`  Rule :      ${problem.rule}`));
+        if (problem.customizedRule) {
+            console.log(chalk[color](`  Customized rule :      ${problem.customizedRule}`));
         }
         console.log();
       });
@@ -90,15 +105,32 @@ module.exports = function print(
   });
 
   // print the stats here, if applicable
-  if (reportingStats && (stats.errors.total || stats.warnings.total)) {
+  if (
+    reportingStats &&
+    (stats.errors.total ||
+      stats.warnings.total ||
+      stats.infos.total ||
+      stats.hints.total)
+  ) {
     console.log(chalk.bgCyan('statistics\n'));
 
     console.log(
       chalk.cyan(`  Total number of errors   : ${stats.errors.total}`)
     );
     console.log(
-      chalk.cyan(`  Total number of warnings : ${stats.warnings.total}\n`)
+      chalk.cyan(`  Total number of warnings : ${stats.warnings.total}`)
     );
+    if (stats.infos.total > 0) {
+      console.log(
+        chalk.cyan(`  Total number of infos    : ${stats.infos.total}`)
+      );
+    }
+    if (stats.hints.total > 0) {
+      console.log(
+        chalk.cyan(`  Total number of hints    : ${stats.hints.total}`)
+      );
+    }
+    console.log('');
 
     types.forEach(type => {
       // print the type, either error or warning

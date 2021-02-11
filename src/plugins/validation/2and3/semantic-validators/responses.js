@@ -64,7 +64,8 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
                             i
                           ],
                           INLINE_SCHEMA_MESSAGE,
-                          config.responses.inline_response_schema
+                          config.responses.inline_response_schema,
+                          'inline_response_schema'
                         );
                       }
                     }
@@ -74,7 +75,8 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
                 messages.addMessage(
                   [...path, responseKey, 'content', mediaTypeKey, 'schema'],
                   INLINE_SCHEMA_MESSAGE,
-                  config.responses.inline_response_schema
+                  config.responses.inline_response_schema,
+                  'inline_response_schema'
                 );
               }
             }
@@ -91,7 +93,8 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
             messages.addMessage(
               [...path, responseKey, 'schema'],
               INLINE_SCHEMA_MESSAGE,
-              config.responses.inline_response_schema
+              config.responses.inline_response_schema,
+              'inline_response_schema'
             );
           }
           

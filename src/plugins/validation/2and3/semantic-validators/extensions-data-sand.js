@@ -125,6 +125,7 @@ module.exports.validate = function({ jsSpec }, config) {
                                         ['paths', pathName, operationName, isFileExtenstionName],
                                         `Extension '${isFileExtenstionName}' value must be a non-empty string.`,
                                         checkDataExtension,
+                                        'wrong_extension_value',
                                         'convention',
                                         'CTMO.STANDARD-CODAGE-23'
                                     );
@@ -180,6 +181,7 @@ module.exports.validate = function({ jsSpec }, config) {
                             ['info', extensionKey],
                             `Extension value must be defined in object 'info', 'path' or 'operation' : '${extensionKey}' (recommended on 'info' object).`,
                             checkDataExtension,
+                            'missing_extension',
                             'convention',
                             'CTMO.STANDARD-CODAGE-23'
                         );
@@ -199,6 +201,7 @@ module.exports.validate = function({ jsSpec }, config) {
                                     ['paths', pathName, extensionKey],
                                     `Extension value must be defined in object 'info', 'path' or 'operation' : '${extensionKey}' (recommended on 'info' object).`,
                                     checkDataExtension,
+                                    'missing_extension',
                                     'convention',
                                     'CTMO.STANDARD-CODAGE-23'
                                 );
@@ -216,6 +219,7 @@ module.exports.validate = function({ jsSpec }, config) {
                                         ['paths', pathName, operationName, extensionKey],
                                         `Extension value must be defined in object 'info', 'path' or 'operation' : '${extensionKey}' (recommended on 'info' object).`,
                                         checkDataExtension,
+                                        'missing_extension',
                                         'convention',
                                         'CTMO.STANDARD-CODAGE-23'
                                     );
@@ -245,6 +249,7 @@ module.exports.validate = function({ jsSpec }, config) {
                             ['info', sourceExtensionName],
                             `Extension '${sourceExtensionName}' value must be one of ${xSourceAcceptedValues.toString()}.`,
                             checkDataExtension,
+                            'wrong_extension_value',
                             'convention',
                             'CTMO.STANDARD-CODAGE-23'
                         );
@@ -256,6 +261,7 @@ module.exports.validate = function({ jsSpec }, config) {
                     ['info', sourceExtensionName],
                     `Extension '${sourceExtensionName}' value must be defined and a non-empty string.`,
                     checkDataExtension,
+                    'missing_extension',
                     'convention',
                     'CTMO.STANDARD-CODAGE-23'
                 );
@@ -277,6 +283,7 @@ module.exports.validate = function({ jsSpec }, config) {
                                 ['info', sourceExtensionName],
                                 `Extension '${sourceExtensionName}' value must be one of ${xSourceAcceptedValues.toString()}.`,
                                 checkDataExtension,
+                                'wrong_extension_value',
                                 'convention',
                                 'CTMO.STANDARD-CODAGE-23'
                             );
@@ -304,6 +311,7 @@ module.exports.validate = function({ jsSpec }, config) {
                                 ['servers', `${i}`],
                                 `Extension '${sourceExtensionName}' value must be one of ${xSourceAcceptedValues.toString()}.`,
                                 checkDataExtension,
+                                'wrong_extension_value',
                                 'convention',
                                 'CTMO.STANDARD-CODAGE-23'
                             );
@@ -314,6 +322,7 @@ module.exports.validate = function({ jsSpec }, config) {
                                 [`servers`, `${i}`],
                                 `Extension '${sourceExtensionName}' identifier is duplicate in server and in 'info'.`,
                                 checkDataExtension,
+                                'missing_extension',
                                 'convention',
                                 'CTMO.STANDARD-CODAGE-23'
                             );
@@ -333,6 +342,7 @@ module.exports.validate = function({ jsSpec }, config) {
                                 ['servers', `${serverNum}`],
                                 `Extension '${sourceExtensionName}' value must be defined and a non-empty string.`,
                                 checkDataExtension,
+                                'missing_extension',
                                 'convention',
                                 'CTMO.STANDARD-CODAGE-23'
                             );
@@ -342,6 +352,7 @@ module.exports.validate = function({ jsSpec }, config) {
                             ['servers'],
                             `Extension '${sourceExtensionName}' value must be defined and a non-empty string on each 'server', or in 'info'.`,
                             checkDataExtension,
+                            'missing_extension',
                             'convention',
                             'CTMO.STANDARD-CODAGE-23'
                         );
@@ -355,6 +366,7 @@ module.exports.validate = function({ jsSpec }, config) {
                     ['servers'],
                     `Extension '${sourceExtensionName}' value must be defined in 'servers'.`,
                     checkDataExtension,
+                    'missing_extension',
                     'convention',
                     'CTMO.STANDARD-CODAGE-23'
                 );
@@ -410,6 +422,7 @@ function checkExtensionValue(jsObject, pathToObjectArray, extensionDefinition, m
                     pathToObjectArray,
                     `Extension '${extensionDefinition.name}' value must be a non-empty string.`,
                     messageLevel,
+                    'missing_extension',
                     'convention',
                     'CTMO.STANDARD-CODAGE-23'
                 );
@@ -424,6 +437,7 @@ function checkExtensionValue(jsObject, pathToObjectArray, extensionDefinition, m
                             pathToObjectArray,
                             `Extension '${extensionDefinition.name}' value must be one of ${extensionDefinition.values.toString()}.`,
                             messageLevel,
+                            'wrong_extension_value',
                             'convention',
                             'CTMO.STANDARD-CODAGE-23'
                         );
@@ -438,6 +452,7 @@ function checkExtensionValue(jsObject, pathToObjectArray, extensionDefinition, m
                     pathToObjectArray,
                     `Extension '${extensionDefinition.name}' value must be a number.`,
                     messageLevel,
+                    'missing_extension',
                     'convention',
                     'CTMO.STANDARD-CODAGE-23'
                 );

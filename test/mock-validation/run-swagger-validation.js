@@ -13,7 +13,8 @@ swagger_file_name = 'swagger-test.yml';
 swagger_file_name = 'CMan.yaml';
 swagger_file_name = 'Swagger-ds.yml';
 swagger_file_name = 'swagger-DNA-2-12-2020-IntradefToInternet.yml';
-swagger_file_name = 'swagger-SourceWebRH-v0.1-2020-10-01-anonym.yml';
+
+swagger_file_name = 'missing-object.yml';
 //swagger_file_name = 'openapi-demo.yaml';
 
 
@@ -38,7 +39,7 @@ var formattedDate = dt.format('Y-m-d');
 program.args = [`${dir_path}${swagger_file_name}`];
 program.config = './test/mock-validation/validation-configuration.yaml';
 program.report_statistics = true;
-program.output = `./test/mock-validation/output/rapport-analyse-${formattedDate}-${swagger_name}.json`;
+//program.output = `./test/mock-validation/output/rapport-analyse-${formattedDate}-${swagger_name}.json`;
 
 console.log(`Validation de ${swagger_file_name}`);
 exitCode = commandLineValidator(program);

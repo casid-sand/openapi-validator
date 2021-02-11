@@ -25,6 +25,7 @@ module.exports.validateContentTypeList = function (contentTypeList, checkTypeLev
                 `${pathToObject}`,
                 `${consumeOrProduceName} Content-Types must be an array.`,
                 checkTypeLevel,
+                'wrong_content_type',
                 'convention',
                 'CTMO.STANDARD-CODAGE-15'
             );
@@ -50,6 +51,7 @@ module.exports.validateContentType = function (contentType, checkTypeLevel, cons
                     `${pathToObject}`,
                     `JSON ${consumeOrProduceName} Content-type must be ${this.stringifyContentTypes(recommendedContentTypes)}, without charset.`,
                     `warning`,
+                    'wrong_content_type',
                     'convention',
                     'CTMO.STANDARD-CODAGE-15'
                 );
@@ -63,6 +65,7 @@ module.exports.validateContentType = function (contentType, checkTypeLevel, cons
                         `${pathToObject}`,
                         `${consumeOrProduceName} Content-Type should be JSON (${this.stringifyContentTypes(recommendedContentTypes)}), instead of other allowed content-types (${this.stringifyContentTypes(allowedContentTypes)}).`,
                         'warning',
+                        'wrong_content_type',
                         'convention',
                         'CTMO.STANDARD-CODAGE-15'
                     );
@@ -71,6 +74,7 @@ module.exports.validateContentType = function (contentType, checkTypeLevel, cons
                         `${pathToObject}`,
                         `${consumeOrProduceName} Content-Type must be JSON (${this.stringifyContentTypes(recommendedContentTypes)}).`,
                         checkTypeLevel,
+                        'wrong_content_type',
                         'convention',
                         'CTMO.STANDARD-CODAGE-15'
                     );
@@ -82,6 +86,7 @@ module.exports.validateContentType = function (contentType, checkTypeLevel, cons
             `${pathToObject}`,
             `${consumeOrProduceName} Content-Type must be a string.`,
             checkTypeLevel,
+            'wrong_content_type',
             'convention',
             'CTMO.STANDARD-CODAGE-15'
         );

@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const readYaml = require('js-yaml');
 const last = require('lodash/last');
-const chalkPackage = require('chalk');
+const chalk = require('chalk');
 const jsonValidator = require('json-dup-key-validator');
 const globby = require('globby');
 const exportReportFile = require('./utils/exportReportFile');
@@ -44,15 +44,18 @@ const processInput = async function(program) {
   const debug = !!program.debug;
 
   const configFileOverride = program.config;
+  const rulesetFileOverride = program.ruleset;
 
   const outputReportFile = program.output;
 
   const limitsFileOverride = program.limits;
 
-  // turn on coloring by default
-  const colors = turnOffColoring ? false : true;
+  const printRuleNames = program.verbose > 0;
 
-  const chalk = new chalkPackage.constructor({ enabled: colors });
+  // turn off coloring if explicitly requested
+  if (turnOffColoring) {
+    chalk.level = 0;
+  }
 
   // if the 'init' command is given, run the module
   // and exit the program
@@ -171,7 +174,7 @@ const processInput = async function(program) {
   // or the default ruleset
   const spectral = new Spectral();
   try {
-    await spectralValidator.setup(spectral, configObject);
+    await spectralValidator.setup(spectral, rulesetFileOverride, configObject);
   } catch (err) {
     return Promise.reject(err);
   }
@@ -308,6 +311,8 @@ const processInput = async function(program) {
     // if errorsOnly is true, only errors will be returned, so need to force this to false
     if (errorsOnly) {
       results.warning = false;
+      results.info = false;
+      results.hint = false;
     }
 
     if (outputReportFile) {
@@ -325,11 +330,12 @@ const processInput = async function(program) {
     } else if (jsonOutput) {
       printJson(results, originalFile, errorsOnly);
     } else {
-      if (results.error || results.warning) {
+      if (results.error || results.warning || results.info || results.hint) {
         print(
           results,
           chalk,
           printValidators,
+          printRuleNames,
           reportingStats,
           originalFile,
           errorsOnly

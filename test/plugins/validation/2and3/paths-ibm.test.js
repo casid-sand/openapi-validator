@@ -204,7 +204,8 @@ describe('validation plugin - semantic - paths-ibm', function() {
           'API definition must have an `paths` object',
         path: ['paths'],
         type: 'structural',
-        rule: null
+        rule: 'structural_error',
+        customizedRule: null
       }
     ]);
   });
@@ -266,14 +267,11 @@ describe('validation plugin - semantic - paths-ibm', function() {
     };
 
     const res = validate({ resolvedSpec: spec }, config);
-    expect(res.errors).toEqual([
-      {
-        message:
-          'Path parameter must be defined at the path or the operation level: id.',
-        path: ['paths', '/cool_path/{id}']
-      }
-    ]);
-    expect(res.warnings).toEqual([]);
+    expect(res.errors.length).toEqual(1);
+    expect(res.errors[0].message).toEqual(
+      'Path parameter must be defined at the path or the operation level: id.'
+    );
+    expect(res.errors[0].path).toEqual(['paths', '/cool_path/{id}']);
   });
 
   it('should return one problem for an undefined declared path parameter', function() {
@@ -299,14 +297,14 @@ describe('validation plugin - semantic - paths-ibm', function() {
     };
 
     const res = validate({ resolvedSpec: spec }, config);
-    expect(res.errors).toEqual([
-      {
-        message:
-          'Path parameter must be defined at the path or the operation level: id.',
-        path: ['paths', '/cool_path/{id}/more_path/{other_param}']
-      }
+    expect(res.errors.length).toEqual(1);
+    expect(res.errors[0].message).toEqual(
+      'Path parameter must be defined at the path or the operation level: id.'
+    );
+    expect(res.errors[0].path).toEqual([
+      'paths',
+      '/cool_path/{id}/more_path/{other_param}'
     ]);
-    expect(res.warnings).toEqual([]);
   });
 
   it('should flag a path segment that is not snake_case but should ignore path parameter', function() {
@@ -702,7 +700,7 @@ describe('Test of alternative case convention configurations', () => {
         expect(res.errors[0].message).toEqual("Path segments must follow case convention: 'camelPath' doesn't respect 'spinal-case' or 'lower_snake_case'.");
         expect(res.errors[0].path).toEqual(["paths", "/camelPath/"]);
         expect(res.errors[0].type).toEqual('convention');
-        expect(res.errors[0].rule).toEqual('CTMO.STANDARD-CODAGE-09/10');
+        expect(res.errors[0].customizedRule).toEqual('CTMO.STANDARD-CODAGE-09/10');
     });
 
     it('should return 1 errors and 1 warning if first case is error and second case is warning', function() {
@@ -817,6 +815,6 @@ describe('Test of alternative case convention configurations', () => {
         expect(res.warnings[0].message).toEqual("Path segments must follow case convention: 'camelPath' doesn't respect 'spinal-case' or 'lower_snake_case'.");
         expect(res.warnings[0].path).toEqual(["paths", "/camelPath/"]);
         expect(res.warnings[0].type).toEqual('convention');
-        expect(res.warnings[0].rule).toEqual('CTMO.STANDARD-CODAGE-09/10');
+        expect(res.warnings[0].customizedRule).toEqual('CTMO.STANDARD-CODAGE-09/10');
     });
 });

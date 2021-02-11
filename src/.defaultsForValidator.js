@@ -86,7 +86,7 @@ const defaults = {
       'no_property_description': 'warning',
       'description_mentions_json': 'warning',
       'array_of_arrays': 'warning',
-      'inconsistent_property_type': 'warning',
+      'inconsistent_property_type': ['warning', ['code', 'default', 'type', 'value']],
       'model_case_convention': [ 'off', 'k8s_camel_case'],
       'model_alternative_case_convention': [ 'off', 'upper_snake_case'],
       'property_case_convention': [ 'error', 'lower_snake_case'],
@@ -147,15 +147,14 @@ const defaults = {
       'oas2-api-host': "warning",
       'oas2-api-schemes': "warning",
       'oas2-host-trailing-slash': "warning",
-      'oas2-valid-example': "warning",
-      'oas2-valid-definition-example': "error",
+      'oas2-valid-definition-example': "warning",
       'oas2-anyOf': "warning",
       'oas2-oneOf': "warning",
       'oas3-api-servers': "warning",
       'oas3-examples-value-or-externalValue': "warning",
       'oas3-server-trailing-slash': "warning",
-      'oas3-valid-example': "error",
-      'oas3-valid-schema-example': "error"
+      'oas3-valid-oas-content-example': "warning",
+      'oas3-valid-schema-example': "warning"
     }
   }
 };
