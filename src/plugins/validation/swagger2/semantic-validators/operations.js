@@ -32,7 +32,7 @@ module.exports.validate = function({ resolvedSpec }) {
       if (bodyParamIndex > -1 && formDataParamIndex > -1) {
         messages.addMessage(
           `paths.${pathKey}.${opKey}.parameters`,
-          'Operations cannot have both a "body" parameter and "formData" parameter',
+          'Operations cannot have both a "body" parameter and "formData" parameter.',
           'error'
         );
       }
@@ -41,7 +41,7 @@ module.exports.validate = function({ resolvedSpec }) {
       if (bodyParamIndex !== lastBodyParamIndex) {
         messages.addMessage(
           `paths.${pathKey}.${opKey}.parameters`,
-          'Operations must have no more than one body parameter',
+          'Operations must have no more than one body parameter.',
           'error'
         );
       }
