@@ -12,7 +12,7 @@
     "info": {
         "no_description": "error",
         "version_regex_rule": "error",
-        "contact_email_domain": ["error", "intradef.gouv.fr"]
+        "contact_email_domain": ["warning", "intradef.gouv.fr"]
     },
     "operations": {
       "no_operation_id": "off",
@@ -22,7 +22,7 @@
       ],
       "no_summary": "off",
       "neither_description_nor_summary": "warning",
-      "no_array_responses": "warning",
+      "no_array_responses": "hint",
       "parameter_order": "off",
       "undefined_tag": "warning",
       "unused_tag": "warning",
@@ -32,7 +32,7 @@
       "pagination_style": "warning"
     },
     "parameters": {
-      "no_parameter_description": "warning",
+      "no_parameter_description": "info",
       "param_name_case_convention": [
         "error",
         "k8s_camel_case"
@@ -80,8 +80,8 @@
     "schemas": {
       "invalid_type_format_pair": "error",
       "snake_case_only": "off",
-      "no_schema_description": "warning",
-      "no_property_description": "off",
+      "no_schema_description": "info",
+      "no_property_description": "info",
       "description_mentions_json": "warning",
       "array_of_arrays": "warning",
       "inconsistent_property_type": "warning",
@@ -152,10 +152,11 @@
   },
   "spectral": {
     "rules": {
-      "operation-description": "off",
+      "operation-description": "info",
       "oas2-valid-definition-example": "warning",
       "oas3-valid-example": "warning",
-      "oas3-valid-schema-example": "warning"
+      "oas3-valid-schema-example": "warning",
+      "oas3-api-servers": "infos"
     }
   }
 }

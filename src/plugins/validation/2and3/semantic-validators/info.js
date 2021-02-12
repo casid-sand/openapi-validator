@@ -130,7 +130,7 @@ module.exports.validate = function({ jsSpec }, config) {
           messages.addTypedMessage(
             ['info', 'contact'],
             '`info` object must have a `contact` object',
-            'error',
+            'warning',
             'missing_contact',
             'structural',
             'CTMO.STANDARD-CODAGE-22'
@@ -158,7 +158,7 @@ module.exports.validate = function({ jsSpec }, config) {
             messages.addTypedMessage(
               ['info', 'contact', 'email'],
               '`contact` object must have a string-type `email` field',
-              'error',
+              'warning',
               'wrong_contact_definition',
               'structural',
               'CTMO.STANDARD-CODAGE-22'

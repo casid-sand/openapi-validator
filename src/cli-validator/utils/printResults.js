@@ -21,7 +21,7 @@ module.exports = function print(
   const colors = {
     errors: 'bgRed',
     warnings: 'bgYellow',
-    infos: 'bgGrey',
+    infos: 'bgBlue',
     hints: 'bgGreen'
   };
 

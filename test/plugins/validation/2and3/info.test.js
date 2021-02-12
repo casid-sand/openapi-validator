@@ -299,9 +299,10 @@ describe('validation plugin - semantic - info', () => {
     };
 
     const res = validate({ jsSpec: spec }, config);
-    expect(res.errors.length).toEqual(1);
-    expect(res.errors[0].path).toEqual(['info', 'contact']);
-    expect(res.errors[0].message).toEqual(
+    expect(res.errors.length).toEqual(0);
+    expect(res.warnings.length).toEqual(1);
+    expect(res.warnings[0].path).toEqual(['info', 'contact']);
+    expect(res.warnings[0].message).toEqual(
       '`info` object must have a `contact` object'
     );
   });
@@ -317,9 +318,10 @@ describe('validation plugin - semantic - info', () => {
     };
 
     const res = validate({ jsSpec: spec }, config);
-    expect(res.errors.length).toEqual(1);
-    expect(res.errors[0].path).toEqual(['info', 'contact']);
-    expect(res.errors[0].message).toEqual(
+    expect(res.errors.length).toEqual(0);
+    expect(res.warnings.length).toEqual(1);
+    expect(res.warnings[0].path).toEqual(['info', 'contact']);
+    expect(res.warnings[0].message).toEqual(
       '`info` object must have a `contact` object'
     );
   });
@@ -337,9 +339,10 @@ describe('validation plugin - semantic - info', () => {
     };
 
     const res = validate({ jsSpec: spec }, config);
-    expect(res.errors.length).toEqual(1);
-    expect(res.errors[0].path).toEqual(['info', 'contact', 'email']);
-    expect(res.errors[0].message).toEqual(
+    expect(res.errors.length).toEqual(0);
+    expect(res.warnings.length).toEqual(1);
+    expect(res.warnings[0].path).toEqual(['info', 'contact', 'email']);
+    expect(res.warnings[0].message).toEqual(
     	'`contact` object must have a string-type `email` field'
     );
   });
