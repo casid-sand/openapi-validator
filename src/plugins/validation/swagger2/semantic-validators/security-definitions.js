@@ -31,7 +31,7 @@ module.exports.validate = function({ jsSpec }) {
     if (auths.indexOf(type) === -1) {
       messages.addMessageWithAuthId(
         path,
-        `string 'type' param required for path: ${path}`,
+        `string 'type' param required for path: ${path}.`,
         key,
         'error'
       );
@@ -67,7 +67,7 @@ module.exports.validate = function({ jsSpec }) {
         if (oauth2Flows.indexOf(flow) === -1) {
           messages.addMessageWithAuthId(
             path,
-            "oauth2 authorization must have required 'flow' string param. Valid values are 'implicit', 'password', 'application' or 'accessCode'",
+            "oauth2 authorization must have required 'flow' string param. Valid values are 'implicit', 'password', 'application' or 'accessCode'.",
             key,
             'error'
           );
@@ -79,6 +79,14 @@ module.exports.validate = function({ jsSpec }) {
               key,
               'error'
             );
+            if (tokenUrl) {
+              messages.addMessageWithAuthId(
+                `${path}.tokenUrl`,
+                "oauth2 authorization implicit flow should not have 'tokenUrl' parameter.",
+                key,
+                'error'
+              );
+            }
           }
         } else if (flow === ACCESS_CODE) {
           if (!authorizationUrl || !tokenUrl) {
@@ -97,6 +105,14 @@ module.exports.validate = function({ jsSpec }) {
               key,
               'error'
             );
+            if (authorizationUrl) {
+              messages.addMessageWithAuthId(
+                `${path}.authorizationUrl`,
+                "oauth2 authorization password flow should not have 'authorizationUrl' parameter.",
+                key,
+                'error'
+              );
+            }
           }
         } else if (flow === APPLICATION) {
           if (!tokenUrl) {
@@ -107,9 +123,17 @@ module.exports.validate = function({ jsSpec }) {
               'error'
             );
           }
+          if (authorizationUrl) {
+            messages.addMessageWithAuthId(
+              `${path}.authorizationUrl`,
+              "oauth2 authorization application flow should not have 'authorizationUrl' parameter.",
+              key,
+              'error'
+            );
+          }
         }
 
-        if (typeof scopes !== 'object') {
+        if (!scopes || typeof scopes !== 'object') {
           messages.addMessageWithAuthId(
             path,
             "'scopes' is required property type object. The available scopes for the OAuth2 security scheme.",
