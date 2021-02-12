@@ -213,7 +213,7 @@ module.exports.validate = function({ resolvedSpec }, config) {
             }
             param.$$path = `paths.${pathName}.parameters[${i}]`;
             return param;
-            });
+        });
 
         each(path, (operation, operationName) => {
             if (
@@ -224,7 +224,7 @@ module.exports.validate = function({ resolvedSpec }, config) {
                 availableParameters.push(
                 ...operation.parameters.map((param, i) => {
                     if (!isObject(param)) {
-                    return;
+                        return;
                     }
                     param.$$path = `paths.${pathName}.${operationName}.parameters[${i}]`;
                     return param;
@@ -293,13 +293,13 @@ module.exports.validate = function({ resolvedSpec }, config) {
             // Assertation 2
 
             if (parameter === '') {
-            // it was originally "{}"
-            messages.addMessage(
-                `paths.${pathName}`,
-                'Empty path parameter declarations are not valid',
-                'error',
-                'empty_path_parameter'
-            );
+                // it was originally "{}"
+                messages.addMessage(
+                    `paths.${pathName}`,
+                    'Empty path parameter declarations are not valid',
+                    'error',
+                    'empty_path_parameter'
+                );
             }
         });
 
