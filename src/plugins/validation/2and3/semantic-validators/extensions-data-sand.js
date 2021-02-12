@@ -57,7 +57,7 @@ const sharedDataExtensionsDefinition = {
 };
 
 const xSourceAcceptedValues = ['helissng', 'intradef'];
-const sourceExtensionName = "x-source";
+const xSourceExtensionName = "x-source";
 const isFileExtenstionName = "x-data-is-file";
 
 
@@ -239,15 +239,15 @@ module.exports.validate = function({ jsSpec }, config) {
         if (versionLanguage === "2") {
             let hasXSource = false;
             if (hasInfo) {
-                let xsourceValue = info[sourceExtensionName];
+                let xsourceValue = info[xSourceExtensionName];
                 hasXSource = xsourceValue && typeof xsourceValue === 'string';
 
                 if (hasXSource) {
                     xsourceValue = getStringValueNormalized(xsourceValue);
                     if (xSourceAcceptedValues.indexOf(xsourceValue) === -1) {
                         messages.addTypedMessage(
-                            ['info', sourceExtensionName],
-                            `Extension '${sourceExtensionName}' value must be one of ${xSourceAcceptedValues.toString()}.`,
+                            ['info', xSourceExtensionName],
+                            `Extension '${xSourceExtensionName}' value must be one of ${xSourceAcceptedValues.toString()}.`,
                             checkDataExtension,
                             'wrong_extension_value',
                             'convention',
@@ -258,8 +258,8 @@ module.exports.validate = function({ jsSpec }, config) {
             }
             if (!hasXSource) {
                 messages.addTypedMessage(
-                    ['info', sourceExtensionName],
-                    `Extension '${sourceExtensionName}' value must be defined and a non-empty string.`,
+                    ['info', xSourceExtensionName],
+                    `Extension '${xSourceExtensionName}' value must be defined and a non-empty string.`,
                     checkDataExtension,
                     'missing_extension',
                     'convention',
@@ -272,7 +272,7 @@ module.exports.validate = function({ jsSpec }, config) {
 
             let hasXSourceInInfo = false;
             if (hasInfo) {
-                let xsourceValue = info[sourceExtensionName];
+                let xsourceValue = info[xSourceExtensionName];
                 hasXSourceInInfo = xsourceValue && typeof xsourceValue === 'string';
 
                 if (hasXSourceInInfo) {
@@ -280,8 +280,8 @@ module.exports.validate = function({ jsSpec }, config) {
                     if (xSourceAcceptedValues.indexOf(xsourceValue) === -1) {
                         if (xSourceAcceptedValues.indexOf(xsourceValue) === -1) {
                             messages.addTypedMessage(
-                                ['info', sourceExtensionName],
-                                `Extension '${sourceExtensionName}' value must be one of ${xSourceAcceptedValues.toString()}.`,
+                                ['info', xSourceExtensionName],
+                                `Extension '${xSourceExtensionName}' value must be one of ${xSourceAcceptedValues.toString()}.`,
                                 checkDataExtension,
                                 'wrong_extension_value',
                                 'convention',
@@ -301,7 +301,7 @@ module.exports.validate = function({ jsSpec }, config) {
                     hasOneServer = true;
                     const server = serversList[i];
 
-                    let serverSourceValue = server[sourceExtensionName];
+                    let serverSourceValue = server[xSourceExtensionName];
                     const hasXSource = serverSourceValue && typeof serverSourceValue === 'string';
                     if (hasXSource) {
                         serverSourceValue = getStringValueNormalized(serverSourceValue);
@@ -309,7 +309,7 @@ module.exports.validate = function({ jsSpec }, config) {
                         if (xSourceAcceptedValues.indexOf(serverSourceValue) === -1) {
                             messages.addTypedMessage(
                                 ['servers', `${i}`],
-                                `Extension '${sourceExtensionName}' value must be one of ${xSourceAcceptedValues.toString()}.`,
+                                `Extension '${xSourceExtensionName}' value must be one of ${xSourceAcceptedValues.toString()}.`,
                                 checkDataExtension,
                                 'wrong_extension_value',
                                 'convention',
@@ -320,7 +320,7 @@ module.exports.validate = function({ jsSpec }, config) {
                         if (hasXSourceInInfo) {
                             messages.addTypedMessage(
                                 [`servers`, `${i}`],
-                                `Extension '${sourceExtensionName}' identifier is duplicate in server and in 'info'.`,
+                                `Extension '${xSourceExtensionName}' identifier is duplicate in server and in 'info'.`,
                                 checkDataExtension,
                                 'missing_extension',
                                 'convention',
@@ -340,7 +340,7 @@ module.exports.validate = function({ jsSpec }, config) {
                             const serverNum = arrayServersWithoutSource[i];
                             messages.addTypedMessage(
                                 ['servers', `${serverNum}`],
-                                `Extension '${sourceExtensionName}' value must be defined and a non-empty string.`,
+                                `Extension '${xSourceExtensionName}' value must be defined and a non-empty string.`,
                                 checkDataExtension,
                                 'missing_extension',
                                 'convention',
@@ -350,7 +350,7 @@ module.exports.validate = function({ jsSpec }, config) {
                     } else {
                         messages.addTypedMessage(
                             ['servers'],
-                            `Extension '${sourceExtensionName}' value must be defined and a non-empty string on each 'server', or in 'info'.`,
+                            `Extension '${xSourceExtensionName}' value must be defined and a non-empty string on each 'server', or in 'info'.`,
                             checkDataExtension,
                             'missing_extension',
                             'convention',
@@ -364,7 +364,7 @@ module.exports.validate = function({ jsSpec }, config) {
             if (!hasOneServer && !hasXSourceInInfo) {
                 messages.addTypedMessage(
                     ['servers'],
-                    `Extension '${sourceExtensionName}' value must be defined in 'servers'.`,
+                    `Extension '${xSourceExtensionName}' value must be defined in 'servers'.`,
                     checkDataExtension,
                     'missing_extension',
                     'convention',
