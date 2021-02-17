@@ -1056,7 +1056,7 @@ describe('validation plugin - semantic - paths', function() {
         );
       });
 
-      it.skip('should return two problems for an equivalent path string missing a parameter definition', function() {
+      it('should return two problems for an equivalent path string missing a parameter definition', function() {
         const spec = {
           paths: {
             '/CoolPath/{id}': {
@@ -1072,15 +1072,11 @@ describe('validation plugin - semantic - paths', function() {
         };
 
         const res = validate({ resolvedSpec: spec }, defaultConfig);
-        expect(res.errors.length).toEqual(2);
+        expect(res.errors.length).toEqual(1);
         expect(res.errors[0].message).toEqual(
           'Equivalent paths are not allowed.'
         );
         expect(res.errors[0].path).toEqual('paths./CoolPath/{count}');
-        expect(res.errors[1].message).toEqual(
-          'Declared path parameter "count" needs to be defined as a path parameter at either the path or operation level'
-        );
-        expect(res.errors[1].path).toEqual('paths./CoolPath/{count}');
       });
     });
 

@@ -4,7 +4,7 @@ const { getCapturedText } = require('../../test-utils');
 const swaggerInMemory = require('../mockFiles/swagger/disabled-rules-in-memory');
 const oas3InMemory = require('../mockFiles/oas3/disabled-rules-in-memory');
 
-describe('spectral - test disabled rules - Swagger 2', function() {
+describe('spectral - test disabled rules - Swagger 2 @skip-local', function() {
   let allOutput;
 
   beforeAll(async () => {
@@ -25,7 +25,7 @@ describe('spectral - test disabled rules - Swagger 2', function() {
     consoleSpy.mockRestore();
   });
 
-  it('test contact-properties rule using mockFiles/swagger/disabled-rules.yml', function() {
+  it('test contact-properties rule using mockFiles/swagger/disabled-rules.yml @skip-local', function() {
     // rule is disabled, so spectral shouldn't produce a warning
     expect(allOutput).not.toContain('Validator: spectral');
     expect(allOutput).not.toContain(
@@ -179,7 +179,7 @@ describe('spectral - test disabled rules - Swagger 2', function() {
   });
 });
 
-describe('spectral - test disabled rules - Swagger 2 In Memory', function() {
+describe('spectral - test disabled rules - Swagger 2 In Memory @skip-local', function() {
   let errors;
   let warnings;
 
@@ -369,7 +369,7 @@ describe('spectral - test disabled rules - Swagger 2 In Memory', function() {
   });
 });
 
-describe(' spectral - test disabled rules - OAS3', function() {
+describe(' spectral - test disabled rules - OAS3  @skip-local', function() {
   let allOutput;
 
   beforeAll(async () => {
@@ -541,7 +541,7 @@ describe(' spectral - test disabled rules - OAS3', function() {
   });
 });
 
-describe('spectral - test disabled rules - OAS3 In Memory', function() {
+describe('spectral - test disabled rules - OAS3 In Memory  @skip-local', function() {
   let errors;
   let warnings;
 

@@ -5,22 +5,6 @@ const {
 
 describe('validation plugin - semantic - form data', function() {
   describe('/parameters/...', function() {
-    describe.skip('in: formdata + in: body', function() {
-      // Already covered in validators/operations.js
-      it('should complain about having both in the same parameter', function() {
-        const spec = {
-          parameters: {
-            CoolParam: [{ in: 'query' }, { in: 'body' }, { in: 'formData' }]
-          }
-        };
-
-        const res = validate({ resolvedSpec: spec });
-        expect(res.errors.length).toEqual(1);
-        expect(res.warnings.length).toEqual(0);
-        expect(res.errors[0].message).toEqual('Parameters cannot have `in` values of both "body" and "formData", as "formData" _will_ be the body');
-        expect(res.errors[0].path).toEqual('parameters.CoolParam[1]');
-      });
-    });
 
     describe('typo in formdata', function() {
       it('should warn about formdata ( typo )', function() {
@@ -166,24 +150,6 @@ describe('validation plugin - semantic - form data', function() {
   });
 
   describe('/pathitems/...', function() {
-    // Already covered in validators/operations.js
-    it.skip('should complain about having both in the same parameter', function() {
-      const spec = {
-        pathitems: {
-          CoolPathItem: {
-            parameters: [{ in: 'formData' }, { in: 'body' }]
-          }
-        }
-      };
-
-      const res = validate({ resolvedSpec: spec });
-      expect(res.errors.length).toEqual(1);
-      expect(res.errors[0].message).toEqual(
-        'Parameters cannot have `in` values of both "body" and "formData", as "formData" _will_ be the body'
-      );
-      expect(res.errors[0].path).toEqual('pathitems.CoolPathItem.parameters.1');
-    });
-
     it("should complain if 'type:file` and no 'in: formData", function() {
       const spec = {
         pathitems: {

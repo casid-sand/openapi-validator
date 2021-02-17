@@ -61,7 +61,7 @@ describe('spectral - test file resolve - Swagger', function() {
   });
 });
 
-describe('spectral - test url resolve - OAS3', function() {
+describe('spectral - test url resolve - OAS3 @skip-local', function() {
   let consoleSpy;
 
   beforeEach(() => {
@@ -91,7 +91,7 @@ describe('spectral - test url resolve - OAS3', function() {
   });
 });
 
-describe('spectral - test url resolve - Swagger', function() {
+describe('spectral - test url resolve - Swagger @skip-local', function() {
   let consoleSpy;
 
   beforeEach(() => {

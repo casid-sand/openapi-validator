@@ -5,7 +5,7 @@ const swaggerInMemory = require('../mockFiles/swagger/enabled-rules-in-memory');
 const oas3InMemory = require('../mockFiles/oas3/enabled-rules-in-memory');
 const re = /^Validator: spectral/;
 
-describe('spectral - test enabled rules - Swagger 2', function() {
+describe('spectral - test enabled rules - Swagger 2 @skip-local', function() {
   let allOutput;
 
   beforeAll(async () => {
@@ -112,7 +112,7 @@ describe('spectral - test enabled rules - Swagger 2', function() {
   });
 });
 
-describe('spectral - test enabled rules - Swagger 2 In Memory', function() {
+describe('spectral - test enabled rules - Swagger 2 In Memory @skip-local', function() {
   let errors;
   let warnings;
 
@@ -245,7 +245,7 @@ describe('spectral - test enabled rules - Swagger 2 In Memory', function() {
   });
 });
 
-describe('spectral - test enabled rules - OAS3', function() {
+describe('spectral - test enabled rules - OAS3 @skip-local', function() {
   let allOutput;
 
   beforeAll(async () => {
@@ -347,7 +347,7 @@ describe('spectral - test enabled rules - OAS3', function() {
   });
 });
 
-describe('spectral - test enabled rules - OAS3 In Memory', function() {
+describe('spectral - test enabled rules - OAS3 In Memory @skip-local', function() {
   let errors;
   let warnings;
 
