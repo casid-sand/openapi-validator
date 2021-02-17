@@ -10,7 +10,9 @@ const validate = function({ jsSpec, resolvedSpec }, config) {
   if (checkStatus !== 'off') {
     result[checkStatus] = actualPaths.map(path => ({
       message: 'Swagger object should not contain circular references.',
-      path
+      path,
+      rule: 'circular_reference',
+      type: 'structural'
     }));
   }
   return { errors: result.error, warnings: result.warning };

@@ -33,7 +33,9 @@ module.exports.validate = function({ jsSpec }) {
         path,
         `string 'type' param required for path: ${path}.`,
         key,
-        'error'
+        'error',
+        'structural',
+        'authorization_malformed'
       );
     } else {
       //apiKey validation
@@ -45,7 +47,9 @@ module.exports.validate = function({ jsSpec }) {
             path,
             "apiKey authorization must have required 'in' param, valid values are 'query' or 'header'.",
             key,
-            'error'
+            'error',
+            'structural',
+            'authorization_malformed'
           );
         }
 
@@ -54,7 +58,9 @@ module.exports.validate = function({ jsSpec }) {
             path,
             "apiKey authorization must have required 'name' string param. The name of the header or query parameter to be used.",
             key,
-            'error'
+            'error',
+            'structural',
+            'authorization_malformed'
           );
         }
       } // oauth2 validation
@@ -69,7 +75,9 @@ module.exports.validate = function({ jsSpec }) {
             path,
             "oauth2 authorization must have required 'flow' string param. Valid values are 'implicit', 'password', 'application' or 'accessCode'.",
             key,
-            'error'
+            'error',
+            'structural',
+            'authorization_malformed'
           );
         } else if (flow === IMPLICIT) {
           if (!authorizationUrl) {
@@ -77,14 +85,18 @@ module.exports.validate = function({ jsSpec }) {
               path,
               "oauth2 authorization implicit flow must have required 'authorizationUrl' parameter.",
               key,
-              'error'
+              'error',
+                'structural',
+                'authorization_malformed'
             );
             if (tokenUrl) {
               messages.addMessageWithAuthId(
                 `${path}.tokenUrl`,
                 "oauth2 authorization implicit flow should not have 'tokenUrl' parameter.",
                 key,
-                'error'
+                'error',
+                'structural',
+                'authorization_malformed'
               );
             }
           }
@@ -94,7 +106,9 @@ module.exports.validate = function({ jsSpec }) {
               path,
               "oauth2 authorization accessCode flow must have required 'authorizationUrl' and 'tokenUrl' string parameters.",
               key,
-              'error'
+              'error',
+              'structural',
+              'authorization_malformed'
             );
           }
         } else if (flow === PASSWORD) {
@@ -103,14 +117,18 @@ module.exports.validate = function({ jsSpec }) {
               path,
               "oauth2 authorization password flow must have required 'tokenUrl' string parameter.",
               key,
-              'error'
+              'error',
+              'structural',
+              'authorization_malformed'
             );
             if (authorizationUrl) {
               messages.addMessageWithAuthId(
                 `${path}.authorizationUrl`,
                 "oauth2 authorization password flow should not have 'authorizationUrl' parameter.",
                 key,
-                'error'
+                'error',
+                'structural',
+                'authorization_malformed'
               );
             }
           }
@@ -120,7 +138,9 @@ module.exports.validate = function({ jsSpec }) {
               path,
               "oauth2 authorization application flow must have required 'tokenUrl' string parameter.",
               key,
-              'error'
+              'error',
+              'structural',
+              'authorization_malformed'
             );
           }
           if (authorizationUrl) {
@@ -128,7 +148,9 @@ module.exports.validate = function({ jsSpec }) {
               `${path}.authorizationUrl`,
               "oauth2 authorization application flow should not have 'authorizationUrl' parameter.",
               key,
-              'error'
+              'error',
+              'structural',
+              'authorization_malformed'
             );
           }
         }
@@ -138,7 +160,9 @@ module.exports.validate = function({ jsSpec }) {
             path,
             "'scopes' is required property type object. The available scopes for the OAuth2 security scheme.",
             key,
-            'error'
+            'error',
+            'structural',
+            'authorization_malformed'
           );
         }
       }

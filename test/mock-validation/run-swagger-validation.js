@@ -14,7 +14,7 @@ swagger_file_name = 'CMan.yaml';
 swagger_file_name = 'Swagger-ds.yml';
 swagger_file_name = 'swagger-DNA-2-12-2020-IntradefToInternet.yml';
 
-swagger_file_name = '2021-02-12-swagger-ATRIUM.yaml';
+swagger_file_name = 'TNUM-individu.yaml';
 //swagger_file_name = 'openapi-demo.yaml';
 
 
@@ -39,7 +39,7 @@ var formattedDate = dt.format('Y-m-d');
 program.args = [`${dir_path}${swagger_file_name}`];
 program.config = './test/mock-validation/validation-configuration.yaml';
 program.report_statistics = true;
-//program.output = `./test/mock-validation/output/rapport-analyse-${formattedDate}-${swagger_name}.json`;
+program.output = `./test/mock-validation/output/rapport-analyse-${formattedDate}-${swagger_name}.json`;
 
 console.log(`Validation de ${swagger_file_name}`);
 exitCode = commandLineValidator(program);

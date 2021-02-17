@@ -47,6 +47,7 @@ module.exports.validate = function({ resolvedSpec }) {
         path,
         'security scheme is missing required field `type`',
         'error',
+        'authorization_malformed',
         'structural'
       );
     } else if (authTypes.indexOf(type) === -1) {
@@ -54,6 +55,7 @@ module.exports.validate = function({ resolvedSpec }) {
         path + '.type',
         '`type` must have one of the following types: `apiKey`, `oauth2`, `http`, `openIdConnect`',
         'error',
+        'authorization_malformed',
         'structural'
       );
     } else if (type === API_KEY) {
@@ -64,6 +66,7 @@ module.exports.validate = function({ resolvedSpec }) {
           path + '.in',
           "apiKey authorization must have required 'in' property, valid values are 'query' or 'header' or 'cookie'.",
           'error',
+          'authorization_malformed',
           'structural'
         );
       }
@@ -72,6 +75,7 @@ module.exports.validate = function({ resolvedSpec }) {
           path,
           "apiKey authorization must have required 'name' string property. The name of the header or query property to be used.",
           'error',
+          'authorization_malformed',
           'structural'
         );
       }
@@ -82,6 +86,7 @@ module.exports.validate = function({ resolvedSpec }) {
           path,
           'apiKey authorization must not define `bearerFormat` (only available for `http` securityScheme type).',
           'error',
+          'authorization_malformed',
           'structural'
         );
       }
@@ -95,6 +100,7 @@ module.exports.validate = function({ resolvedSpec }) {
           path,
           "oauth2 authorization must have required 'flows' property",
           'error',
+          'authorization_malformed',
           'structural'
         );
       } else if (
@@ -107,6 +113,7 @@ module.exports.validate = function({ resolvedSpec }) {
           path + '.flows',
           "oauth2 authorization `flows` must have one of the following properties: 'implicit', 'password', 'clientCredentials' or 'authorizationCode'.",
           'error',
+          'authorization_malformed',
           'structural'
         );
       } else if (flows.implicit) {
@@ -116,6 +123,7 @@ module.exports.validate = function({ resolvedSpec }) {
             path + '.flows.implicit',
             "oauth2 authorization implicit flow must have required 'authorizationUrl' property.",
             'error',
+            'authorization_malformed',
             'structural'
           );
         }
@@ -124,6 +132,7 @@ module.exports.validate = function({ resolvedSpec }) {
             path + '.flows.implicit',
             "oauth2 authorization implicit flow must have required 'scopes' property.",
             'error',
+            'authorization_malformed',
             'structural'
           );
         }
@@ -132,6 +141,7 @@ module.exports.validate = function({ resolvedSpec }) {
             path + '.flows.implicit.tokenUrl',
             "oauth2 authorization implicit flow must not have 'tokenUrl' property.",
             'error',
+            'authorization_malformed',
             'structural'
           );
         }
@@ -142,6 +152,7 @@ module.exports.validate = function({ resolvedSpec }) {
             path + '.flows.authorizationCode',
             "oauth2 authorization authorizationCode flow must have required 'authorizationUrl' property.",
             'error',
+            'authorization_malformed',
             'structural'
           );
         }
@@ -150,6 +161,7 @@ module.exports.validate = function({ resolvedSpec }) {
             path + '.flows.authorizationCode',
             "oauth2 authorization authorizationCode flow must have required 'tokenUrl' property.",
             'error',
+            'authorization_malformed',
             'structural'
           );
         }
@@ -158,6 +170,7 @@ module.exports.validate = function({ resolvedSpec }) {
             path + '.flows.authorizationCode',
             "oauth2 authorization authorizationCode flow must have required 'scopes' property.",
             'error',
+            'authorization_malformed',
             'structural'
           );
         }
@@ -168,6 +181,7 @@ module.exports.validate = function({ resolvedSpec }) {
             path + '.flows.password',
             "oauth2 authorization password flow must have required 'tokenUrl' property.",
             'error',
+            'authorization_malformed',
             'structural'
           );
         }
@@ -176,6 +190,7 @@ module.exports.validate = function({ resolvedSpec }) {
             path + '.flows.password',
             "oauth2 authorization password flow must have required 'scopes' property.",
             'error',
+            'authorization_malformed',
             'structural'
           );
         }
@@ -185,6 +200,7 @@ module.exports.validate = function({ resolvedSpec }) {
             path + '.flows.password.authorizationUrl',
             "oauth2 authorization password flow must not have 'authorizationUrl' property.",
             'error',
+            'authorization_malformed',
             'structural'
           );
         }
@@ -195,6 +211,7 @@ module.exports.validate = function({ resolvedSpec }) {
             path + '.flows.clientCredentials',
             "oauth2 authorization clientCredentials flow must have required 'tokenUrl' property.",
             'error',
+            'authorization_malformed',
             'structural'
           );
         }
@@ -203,6 +220,7 @@ module.exports.validate = function({ resolvedSpec }) {
             path + '.flows.clientCredentials',
             "oauth2 authorization clientCredentials flow must have required 'scopes' property.",
             'error',
+            'authorization_malformed',
             'structural'
           );
         }
@@ -212,6 +230,7 @@ module.exports.validate = function({ resolvedSpec }) {
             path + '.flows.clientCredentials.authorizationUrl',
             "oauth2 authorization clientCredentials flow must not have 'authorizationUrl' property.",
             'error',
+            'authorization_malformed',
             'structural'
           );
         }
@@ -223,6 +242,7 @@ module.exports.validate = function({ resolvedSpec }) {
           path,
           'scheme must be defined for type `http`',
           'error',
+          'authorization_malformed',
           'structural'
         );
       }
@@ -234,6 +254,7 @@ module.exports.validate = function({ resolvedSpec }) {
           path,
           '`name` property  must not be defined for type `http` (only available for `apiKey` securityScheme type).',
           'error',
+          'authorization_malformed',
           'structural'
         );
       }
@@ -243,6 +264,7 @@ module.exports.validate = function({ resolvedSpec }) {
           path,
           '`in` property must not be defined for type `http` (only available for `apiKey` securityScheme type).',
           'error',
+          'authorization_malformed',
           'structural'
         );
       }
@@ -257,6 +279,7 @@ module.exports.validate = function({ resolvedSpec }) {
           path,
           'openIdConnectUrl must be defined for openIdConnect property and must be a valid URL',
           'error',
+          'authorization_malformed',
           'structural'
         );
       }

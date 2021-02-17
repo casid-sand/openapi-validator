@@ -44,11 +44,12 @@ module.exports.validate = function({ resolvedSpec }, config) {
       }
 
       if (!statusCodes.length) {
-        messages.addMessage(
+        messages.addTypedMessage(
           path,
           'Each `responses` object MUST have at least one response code.',
           config.no_response_codes,
-          'no_response_codes'
+          'no_response_codes',
+          'structural'
         );
       } else {
         for (const statusCode of statusCodes) {

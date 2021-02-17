@@ -76,10 +76,12 @@ function recordDefinitionsNotUsed(
 ) {
   each(definitions, (_, defName) => {
     if (!definitionsRefs.includes(`#/${basePath.join('/')}/${defName}`)) {
-      messages.addMessage(
+      messages.addTypedMessage(
         `${basePath.join('.')}.${defName}`,
         'Definition was declared but never used in document',
-        'warning'
+        'warning',
+        'unused_definition',
+        'structural'
       );
     }
   });

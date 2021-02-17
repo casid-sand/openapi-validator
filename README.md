@@ -267,6 +267,15 @@ The supported rules are described below:
 | structural_error                 | Flag any structural error                                    | shared |
 | wrong_extension_value            | Flag any wrong extension value                               | shared |
 
+##### structural
+| Rule                             | Description                                                  | Spec   |
+| -------------------------------- | ------------------------------------------------------------ | ------ |
+| authorization_malformed          | Flag any authorization declaration malformed                 | shared |
+| circular_reference               | Flag any circular reference                                  | shared |
+| unused_definition                | Flag any object definition unused in API                     | shared |
+
+
+
 ##### infos
 | Rule                             | Description                                                  | Spec   |
 | -------------------------------- | ------------------------------------------------------------ | ------ |
