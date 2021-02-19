@@ -9,7 +9,7 @@ const count = (array, regex) => {
   return array.reduce((a, v) => (v.match(regex) ? a + 1 : a), 0);
 };
 
-describe('cli tool - test expected output - Swagger 2', function() {
+describe('cli tool - test expected output - Swagger 2 @skip-local', function() {
   let consoleSpy;
 
   beforeEach(() => {
@@ -235,7 +235,7 @@ describe('cli tool - test expected output - Swagger 2', function() {
   });
 });
 
-describe('test expected output - OpenAPI 3', function() {
+describe('test expected output - OpenAPI 3 @skip-local', function() {
   let consoleSpy;
 
   beforeEach(() => {

@@ -9,7 +9,7 @@ const {
 // for an explanation of the text interceptor,
 // see the comments for the first test in expectedOutput.js
 
-describe('cli tool - test option handling', function() {
+describe('cli tool - test option handling @skip-local', function() {
   let consoleSpy;
 
   beforeEach(() => {

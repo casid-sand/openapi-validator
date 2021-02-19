@@ -140,14 +140,14 @@ module.exports.validate = function({ resolvedSpec }, config) {
             }
         });
 
-        const checkResourcesPlural = config.path_segments_with_s
+        const checkResourcesPlural = config.plural_path_segments
         if (resourcesMalFormed != '' && checkResourcesPlural != 'off') {
             messages.addTypedMessage(
                 `paths.${pathName}`,
                 `Resources in paths should be plural (with an 's', 'x' or 'z') : ${resourcesMalFormed}.`,
                 checkResourcesPlural,
                 'path_without_plural',
-                'convention',
+                'semantic',
                 'CTMO.STANDARD-CODAGE-03'
             );
         }

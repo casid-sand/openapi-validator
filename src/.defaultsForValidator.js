@@ -60,7 +60,7 @@ const defaults = {
       'duplicate_path_parameter': 'warning',
       'snake_case_only': 'off',
       'alternate_resources_and_identifiers': 'off',
-      'path_segments_with_s': 'off',
+      'plural_path_segments': 'off',
       'path_ending_with_slash': 'off',
       'max_path_levels': [
         'off',

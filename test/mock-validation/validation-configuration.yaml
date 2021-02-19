@@ -52,7 +52,7 @@
       "duplicate_path_parameter": "off",
       "snake_case_only": "off",
       "alternate_resources_and_identifiers": "error",
-      "path_segments_with_s": "warning",
+      "plural_path_segments": "hint",
       "path_ending_with_slash" : "warning",
       "max_path_levels": [
         "warning",

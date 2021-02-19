@@ -393,7 +393,7 @@ describe('validation plugin - semantic - paths', function() {
   
     const config = {
       paths: {
-        path_segments_with_s: 'warning'
+        plural_path_segments: 'warning'
       }
     };
 
@@ -425,7 +425,7 @@ describe('validation plugin - semantic - paths', function() {
         expect(res.warnings[0].message).toContain(
             "Resources in paths should be plural (with an 's', 'x' or 'z') :"
         );
-        expect(res.warnings[0].type).toEqual('convention');
+        expect(res.warnings[0].type).toEqual('semantic');
         expect(res.warnings[0].customizedRule).toEqual('CTMO.STANDARD-CODAGE-03');
     });
 

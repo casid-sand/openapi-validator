@@ -14,7 +14,7 @@ swagger_file_name = 'CMan.yaml';
 swagger_file_name = 'Swagger-ds.yml';
 swagger_file_name = 'swagger-DNA-2-12-2020-IntradefToInternet.yml';
 
-swagger_file_name = 'TNUM-individu.yaml';
+swagger_file_name = '2021-02-12-swagger-ATRIUM.yaml';
 //swagger_file_name = 'openapi-demo.yaml';
 
 

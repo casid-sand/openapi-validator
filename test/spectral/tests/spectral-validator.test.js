@@ -7,7 +7,7 @@ const config = require('../../../src/cli-validator/utils/processConfiguration');
 const defaultConfig = require('../../../src/.defaultsForValidator');
 const defaultObject = defaultConfig.defaults;
 
-describe('spectral - test spectral-validator.js', function() {
+describe('spectral - test spectral-validator.js @skip-local', function() {
   let consoleSpy;
 
   beforeEach(() => {
@@ -115,7 +115,7 @@ describe('spectral - test spectral-validator.js', function() {
   });
 });
 
-describe('spectral - test config file changes with .spectral.yml', function() {
+describe('spectral - test config file changes with .spectral.yml @skip-local', function() {
   let validationResults;
   let errors;
   let warnings;
@@ -171,7 +171,7 @@ describe('spectral - test config file changes with .spectral.yml', function() {
   });
 });
 
-describe('spectral - test config file changes with .validaterc', function() {
+describe('spectral - test config file changes with .validaterc @skip-local', function() {
   let validationResults;
   let errors;
   let warnings;
@@ -223,7 +223,7 @@ describe('spectral - test config file changes with .validaterc', function() {
   });
 });
 
-describe('spectral - test config file changes with .validaterc, all rules off', function() {
+describe('spectral - test config file changes with .validaterc, all rules off @skip-local', function() {
   let validationResults;
 
   beforeAll(async () => {
