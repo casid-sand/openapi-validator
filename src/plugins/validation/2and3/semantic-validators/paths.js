@@ -24,7 +24,7 @@
 // NB : version is excluded
 
 // Assertation 9:
-// Path must contains 6 depths max (alternating resources and identifier Assertion 8).
+// Path must contains 6 depths max (alternating resources and identifier Assertation 8).
 // NB : version is excluded
 
 // Assertation 10:
@@ -35,6 +35,9 @@
 
 // Assertation 12:
 // check if basePath/server is include in path URI
+
+// Assertation 13:
+// check if API has a health (or status) endpoint
 
 const each = require('lodash/each');
 const findIndex = require('lodash/findIndex');
@@ -48,7 +51,11 @@ const parameterRegex = /^{.*}$/;
 const pluralFirstWordLowerCase = /^[a-z][a-z0-9]*[sxz](?:[\_\-\.][a-z0-9]+)*$/; // example : learnings_opt_out or learningx-opt-out or learningz.opt.Out
 const pluralFirstWordCamelCase = /^[a-zA-Z][a-z0-9]*[sxz](?:[A-Z][a-z0-9]+)*$/; // example : learningxOptOut or LearningsOptOut
 
-const reservedWords = ['api', 'health', 'metrics'];
+const recommendedHealthOperationName = 'health';
+const authorizedHealthOperationNames = [recommendedHealthOperationName, 'status', 'ping'];
+
+const pathApiPart = 'api';
+const pathReservedWords = [pathApiPart, recommendedHealthOperationName, 'metrics'];
 
 module.exports.validate = function({ resolvedSpec }, config) {
   const messages = new MessageCarrier();
@@ -57,6 +64,11 @@ module.exports.validate = function({ resolvedSpec }, config) {
 
   const paths = resolvedSpec.paths;
   const hasPaths = paths && typeof paths === 'object';
+
+  let apiHasRecommendedHealthEndpoint = false;
+  let apiHasAuthorizedHealthEndpoint = false;
+  let healthEndPoint;
+
   if (hasPaths) {
 
     const seenRealPaths = {};
@@ -79,7 +91,12 @@ module.exports.validate = function({ resolvedSpec }, config) {
         let resourcesAlternated = true;
         let depthPath = 0;
         let numberOfLevels = 0;
-        pathName.split('/').map(substr => {
+        let isHealthPath = true;
+        let isRecommendedHealthEndpoint = false;
+        let isAuthorizedHealthEndpoint = false;
+
+        const pathElements = pathName.split('/');
+        pathElements.map(substr => {
             depthPath += 1;
             substr = substr.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
             
@@ -99,7 +116,7 @@ module.exports.validate = function({ resolvedSpec }, config) {
             //check if root path (number 1), or if it's the version or if it's a reserved Word
             if (depthPath > 1) {
                 if (! (versionInPathRegex.test(substr.toLowerCase()))
-                    && ! (reservedWords.includes(substr.toLowerCase()))) {
+                    && ! (pathReservedWords.includes(substr.toLowerCase()))) {
                     
                     numberOfLevels += 1;
 
@@ -107,7 +124,7 @@ module.exports.validate = function({ resolvedSpec }, config) {
                     if (substr.length > 0 && !parameterRegex.test(substr)) {
                         const lastPathChar = substr.charAt(substr.length-1).toLowerCase();
 
-                        // Assertation 7
+                        // Assertation 7 : checks elements
                         //checks last word last char
                         if(lastPathChar != "s" && lastPathChar != "x" && lastPathChar != "z") {
 
@@ -131,16 +148,44 @@ module.exports.validate = function({ resolvedSpec }, config) {
                         }
                     }
 
-                    //Assertion 9
+                    //Assertation 8
                     //even number must levels must be parameters, and odd must be resources
                     if ( (numberOfLevels % 2 == 0) != parameterRegex.test(substr) ) {
                         resourcesAlternated = false;
                     }
                 }
+
+                // Assertation 13 : first part => check each pathElement
+                if (!versionInPathRegex.test(substr.toLowerCase()) && pathApiPart !== substr && substr !== '') {
+                    if (authorizedHealthOperationNames.includes(substr)) {
+                        isAuthorizedHealthEndpoint = true;
+                        if (recommendedHealthOperationName === substr) {
+                            isRecommendedHealthEndpoint = true;
+                        }
+                    } else {
+                        //if path contains other strings than api, vX or health words : it's not a real health path
+                        isHealthPath = false;
+                    }
+                }
             }
         });
 
-        const checkResourcesPlural = config.plural_path_segments
+        // Assertation 13 : second part => check path consistence
+        if (isHealthPath) {
+            if (isRecommendedHealthEndpoint) {
+                healthEndPoint = pathName;
+                apiHasRecommendedHealthEndpoint = true;
+            } else if (isAuthorizedHealthEndpoint) {
+                //if the recommended is already found, authorized is not kept
+                if (!apiHasRecommendedHealthEndpoint) {
+                    healthEndPoint = pathName;
+                    apiHasAuthorizedHealthEndpoint = true;
+                }
+            }
+        }
+
+        // Assertation 7 : unique message
+        const checkResourcesPlural = config.plural_path_segments;
         if (resourcesMalFormed != '' && checkResourcesPlural != 'off') {
             messages.addTypedMessage(
                 `paths.${pathName}`,
@@ -152,7 +197,7 @@ module.exports.validate = function({ resolvedSpec }, config) {
             );
         }
 
-        // Assertation 8
+        // Assertation 9
         let checkPathDepth = 'off';
         let maxPathDepth = 0;
         if (config.max_path_levels) {
@@ -170,7 +215,8 @@ module.exports.validate = function({ resolvedSpec }, config) {
             );
         }
 
-        const checkResourcesAlternated = config.alternate_resources_and_identifiers
+        //Assertation 8 : message management
+        const checkResourcesAlternated = config.alternate_resources_and_identifiers;
         if (!resourcesAlternated && checkResourcesAlternated != 'off') {
             messages.addTypedMessage(
                 `paths.${pathName}`,
@@ -183,7 +229,7 @@ module.exports.validate = function({ resolvedSpec }, config) {
         }
 
         //Assertation 10
-        const checkFinalSlash = config.path_ending_with_slash
+        const checkFinalSlash = config.path_ending_with_slash;
         if (checkFinalSlash != 'off' && numberOfLevels > 0 && pathName.length > 1 && pathName.charAt(pathName.length-1) == "/") {
             messages.addTypedMessage(
                 `paths.${pathName}`,
@@ -304,6 +350,40 @@ module.exports.validate = function({ resolvedSpec }, config) {
         });
 
     });
+
+    // Assertation 13 : last part => check is one path is ok
+    const health_path_unexist = config.health_path_unexist
+    if (health_path_unexist != 'off') {
+        if (apiHasRecommendedHealthEndpoint) {
+            messages.addTypedMessage(
+                `paths.${healthEndPoint}`,
+                `API health path is ${healthEndPoint}.`,
+                'info',
+                'api_health',
+                'convention',
+                'CTMO.STANDARD-CODAGE-20'
+            );
+        } else if (apiHasAuthorizedHealthEndpoint) {
+            messages.addTypedMessage(
+                `paths.${healthEndPoint}`,
+                `API has a health path but it is not the recommended one ('health') : ${healthEndPoint}.`,
+                health_path_unexist,
+                'api_health',
+                'convention',
+                'CTMO.STANDARD-CODAGE-20'
+            );
+        } else {
+            messages.addTypedMessage(
+                `paths`,
+                `API has not health path.`,
+                health_path_unexist,
+                'api_health',
+                'convention',
+                'CTMO.STANDARD-CODAGE-20'
+            );
+        }
+    }
+
   }
 
   return messages;

@@ -48,6 +48,26 @@ describe('validation plugin - semantic - paths', function() {
       expect(res.warnings).toEqual([]);
     });
 
+    it('should return no problems for a correct path template', function() {
+      const spec = {
+        paths: {
+          '/CoolPath/{id}': {
+            parameters: [
+              {
+                name: 'id',
+                in: 'path'
+              }
+            ]
+          }
+        }
+      };
+
+      const res = validate({ resolvedSpec: spec }, defaultConfig);
+      expect(res.errors.length).toEqual(0);
+      expect(res.warnings.length).toEqual(0);
+    });
+  });
+
     describe('Path strings must be equivalently different', () => {
       it('should return one problem for an equivalent templated path strings', function() {
         const spec = {
@@ -590,6 +610,149 @@ describe('validation plugin - semantic - paths', function() {
         expect(res.warnings.length).toEqual(0);
     });
   });
+
+  describe('API must contain a health path', () => {
+  
+    const config_health = {
+      paths: {
+        health_path_unexist: 'warning'
+      }
+    };
+
+    it('should be ok for an API with a health path', function() {
+
+        const spec = {
+            paths: {
+                '/health': {
+                },
+                '/v1/signatures': {
+                },
+                '/pets': {
+                }
+            }
+        };
+
+        const res = validate({ resolvedSpec: spec }, config_health);
+        expect(res.errors.length).toEqual(0);
+        expect(res.warnings.length).toEqual(0);
+        expect(res.infos.length).toEqual(1);
+        expect(res.infos[0].message).toEqual("API health path is /health.");
+        expect(res.infos[0].path).toEqual("paths./health");
+        expect(res.infos[0].type).toEqual("convention");
+        expect(res.infos[0].rule).toEqual("api_health");
+        expect(res.infos[0].customizedRule).toEqual("CTMO.STANDARD-CODAGE-20");
+    });
+
+    it('should be ok for an API with a health path, starting with api', function() {
+
+      const spec = {
+          paths: {
+              '/api/v1/health': {
+              },
+              '/v1/signatures': {
+              },
+              '/pets': {
+              }
+          }
+      };
+
+      const res = validate({ resolvedSpec: spec }, config_health);
+      expect(res.errors.length).toEqual(0);
+      expect(res.warnings.length).toEqual(0);
+      expect(res.infos.length).toEqual(1);
+    });
+
+    it('should be ok for an API with a health path, starting with version and api', function() {
+
+      const spec = {
+          paths: {
+              '/v1/api/health': {
+              },
+              '/v1/signatures': {
+              },
+              '/pets': {
+              }
+          }
+      };
+
+      const res = validate({ resolvedSpec: spec }, config_health);
+      expect(res.errors.length).toEqual(0);
+      expect(res.warnings.length).toEqual(0);
+      expect(res.infos.length).toEqual(1);
+    });
+
+    it('should return a warning if health is not the good one', function() {
+
+      const spec = {
+          paths: {
+              '/api/status': {
+              },
+              '/v1/signatures': {
+              },
+              '/pets': {
+              }
+          }
+      };
+
+      const res = validate({ resolvedSpec: spec }, config_health);
+      expect(res.errors.length).toEqual(0);
+      expect(res.warnings.length).toEqual(1);
+      expect(res.infos.length).toEqual(0);
+      expect(res.warnings[0].message).toEqual("API has a health path but it is not the recommended one ('health') : /api/status.");
+      expect(res.warnings[0].path).toEqual("paths./api/status");
+      expect(res.warnings[0].type).toEqual("convention");
+      expect(res.warnings[0].rule).toEqual("api_health");
+      expect(res.warnings[0].customizedRule).toEqual("CTMO.STANDARD-CODAGE-20");
+    });
+
+    it('should be a warning if health is not the good one', function() {
+
+      const spec = {
+          paths: {
+              '/ping': {
+              },
+              '/v1/signatures': {
+              },
+              '/pets': {
+              }
+          }
+      };
+
+      const res = validate({ resolvedSpec: spec }, config_health);
+      expect(res.errors.length).toEqual(0);
+      expect(res.warnings.length).toEqual(1);
+      expect(res.infos.length).toEqual(0);
+      expect(res.warnings[0].message).toEqual("API has a health path but it is not the recommended one ('health') : /ping.");
+      expect(res.warnings[0].path).toEqual("paths./ping");
+      expect(res.warnings[0].type).toEqual("convention");
+      expect(res.warnings[0].rule).toEqual("api_health");
+      expect(res.warnings[0].customizedRule).toEqual("CTMO.STANDARD-CODAGE-20");
+    });
+
+    it('should return a warning if no health or status is present', function() {
+
+        const spec = {
+            paths: {
+                '/v1/resource/pet/{id}': {
+                },
+                '/v1/signature': {
+                },
+                '/pets': {
+                }
+            }
+        };
+
+        const res = validate({ resolvedSpec: spec }, config_health);
+        expect(res.errors.length).toEqual(0);
+        expect(res.warnings.length).toEqual(1);
+        expect(res.infos.length).toEqual(0);
+        expect(res.warnings[0].message).toEqual("API has not health path.");
+        expect(res.warnings[0].path).toEqual("paths");
+        expect(res.warnings[0].type).toEqual("convention");
+        expect(res.warnings[0].rule).toEqual("api_health");
+        expect(res.warnings[0].customizedRule).toEqual("CTMO.STANDARD-CODAGE-20");
+    });
+  });
   
   describe('Paths must alternate resources and identifier', () => {
 
@@ -985,7 +1148,7 @@ describe('validation plugin - semantic - paths', function() {
       }
     };
     
-    it('should return one problem for an empty path template', function() {
+    it('should return one problem for a path ending with /', function() {
       const spec = {
         paths: {
           '/CoolPath': {},
@@ -1004,26 +1167,6 @@ describe('validation plugin - semantic - paths', function() {
       expect(res.warnings[0].customizedRule).toEqual('CTMO.STANDARD-CODAGE-11');
     });
   });
-
-      it('should return no problems for a correct path template', function() {
-        const spec = {
-          paths: {
-            '/CoolPath/{id}': {
-              parameters: [
-                {
-                  name: 'id',
-                  in: 'path'
-                }
-              ]
-            }
-          }
-        };
-
-        const res = validate({ resolvedSpec: spec }, defaultConfig);
-        expect(res.errors.length).toEqual(0);
-        expect(res.warnings.length).toEqual(0);
-      });
-    });
 
     describe('Integrations', () => {
       it('should return two problems for an illegal query string in a path string', function() {

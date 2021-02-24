@@ -67,7 +67,8 @@ const defaults = {
         6
       ],
       'paths_case_convention': ['error', 'lower_snake_case'],
-      'paths_alternative_case_convention': ['off', 'lower_snake_case']
+      'paths_alternative_case_convention': ['off', 'lower_snake_case'],
+      'health_path_unexist': 'off'
     },
     'responses': {
       'inline_response_schema': 'warning'
