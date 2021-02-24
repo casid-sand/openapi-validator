@@ -65,7 +65,8 @@
       "paths_alternative_case_convention": [
         "warning",
         "lower_snake_case"
-      ]
+      ],
+      "health_path_unexist": "warning"
     },
     "responses": {
       "inline_response_schema": "off"
