@@ -17,12 +17,13 @@ module.exports = function print(
 ) {
   const types = errorsOnly
     ? ['errors']
-    : ['errors', 'warnings', 'infos', 'hints'];
+    : ['errors', 'warnings', 'notices', 'infos', 'hints'];
   const colors = {
     errors: 'bgRed',
-    warnings: 'bgYellow',
-    infos: 'bgBlue',
-    hints: 'bgGreen'
+    warnings: 'bgMagenta',
+    notices: 'bgYellow',
+    infos: 'bgGreen',
+    hints: 'bgBlue'
   };
 
   // define an object template in the case that statistics reporting is turned on
@@ -31,6 +32,9 @@ module.exports = function print(
       total: 0
     },
     warnings: {
+      total: 0
+    },
+    notices: {
       total: 0
     },
     infos: {
@@ -109,6 +113,7 @@ module.exports = function print(
     reportingStats &&
     (stats.errors.total ||
       stats.warnings.total ||
+      stats.notices.total ||
       stats.infos.total ||
       stats.hints.total)
   ) {
@@ -120,6 +125,11 @@ module.exports = function print(
     console.log(
       chalk.cyan(`  Total number of warnings : ${stats.warnings.total}`)
     );
+    if (stats.notices.total > 0) {
+      console.log(
+        chalk.cyan(`  Total number of notices  : ${stats.notices.total}`)
+      );
+    }
     if (stats.infos.total > 0) {
       console.log(
         chalk.cyan(`  Total number of infos    : ${stats.infos.total}`)

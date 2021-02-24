@@ -255,8 +255,14 @@ const processInput = async function(program) {
       results = {
         errors: {},
         warnings: {},
+        notices: {},
+        infos: {},
+        hints: {},
         error: false,
-        warning: false
+        warning: false,
+        notice: false,
+        info: false,
+        hint: false
       };
       results.errors["buildSwaggerObject"] = [...messages.errors];
       results.error = true;
@@ -311,6 +317,7 @@ const processInput = async function(program) {
     // if errorsOnly is true, only errors will be returned, so need to force this to false
     if (errorsOnly) {
       results.warning = false;
+      results.notice = false;
       results.info = false;
       results.hint = false;
     }

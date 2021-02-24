@@ -1,4 +1,4 @@
-// Assertions are in the following order ( bailing as soon as we hit the firs assertion )
+// Assertations are in the following order ( bailing as soon as we hit the firs assertation )
 //
 
 // Assertation typo
@@ -104,7 +104,7 @@ module.exports.validate = function({ resolvedSpec }) {
   // If a paramter with `in: formData` exists, a param with `in: body` cannot
   // eslint-disable-next-line no-unused-vars
   function assertationOne(params, path) {
-    // Assertion 1
+    // Assertation 1
     const inBodyIndex = params.findIndex(
       p => isObject(p) && p['in'] === 'body'
     );

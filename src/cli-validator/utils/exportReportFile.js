@@ -23,7 +23,7 @@ module.exports = function exportReportFile(
   swaggerObject,
   errorsOnly
 ) {
-  const types = errorsOnly ? ['errors'] : ['errors', 'warnings', 'infos', 'hints'];
+  const types = errorsOnly ? ['errors'] : ['errors', 'warnings', 'notices', 'infos', 'hints'];
 
   var dt = dateTime.create();
   var formattedDate = dt.format('Y-m-d H:M:S');
@@ -65,6 +65,7 @@ module.exports = function exportReportFile(
 
   if (!errorsOnly) {
       jsonReport.warnings = [];
+      jsonReport.notices = [];
       jsonReport.infos = [];
       jsonReport.hints = [];
   }
@@ -80,6 +81,9 @@ module.exports = function exportReportFile(
       total: 0
     },
     warnings: {
+      total: 0
+    },
+    notices: {
       total: 0
     },
     infos: {
@@ -208,7 +212,7 @@ module.exports = function exportReportFile(
   });
 
   // print the stats here, if applicable
-  if (reportingStats && (stats.errors.total || stats.warnings.total || stats.infos.total || stats.hints.total)) {
+  if (reportingStats && (stats.errors.total || stats.warnings.total || stats.notices.total || stats.infos.total || stats.hints.total)) {
     jsonReport.stats = stats;
     jsonReport.stats.statsDetailedByType = typedStats;
     jsonReport.stats.statsDetailedByRule = customizedRulesStats;

@@ -43,10 +43,12 @@ module.exports = function validateSwagger(
   const validationResults = {
     errors: {},
     warnings: {},
+    notices: {},
     infos: {},
     hints: {},
     error: false,
     warning: false,
+    notice: false,
     info: false,
     hint: false
   };
@@ -69,6 +71,10 @@ module.exports = function validateSwagger(
   if (parsedSpectralResults.warnings.length) {
     validationResults.warnings[key] = [...parsedSpectralResults.warnings];
     validationResults.warning = true;
+  }
+  if (parsedSpectralResults.notices.length) {
+    validationResults.notices[key] = [...parsedSpectralResults.notices];
+    validationResults.notice = true;
   }
   if (parsedSpectralResults.infos.length) {
     validationResults.infos[key] = [...parsedSpectralResults.infos];
@@ -105,6 +111,10 @@ module.exports = function validateSwagger(
       validationResults.warnings[key] = [...problem.warnings];
       validationResults.warning = true;
     }
+    if (problem.notices.length) {
+      validationResults.notices[key] = [...problem.notices];
+      validationResults.notice = true;
+    }
     if (problem.infos.length) {
       validationResults.infos[key] = [...problem.infos];
       validationResults.info = true;
@@ -130,6 +140,13 @@ module.exports = function validateSwagger(
         problem.warnings
       );
       validationResults.warning = true;
+    }
+    if (problem.notices.length) {
+      validationResults.notices[key] = [].concat(
+        validationResults.notices[key] || [],
+        problem.notices
+      );
+      validationResults.notice = true;
     }
     if (problem.infos.length) {
       validationResults.infos[key] = [].concat(

@@ -1,7 +1,7 @@
 // Assertation 1:
 // if discriminator exist inside schema object, it must be of type Object
 
-// Assertion 2:
+// Assertation 2:
 // discriminator object must have a field name propertyName
 
 // Assertation 3:

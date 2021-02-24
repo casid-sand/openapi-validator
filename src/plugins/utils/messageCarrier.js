@@ -7,6 +7,7 @@ module.exports = class MessageCarrier {
     this._messages = {
       error: [],
       warning: [],
+      notice: [],
       info: [],
       hint: []
     };
@@ -22,6 +23,10 @@ module.exports = class MessageCarrier {
 
   get warnings() {
     return this._messages.warning;
+  }
+
+  get notices() {
+    return this._messages.notice;
   }
 
   get infos() {

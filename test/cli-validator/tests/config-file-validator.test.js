@@ -143,7 +143,7 @@ describe('cli tool - test config file validator', function() {
       '[Error] Invalid configuration in .validaterc file. See below for details.'
     );
     expect(capturedText[1].trim()).toEqual(
-      "- 'nonValidStatus' is not a valid status for the no_produces rule in the operations category.\n   Valid statuses are: error, warning, info, hint, off"
+      "- 'nonValidStatus' is not a valid status for the no_produces rule in the operations category.\n   Valid statuses are: error, warning, notice, info, hint, off"
     );
   });
 
@@ -151,9 +151,11 @@ describe('cli tool - test config file validator', function() {
     const config = {
       shared: {
         operations: {
-          no_operation_id: 'warning',
+          no_operation_id: 'hint',
           no_summary: 'warning',
-          no_array_responses: 'error'
+          no_array_responses: 'error',
+          neither_description_nor_summary: 'info',
+          unused_tag: 'notice'
         }
       }
     };
@@ -254,7 +256,7 @@ describe('cli tool - test config file validator', function() {
       '[Error] Invalid configuration in .validaterc file. See below for details.'
     );
     expect(capturedText[1].trim()).toEqual(
-      "- 'snake_case' is not a valid status for the param_name_case_convention rule in the parameters category.\n   Valid statuses are: error, warning, info, hint, off"
+      "- 'snake_case' is not a valid status for the param_name_case_convention rule in the parameters category.\n   Valid statuses are: error, warning, notice, info, hint, off"
     );
   });
 
@@ -276,7 +278,7 @@ describe('cli tool - test config file validator', function() {
       '[Error] Invalid configuration in .validaterc file. See below for details.'
     );
     expect(capturedText[1].trim()).toEqual(
-      "- '' is not a valid status for the param_name_case_convention rule in the parameters category.\n   Valid statuses are: error, warning, info, hint, off"
+      "- '' is not a valid status for the param_name_case_convention rule in the parameters category.\n   Valid statuses are: error, warning, notice, info, hint, off"
     );
   });
 
@@ -318,7 +320,7 @@ describe('cli tool - test config file validator', function() {
       '[Error] Invalid configuration in .validaterc file. See below for details.'
     );
     expect(capturedText[1].trim()).toEqual(
-      "- 'camel_case' is not a valid status for the param_name_case_convention rule in the parameters category.\n   Valid statuses are: error, warning, info, hint, off"
+      "- 'camel_case' is not a valid status for the param_name_case_convention rule in the parameters category.\n   Valid statuses are: error, warning, notice, info, hint, off"
     );
   });
 
@@ -339,7 +341,7 @@ describe('cli tool - test config file validator', function() {
       '[Error] Invalid configuration in .validaterc file. See below for details.'
     );
     expect(capturedText[1].trim()).toEqual(
-      '- Array-value configuration options are not supported for the no_parameter_description rule in the parameters category.\n   Valid statuses are: error, warning, info, hint, off'
+      '- Array-value configuration options are not supported for the no_parameter_description rule in the parameters category.\n   Valid statuses are: error, warning, notice, info, hint, off'
     );
   });
 

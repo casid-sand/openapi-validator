@@ -10,6 +10,7 @@ describe('test info and hint rules - OAS3', function() {
     const customConfig = JSON.parse(JSON.stringify(defaultConfig));
     customConfig['shared']['schemas']['no_schema_description'] = 'info';
     customConfig['shared']['operations']['unused_tag'] = 'hint';
+    customConfig['shared']['info']['contact_email_domain'] = ['notice', 'mail.com'];
     const mockConfig = jest.spyOn(config, 'get').mockReturnValue(customConfig);
 
     const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
@@ -42,6 +43,12 @@ describe('test info and hint rules - OAS3', function() {
     expect(jsonOutput['warnings']['refs'].length).toBe(1);
     expect(jsonOutput['warnings']['schema-ibm'].length).toBe(1);
     expect(jsonOutput['warnings']['security-definitions-ibm'].length).toBe(1);
+
+    // Verify notices
+    expect(jsonOutput['notices']['info'].length).toBe(1);
+    expect(jsonOutput['notices']['info'][0]['message']).toContain(
+      `'contact.email' object must have domain `
+    );
 
     // Verify infos
     expect(jsonOutput['infos']['schema-ibm'].length).toBe(1);

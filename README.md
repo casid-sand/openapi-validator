@@ -66,7 +66,7 @@ The default configuration uses both OpenAPI 3.0 rules as well as Spectral rules.
 
 ### Customization
 
-You can modify the behavior of the validator for your project to meet your preferred standards. Specific validation "rules" can be turned off, or configured to trigger an error, warning, info, or hint message in the validator output.
+You can modify the behavior of the validator for your project to meet your preferred standards. Specific validation "rules" can be turned off, or configured to trigger an error, warning, notice, info, or hint message in the validator output.
 
 Some validations can be configured even further, such as switching the case convention for parameter names.
 There are also currently some validations that cannot be disabled or configured to a different severity.
@@ -74,7 +74,7 @@ You can see the rule associated with each message produced by the validator with
 **Rules that are not configurable will show the name `builtin`.**
 
 The validator also employs the [`Spectral`](https://github.com/stoplightio/spectral) validation/linting engine to detect certain issues in the API document.
-Spectral rules can also be configured to trigger an error, warning, info, or hint message in the validator output with the `.spectral.yaml` configuration file.
+Spectral rules can also be configured to trigger an error, warning, notice, info, or hint message in the validator output with the `.spectral.yaml` configuration file.
 When the validator issues a message as the result of a Spectral rule, the rule name displayed will correspond to the Spectral rule. You must add a Spectral configuration if you want to create a new rule, as opposed to modifying an existing one.
 
 To get started configuring the validator, [set up](#setup) a [configuration file](#configuration-file).  See the [Spectral configuration](#spectral-configuration) section for more details on customization with Spectral.
@@ -387,7 +387,7 @@ The supported rules are described below:
 
 #### Statuses
 
-Each rule can be assigned a status. The supported statuses are `error`, `warning`, `info`, `hint` and `off`.
+Each rule can be assigned a status. The supported statuses are `error`, `warning`, `notice`, `info`, `hint` and `off`.
 Some rules can be configured further with configuration options. The format of this configuration is to provide an array, rather than just a string. e.g.
 `"param_name_case_convention": ["error", "lower_camel_case"]`
 If just a string is provided for these rule, the default configuration option will be used. If only one value is provided in the array, it **MUST** be a status. The default configuration option will be used in this case as well. The rules that support configuration options will have **two** values in the [defaults](#default-values) table.
@@ -594,7 +594,7 @@ in the current directory or with the `--ruleset` command line option of the vali
 
 #### Changing Spectral rule severity
 
-Any rule in the `ibm:oas` ruleset can be configured to trigger an error, warning, info, or hint message in the validator output.
+Any rule in the `ibm:oas` ruleset can be configured to trigger an error, warning, notice, info, or hint message in the validator output.
 For example, to configure the `openapi-tags` rule to trigger an `info` message instead of a `warning`, specify the following in your Spectral ruleset file:
 ```
 extends: ibm:oas
@@ -618,7 +618,7 @@ rules:
   info-contact: true
 ```
 
-You could also set the severity of `info-contact` explicitly to `error`, `warn`, `info`, or `hint`.
+You could also set the severity of `info-contact` explicitly to `error`, `warn`, `notice`, `info`, or `hint`.
 
 #### Custom Spectral rules
 

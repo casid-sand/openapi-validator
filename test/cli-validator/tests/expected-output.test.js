@@ -94,6 +94,7 @@ describe('cli tool - test expected output - Swagger 2 @skip-local', function() {
       {},
       jsonOutput.errors,
       jsonOutput.warnings,
+      jsonOutput.notices,
       jsonOutput.infos,
       jsonOutput.hints
     );
@@ -116,6 +117,7 @@ describe('cli tool - test expected output - Swagger 2 @skip-local', function() {
 
     expect(validationResults.errors.length).toBe(5);
     expect(validationResults.warnings.length).toBe(9);
+    expect(validationResults.notices).not.toBeDefined();
     expect(validationResults.infos).not.toBeDefined();
     expect(validationResults.hints).not.toBeDefined();
 
@@ -313,6 +315,7 @@ describe('test expected output - OpenAPI 3 @skip-local', function() {
       {},
       jsonOutput.errors,
       jsonOutput.warnings,
+      jsonOutput.notices,
       jsonOutput.infos,
       jsonOutput.hints
     );
@@ -335,6 +338,7 @@ describe('test expected output - OpenAPI 3 @skip-local', function() {
 
     expect(validationResults.errors.length).toBe(4);
     expect(validationResults.warnings.length).toBe(12);
+    expect(validationResults.notices).not.toBeDefined();
     expect(validationResults.infos).not.toBeDefined();
     expect(validationResults.hints).not.toBeDefined();
 
