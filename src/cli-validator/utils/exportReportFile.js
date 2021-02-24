@@ -165,6 +165,9 @@ module.exports = function exportReportFile(
         if (!problem.customizedRule) {
             problem.customizedRule = "standard";           
         }
+        if (!problem.rule) {
+            problem.rule = "builtin";           
+        }
 
         if (!customizedRulesStats[problem.customizedRule]) {
           customizedRulesStats[problem.customizedRule] = {
@@ -200,11 +203,16 @@ module.exports = function exportReportFile(
         } else {
             problemToAdd.type = "";
         }
-        if (problem.customizedRule) {
-            problemToAdd.customizedRule = problem.customizedRule;
+        if (problem.rule) {
+            problemToAdd.rule = problem.rule;
         } else {
-            problemToAdd.customizedRule = "";
+            problemToAdd.rule = "";
         }
+        if (problem.customizedRule) {
+          problemToAdd.customizedRule = problem.customizedRule;
+      } else {
+          problemToAdd.customizedRule = "";
+      }
 
         jsonReport[type].push(problemToAdd);
       });
