@@ -615,7 +615,7 @@ describe('validation plugin - semantic - paths', function() {
   
     const config_health = {
       paths: {
-        health_path_unexist: 'warning'
+        health_path_unexist: 'notice'
       }
     };
 
@@ -635,6 +635,7 @@ describe('validation plugin - semantic - paths', function() {
         const res = validate({ resolvedSpec: spec }, config_health);
         expect(res.errors.length).toEqual(0);
         expect(res.warnings.length).toEqual(0);
+        expect(res.notices.length).toEqual(0);
         expect(res.infos.length).toEqual(1);
         expect(res.infos[0].message).toEqual("API health path is /health.");
         expect(res.infos[0].path).toEqual("paths./health");
@@ -659,6 +660,7 @@ describe('validation plugin - semantic - paths', function() {
       const res = validate({ resolvedSpec: spec }, config_health);
       expect(res.errors.length).toEqual(0);
       expect(res.warnings.length).toEqual(0);
+      expect(res.notices.length).toEqual(0);
       expect(res.infos.length).toEqual(1);
     });
 
@@ -678,6 +680,7 @@ describe('validation plugin - semantic - paths', function() {
       const res = validate({ resolvedSpec: spec }, config_health);
       expect(res.errors.length).toEqual(0);
       expect(res.warnings.length).toEqual(0);
+      expect(res.notices.length).toEqual(0);
       expect(res.infos.length).toEqual(1);
     });
 
@@ -696,13 +699,14 @@ describe('validation plugin - semantic - paths', function() {
 
       const res = validate({ resolvedSpec: spec }, config_health);
       expect(res.errors.length).toEqual(0);
-      expect(res.warnings.length).toEqual(1);
+      expect(res.warnings.length).toEqual(0);
+      expect(res.notices.length).toEqual(1);
       expect(res.infos.length).toEqual(0);
-      expect(res.warnings[0].message).toEqual("API has a health path but it is not the recommended one ('health') : /api/status.");
-      expect(res.warnings[0].path).toEqual("paths./api/status");
-      expect(res.warnings[0].type).toEqual("convention");
-      expect(res.warnings[0].rule).toEqual("api_health");
-      expect(res.warnings[0].customizedRule).toEqual("CTMO.STANDARD-CODAGE-20");
+      expect(res.notices[0].message).toEqual("API has a health path but it is not the recommended one ('health') : /api/status.");
+      expect(res.notices[0].path).toEqual("paths./api/status");
+      expect(res.notices[0].type).toEqual("convention");
+      expect(res.notices[0].rule).toEqual("api_health");
+      expect(res.notices[0].customizedRule).toEqual("CTMO.STANDARD-CODAGE-20");
     });
 
     it('should be a warning if health is not the good one', function() {
@@ -720,13 +724,14 @@ describe('validation plugin - semantic - paths', function() {
 
       const res = validate({ resolvedSpec: spec }, config_health);
       expect(res.errors.length).toEqual(0);
-      expect(res.warnings.length).toEqual(1);
+      expect(res.warnings.length).toEqual(0);
+      expect(res.notices.length).toEqual(1);
       expect(res.infos.length).toEqual(0);
-      expect(res.warnings[0].message).toEqual("API has a health path but it is not the recommended one ('health') : /ping.");
-      expect(res.warnings[0].path).toEqual("paths./ping");
-      expect(res.warnings[0].type).toEqual("convention");
-      expect(res.warnings[0].rule).toEqual("api_health");
-      expect(res.warnings[0].customizedRule).toEqual("CTMO.STANDARD-CODAGE-20");
+      expect(res.notices[0].message).toEqual("API has a health path but it is not the recommended one ('health') : /ping.");
+      expect(res.notices[0].path).toEqual("paths./ping");
+      expect(res.notices[0].type).toEqual("convention");
+      expect(res.notices[0].rule).toEqual("api_health");
+      expect(res.notices[0].customizedRule).toEqual("CTMO.STANDARD-CODAGE-20");
     });
 
     it('should return a warning if no health or status is present', function() {
@@ -744,13 +749,14 @@ describe('validation plugin - semantic - paths', function() {
 
         const res = validate({ resolvedSpec: spec }, config_health);
         expect(res.errors.length).toEqual(0);
-        expect(res.warnings.length).toEqual(1);
+        expect(res.warnings.length).toEqual(0);
+        expect(res.notices.length).toEqual(1);
         expect(res.infos.length).toEqual(0);
-        expect(res.warnings[0].message).toEqual("API has not health path.");
-        expect(res.warnings[0].path).toEqual("paths");
-        expect(res.warnings[0].type).toEqual("convention");
-        expect(res.warnings[0].rule).toEqual("api_health");
-        expect(res.warnings[0].customizedRule).toEqual("CTMO.STANDARD-CODAGE-20");
+        expect(res.notices[0].message).toEqual("API has not health path.");
+        expect(res.notices[0].path).toEqual("paths");
+        expect(res.notices[0].type).toEqual("convention");
+        expect(res.notices[0].rule).toEqual("api_health");
+        expect(res.notices[0].customizedRule).toEqual("CTMO.STANDARD-CODAGE-20");
     });
   });
   

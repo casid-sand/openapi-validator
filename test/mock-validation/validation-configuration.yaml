@@ -25,7 +25,7 @@
       "no_array_responses": "hint",
       "parameter_order": "off",
       "undefined_tag": "warning",
-      "unused_tag": "warning",
+      "unused_tag": "notice",
       "operation_id_naming_convention": "off"
     },
     "pagination": {
@@ -55,7 +55,7 @@
       "plural_path_segments": "hint",
       "path_ending_with_slash" : "warning",
       "max_path_levels": [
-        "warning",
+        "notice",
         6
       ],
       "paths_case_convention": [
@@ -66,7 +66,7 @@
         "warning",
         "lower_snake_case"
       ],
-      "health_path_unexist": "warning"
+      "health_path_unexist": "notice"
     },
     "responses": {
       "inline_response_schema": "off"
@@ -114,7 +114,7 @@
       "undefined_required_properties": "warning"
     },
     "walker": {
-      "no_empty_descriptions": "error",
+      "no_empty_descriptions": "warning",
       "has_circular_references": "warning",
       "$ref_siblings": "off",
       "duplicate_sibling_description": "warning",
@@ -124,16 +124,16 @@
   "swagger2": {
     "operations": {
       "no_consumes_for_put_or_post": "warning",
-      "get_op_has_consumes": "off",
+      "get_op_has_consumes": "notice",
       "no_produces": "warning",
-      "wrong_content_type": "error"
+      "wrong_content_type": "warning"
     }
   },
   "oas3": {
     "operations": {
       "no_request_body_content": "error",
       "no_request_body_name": "off",
-      "wrong_content_type": "error"
+      "wrong_content_type": "warning"
     },
     "parameters": {
       "no_in_property": "error",
