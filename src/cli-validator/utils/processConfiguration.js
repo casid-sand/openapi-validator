@@ -102,6 +102,7 @@ const validateConfigObject = function(configObject, chalk) {
 
         // check that all statuses are valid (either 'error', 'warning', 'notice', 'info', 'hint' or 'off')
         const allowedStatusValues = ['error', 'warning', 'notice', 'info', 'hint', 'off'];
+        const allowedStatusValues = this.levelsArray;
         let userStatus = configObject[spec][category][rule];
 
         // if the rule supports an array in configuration,
@@ -411,6 +412,37 @@ const getSpectralRuleset = async function(rulesetFileOverride, defaultRuleset) {
   return ruleSetFile;
 };
 
+/**
+ * Indicates if second level is upper than first :
+ * - 0 : if equal
+ * - 1 : if second is upper
+ * - -1 : if second is lower
+ * - false : if one is unknown
+ * @param {*} origin_level : default level to be compared to
+ * @param {*} new_level : level to compare
+ */
+const isLevelUpperThan = function (origin_level, new_level) {
+  //if one or two is unknown : return false
+  if (levelsArray.includes(origin_level) && levelsArray.includes(new_level)) {
+    //the two are equals => return 0
+    if (origin_level === new_level) {
+      return 0;
+    } else {
+      //if index array of first is lower => first is more restrictive => return -1
+      if (levelsArray.indexOf(origin_level) < levelsArray.indexOf(new_level)) {
+        return -1;
+      } else {
+        return 1;
+      }
+    }
+  } else {
+    return false;
+  }
+}
+
+const levelsArray = ['error', 'warning', 'notice', 'info', 'hint', 'off'];
+const tabsLevelArray = ['errors', 'warnings', 'notices', 'infos', 'hints'];
+
 module.exports.get = getConfigObject;
 module.exports.validate = validateConfigObject;
 module.exports.ignore = getFilesToIgnore;
@@ -418,3 +450,8 @@ module.exports.validateOption = validateConfigOption;
 module.exports.validateLimits = validateLimits;
 module.exports.limits = getLimits;
 module.exports.getSpectralRuleset = getSpectralRuleset;
+module.exports.isLevelUpperThan = isLevelUpperThan;
+
+module.exports.levelsArray = levelsArray;
+module.exports.tabsLevelArray = tabsLevelArray;
+
