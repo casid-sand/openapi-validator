@@ -7,6 +7,8 @@ const printError = require('./printError');
 const dateTime = require('node-datetime');
 const getVersion = require('./getOpenApiVersion');
 
+const processConfiguration = require('./processConfiguration');
+
 // get line-number-producing, 'magic' code from Swagger Editor
 const getLineNumberForPath = require(__dirname + '/../../plugins/ast/ast')
   .getLineNumberForPath;
@@ -24,6 +26,7 @@ module.exports = function exportReportFile(
   errorsOnly
 ) {
   const types = errorsOnly ? ['errors'] : ['errors', 'warnings', 'notices', 'infos', 'hints'];
+  const types = errorsOnly ? ['errors'] : processConfiguration.tabsLevelArray;
 
   var dt = dateTime.create();
   var formattedDate = dt.format('Y-m-d H:M:S');

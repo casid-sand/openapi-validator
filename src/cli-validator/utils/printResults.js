@@ -1,5 +1,6 @@
 const each = require('lodash/each');
 const pad = require('pad');
+const processConfiguration = require('./processConfiguration');
 
 // get line-number-producing, 'magic' code from Swagger Editor
 const getLineNumberForPath = require(__dirname + '/../../plugins/ast/ast')
@@ -18,6 +19,9 @@ module.exports = function print(
   const types = errorsOnly
     ? ['errors']
     : ['errors', 'warnings', 'notices', 'infos', 'hints'];
+  const types = errorsOnly
+    ? ['errors']
+    : processConfiguration.tabsLevelArray;
   const colors = {
     errors: 'bgRed',
     warnings: 'bgMagenta',
