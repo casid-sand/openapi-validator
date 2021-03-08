@@ -202,7 +202,7 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
           if (!resolvedTags.includes(op.tags[i])) {
             messages.addTypedMessage(
               `paths.${pathKey}.${opKey}.tags`,
-              'tag is not defined at the global level: ' + op.tags[i],
+              'Operation tag is not defined at the global level: ' + op.tags[i],
               configOperations.undefined_tag,
               'undefined_tag',
               'structural'

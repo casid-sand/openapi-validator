@@ -87,19 +87,19 @@
       "array_of_arrays": "warning",
       "inconsistent_property_type": "warning",
       "model_case_convention": [
-        "error",
+        "warning",
         "k8s_upper_camel_case"
       ],
       "model_alternative_case_convention": [
-        "warning",
+        "notice",
         "upper_snake_case"
       ],
       "property_case_convention": [
-        "error",
+        "warning",
         "k8s_camel_case"
       ],
       "property_alternative_case_convention": [
-        "warning",
+        "notice",
         "lower_snake_case"
       ],
       "property_case_collision": "error",
@@ -108,7 +108,7 @@
         "lower_spinal_case"
       ],
       "enum_alternative_case_convention": [
-        "warning",
+        "notice",
         "all_snake_case"
       ],
       "undefined_required_properties": "warning"
@@ -154,6 +154,7 @@
   "spectral": {
     "rules": {
       "operation-description": "info",
+      "operation-tag-defined": "off",
       "oas2-valid-definition-example": "warning",
       "oas3-valid-example": "warning",
       "oas3-valid-schema-example": "warning",

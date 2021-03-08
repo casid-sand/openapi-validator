@@ -1119,7 +1119,7 @@ describe('validation plugin - semantic - operations-shared', function() {
 
       expect(res.warnings[0].path).toEqual('paths./.get.tags');
       expect(res.warnings[0].message).toEqual(
-        'tag is not defined at the global level: not a tag'
+        'Operation tag is not defined at the global level: not a tag'
       );
     });
 
