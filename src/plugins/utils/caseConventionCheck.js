@@ -10,6 +10,8 @@
   https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#naming-conventions
 */
 
+const processConfiguration = require('../../cli-validator/utils/processConfiguration');
+
 const lowerSnakeCase = /^[a-z][a-z0-9]*(_[a-z0-9]+)*$/; // example : learning_opt_out
 const upperSnakeCase = /^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$/; // example : LEARNING_OPT_OUT
 const upperCamelCase = /^[A-Z][a-z0-9]+([A-Z][a-z0-9]+)*$/; // example : LearningOptOut
@@ -19,8 +21,6 @@ const k8sUpperCamelCase = /^[A-Z][a-z0-9]+([A-Z]+[a-z0-9]*)*$/; // example : Lea
 const lowerDashCase = /^[a-z][a-z0-9]*(-[a-z0-9]+)*$/; // example : learning-opt-out
 const upperDashCase = /^[A-Z][A-Z0-9]*(-[A-Z0-9]+)*$/; // example : LEARNING-OPT-OUT
 const spinalFirstUpperCase = /^([A-Z][a-z0-9]*)+(-([A-Z][a-z0-9]*)+)*$/; // example : Learning-Opt-Out
-
-const headerStartingWithXRegex = /^([xX])(([-_\.A-Z]))/;
 
 module.exports = (string, convention) => {
   switch (convention) {
@@ -95,8 +95,7 @@ module.exports.checkCaseConventionOrAlternativeCase = function (stringToTest,
     messageCarrier, pathToElement, elementTypeName, ibmRuleIdentifier, customizedRuleIdentifier) {
 
 //switch default and alternative case if alternative is more restrictive than default
-if ((defaultCheckLevel === 'off' || !defaultCheckLevel) && alternativeCheckLevel !== 'off' && alternativeCheckLevel
-    || defaultCheckLevel === 'warning' && alternativeCheckLevel ==='error') {
+if (processConfiguration.isLevelUpperThan(defaultCheckLevel, alternativeCheckLevel) === 1) {
     let tempValue;
 
     tempValue = defaultCheckLevel;
@@ -141,9 +140,9 @@ if ((defaultCheckLevel === 'off' || !defaultCheckLevel) && alternativeCheckLevel
             if (isCorrectAlternativeCase) {
                 //respect alternative case, but not default case
                 
-                // if the 2 cases convention are at same error level, and the alternative case is ok => no error, else 'warning'
-                if (defaultCheckLevel != alternativeCheckLevel) {
-                    messageStatus = 'warning';
+                // if the 2 cases convention are at same error level, and the alternative case is ok => no error, else message with alternative level
+                if (processConfiguration.isLevelUpperThan(defaultCheckLevel, alternativeCheckLevel) === -1) {
+                    messageStatus = alternativeCheckLevel;
                     stringHasCorrectCase = false;
                     if (messageCarrier) {
                         messageCarrier.addTypedMessage(
@@ -163,10 +162,10 @@ if ((defaultCheckLevel === 'off' || !defaultCheckLevel) && alternativeCheckLevel
                 if (messageCarrier) {
                     let messageString;
                     //message is different if the case convention are at same error level or not
-                    if (defaultCheckLevel !== alternativeCheckLevel) {
-                        messageString = `${elementTypeName} must follow case convention: '${stringToTest}' doesn't respect ${this.getCaseConventionExample(defaultCaseConvention)} recommended, or eventually ${this.getCaseConventionExample(alternativeCaseConvention)}.`;
+                    if (processConfiguration.isLevelUpperThan(defaultCheckLevel, alternativeCheckLevel) === 0) {
+                      messageString = `${elementTypeName} must follow case convention: '${stringToTest}' doesn't respect ${this.getCaseConventionExample(defaultCaseConvention)} or ${this.getCaseConventionExample(alternativeCaseConvention)}.`;
                     } else {
-                        messageString = `${elementTypeName} must follow case convention: '${stringToTest}' doesn't respect ${this.getCaseConventionExample(defaultCaseConvention)} or ${this.getCaseConventionExample(alternativeCaseConvention)}.`;
+                      messageString = `${elementTypeName} must follow case convention: '${stringToTest}' doesn't respect ${this.getCaseConventionExample(defaultCaseConvention)} recommended, or eventually ${this.getCaseConventionExample(alternativeCaseConvention)}.`;
                     }
                     messageCarrier.addTypedMessage(
                         pathToElement,

@@ -403,6 +403,16 @@ describe('cli tool - test processConfiguration - level comparison', function() {
     expect(res).toEqual(0);
   });
 
+  it('should return 0 for undefined/null/false values - 1', function() {
+    const res = processConfiguration.isLevelUpperThan(undefined, false);
+    expect(res).toEqual(0);
+  });
+
+  it('should return 0 for undefined/null/false values - 2', function() {
+    const res = processConfiguration.isLevelUpperThan(false, null);
+    expect(res).toEqual(0);
+  });
+
   it('should return 1 if second is upper - 1', function() {
     const res = processConfiguration.isLevelUpperThan('warning', 'error');
     expect(res).toEqual(1);
@@ -428,6 +438,11 @@ describe('cli tool - test processConfiguration - level comparison', function() {
     expect(res).toEqual(1);
   });
 
+  it('should return 1 if second is upper, compared to undefined', function() {
+    const res = processConfiguration.isLevelUpperThan(undefined, 'hint');
+    expect(res).toEqual(1);
+  });
+
   it('should return -1 if second is lower - 1', function() {
     const res = processConfiguration.isLevelUpperThan('info', 'off');
     expect(res).toEqual(-1);
@@ -435,6 +450,11 @@ describe('cli tool - test processConfiguration - level comparison', function() {
 
   it('should return 1 if second is lower - 2', function() {
     const res = processConfiguration.isLevelUpperThan('error', 'notice');
+    expect(res).toEqual(-1);
+  });
+
+  it('should return 1 if second is lower, compared to false', function() {
+    const res = processConfiguration.isLevelUpperThan('error', false);
     expect(res).toEqual(-1);
   });
 

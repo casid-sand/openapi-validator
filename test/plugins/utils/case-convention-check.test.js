@@ -616,6 +616,19 @@ describe('case convention and alternative check tests', function() {
         expect(messages.warnings.length).toEqual(0);
     });
 
+    it('should valid default string case - same level and hint', function() {
+      const messages = new MessageCarrier();
+      let result;
+
+      result = checkCase.checkCaseConventionOrAlternativeCase('string_default_case', 'lower_snake_case', 'hint', 
+          'lower_camel_case', 'hint', 
+          messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'CTMO.STANDARD-CODAGE-19');
+          
+      expect(result).toEqual(true);
+      expect(messages.errors.length).toEqual(0);
+      expect(messages.warnings.length).toEqual(0);
+  });
+
     it('should valid default string case - different level and default is first', function() {
         const messages = new MessageCarrier();
         let result;
@@ -661,7 +674,8 @@ describe('case convention and alternative check tests', function() {
         const messages = new MessageCarrier();
         let result;
 
-        result = checkCase.checkCaseConventionOrAlternativeCase('stringAlternativeString', 'lower_snake_case', 'warning', 
+        result = checkCase.checkCaseConventionOrAlternativeCase('stringAlternativeString', 
+            'lower_snake_case', 'warning', 
             'lower_camel_case', 'warning', 
             messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'CTMO.STANDARD-CODAGE-19');
             
@@ -670,30 +684,30 @@ describe('case convention and alternative check tests', function() {
         expect(messages.warnings.length).toEqual(0);
     });
 
-    it('should return a warning if string respect alternative case - and different level errors and alternative is first param', function() {
-        const messages = new MessageCarrier();
-        let result;
-
-        result = checkCase.checkCaseConventionOrAlternativeCase('stringAlternativeString', 
-            'lower_spinal_case', 'error', 
-            'lower_camel_case', 'warning', 
-            messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'EXAMPLE_RULE_ID');
-            
-        expect(result).toEqual(false);
-        expect(messages.errors.length).toEqual(0);
-        expect(messages.warnings.length).toEqual(1);
-        expect(messages.warnings[0].message).toEqual("Examples string should follow case convention: 'stringAlternativeString' doesn't respect 'spinal-case' recommended.");
-        expect(messages.warnings[0].path).toEqual("path_to");
-        expect(messages.warnings[0].type).toEqual("convention");
-        expect(messages.warnings[0].rule).toEqual('checkCaseConventionOrAlternativeCase');
-        expect(messages.warnings[0].customizedRule).toEqual('EXAMPLE_RULE_ID');
-    });
-
     it('should return a warning if string respect alternative case - and different level errors and alternative is second param', function() {
         const messages = new MessageCarrier();
         let result;
 
         result = checkCase.checkCaseConventionOrAlternativeCase('stringAlternativeString', 
+            'lower_spinal_case', 'error', 
+            'lower_camel_case', 'warning', 
+            messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'EXAMPLE_RULE_ID');
+            
+        expect(result).toEqual(false);
+        expect(messages.errors.length).toEqual(0);
+        expect(messages.warnings.length).toEqual(1);
+        expect(messages.warnings[0].message).toEqual("Examples string should follow case convention: 'stringAlternativeString' doesn't respect 'spinal-case' recommended.");
+        expect(messages.warnings[0].path).toEqual("path_to");
+        expect(messages.warnings[0].type).toEqual("convention");
+        expect(messages.warnings[0].rule).toEqual('checkCaseConventionOrAlternativeCase');
+        expect(messages.warnings[0].customizedRule).toEqual('EXAMPLE_RULE_ID');
+    });
+
+    it('should return a warning if string respect alternative case - and different level errors and alternative is first param', function() {
+        const messages = new MessageCarrier();
+        let result;
+
+        result = checkCase.checkCaseConventionOrAlternativeCase('stringAlternativeString', 
             'lower_camel_case', 'warning', 
             'lower_spinal_case', 'error', 
             messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'EXAMPLE_RULE_ID');
@@ -707,6 +721,28 @@ describe('case convention and alternative check tests', function() {
         expect(messages.warnings[0].rule).toEqual('checkCaseConventionOrAlternativeCase');
         expect(messages.warnings[0].customizedRule).toEqual('EXAMPLE_RULE_ID');
     });
+
+    it('should return a warning if string respect alternative case - and different levels info and notice and alternative is second param', function() {
+      const messages = new MessageCarrier();
+      let result;
+
+      result = checkCase.checkCaseConventionOrAlternativeCase('stringAlternativeString', 
+          'lower_camel_case', 'info', 
+          'lower_spinal_case', 'notice', 
+          messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'EXAMPLE_RULE_ID');
+          
+      expect(result).toEqual(false);
+      expect(messages.errors.length).toEqual(0);
+      expect(messages.warnings.length).toEqual(0);
+      expect(messages.notices.length).toEqual(0);
+      expect(messages.hints.length).toEqual(0);
+      expect(messages.infos.length).toEqual(1);
+      expect(messages.infos[0].message).toEqual("Examples string should follow case convention: 'stringAlternativeString' doesn't respect 'spinal-case' recommended.");
+      expect(messages.infos[0].path).toEqual("path_to");
+      expect(messages.infos[0].type).toEqual("convention");
+      expect(messages.infos[0].rule).toEqual('checkCaseConventionOrAlternativeCase');
+      expect(messages.infos[0].customizedRule).toEqual('EXAMPLE_RULE_ID');
+  });
 
     it('should return error if it does not respect default case - without alternative in second', function() {
         const messages = new MessageCarrier();
@@ -764,6 +800,28 @@ describe('case convention and alternative check tests', function() {
         expect(messages.errors[0].rule).toEqual('checkCaseConventionOrAlternativeCase');
         expect(messages.errors[0].customizedRule).toEqual('EXAMPLE_RULE_ID');
     });
+
+    it('should return error if it does not respect default case and alternative case - two at hint level', function() {
+      const messages = new MessageCarrier();
+      let result;
+
+      result = checkCase.checkCaseConventionOrAlternativeCase('stringAlternative-string_Wrong', 
+          'lower_spinal_case', 'hint', 
+          'all_camel_case', 'hint', 
+          messages, 'path_to', 'Examples string', 'checkCaseConventionOrAlternativeCase', 'EXAMPLE_RULE_ID');
+          
+      expect(result).toEqual(false);
+      expect(messages.errors.length).toEqual(0);
+      expect(messages.warnings.length).toEqual(0);
+      expect(messages.infos.length).toEqual(0);
+      expect(messages.notices.length).toEqual(0);
+      expect(messages.hints.length).toEqual(1);
+      expect(messages.hints[0].message).toEqual("Examples string must follow case convention: 'stringAlternative-string_Wrong' doesn't respect 'spinal-case' or 'camelCase' or 'UpperCamelCase'.");
+      expect(messages.hints[0].path).toEqual("path_to");
+      expect(messages.hints[0].type).toEqual("convention");
+      expect(messages.hints[0].rule).toEqual('checkCaseConventionOrAlternativeCase');
+      expect(messages.hints[0].customizedRule).toEqual('EXAMPLE_RULE_ID');
+  });
 
     it('should return error if it does not respect default case and alternative case - two at different level', function() {
         const messages = new MessageCarrier();

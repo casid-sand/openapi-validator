@@ -423,16 +423,28 @@ const getSpectralRuleset = async function(rulesetFileOverride, defaultRuleset) {
  */
 const isLevelUpperThan = function (origin_level, new_level) {
   //if one or two is unknown : return false
-  if (levelsArray.includes(origin_level) && levelsArray.includes(new_level)) {
-    //the two are equals => return 0
-    if (origin_level === new_level) {
+  if ((!origin_level || levelsArray.includes(origin_level))
+     && (!new_level || levelsArray.includes(new_level)) ) {
+    if (!origin_level && !new_level) {
+      //the two are undefined/false/null => return 0
       return 0;
     } else {
-      //if index array of first is lower => first is more restrictive => return -1
-      if (levelsArray.indexOf(origin_level) < levelsArray.indexOf(new_level)) {
-        return -1;
+      //the two are equals => return 0
+      if (origin_level === new_level) {
+        return 0;
       } else {
-        return 1;
+        if (!origin_level) {
+          //first is undefined/false/null, not second => return 1
+          return 1;
+        } else if (!new_level) {
+          //second is undefined/false/null, not first => return -1
+          return -1;
+        } else if (levelsArray.indexOf(origin_level) < levelsArray.indexOf(new_level)) {
+          //if index array of first is lower => first is more restrictive => return -1
+          return -1;
+        } else {
+          return 1;
+        }
       }
     }
   } else {
