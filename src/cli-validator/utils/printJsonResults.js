@@ -7,7 +7,7 @@ const getLineNumberForPath = require(__dirname + '/../../plugins/ast/ast')
 
 // function to print the results as json to the console.
 module.exports = function printJson(results, originalFile, errorsOnly) {
-  const types = errorsOnly ? ['errors'] : ['errors', 'warnings'];
+  //const types = errorsOnly ? ['errors'] : ['errors', 'warnings'];
   const types = errorsOnly ? ['errors'] : processConfiguration.tabsLevelArray;
   types.forEach(type => {
     each(results[type], problems => {

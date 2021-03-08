@@ -9,6 +9,8 @@ const { defaults, options } = require('../../../src/.defaultsForValidator');
 const configFileValidator = require('../../../src/cli-validator/utils/processConfiguration')
   .validate;
 
+const processConfiguration = require('../../../src/cli-validator/utils/processConfiguration');
+
 describe('cli tool - test config file validator', function() {
   let consoleSpy;
 
@@ -367,4 +369,73 @@ describe('cli tool - test config file validator', function() {
       `- 'nowordseparatorscase' is not a valid option for the param_name_case_convention rule in the parameters category.\n   Valid options are: ${validOptions}`
     );
   });
+});
+
+describe('cli tool - test processConfiguration - level comparison', function() {
+
+  it('should return false for unknown level - 1', function() {
+    const res = processConfiguration.isLevelUpperThan('errors', 'error');
+    expect(res).toEqual(false);
+  });
+
+  it('should return false for unknown level - 2', function() {
+    const res = processConfiguration.isLevelUpperThan('warning', 'WARNING');
+    expect(res).toEqual(false);
+  });
+
+  it('should return false for unknown level - both', function() {
+    const res = processConfiguration.isLevelUpperThan('toto', 'toto');
+    expect(res).toEqual(false);
+  });
+
+  it('should return 0 for equals values - 1', function() {
+    const res = processConfiguration.isLevelUpperThan('off', 'off');
+    expect(res).toEqual(0);
+  });
+
+  it('should return 0 for equals values - 2', function() {
+    const res = processConfiguration.isLevelUpperThan('error', 'error');
+    expect(res).toEqual(0);
+  });
+
+  it('should return 0 for equals values - 3', function() {
+    const res = processConfiguration.isLevelUpperThan('notice', 'notice');
+    expect(res).toEqual(0);
+  });
+
+  it('should return 1 if second is upper - 1', function() {
+    const res = processConfiguration.isLevelUpperThan('warning', 'error');
+    expect(res).toEqual(1);
+  });
+
+  it('should return 1 if second is upper - 2', function() {
+    const res = processConfiguration.isLevelUpperThan('notice', 'warning');
+    expect(res).toEqual(1);
+  });
+
+  it('should return 1 if second is upper - 3', function() {
+    const res = processConfiguration.isLevelUpperThan('info', 'notice');
+    expect(res).toEqual(1);
+  });
+
+  it('should return 1 if second is upper - 4', function() {
+    const res = processConfiguration.isLevelUpperThan('hint', 'info');
+    expect(res).toEqual(1);
+  });
+
+  it('should return 1 if second is upper - 5', function() {
+    const res = processConfiguration.isLevelUpperThan('off', 'hint');
+    expect(res).toEqual(1);
+  });
+
+  it('should return -1 if second is lower - 1', function() {
+    const res = processConfiguration.isLevelUpperThan('info', 'off');
+    expect(res).toEqual(-1);
+  });
+
+  it('should return 1 if second is lower - 2', function() {
+    const res = processConfiguration.isLevelUpperThan('error', 'notice');
+    expect(res).toEqual(-1);
+  });
+
 });

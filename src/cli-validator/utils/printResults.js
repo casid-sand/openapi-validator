@@ -16,9 +16,9 @@ module.exports = function print(
   originalFile,
   errorsOnly
 ) {
-  const types = errorsOnly
-    ? ['errors']
-    : ['errors', 'warnings', 'notices', 'infos', 'hints'];
+  //const types = errorsOnly
+  //  ? ['errors']
+  //  : ['errors', 'warnings', 'notices', 'infos', 'hints'];
   const types = errorsOnly
     ? ['errors']
     : processConfiguration.tabsLevelArray;

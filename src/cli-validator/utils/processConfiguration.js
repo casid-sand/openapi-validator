@@ -101,8 +101,8 @@ const validateConfigObject = function(configObject, chalk) {
         }
 
         // check that all statuses are valid (either 'error', 'warning', 'notice', 'info', 'hint' or 'off')
-        const allowedStatusValues = ['error', 'warning', 'notice', 'info', 'hint', 'off'];
-        const allowedStatusValues = this.levelsArray;
+        //const allowedStatusValues = ['error', 'warning', 'notice', 'info', 'hint', 'off'];
+        const allowedStatusValues = levelsArray;
         let userStatus = configObject[spec][category][rule];
 
         // if the rule supports an array in configuration,

@@ -25,7 +25,7 @@ module.exports = function exportReportFile(
   swaggerObject,
   errorsOnly
 ) {
-  const types = errorsOnly ? ['errors'] : ['errors', 'warnings', 'notices', 'infos', 'hints'];
+  //const types = errorsOnly ? ['errors'] : ['errors', 'warnings', 'notices', 'infos', 'hints'];
   const types = errorsOnly ? ['errors'] : processConfiguration.tabsLevelArray;
 
   var dt = dateTime.create();
