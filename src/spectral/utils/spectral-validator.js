@@ -8,6 +8,8 @@ const fs = require('fs');
 const defaultSpectralRulesetURI =
   __dirname + '/../rulesets/.defaultsForSpectral.yaml';
 
+const enumValueRuleRegex = /^Enum value `.*` does not respect the specified type `.*`\.$/;
+
 const parseResults = function(results, debug) {
   const messages = new MessageCarrier();
 
@@ -16,8 +18,13 @@ const parseResults = function(results, debug) {
       if (validationResult) {
         const code = validationResult['code'];
         const severity = validationResult['severity'];
-        const message = validationResult['message'];
+        let message = validationResult['message'];
         const path = validationResult['path'];
+
+        //rewrite "Enum Value Type rule - typed-enum"
+        if (enumValueRuleRegex.test(message)) {
+          message = `Enum value does not respect the specified type : ${message}`
+        }
 
         if (code === 'parser') {
           // Spectral doesn't allow disabling parser rules, so don't include them

@@ -77,7 +77,7 @@ describe('spectral - test enabled rules - Swagger 2 @skip-local', function() {
 
   it('test typed-enum rule using mockFiles/swagger/enabled-rules.yml', function() {
     expect(allOutput).toContain(
-      'Enum value `a_string` does not respect the specified type `integer`'
+      'Enum value does not respect the specified type : Enum value `a_string` does not respect the specified type `integer`.'
     );
   });
 
@@ -192,10 +192,10 @@ describe('spectral - test enabled rules - Swagger 2 In Memory @skip-local', func
 
   it('test typed-enum rule using mockFiles/swagger/enabled-rules-in-memory', function() {
     expect(errors).not.toContain(
-      'Enum value `a_string` does not respect the specified type `integer`.'
+      'Enum value does not respect the specified type : Enum value `a_string` does not respect the specified type `integer`.'
     );
     expect(warnings).toContain(
-      'Enum value `a_string` does not respect the specified type `integer`.'
+      'Enum value does not respect the specified type : Enum value `a_string` does not respect the specified type `integer`.'
     );
   });
 
@@ -318,7 +318,7 @@ describe('spectral - test enabled rules - OAS3 @skip-local', function() {
 
   it('test typed-enum rule using mockFiles/oas3/enabled-rules.yml', function() {
     expect(allOutput).toContain(
-      'Enum value `a_string` does not respect the specified type `integer`'
+      'Enum value does not respect the specified type : Enum value `a_string` does not respect the specified type `integer`.'
     );
   });
 
@@ -425,10 +425,10 @@ describe('spectral - test enabled rules - OAS3 In Memory @skip-local', function(
 
   it('test typed-enum rule using mockFiles/oas3/enabled-rules-in-memory', function() {
     expect(errors).not.toContain(
-      'Enum value `a_string` does not respect the specified type `integer`.'
+      'Enum value does not respect the specified type : Enum value `a_string` does not respect the specified type `integer`.'
     );
     expect(warnings).toContain(
-      'Enum value `a_string` does not respect the specified type `integer`.'
+      'Enum value does not respect the specified type : Enum value `a_string` does not respect the specified type `integer`.'
     );
   });
 
