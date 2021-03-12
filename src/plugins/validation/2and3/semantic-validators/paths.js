@@ -375,7 +375,7 @@ module.exports.validate = function({ resolvedSpec }, config) {
         } else {
             messages.addTypedMessage(
                 `paths`,
-                `API has not health path.`,
+                `API has no health path.`,
                 health_path_unexist,
                 'api_health',
                 'convention',

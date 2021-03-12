@@ -957,7 +957,7 @@ describe('validation plugin - semantic - operations - oas3', function() {
     const spec = {
       paths: {
         '/pets': {
-          post: {
+          put: {
             'x-codegen-request-body-name': 'goodRequestBody',
             summary: 'this is a summary',
             operationId: 'operationId',
@@ -1066,15 +1066,15 @@ describe('validation plugin - semantic - operations - oas3', function() {
     expect(res.errors.length).toEqual(2);
     
     expect(res.errors[0].message).toEqual(`Response Content-Type must be JSON ('application/json' or 'application/hal+json' or 'application/problem+json').`);
-    expect(res.errors[0].path).toEqual('paths./pets.post.responses.200.content.text/html');
+    expect(res.errors[0].path).toEqual('paths./pets.put.responses.200.content.text/html');
     expect(res.errors[1].message).toEqual(`Request body Content-Type must be JSON ('application/json' or 'application/hal+json' or 'application/problem+json').`);
-    expect(res.errors[1].path).toEqual('paths./pets.post.requestBody.content.text/html');
+    expect(res.errors[1].path).toEqual('paths./pets.put.requestBody.content.text/html');
     
     expect(res.warnings.length).toEqual(2);
     expect(res.warnings[0].message).toEqual(`Response Content-Type should be JSON ('application/json' or 'application/hal+json' or 'application/problem+json'), instead of other allowed content-types ('text/xml' or 'application/xml' or 'application/yaml' or 'text/csv' or 'text/plain' or 'application/pdf').`);
-    expect(res.warnings[0].path).toEqual('paths./pets.post.responses.200.content.application/xml');
+    expect(res.warnings[0].path).toEqual('paths./pets.put.responses.200.content.application/xml');
     expect(res.warnings[1].message).toEqual(`Request body Content-Type should be JSON ('application/json' or 'application/hal+json' or 'application/problem+json'), instead of other allowed content-types ('text/xml' or 'application/xml' or 'application/yaml' or 'text/csv' or 'text/plain' or 'application/pdf').`);
-    expect(res.warnings[1].path).toEqual('paths./pets.post.requestBody.content.application/xml');
+    expect(res.warnings[1].path).toEqual('paths./pets.put.requestBody.content.application/xml');
 
   });
 

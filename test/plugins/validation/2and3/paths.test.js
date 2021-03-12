@@ -752,7 +752,7 @@ describe('validation plugin - semantic - paths', function() {
         expect(res.warnings.length).toEqual(0);
         expect(res.notices.length).toEqual(1);
         expect(res.infos.length).toEqual(0);
-        expect(res.notices[0].message).toEqual("API has not health path.");
+        expect(res.notices[0].message).toEqual("API has no health path.");
         expect(res.notices[0].path).toEqual("paths");
         expect(res.notices[0].type).toEqual("convention");
         expect(res.notices[0].rule).toEqual("api_health");
