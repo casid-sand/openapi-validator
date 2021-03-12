@@ -17,5 +17,8 @@ module.exports = function(originalFile) {
   // Another problematic character is #9d - replace with space
   processedFile = processedFile.replace(/\x9d/g, ' ');
 
+  // Another problematic is UTF8 BOM - delete it if present
+  processedFile = processedFile.replace(/^\uFEFF/, '');
+
   return processedFile;
 };
