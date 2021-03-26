@@ -49,9 +49,9 @@
     },
     "paths": {
       "missing_path_parameter": "error",
-      "duplicate_path_parameter": "off",
+      "duplicate_path_parameter": "warning",
       "snake_case_only": "off",
-      "alternate_resources_and_identifiers": "error",
+      "alternate_resources_and_identifiers": "warning",
       "plural_path_segments": "hint",
       "path_ending_with_slash" : "warning",
       "max_path_levels": [
