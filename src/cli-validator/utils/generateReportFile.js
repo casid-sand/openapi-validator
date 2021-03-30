@@ -1,0 +1,270 @@
+const fs = require('fs');
+const util = require('util');
+const findUp = require('find-up');
+const each = require('lodash/each');
+const pad = require('pad');
+const printError = require('./printError');
+const dateTime = require('node-datetime');
+const getVersion = require('./getOpenApiVersion');
+
+const processConfiguration = require('./processConfiguration');
+
+// get line-number-producing, 'magic' code from Swagger Editor
+const getLineNumberForPath = require(__dirname + '/../../plugins/ast/ast')
+  .getLineNumberForPath;
+
+
+module.exports.generateReportFile = function generateReportFile(
+  results,
+  printValidators,
+  reportingStats,
+  originalFileContent,
+  swaggerObject,
+  errorsOnly
+) {
+
+    //const types = errorsOnly ? ['errors'] : ['errors', 'warnings', 'notices', 'infos', 'hints'];
+    const types = errorsOnly ? ['errors'] : processConfiguration.tabsLevelArray;
+
+    var dt = dateTime.create();
+    var formattedDate = dt.format('Y-m-d H:M:S');
+  
+    const jsonReport = {
+      scanDate: formattedDate,
+    }
+  
+    if (swaggerObject) {
+      if (swaggerObject.jsSpec) {
+          const version = getVersion(swaggerObject.jsSpec);
+          if (version === "2") {
+            jsonReport.format = "Swagger 2";
+          } else if (version === "3") {
+            jsonReport.format = "OpenAPI 3";
+          }
+      }
+      const info = swaggerObject.jsSpec.info;
+      const hasInfo = info && typeof info === 'object';
+      if (hasInfo) {
+          const title = swaggerObject.jsSpec.info.title;
+          const hasTitle =
+              typeof title === 'string' && title.toString().trim().length > 0;
+          const version = swaggerObject.jsSpec.info.version;
+          const hasVersion =
+              typeof version === 'string' && version.toString().trim().length > 0;
+  
+          if (hasTitle) {
+              jsonReport.titleAPI = title;
+          }
+          if (hasTitle) {
+              jsonReport.versionAPI = version;
+          }
+      }
+    } 
+  
+    jsonReport.errors = [];
+  
+    if (!errorsOnly) {
+        jsonReport.warnings = [];
+        jsonReport.notices = [];
+        jsonReport.infos = [];
+        jsonReport.hints = [];
+    }
+    if (reportingStats) {
+        jsonReport.stats = [];
+        jsonReport.stats.statsDetailedByType = [];
+        jsonReport.stats.statsDetailedByRule = [];
+    }
+  
+    // define an object template in the case that statistics reporting is turned on
+    const stats = {
+      errors: {
+        total: 0
+      },
+      warnings: {
+        total: 0
+      },
+      notices: {
+        total: 0
+      },
+      infos: {
+        total: 0
+      },
+      hints: {
+        total: 0
+      }
+    };
+  
+    const typedStats = {
+      structural: {
+        total: 0
+      },
+      semantic: {
+        total: 0
+      },
+      convention: {
+        total: 0
+      },
+      documentation: {
+        total: 0
+      },
+      untyped: {
+        total: 0
+      }
+    };
+  
+    const customizedRulesStats = {};
+  
+    console.log();
+  
+    types.forEach(type => {
+  
+      each(results[type], (problems, validator) => {
+        if (printValidators) {
+          console.log(`Validator: ${validator}`);
+        }
+  
+        problems.forEach(problem => {
+          // To allow messages with fillins to be grouped properly in the statistics,
+          // truncate the message at the first ':'
+          const message = problem.message.split(':')[0];
+          let path = problem.path;
+  
+          // collect info for stats reporting, if applicable
+  
+          stats[type].total += 1;
+  
+          if (!stats[type][message]) {
+            stats[type][message] = 0;
+          }
+  
+          stats[type][message] += 1;
+  
+          //collect stats for types
+  
+          if (problem.type) {
+              typedStats[problem.type].total += 1;
+  
+              if (!typedStats[problem.type][message]) {
+                  typedStats[problem.type][message] = 0;
+              }
+  
+              typedStats[problem.type][message] += 1;
+  
+          } else {
+              typedStats["untyped"].total += 1;
+  
+              if (!typedStats["untyped"][message]) {
+                  typedStats["untyped"][message] = 0;
+              }
+  
+              typedStats["untyped"][message] += 1;
+          }
+  
+          //collect stats for customizedRules
+          
+          if (!problem.customizedRule) {
+              problem.customizedRule = "standard";           
+          }
+          if (!problem.rule) {
+              problem.rule = "builtin";           
+          }
+  
+          if (!customizedRulesStats[problem.customizedRule]) {
+            customizedRulesStats[problem.customizedRule] = {
+                  total: 0
+              };
+          }
+          customizedRulesStats[problem.customizedRule].total += 1;
+  
+          if (!customizedRulesStats[problem.customizedRule][message]) {
+            customizedRulesStats[problem.customizedRule][message] = 0;
+          }
+          customizedRulesStats[problem.customizedRule][message] += 1;
+  
+          // path needs to be an array to get the line number
+          if (!Array.isArray(path)) {
+            path = path.split('.');
+          }
+  
+          // get line number from the path of strings to the problem
+          // as they say in src/plugins/validation/semantic-validators/hook.js,
+          //
+          //                  "it's magic!"
+          //
+          const lineNumber = getLineNumberForPath(originalFileContent, path);
+  
+          //new object for report
+          let problemToAdd = {};
+          problemToAdd.message = problem.message;
+          problemToAdd.path = path.join('.');
+          problemToAdd.line = lineNumber;
+          if (problem.type) {
+              problemToAdd.type = problem.type;
+          } else {
+              problemToAdd.type = "";
+          }
+          if (problem.rule) {
+              problemToAdd.rule = problem.rule;
+          } else {
+              problemToAdd.rule = "";
+          }
+          if (problem.customizedRule) {
+            problemToAdd.customizedRule = problem.customizedRule;
+        } else {
+            problemToAdd.customizedRule = "";
+        }
+  
+          jsonReport[type].push(problemToAdd);
+        });
+      });
+    });
+  
+    // print the stats here, if applicable
+    if (reportingStats && (stats.errors.total || stats.warnings.total || stats.notices.total || stats.infos.total || stats.hints.total)) {
+      jsonReport.stats = stats;
+      jsonReport.stats.statsDetailedByType = typedStats;
+      jsonReport.stats.statsDetailedByRule = customizedRulesStats;
+    }
+
+    return jsonReport;
+}
+
+// this function prints all of the output
+module.exports.exportReportFile = function exportReportFile(
+  results,
+  chalk,
+  outputFileReportName,
+  printValidators,
+  reportingStats,
+  originalFileContent,
+  originalFileName,
+  swaggerObject,
+  errorsOnly
+) {
+
+  const jsonReport = this.generateReportFile(
+    results,
+    printValidators,
+    reportingStats,
+    originalFileContent,
+    swaggerObject,
+    errorsOnly);
+
+  jsonReport.filename = originalFileName;
+
+  const writeFile = util.promisify(fs.writeFile);
+  try {
+    const indentationSpaces = 2;
+    writeFile(
+      outputFileReportName,
+      JSON.stringify(jsonReport, null, indentationSpaces)
+    );
+    console.log('\n' + chalk.green('[Success]') + ` Report created ${outputFileReportName}\n`);
+    return Promise.resolve(0);
+  } catch (err) {
+    const description =
+      'Problem writing the report file file. See below for details.';
+    printError(chalk, description, err);
+    return Promise.reject(2);
+  }
+};

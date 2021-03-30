@@ -41,13 +41,14 @@ module.exports = async function(input) {
   swagger.circular = parser.$refs.circular;
 
   const version = getVersion(swagger.jsSpec);
+  swagger.openApiVersion = version;
   const { apiSchema } = schemas[version];
 
   // the structural validation expects a `settings` object
   //  describing which schemas to validate against
   swagger.settings = {
     schemas: [apiSchema],
-    testSchema: apiSchema
+    testSchema: apiSchema,
   };
 
   return swagger;

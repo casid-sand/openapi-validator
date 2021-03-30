@@ -1,0 +1,112 @@
+openapi: "3.0.0"
+info:
+  title: "Validation de la conformité des API"
+  description: "Cette API valide la conformité des API, en analysant le contenu du Swagger/OpenAPI fourni, au regard des bonnes pratique et directives en vigueur."
+  version: 0.5.0
+  contact:
+    name: Mickaël BOCQUET
+    email: "mickael.bocquet@def.gouv.fr"
+servers:
+- url: /api-validations/v1/
+tags:
+- name: Health and Metrics
+  description: Get metadata and API status
+- name: API validation
+  description: API validations and checks
+- name: Configuration
+  description: Tool configuration
+paths:
+  /health:
+    get:
+      tags:
+      - Health and Metrics
+      summary: Return API availability
+      description: Return API availability
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  version:
+                    type: string
+        "500":
+          description: The API is not ready
+        "404":
+          description: There is no monitored API at this address
+  /api/validations:
+    post:
+      tags:
+      - API validation
+      summary: Return API availability
+      description: Return API availability
+      parameters:
+      - name: formatType
+        description: Specify syntax, in case of the content-type header is not used
+        in: query
+        schema:
+          type: string
+          enum:
+            - JSON
+            - YAML
+      - name: statsReport
+        description: Specify if stats are displayed in result
+        in: query
+        schema:
+          type: string
+          enum:
+            - YES
+            - NO
+          default: NO
+      - name: printValidators
+        description: Specify if validator name is displayed
+        in: query
+        schema:
+          type: string
+          enum:
+            - YES
+            - NO
+          default: NO
+      - name: errorsOnly
+        description: Specify if only errors are returned
+        in: query
+        schema:
+          type: string
+          enum:
+            - YES
+            - NO
+          default: NO
+      requestBody:
+        description: Swagger/OpenAPI to validate, in JSON or in YAML syntax
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+          application/x-yaml:
+            schema:
+              type: string
+          text/plain:
+            schema:
+              type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  version:
+                    type: string
+        "500":
+          description: The API is not ready
+        "404":
+          description: There is no monitored API at this address
+  

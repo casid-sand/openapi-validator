@@ -7,7 +7,7 @@ const last = require('lodash/last');
 const chalk = require('chalk');
 const jsonValidator = require('json-dup-key-validator');
 const globby = require('globby');
-const exportReportFile = require('./utils/exportReportFile');
+const generateReportFile = require('./utils/generateReportFile');
 const ext = require('./utils/fileExtensionValidator');
 const config = require('./utils/processConfiguration');
 const buildSwaggerObject = require('./utils/buildSwaggerObject');
@@ -174,7 +174,7 @@ const processInput = async function(program) {
   // or the default ruleset
   const spectral = new Spectral();
   try {
-    await spectralValidator.setup(spectral, rulesetFileOverride, configObject);
+    await spectralValidator.setup(spectral, undefined, configObject);
   } catch (err) {
     return Promise.reject(err);
   }
@@ -323,17 +323,17 @@ const processInput = async function(program) {
     }
 
     if (outputReportFile) {
-        exportReportFile(
-          results,
-          chalk,
-          outputReportFile,
-          printValidators,
-          reportingStats,
-          originalFile,
-          validFile,
-          swagger,
-          errorsOnly
-        );
+      generateReportFile.exportReportFile(
+        results,
+        chalk,
+        outputReportFile,
+        printValidators,
+        reportingStats,
+        originalFile,
+        validFile,
+        swagger,
+        errorsOnly
+      );
     } else if (jsonOutput) {
       printJson(results, originalFile, errorsOnly);
     } else {
