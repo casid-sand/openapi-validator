@@ -45,41 +45,24 @@ paths:
       summary: Return API availability
       description: Return API availability
       parameters:
-      - name: formatType
-        description: Specify syntax, in case of the content-type header is not used
-        in: query
-        schema:
-          type: string
-          enum:
-            - JSON
-            - YAML
       - name: statsReport
         description: Specify if stats are displayed in result
         in: query
         schema:
-          type: string
-          enum:
-            - YES
-            - NO
-          default: NO
+          type: boolean
+          default: false
       - name: printValidators
         description: Specify if validator name is displayed
         in: query
         schema:
-          type: string
-          enum:
-            - YES
-            - NO
-          default: NO
+          type: boolean
+          default: false
       - name: errorsOnly
         description: Specify if only errors are returned
         in: query
         schema:
-          type: string
-          enum:
-            - YES
-            - NO
-          default: NO
+          type: boolean
+          default: false
       requestBody:
         description: Swagger/OpenAPI to validate, in JSON or in YAML syntax
         required: true
@@ -90,7 +73,10 @@ paths:
           application/x-yaml:
             schema:
               type: string
-          text/plain:
+          text/yaml:
+            schema:
+              type: string
+          text/x-yaml:
             schema:
               type: string
       responses:

@@ -44,10 +44,12 @@ app.post("/api-validations/v1/api/validations", async (req, res, next) => {
       //console.log(req.body);
     }
     console.log('query:', req.query);
-    console.log('Content-Type:', req.get('Content-Type'));
+    const requestContentType = req.get('Content-Type');
+    console.log('Content-Type:', requestContentType);
 
     let exitCode = 0;
-    let isJson = true;
+    let isJson = false;
+    let isYaml = false;
     let defaultConfigurationMode = false;
     let statsReport = false;
     let printValidators = false;
@@ -55,30 +57,29 @@ app.post("/api-validations/v1/api/validations", async (req, res, next) => {
     let inputStr;
     let inputParsed;
 
-    if (req.query.formatType) {
-        console.log('Type (json by default):', req.query.formatType);
-        if (req.query.formatType && req.query.formatType.toLowerCase() != 'json') {
-          isJson = false;
-        }
+    if (requestContentType === "application/json") {
+      isJson = true;
+    } else if (requestContentType === "application/x-yaml" || requestContentType === "text/yaml" || requestContentType === "text/x-yaml") {
+      isYaml = true;
     }
 
     if (req.query.statsReport) {
       console.log('Stats reporting:', req.query.statsReport);
-      if (req.query.statsReport && req.query.statsReport.toLowerCase() === 'yes') {
+      if (req.query.statsReport && req.query.statsReport.toLowerCase() === 'true') {
         statsReport = true;
       }
     }
 
     if (req.query.printValidators) {
       console.log('Print Validator Names:', req.query.printValidators);
-      if (req.query.printValidators && req.query.printValidators.toLowerCase() === 'yes') {
+      if (req.query.printValidators && req.query.printValidators.toLowerCase() === 'true') {
         printValidators = true;
       }
     }
 
     if (req.query.errorsOnly) {
       console.log('Display Errors only:', req.query.errorsOnly);
-      if (req.query.errorsOnly && req.query.errorsOnly.toLowerCase() === 'yes') {
+      if (req.query.errorsOnly && req.query.errorsOnly.toLowerCase() === 'true') {
         errorsOnly = true;
       }
     }
@@ -95,7 +96,7 @@ app.post("/api-validations/v1/api/validations", async (req, res, next) => {
       // create an instance of spectral & load the spectral ruleset, either a user's
       // or the default ruleset
       try {
-        await spectralValidator.setup(spectral, rulesetFileOverride, configObject);
+        await spectralValidator.setup(spectral, undefined, configObject);
       } catch (err) {
         console.error('ERROR spectral configuration :', getError(err));
       }
@@ -132,9 +133,9 @@ app.post("/api-validations/v1/api/validations", async (req, res, next) => {
             inputParsed = JSON.parse(inputStr);
           } catch (error) {
             console.log("Error while parsing JSON:", error);
-            exitCode = 1;
+            exitCode = 3;
           }
-        } else {
+        } else if (isYaml) {
           if (debug === true) {
             console.log('yaml read');
           }
@@ -142,8 +143,11 @@ app.post("/api-validations/v1/api/validations", async (req, res, next) => {
             inputParsed = readYaml.safeLoad(inputStr);
           } catch (error) {
             console.log("Error while parsing YAML:", error);
-            exitCode = 1;
+            exitCode = 3;
           }
+        } else {
+          console.log("Unknown content-type");
+          exitCode = 2;
         }
       } else {
         console.log("Empty input data");
@@ -253,12 +257,24 @@ app.post("/api-validations/v1/api/validations", async (req, res, next) => {
           });
           console.log(`end with error analysing Swagger/OpenAPI - buildSwaggerObject`);
         }
+      } else if (exitCode === 3) {
+        res.status(412).json({
+          status: "KO",
+          error: "Error while parsing Swagger/OpenAPI - unable to parse Swagger/openAPI"
+        });
+        console.log(`end with error parsing Swagger/OpenAPI - unable to parse Swagger/openAPI`);
+      } else if (exitCode === 2) {
+        res.status(415).json({
+          status: "KO",
+          error: "Wrong Content-Type header"
+        });
+        console.log(`end with error parsing Swagger/OpenAPI - Wrong Content-Type header`);
       } else {
         res.status(412).json({
           status: "KO",
-          error: "Error while parsing Swagger/OpenAPI - No data or bad format"
+          error: "Error while parsing Swagger/OpenAPI - No data"
         });
-        console.log(`end with error parsing Swagger/OpenAPI - No data or bad format`);
+        console.log(`end with error parsing Swagger/OpenAPI - No data`);
       }
     } else {
       res.status(500).json({
