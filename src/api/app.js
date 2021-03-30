@@ -18,7 +18,7 @@ app.use(express.text({type : '*/*'}));
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 app.use((req, res, next) => {
-  console.log('Request received - Time:', Date.now(), '- Request URL:', req.originalUrl, ' - Request Type:', req.method, ' - Caller IP:', req.ip);
+  console.log('Dispatch.Request received - Time:', Date.now(), '- Request URL:', req.originalUrl, ' - Request Type:', req.method, ' - Caller IP:', req.ip);
   next();
 });
 
@@ -34,18 +34,19 @@ app.use((req, res, next) => {
 app.post("/api-validations/v1/api/validations", async (req, res, next) => {
 
     const debug = true;
+    console.log(`Start for /api-validations/v1/api/validations from ip:${req.ip} - from ips:${req.ips}`);
   
     if (debug === true) {
       if (req.body) {
-        console.log('body not empty :', req.body.substring(0,50));
+        console.log('--body not empty - extract :', req.body.substring(0,50), '...');
       } else {
-        console.log('body is empty');
+        console.log('--body is empty');
       }
       //console.log(req.body);
     }
-    console.log('query:', req.query);
+    console.log('--query:', req.query);
     const requestContentType = req.get('Content-Type');
-    console.log('Content-Type:', requestContentType);
+    console.log('--Content-Type:', requestContentType);
 
     let exitCode = 0;
     let isJson = false;
@@ -64,28 +65,28 @@ app.post("/api-validations/v1/api/validations", async (req, res, next) => {
     }
 
     if (req.query.statsReport) {
-      console.log('Stats reporting:', req.query.statsReport);
+      console.log('--Stats reporting:', req.query.statsReport);
       if (req.query.statsReport && req.query.statsReport.toLowerCase() === 'true') {
         statsReport = true;
       }
     }
 
     if (req.query.printValidators) {
-      console.log('Print Validator Names:', req.query.printValidators);
+      console.log('--Print Validator Names:', req.query.printValidators);
       if (req.query.printValidators && req.query.printValidators.toLowerCase() === 'true') {
         printValidators = true;
       }
     }
 
     if (req.query.errorsOnly) {
-      console.log('Display Errors only:', req.query.errorsOnly);
+      console.log('--Display Errors only:', req.query.errorsOnly);
       if (req.query.errorsOnly && req.query.errorsOnly.toLowerCase() === 'true') {
         errorsOnly = true;
       }
     }
 
     if (debug) {
-      console.log(`Read config file ${configurationFileName}. DefaultMode: ${defaultConfigurationMode}`);
+      console.log(`start configuration initialization - file ${configurationFileName}. DefaultMode: ${defaultConfigurationMode}`);
     }
     // process the config file for the validations
     let configObject;
@@ -110,15 +111,10 @@ app.post("/api-validations/v1/api/validations", async (req, res, next) => {
 
     if (exitCode === 0) {
 
-      if (debug) {
-        console.log(`Read swagger - isJson:${isJson}`);
-      }
       inputStr = req.body;
       if (inputStr) {
         if (isJson) {
-          if (debug === true) {
-            console.log('json read');
-          }
+          console.log('Content is JSON');
           try {
             // find and fix trailing commas
             const match = inputStr.match(/,\s*[}\]]/m);
@@ -136,9 +132,7 @@ app.post("/api-validations/v1/api/validations", async (req, res, next) => {
             exitCode = 3;
           }
         } else if (isYaml) {
-          if (debug === true) {
-            console.log('yaml read');
-          }
+          console.log('Content is YAML');
           try {
             inputParsed = readYaml.safeLoad(inputStr);
           } catch (error) {
@@ -171,25 +165,32 @@ app.post("/api-validations/v1/api/validations", async (req, res, next) => {
         }
 
         if (debug === true) {
+          console.log('** API details');
           if (swagger) {
             if (swagger.jsSpec) {
-              console.log('swagger.jsSpec defined');
               if (swagger.jsSpec.info) {
                 if (swagger.jsSpec.info.title) {
                   console.log('swagger.jsSpec.info.title:', swagger.jsSpec.info.title);
+                } else {
+                  console.log('no API title');
                 }
                 if (swagger.jsSpec.info.version) {
                   console.log('swagger.jsSpec.info.version:', swagger.jsSpec.info.version);
+                } else {
+                  console.log('no API version');
                 }
+              } else {
+                console.log('no info bloc');
               }
             } else {
-              console.log('no swagger.jsSpec');
+              console.log('unable to get swagger.jsSpec');
             }
 
             if (swagger.openApiVersion) {
               console.log('swagger.openApiVersion:', swagger.openApiVersion);
             }
           }
+          console.log('** end API details');
         }
 
         if (exitCode === 0) {
