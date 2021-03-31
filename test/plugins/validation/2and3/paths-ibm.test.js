@@ -722,7 +722,7 @@ describe('Test of alternative case convention configurations', () => {
         expect(res.warnings.length).toEqual(1);
         expect(res.errors[0].message).toEqual("Path segments must follow case convention: 'camelPath' doesn't respect 'spinal-case' recommended, or eventually 'lower_snake_case'.");
         expect(res.errors[0].path).toEqual(["paths", "/camelPath/"]);
-        expect(res.warnings[0].message).toEqual("Path segments should follow case convention: 'snake_path' doesn't respect 'spinal-case' recommended.");
+        expect(res.warnings[0].message).toEqual("Path segments should follow case convention: 'snake_path' doesn't respect 'spinal-case' ('lower_snake_case' is accepted but not recommended).");
         expect(res.warnings[0].path).toEqual(["paths", "/snake_path/"]);
     });
 
@@ -791,7 +791,7 @@ describe('Test of alternative case convention configurations', () => {
         expect(res.warnings.length).toEqual(1);
         expect(res.errors[0].message).toEqual("Path segments must follow case convention: 'camelPath' doesn't respect 'lower_snake_case' recommended, or eventually 'spinal-case'.");
         expect(res.errors[0].path).toEqual(["paths", "/camelPath/"]);
-        expect(res.warnings[0].message).toEqual("Path segments should follow case convention: 'dash-path' doesn't respect 'lower_snake_case' recommended.");
+        expect(res.warnings[0].message).toEqual("Path segments should follow case convention: 'dash-path' doesn't respect 'lower_snake_case' ('spinal-case' is accepted but not recommended).");
         expect(res.warnings[0].path).toEqual(["paths", "/dash-path/"]);
     });
 

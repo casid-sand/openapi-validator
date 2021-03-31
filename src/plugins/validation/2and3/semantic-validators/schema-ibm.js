@@ -686,7 +686,7 @@ function checkProperties(
             propertiesToCompare[key].printed = true;
             messages.addTypedMessage(
               propertiesToCompare[key].path,
-              `Property has inconsistent type: ${key}.`,
+              `Property has inconsistent type in different definitions: ${key}.`,
               configOption[0],
               'inconsistent_property_type',
               'semantic'
@@ -694,7 +694,7 @@ function checkProperties(
           }
           messages.addTypedMessage(
             contextPath.concat(['properties', key]).join('.'),
-            `Property has inconsistent type: ${key}.`,
+            `Property has inconsistent type in different definitions: ${key}.`,
             configOption[0],
             'inconsistent_property_type',
             'semantic'

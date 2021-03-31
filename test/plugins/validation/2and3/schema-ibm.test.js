@@ -592,7 +592,7 @@ describe('validation plugin - semantic - schema-ibm - Swagger 2', () => {
       'properties',
       'snake_string'
     ]);
-    expect(res.warnings[0].message).toEqual("Property names should follow case convention: 'snake_string' doesn't respect 'kubernetesAPICase' recommended.");
+    expect(res.warnings[0].message).toEqual("Property names should follow case convention: 'snake_string' doesn't respect 'kubernetesAPICase' ('lower_snake_case' is accepted but not recommended).");
   });
 
   it('should return warnings when a property name does not default and alternative case', () => {
@@ -814,7 +814,7 @@ describe('validation plugin - semantic - schema-ibm - Swagger 2', () => {
       'definitions',
       'snake_thing'
     ]);
-    expect(res.warnings[0].message).toEqual("Object names should follow case convention: 'snake_thing' doesn't respect 'kubernetesAPICase' recommended.");
+    expect(res.warnings[0].message).toEqual("Object names should follow case convention: 'snake_thing' doesn't respect 'kubernetesAPICase' ('lower_snake_case' is accepted but not recommended).");
   });
 
   it('should return warnings when an object name does not follow default and alternative case', () => {
@@ -2032,7 +2032,7 @@ describe('validation plugin - semantic - schema-ibm - OpenAPI 3', () => {
       '2'
     ]);
     expect(res.warnings[0].message).toEqual(
-      "Enum values should follow case convention: 'LIGHT_BLUE' doesn't respect 'spinal-case' recommended."
+      "Enum values should follow case convention: 'LIGHT_BLUE' doesn't respect 'spinal-case' ('lower_snake_case' or 'UPPER_SNAKE_CASE' is accepted but not recommended)."
     );
     expect(res.warnings[1].path).toEqual([
       'definitions',
@@ -2043,7 +2043,7 @@ describe('validation plugin - semantic - schema-ibm - OpenAPI 3', () => {
       '3'
     ]);
     expect(res.warnings[1].message).toEqual(
-      "Enum values should follow case convention: 'dark_blue' doesn't respect 'spinal-case' recommended."
+      "Enum values should follow case convention: 'dark_blue' doesn't respect 'spinal-case' ('lower_snake_case' or 'UPPER_SNAKE_CASE' is accepted but not recommended)."
     );
   });
 
@@ -2160,7 +2160,7 @@ describe('validation plugin - semantic - schema-ibm - OpenAPI 3', () => {
       }
     };
 
-    const message = 'Property has inconsistent type: name.';
+    const message = 'Property has inconsistent type in different definitions: name.';
     const res = validate({ jsSpec: spec }, config);
 
     expect(res.warnings.length).toEqual(3);

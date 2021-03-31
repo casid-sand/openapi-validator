@@ -512,13 +512,13 @@ describe('validation plugin - semantic - parameters-ibm', () => {
       expect(res.errors[3].message).toEqual("Parameter names must follow case convention: 'spinal-param-in-def' doesn't respect 'kubernetesAPICase' recommended, or eventually 'lower_snake_case'.");
       expect(res.warnings.length).toEqual(4);
       expect(res.warnings[0].path).toEqual(["paths", "/pets", "get", "parameters", "3"]);
-      expect(res.warnings[0].message).toEqual("Parameter names should follow case convention: 'snake_param' doesn't respect 'kubernetesAPICase' recommended.");
+      expect(res.warnings[0].message).toEqual("Parameter names should follow case convention: 'snake_param' doesn't respect 'kubernetesAPICase' ('lower_snake_case' is accepted but not recommended).");
       expect(res.warnings[1].path).toEqual(["paths", "/pets", "get", "parameters", "4"]);
-      expect(res.warnings[1].message).toEqual("Parameter names should follow case convention: 'snake_param_in' doesn't respect 'kubernetesAPICase' recommended.");
+      expect(res.warnings[1].message).toEqual("Parameter names should follow case convention: 'snake_param_in' doesn't respect 'kubernetesAPICase' ('lower_snake_case' is accepted but not recommended).");
       expect(res.warnings[2].path).toEqual(["parameters", "snakeparamdef"]);
-      expect(res.warnings[2].message).toEqual("Parameter names should follow case convention: 'snake_param_def' doesn't respect 'kubernetesAPICase' recommended.");
+      expect(res.warnings[2].message).toEqual("Parameter names should follow case convention: 'snake_param_def' doesn't respect 'kubernetesAPICase' ('lower_snake_case' is accepted but not recommended).");
       expect(res.warnings[3].path).toEqual(["parameters", "filtersnakeparamdef"]);
-      expect(res.warnings[3].message).toEqual("Parameter names should follow case convention: 'snake_param_in_def' doesn't respect 'kubernetesAPICase' recommended.");
+      expect(res.warnings[3].message).toEqual("Parameter names should follow case convention: 'snake_param_in_def' doesn't respect 'kubernetesAPICase' ('lower_snake_case' is accepted but not recommended).");
     });
 
     it('should return errors for bad case parameters with alternative case', () => {
@@ -1249,13 +1249,13 @@ describe('validation plugin - semantic - parameters-ibm', () => {
       expect(res.errors[3].message).toEqual("Parameter names must follow case convention: 'spinal-param-in-def' doesn't respect 'kubernetesAPICase' recommended, or eventually 'lower_snake_case'.");
       expect(res.warnings.length).toEqual(4);
       expect(res.warnings[0].path).toEqual(["paths", "/pets", "get", "parameters", "3"]);
-      expect(res.warnings[0].message).toEqual("Parameter names should follow case convention: 'snake_param' doesn't respect 'kubernetesAPICase' recommended.");
+      expect(res.warnings[0].message).toEqual("Parameter names should follow case convention: 'snake_param' doesn't respect 'kubernetesAPICase' ('lower_snake_case' is accepted but not recommended).");
       expect(res.warnings[1].path).toEqual(["paths", "/pets", "get", "parameters", "4"]);
-      expect(res.warnings[1].message).toEqual("Parameter names should follow case convention: 'snake_param_in' doesn't respect 'kubernetesAPICase' recommended.");
+      expect(res.warnings[1].message).toEqual("Parameter names should follow case convention: 'snake_param_in' doesn't respect 'kubernetesAPICase' ('lower_snake_case' is accepted but not recommended).");
       expect(res.warnings[2].path).toEqual(["components", "parameters", "snakeparamdef"]);
-      expect(res.warnings[2].message).toEqual("Parameter names should follow case convention: 'snake_param_def' doesn't respect 'kubernetesAPICase' recommended.");
+      expect(res.warnings[2].message).toEqual("Parameter names should follow case convention: 'snake_param_def' doesn't respect 'kubernetesAPICase' ('lower_snake_case' is accepted but not recommended).");
       expect(res.warnings[3].path).toEqual(["components", "parameters", "filtersnakeparamdef"]);
-      expect(res.warnings[3].message).toEqual("Parameter names should follow case convention: 'snake_param_in_def' doesn't respect 'kubernetesAPICase' recommended.");
+      expect(res.warnings[3].message).toEqual("Parameter names should follow case convention: 'snake_param_in_def' doesn't respect 'kubernetesAPICase' ('lower_snake_case' is accepted but not recommended).");
     });
 
     it('should return errors for bad case parameters with alternative case', () => {

@@ -147,7 +147,7 @@ if (processConfiguration.isLevelUpperThan(defaultCheckLevel, alternativeCheckLev
                     if (messageCarrier) {
                         messageCarrier.addTypedMessage(
                             pathToElement,
-                            `${elementTypeName} should follow case convention: '${stringToTest}' doesn't respect ${this.getCaseConventionExample(defaultCaseConvention)} recommended.`,
+                            `${elementTypeName} should follow case convention: '${stringToTest}' doesn't respect ${this.getCaseConventionExample(defaultCaseConvention)} (${this.getCaseConventionExample(alternativeCaseConvention)} is accepted but not recommended).`,
                             messageStatus,
                             ibmRuleIdentifier,
                             'convention',

@@ -38,7 +38,7 @@
         "k8s_camel_case"
       ],
       "param_name_alternative_case_convention": [
-        "warning",
+        "notice",
         "lower_snake_case"
       ],
       "invalid_type_format_pair": "error",
@@ -83,15 +83,15 @@
       "snake_case_only": "off",
       "no_schema_description": "info",
       "no_property_description": "info",
-      "description_mentions_json": "warning",
-      "array_of_arrays": "warning",
-      "inconsistent_property_type": "warning",
+      "description_mentions_json": "hint",
+      "array_of_arrays": "notice",
+      "inconsistent_property_type": "hint",
       "model_case_convention": [
-        "warning",
+        "notice",
         "k8s_upper_camel_case"
       ],
       "model_alternative_case_convention": [
-        "notice",
+        "info",
         "upper_snake_case"
       ],
       "property_case_convention": [
@@ -157,8 +157,8 @@
       "operation-tag-defined": "off",
       "oas2-valid-definition-example": "warning",
       "oas3-valid-example": "warning",
-      "oas3-valid-schema-example": "warning",
-      "oas3-api-servers": "infos"
+      "oas3-valid-schema-example": "info",
+      "oas3-api-servers": "info"
     }
   }
 }
