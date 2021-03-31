@@ -1,2 +1,7 @@
 tasks:
-  - init: npm install
+  - init: npm install -g npm@6.14.8 & npm audit & npm audit fix
+  
+  #init: npm install -g npm@6.14.8 & npm audit & npm audit fix
+  #npm install -g npm@6.14.8 
+  #npm audit
+  #npm audit fix
