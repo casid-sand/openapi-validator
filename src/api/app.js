@@ -201,7 +201,6 @@ app.post("/api-validations/v1/api/validations", async (req, res, next) => {
           // run spectral and save the results
           let spectralResults;
           try {
-            //process.chdir(path.dirname(validFile));
             // let spectral handle the parsing of the original swagger/oa3 document
             spectralResults = await spectral.run(inputStr);
           } catch (err) {
@@ -210,10 +209,7 @@ app.post("/api-validations/v1/api/validations", async (req, res, next) => {
               console.log(err.stack);
             }
             exitCode = 1;
-          } finally {
-            // return the working directory to its original location
-            //process.chdir(originalWorkingDirectory);
-          }
+          } 
 
           if (debug) {
             console.log(`start validators`);
