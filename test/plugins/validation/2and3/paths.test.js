@@ -611,7 +611,7 @@ describe('validation plugin - semantic - paths', function() {
     });
   });
 
-  describe('API must contain a health path', () => {
+  describe('API must contain a healthcheck operation', () => {
   
     const config_health = {
       paths: {
@@ -619,7 +619,7 @@ describe('validation plugin - semantic - paths', function() {
       }
     };
 
-    it('should be ok for an API with a health path', function() {
+    it('should be ok for an API with a healthcheck operation', function() {
 
         const spec = {
             paths: {
@@ -637,14 +637,14 @@ describe('validation plugin - semantic - paths', function() {
         expect(res.warnings.length).toEqual(0);
         expect(res.notices.length).toEqual(0);
         expect(res.infos.length).toEqual(1);
-        expect(res.infos[0].message).toEqual("API health path is /health.");
+        expect(res.infos[0].message).toEqual("API healthcheck operation is /health.");
         expect(res.infos[0].path).toEqual("paths./health");
         expect(res.infos[0].type).toEqual("convention");
-        expect(res.infos[0].rule).toEqual("api_health");
+        expect(res.infos[0].rule).toEqual("api_healthcheck");
         expect(res.infos[0].customizedRule).toEqual("CTMO.STANDARD-CODAGE-20");
     });
 
-    it('should be ok for an API with a health path, starting with api', function() {
+    it('should be ok for an API with a healthcheck operation, starting with api', function() {
 
       const spec = {
           paths: {
@@ -664,7 +664,7 @@ describe('validation plugin - semantic - paths', function() {
       expect(res.infos.length).toEqual(1);
     });
 
-    it('should be ok for an API with a health path, starting with version and api', function() {
+    it('should be ok for an API with a healthcheck operation, starting with version and api', function() {
 
       const spec = {
           paths: {
@@ -702,10 +702,10 @@ describe('validation plugin - semantic - paths', function() {
       expect(res.warnings.length).toEqual(0);
       expect(res.notices.length).toEqual(1);
       expect(res.infos.length).toEqual(0);
-      expect(res.notices[0].message).toEqual("API has a health path but it is not the recommended one ('health') : /api/status.");
+      expect(res.notices[0].message).toEqual("API has a healthcheck operation but it is not the recommended one ('health') : /api/status.");
       expect(res.notices[0].path).toEqual("paths./api/status");
       expect(res.notices[0].type).toEqual("convention");
-      expect(res.notices[0].rule).toEqual("api_health");
+      expect(res.notices[0].rule).toEqual("api_healthcheck");
       expect(res.notices[0].customizedRule).toEqual("CTMO.STANDARD-CODAGE-20");
     });
 
@@ -727,10 +727,10 @@ describe('validation plugin - semantic - paths', function() {
       expect(res.warnings.length).toEqual(0);
       expect(res.notices.length).toEqual(1);
       expect(res.infos.length).toEqual(0);
-      expect(res.notices[0].message).toEqual("API has a health path but it is not the recommended one ('health') : /ping.");
+      expect(res.notices[0].message).toEqual("API has a healthcheck operation but it is not the recommended one ('health') : /ping.");
       expect(res.notices[0].path).toEqual("paths./ping");
       expect(res.notices[0].type).toEqual("convention");
-      expect(res.notices[0].rule).toEqual("api_health");
+      expect(res.notices[0].rule).toEqual("api_healthcheck");
       expect(res.notices[0].customizedRule).toEqual("CTMO.STANDARD-CODAGE-20");
     });
 
@@ -752,10 +752,10 @@ describe('validation plugin - semantic - paths', function() {
         expect(res.warnings.length).toEqual(0);
         expect(res.notices.length).toEqual(1);
         expect(res.infos.length).toEqual(0);
-        expect(res.notices[0].message).toEqual("API has no health path.");
+        expect(res.notices[0].message).toEqual("API has no healthcheck operation.");
         expect(res.notices[0].path).toEqual("paths");
         expect(res.notices[0].type).toEqual("convention");
-        expect(res.notices[0].rule).toEqual("api_health");
+        expect(res.notices[0].rule).toEqual("api_healthcheck");
         expect(res.notices[0].customizedRule).toEqual("CTMO.STANDARD-CODAGE-20");
     });
   });

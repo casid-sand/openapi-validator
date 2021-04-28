@@ -357,27 +357,27 @@ module.exports.validate = function({ resolvedSpec }, config) {
         if (apiHasRecommendedHealthEndpoint) {
             messages.addTypedMessage(
                 `paths.${healthEndPoint}`,
-                `API health path is ${healthEndPoint}.`,
+                `API healthcheck operation is ${healthEndPoint}.`,
                 'info',
-                'api_health',
+                'api_healthcheck',
                 'convention',
                 'CTMO.STANDARD-CODAGE-20'
             );
         } else if (apiHasAuthorizedHealthEndpoint) {
             messages.addTypedMessage(
                 `paths.${healthEndPoint}`,
-                `API has a health path but it is not the recommended one ('health') : ${healthEndPoint}.`,
+                `API has a healthcheck operation but it is not the recommended one ('health') : ${healthEndPoint}.`,
                 health_path_unexist,
-                'api_health',
+                'api_healthcheck',
                 'convention',
                 'CTMO.STANDARD-CODAGE-20'
             );
         } else {
             messages.addTypedMessage(
                 `paths`,
-                `API has no health path.`,
+                `API has no healthcheck operation.`,
                 health_path_unexist,
-                'api_health',
+                'api_healthcheck',
                 'convention',
                 'CTMO.STANDARD-CODAGE-20'
             );

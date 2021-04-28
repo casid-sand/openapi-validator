@@ -20,3 +20,4 @@ test/mock-validation/input/*.yml
 test/mock-validation/output/*.json
 test/mock-validation/output/*.yaml
 test/mock-validation/output/*.yml
+sand-openapi-validator-*.tgz
