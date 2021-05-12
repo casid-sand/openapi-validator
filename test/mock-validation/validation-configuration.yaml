@@ -66,7 +66,7 @@
         "warning",
         "lower_snake_case"
       ],
-      "health_path_unexist": "notice"
+      "health_path_unexist": "warning"
     },
     "responses": {
       "inline_response_schema": "off"
@@ -117,7 +117,7 @@
       "no_empty_descriptions": "warning",
       "has_circular_references": "warning",
       "$ref_siblings": "off",
-      "duplicate_sibling_description": "warning",
+      "duplicate_sibling_description": "hint",
       "incorrect_ref_pattern": "warning"
     }
   },
