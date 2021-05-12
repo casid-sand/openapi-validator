@@ -6,6 +6,7 @@ dist
 .validaterc
 .validateignore
 .idea/
+.theia/
 bin/
 .nyc_output/
 coverage/
