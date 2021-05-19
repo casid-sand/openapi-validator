@@ -82,7 +82,7 @@
       "invalid_type_format_pair": "error",
       "snake_case_only": "off",
       "no_schema_description": "info",
-      "no_property_description": "info",
+      "no_property_description": "hint",
       "description_mentions_json": "hint",
       "array_of_arrays": "notice",
       "inconsistent_property_type": "hint",
