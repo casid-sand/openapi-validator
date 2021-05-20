@@ -1,6 +1,7 @@
 // Assertations
 
 // Operations must have unique (name + in combination) parameters.
+// checked by spectral validator
 
 // Operations must have a non-empty `operationId`
 
@@ -20,7 +21,6 @@
 const pick = require('lodash/pick');
 const map = require('lodash/map');
 const each = require('lodash/each');
-const findIndex = require('lodash/findIndex');
 const { checkCase, hasRefProperty } = require('../../../utils');
 const MessageCarrier = require('../../../utils/messageCarrier');
 const headerNameChecker = require('../../../utils/headerNameChecker');
@@ -78,27 +78,6 @@ module.exports.validate = function({ jsSpec, resolvedSpec, isOAS3 }, config) {
           'structural'
         );
       }
-
-      // check for unique name/in properties in params
-      each(op.parameters, (param, paramIndex) => {
-        const nameAndInComboIndex = findIndex(op.parameters, {
-          name: param.name,
-          in: param.in
-        });
-        // comparing the current index against the first found index is good, because
-        // it cuts down on error quantity when only two parameters are involved,
-        // i.e. if param1 and param2 conflict, this will only complain about param2.
-        // it also will favor complaining about parameters later in the spec, which
-        // makes more sense to the user.
-        if (paramIndex !== nameAndInComboIndex) {
-          messages.addTypedMessage(
-            `paths.${pathKey}.${opKey}.parameters[${paramIndex}]`,
-            "Operation parameters must have unique 'name' + 'in' properties",
-            'error',
-            'structural'
-          );
-        }
-      });
 
       // Arrays MUST NOT be returned as the top-level structure in a response body.
       const checkStatusArrRes = configOperations.no_array_responses;

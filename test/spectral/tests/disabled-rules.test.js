@@ -102,14 +102,6 @@ describe('spectral - test disabled rules - Swagger 2 @skip-local', function() {
     );
   });
 
-  it('test operation-operationId-unique rule using mockFiles/swagger/disabled-rules.yml', function() {
-    // rule is disabled, so spectral shouldn't produce a warning
-    expect(allOutput).not.toContain('Validator: spectral');
-    expect(allOutput).not.toContain(
-      'Every operation must have a unique `operationId'
-    );
-  });
-
   it('test operation-parameters validator rule mockFiles/swagger/disabled-rules.yml', function() {
     // rule is disabled, so spectral shouldn't produce a warning
     expect(allOutput).not.toContain('Validator: spectral');
@@ -282,24 +274,6 @@ describe('spectral - test disabled rules - Swagger 2 In Memory @skip-local', fun
     );
   });
 
-  it('test operation-operationId-unique rule using mockFiles/swagger/disabled-rules-in-memory', function() {
-    expect(errors).not.toContain(
-      'Every operation must have a unique `operationId.'
-    );
-    expect(warnings).not.toContain(
-      'Every operation must have a unique `operationId.'
-    );
-  });
-
-  it('test operation-parameters validator rule mockFiles/swagger/disabled-rules-in-memory', function() {
-    expect(errors).not.toContain(
-      'A parameter in this operation already exposes the same combination of `name` and `in` values.'
-    );
-    expect(warnings).not.toContain(
-      'A parameter in this operation already exposes the same combination of `name` and `in` values.'
-    );
-  });
-
   it('test operation-operationId-valid-in-url validator rule mockFiles/swagger/disabled-rules-in-memory', function() {
     expect(errors).not.toContain(
       'operationId may only use characters that are valid when used in a URL.'
@@ -323,30 +297,12 @@ describe('spectral - test disabled rules - Swagger 2 In Memory @skip-local', fun
     expect(warnings).not.toContain('Operations must have a default response.');
   });
 
-  it('test path-not-include-query rule using mockFiles/swagger/disabled-rules-in-memory', function() {
-    expect(errors).not.toContain(
-      'given keys should not include a query string.'
-    );
-    expect(warnings).not.toContain(
-      'given keys should not include a query string.'
-    );
-  });
-
   it('test oas2-unused-definition validator rule mockFiles/swagger/disabled-rules-in-memory', function() {
     expect(errors).not.toContain(
       'Potentially unused definition has been detected.'
     );
     expect(warnings).not.toContain(
       'Potentially unused definition has been detected.'
-    );
-  });
-
-  it('test oas2-operation-formData-consume-check validator rule mockFiles/swagger/disabled-rules-in-memory', function() {
-    expect(errors).not.toContain(
-      'Operations with an `in: formData` parameter must include `application/x-www-form-urlencoded` or `multipart/form-data` in their `consumes` property.'
-    );
-    expect(warnings).not.toContain(
-      'Operations with an `in: formData` parameter must include `application/x-www-form-urlencoded` or `multipart/form-data` in their `consumes` property.'
     );
   });
 
@@ -469,14 +425,6 @@ describe(' spectral - test disabled rules - OAS3  @skip-local', function() {
     expect(allOutput).not.toContain('Validator: spectral');
     expect(allOutput).not.toContain(
       'Operation must have at least one `2xx` response'
-    );
-  });
-
-  it('test operation-operationId-unique rule using mockFiles/oas3/disabled-rules.yml', function() {
-    // rule is disabled, so spectral shouldn't produce a warning
-    expect(allOutput).not.toContain('Validator: spectral');
-    expect(allOutput).not.toContain(
-      'Every operation must have a unique `operationId'
     );
   });
 
@@ -648,24 +596,6 @@ describe('spectral - test disabled rules - OAS3 In Memory  @skip-local', functio
     );
   });
 
-  it('test operation-operationId-unique rule using mockFiles/oas3/disabled-rules-in-memory', function() {
-    expect(errors).not.toContain(
-      'Every operation must have a unique `operationId.'
-    );
-    expect(warnings).not.toContain(
-      'Every operation must have a unique `operationId.'
-    );
-  });
-
-  it('test operation-parameters validator rule mockFiles/oas3/disabled-rules-in-memory', function() {
-    expect(errors).not.toContain(
-      'A parameter in this operation already exposes the same combination of `name` and `in` values.'
-    );
-    expect(warnings).not.toContain(
-      'A parameter in this operation already exposes the same combination of `name` and `in` values.'
-    );
-  });
-
   it('test operation-operationId-valid-in-url validator rule mockFiles/oas3/disabled-rules-in-memory', function() {
     expect(errors).not.toContain(
       'operationId may only use characters that are valid when used in a URL.'
@@ -681,15 +611,6 @@ describe('spectral - test disabled rules - OAS3 In Memory  @skip-local', functio
     );
     expect(warnings).not.toContain(
       'Path parameter declarations cannot be empty, ex.`/given/{}` is invalid.'
-    );
-  });
-
-  it('test path-not-include-query rule using mockFiles/oas3/disabled-rules-in-memory', function() {
-    expect(errors).not.toContain(
-      'given keys should not include a query string.'
-    );
-    expect(warnings).not.toContain(
-      'given keys should not include a query string.'
     );
   });
 

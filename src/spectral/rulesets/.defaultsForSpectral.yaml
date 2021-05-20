@@ -1,5 +1,11 @@
 #See rules at : https://meta.stoplight.io/docs/spectral/docs/reference/openapi-rules.md
 extends: spectral:oas
+functionsDir: './ibm-oas'
+functions:
+  - check-major-version
+  - error-response-schema
+  - response-example-provided
+  - schema-or-content-provided
 rules:
 
   # Original list created from Spectral with:
@@ -7,12 +13,12 @@ rules:
 
   # Turn off -- duplicates no_success_response_codes
   operation-2xx-response: off
-  # Turn off - duplicates non-configurable validation - form-data.js
-  oas2-operation-formData-consume-check: off
-  # Turn off - duplicates non-configurable validation - operation-ids.js
-  operation-operationId-unique: off
-  # Turn off - duplicates non-configurable validation - operations-shared.js
-  operation-parameters: off
+  # Enable with same severity as Spectral
+  oas2-operation-formData-consume-check: true
+  # Enable with same severity as Spectral
+  operation-operationId-unique: true
+  # Enable with same severity as Spectral
+  operation-parameters: true
   # Enable with same severity as Spectral
   operation-tag-defined: true
   # Turn off - duplicates missing_path_parameter
@@ -39,8 +45,8 @@ rules:
   path-declarations-must-exist: off
   # Enable with same severity as Spectral
   path-keys-no-trailing-slash: true
-  # Turn off - duplicates non-configurable validation - paths.js
-  path-not-include-query: off
+  # Enable with same severity as Spectral
+  path-not-include-query: true
   # Turn off - duplicates $ref_siblings (off by default)
   no-$ref-siblings: off
   # Enable with same severity as Spectral
@@ -89,7 +95,115 @@ rules:
   oas3-valid-header-schema-example: off
   # Enable with warn severity
   oas3-valid-schema-example: warn
-  # Turn off
-  oas3-schema: off
+
+  # Enable with same severity as Spectral
+  oas3-schema: true
   # Turn off - duplicates non-configurable validation in base validator
   oas3-unused-components-schema: off
+
+  # custom Spectral rule to ensure request bodies and non-204 responses provide content object
+  content-entry-provided:
+    description: Request bodies and non-204 responses should define a content object
+    given:
+    - $.paths[*][*].responses[?(@property != '204')]
+    - $.paths[*][*].requestBody
+    severity: warn
+    formats: ["oas3"]
+    resolved: true
+    then:
+      field: content
+      function: truthy
+  # custom Spectral rule to ensure content object contains schema
+  content-entry-contains-schema:
+    description: Content entries must specify a schema
+    given:
+    - $.paths[*].[post,put,patch].requestBody.content[*]
+    - $.paths[*].[get,post,put,patch,delete].[parameters,responses][*].content[*]
+    severity: warn
+    resolved: true
+    then:
+      field: schema
+      function: truthy
+  # custom Spectral rule to warn for */*
+  ibm-content-type-is-specific:
+    description: '*/* should only be used when all content types are supported'
+    formats: ["oas3"]
+    severity: warn
+    resolved: true
+    message: "{{description}}"
+    given:
+    - $.paths[*][*][parameters,responses][*].content
+    - $.paths[*][*][requestBody].content
+    then:
+      field: '*/*'
+      function: falsy
+  # custom Spectral rule to warn for error response without application/json content
+  ibm-error-content-type-is-json:
+    description: 'error response should support application/json'
+    formats: ["oas3"]
+    severity: warn
+    resolved: true
+    message: "{{description}}"
+    given: $.paths[*][*].responses[?(@property >= 400 && @property < 600)].content
+    then:
+      field: 'application/json'
+      function: truthy
+  # custom Spectral rule to ensure valid x-sdk-operations schema
+  ibm-sdk-operations:
+    message: "{{error}}"
+    given: $.
+    severity: warn
+    formats: ["oas3"]
+    resolved: true
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          $ref: './schemas/x-sdk-operations.json'
+  # custom Spectral rule to ensure response example provided
+  response-example-provided:
+    message: "{{error}}"
+    given: $.paths[*][*].responses[?(@property >= 200 && @property < 300)].content.application/json
+    severity: warn
+    resolved: true
+    then:
+      function: response-example-provided
+  # ensure error response has content
+  response-error-response-schema:
+    message: "{{error}}"
+    given: $.paths[*][*].responses[?(@property >= 400 && @property < 600)].content[*].schema
+    severity: warn
+    formats: ["oas3"]
+    resolved: true
+    then:
+      function: error-response-schema
+  # ensure requestBody is an object
+  request-body-object:
+    description: "All request bodies MUST be structured as an object"
+    given: $.paths[*][*].requestBody.content[*].schema
+    severity: error
+    then:
+      field: type
+      function: enumeration
+      functionOptions:
+        values:
+        - object
+  # ensure major version is in path
+  major-version-in-path:
+    description: 'All paths must contain the API major version as a distinct path segment'
+    message: "{{error}}"
+    formats: ["oas2", "oas3"]
+    given: $
+    severity: warn
+    then:
+      function: check-major-version
+  # ensure parameter contains schema
+  parameter-schema-or-content:
+    description: 'Parameter must provide either a schema or content'
+    message: "{{error}}"
+    severity: error
+    formats: ["oas3"]
+    resolved: true
+    given: $.paths[*][*].parameters[*]
+    then:
+      function: schema-or-content-provided

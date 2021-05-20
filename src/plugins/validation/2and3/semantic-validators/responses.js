@@ -2,9 +2,19 @@ const each = require('lodash/each');
 const { walk, isResponseObject } = require('../../../utils');
 const headerNameChecker = require('../../../utils/headerNameChecker');
 const MessageCarrier = require('../../../utils/messageCarrier');
+const isPrimitiveType = require('../../../utils/isPrimitiveType');
 
 const INLINE_SCHEMA_MESSAGE =
   'Response schemas should be defined with a named ref.';
+
+function arrayItemsAreRefOrPrimitive(schema) {
+  return (
+    schema &&
+    schema.type === 'array' &&
+    schema.items &&
+    (schema.items.$ref || isPrimitiveType(schema.items))
+  );
+}
 
 module.exports.validate = function({ jsSpec, isOAS3 }, config) {
   const messages = new MessageCarrier();
@@ -50,9 +60,12 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
                       i < mediaType.schema[schemaType].length;
                       i++
                     ) {
-                      const hasInlineSchema = !mediaType.schema[schemaType][i]
-                        .$ref;
-                      if (hasInlineSchema) {
+                      const currentSchema = mediaType.schema[schemaType][i];
+                      const hasInlineSchema = !currentSchema.$ref;
+                      if (
+                        hasInlineSchema &&
+                        !arrayItemsAreRefOrPrimitive(currentSchema)
+                      ) {
                         messages.addMessage(
                           [
                             ...path,
@@ -71,7 +84,10 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
                     }
                   }
                 });
-              } else if (!mediaType.schema.$ref) {
+              } else if (
+                !mediaType.schema.$ref &&
+                !arrayItemsAreRefOrPrimitive(mediaType.schema)
+              ) {
                 messages.addMessage(
                   [...path, responseKey, 'content', mediaTypeKey, 'schema'],
                   INLINE_SCHEMA_MESSAGE,
@@ -89,7 +105,10 @@ module.exports.validate = function({ jsSpec, isOAS3 }, config) {
           }
 
           const hasInlineSchema = response.schema && !response.schema.$ref;
-          if (hasInlineSchema) {
+          if (
+            hasInlineSchema &&
+            !arrayItemsAreRefOrPrimitive(response.schema)
+          ) {
             messages.addMessage(
               [...path, responseKey, 'schema'],
               INLINE_SCHEMA_MESSAGE,

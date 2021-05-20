@@ -1,3 +1,161 @@
+# [0.46.0](https://github.com/IBM/openapi-validator/compare/v0.45.0...v0.46.0) (2021-05-05)
+
+
+### Features
+
+* validate `x-sdk-operations` extension ([#290](https://github.com/IBM/openapi-validator/issues/290)) ([019c06f](https://github.com/IBM/openapi-validator/commit/019c06ffc6975962de6d851e59a6df1840d25128))
+
+# [0.45.0](https://github.com/IBM/openapi-validator/compare/v0.44.0...v0.45.0) (2021-05-04)
+
+
+### Features
+
+* error for non-object request bodies ([#288](https://github.com/IBM/openapi-validator/issues/288)) ([ba00a8d](https://github.com/IBM/openapi-validator/commit/ba00a8dfffb202e131bb51ecb95b7eabfc77cc96))
+
+# [0.44.0](https://github.com/IBM/openapi-validator/compare/v0.43.1...v0.44.0) (2021-04-28)
+
+
+### Features
+
+* warn for */* content types ([733b534](https://github.com/IBM/openapi-validator/commit/733b534b9d716508f070d36bab055cf3020e5869))
+* warn when error response content type is not application/json ([82f6398](https://github.com/IBM/openapi-validator/commit/82f63983a8c75ccbe0c57b0dad999fe826eccabf))
+
+## [0.43.1](https://github.com/IBM/openapi-validator/compare/v0.43.0...v0.43.1) (2021-04-28)
+
+
+### Bug Fixes
+
+* false positive when `limit` and `offset` properties included in `allOf` ([#284](https://github.com/IBM/openapi-validator/issues/284)) ([33f8a1c](https://github.com/IBM/openapi-validator/commit/33f8a1c4fc71d1ab90848060c17c03f7330ae1ed))
+
+# [0.43.0](https://github.com/IBM/openapi-validator/compare/v0.42.0...v0.43.0) (2021-04-21)
+
+
+### Features
+
+* error for parameter without schema or content ([8b6e8bd](https://github.com/IBM/openapi-validator/commit/8b6e8bd7bb36aa70b97abc645db4178a0b9ecd42))
+
+# [0.42.0](https://github.com/IBM/openapi-validator/compare/v0.41.0...v0.42.0) (2021-04-14)
+
+
+### Features
+
+* add rule to check for consistent major version in path ([b6c8e65](https://github.com/IBM/openapi-validator/commit/b6c8e652c301267250c4ad152e7ff71f7ce5920f))
+
+# [0.41.0](https://github.com/IBM/openapi-validator/compare/v0.40.3...v0.41.0) (2021-04-14)
+
+
+### Features
+
+* show path to component that caused error in verbose mode ([#272](https://github.com/IBM/openapi-validator/issues/272)) ([3c1c458](https://github.com/IBM/openapi-validator/commit/3c1c458726f60fdb15828fdc1b99906ef53aa020))
+
+## [0.40.3](https://github.com/IBM/openapi-validator/compare/v0.40.2...v0.40.3) (2021-04-14)
+
+
+### Bug Fixes
+
+* soften the response-example-provided rule to look only at success responses ([#273](https://github.com/IBM/openapi-validator/issues/273)) ([b5dac3e](https://github.com/IBM/openapi-validator/commit/b5dac3e206eef9c44412a005b03a3de7a7405144))
+
+## [0.40.2](https://github.com/IBM/openapi-validator/compare/v0.40.1...v0.40.2) (2021-04-14)
+
+
+### Bug Fixes
+
+* cannot find ajv module when ibm:oas ruleset extended ([#279](https://github.com/IBM/openapi-validator/issues/279)) ([fd2cb29](https://github.com/IBM/openapi-validator/commit/fd2cb29fb691308fdea314a97b20444ad6411976))
+
+## [0.40.1](https://github.com/IBM/openapi-validator/compare/v0.40.0...v0.40.1) (2021-04-07)
+
+
+### Bug Fixes
+
+* set the exit code for json output ([#269](https://github.com/IBM/openapi-validator/issues/269)) ([b6e9899](https://github.com/IBM/openapi-validator/commit/b6e98990835876b87a51d5076554d736fe7ccfa2))
+
+# [0.40.0](https://github.com/IBM/openapi-validator/compare/v0.39.0...v0.40.0) (2021-04-06)
+
+
+### Features
+
+* validate x-sdk-operations extension ([#268](https://github.com/IBM/openapi-validator/issues/268)) ([b025eac](https://github.com/IBM/openapi-validator/commit/b025eac8802e6691a470e167ac14fd65d40a8b91))
+
+# [0.39.0](https://github.com/IBM/openapi-validator/compare/v0.38.0...v0.39.0) (2021-03-26)
+
+
+### Features
+
+* remove error for partial path templating ([#262](https://github.com/IBM/openapi-validator/issues/262)) ([2838875](https://github.com/IBM/openapi-validator/commit/2838875151857d94a1c98a4509b2ca5eaed19ea0))
+
+# [0.38.0](https://github.com/IBM/openapi-validator/compare/v0.37.1...v0.38.0) (2021-03-19)
+
+
+### Features
+
+* warn for missing response examples ([#265](https://github.com/IBM/openapi-validator/issues/265)) ([0f10376](https://github.com/IBM/openapi-validator/commit/0f103760dc316d172c77ab3300513ccbd7cc16fe))
+
+## [0.37.1](https://github.com/IBM/openapi-validator/compare/v0.37.0...v0.37.1) (2021-03-16)
+
+
+### Bug Fixes
+
+* correct the minimum required version of Node ([#264](https://github.com/IBM/openapi-validator/issues/264)) ([8b3bad4](https://github.com/IBM/openapi-validator/commit/8b3bad46d25d39b22b5feca8628d74b951825af0))
+
+# [0.37.0](https://github.com/IBM/openapi-validator/compare/v0.36.0...v0.37.0) (2021-03-16)
+
+
+### Features
+
+* custom Spectral rule to ensure content objects contain schema ([#258](https://github.com/IBM/openapi-validator/issues/258)) ([bb9e419](https://github.com/IBM/openapi-validator/commit/bb9e419e347a407b9a8126ff28ddad80b4923e80))
+
+# [0.36.0](https://github.com/IBM/openapi-validator/compare/v0.35.2...v0.36.0) (2021-03-12)
+
+
+### Features
+
+* synchronize the inCodeValidator output to match the CLI -json output ([#260](https://github.com/IBM/openapi-validator/issues/260)) ([e61f803](https://github.com/IBM/openapi-validator/commit/e61f8032dbe1299eec1612d3e15f8650fadf3ecf))
+
+## [0.35.2](https://github.com/IBM/openapi-validator/compare/v0.35.1...v0.35.2) (2021-03-09)
+
+
+### Bug Fixes
+
+* bundle original spec to account for multi-file API definitions ([#252](https://github.com/IBM/openapi-validator/issues/252)) ([f241c8b](https://github.com/IBM/openapi-validator/commit/f241c8b5275a36e01c8f88090f99c57105bb72a3))
+
+## [0.35.1](https://github.com/IBM/openapi-validator/compare/v0.35.0...v0.35.1) (2021-03-08)
+
+
+### Bug Fixes
+
+* no error for inline array schema when items field is a ref ([#257](https://github.com/IBM/openapi-validator/issues/257)) ([4dd3708](https://github.com/IBM/openapi-validator/commit/4dd370802110acb5dee6de78f02d0f9adc812980))
+
+# [0.35.0](https://github.com/IBM/openapi-validator/compare/v0.34.4...v0.35.0) (2021-03-05)
+
+
+### Features
+
+* include the validator version in the JSON output ([#256](https://github.com/IBM/openapi-validator/issues/256)) ([6442a0b](https://github.com/IBM/openapi-validator/commit/6442a0b4f126891510713b1a5d48455af2af2ed4))
+
+## [0.34.4](https://github.com/IBM/openapi-validator/compare/v0.34.3...v0.34.4) (2021-03-01)
+
+
+### Bug Fixes
+
+* properly handle circular regressions to prevent call stack exceptions ([#253](https://github.com/IBM/openapi-validator/issues/253)) ([3696487](https://github.com/IBM/openapi-validator/commit/3696487e2e6bf4b61d527aeeff3bb659d0ff032e))
+
+## [0.34.3](https://github.com/IBM/openapi-validator/compare/v0.34.2...v0.34.3) (2021-02-22)
+
+
+### Bug Fixes
+
+* fix object type validations ([#242](https://github.com/IBM/openapi-validator/issues/242)) ([c08c5c7](https://github.com/IBM/openapi-validator/commit/c08c5c74257e1d5040424352e456a7478d6771b4))
+
+## [0.34.2](https://github.com/IBM/openapi-validator/compare/v0.34.1...v0.34.2) (2021-02-18)
+
+
+### Bug Fixes
+
+* add validation for use of 101 status code ([#237](https://github.com/IBM/openapi-validator/issues/237)) ([52e1319](https://github.com/IBM/openapi-validator/commit/52e13198cd5d01e407c0732c0f8a25453e647c5d))
+* run travis deploy step on main branch ([#239](https://github.com/IBM/openapi-validator/issues/239)) ([6b5abbb](https://github.com/IBM/openapi-validator/commit/6b5abbb9e1a7ec387ed4ad33d9ad9c3384577788))
+* update releaserc to use main branch ([#238](https://github.com/IBM/openapi-validator/issues/238)) ([4b1569b](https://github.com/IBM/openapi-validator/commit/4b1569b10946151e9c42ac2ec2701d7bd44939a3))
+* update semantic-release dependencies ([#240](https://github.com/IBM/openapi-validator/issues/240)) ([6edf60c](https://github.com/IBM/openapi-validator/commit/6edf60c6d2754fd97db5d6bbf11de368090ba8bd))
+
 ## [0.34.1](https://github.com/IBM/openapi-validator/compare/v0.34.0...v0.34.1) (2021-01-27)
 
 

@@ -3,6 +3,7 @@ const util = require('util');
 const fs = require('fs');
 const path = require('path');
 const readYaml = require('js-yaml');
+const isPlainObject = require('lodash/isPlainObject');
 const last = require('lodash/last');
 const chalk = require('chalk');
 const jsonValidator = require('json-dup-key-validator');
@@ -14,10 +15,12 @@ const buildSwaggerObject = require('./utils/buildSwaggerObject');
 const MessageCarrier = require('../plugins//utils/messageCarrier');
 const validator = require('./utils/validator');
 const print = require('./utils/printResults');
-const printJson = require('./utils/printJsonResults');
+const { printJson } = require('./utils/jsonResults');
 const printError = require('./utils/printError');
 const preprocessFile = require('./utils/preprocessFile');
 const spectralValidator = require('../spectral/utils/spectral-validator');
+const dedupFunction = require('../cli-validator/utils/noDeduplication');
+const addPathsToComponents = require('./utils/addPathsToComponents');
 const { Spectral } = require('@stoplight/spectral');
 // import the init module for creating a .validaterc file
 const init = require('./utils/init.js');
@@ -50,7 +53,7 @@ const processInput = async function(program) {
 
   const limitsFileOverride = program.limits;
 
-  const printRuleNames = program.verbose > 0;
+  const verbose = program.verbose > 0;
 
   // turn off coloring if explicitly requested
   if (turnOffColoring) {
@@ -172,7 +175,9 @@ const processInput = async function(program) {
 
   // create an instance of spectral & load the spectral ruleset, either a user's
   // or the default ruleset
-  const spectral = new Spectral();
+  const spectral = new Spectral({
+    computeFingerprint: dedupFunction
+  });
   try {
     await spectralValidator.setup(spectral, rulesetFileOverride, configObject);
   } catch (err) {
@@ -208,7 +213,7 @@ const processInput = async function(program) {
         input = readYaml.safeLoad(originalFile);
       }
 
-      if (typeof input !== 'object') {
+      if (!isPlainObject(input)) {
         throw `The given input in ${validFile} is not a valid object.`;
       }
 
@@ -322,51 +327,59 @@ const processInput = async function(program) {
       results.hint = false;
     }
 
+    // fail on errors or if number of warnings exceeds warnings limit
+    if (results.error) {
+      exitCode = 1;
+    } else {
+      // Calculate number of warnings and set exit code to 1 if warning limit exceeded
+      let numWarnings = 0;
+      for (const key of Object.keys(results.warnings)) {
+        numWarnings += results.warnings[key].length;
+      }
+      if (numWarnings > limitsObject.warnings) {
+        exitCode = 1;
+        // add the exceeded warnings limit as an error
+        if (!results.errors) {
+          results.errors = {};
+        }
+        results.errors['warnings-limit'] = [
+          {
+            path: [],
+            message: `Number of warnings (${numWarnings}) exceeds warnings limit (${limitsObject.warnings}).`
+          }
+        ];
+      }
+    }
+
+    if (verbose) {
+      addPathsToComponents(results, swagger.jsSpec);
+    }
+
     if (outputReportFile) {
-        exportReportFile(
-          results,
-          chalk,
-          outputReportFile,
-          printValidators,
-          reportingStats,
-          originalFile,
-          validFile,
-          swagger,
-          errorsOnly
-        );
-    } else if (jsonOutput) {
-      printJson(results, originalFile, errorsOnly);
+      exportReportFile(
+        results,
+        chalk,
+        outputReportFile,
+        printValidators,
+        reportingStats,
+        originalFile,
+        validFile,
+        swagger,
+        errorsOnly
+      );
+  } else if (jsonOutput) {
+      printJson(results, originalFile, verbose, errorsOnly);
     } else {
       if (results.error || results.warning || results.info || results.hint) {
         print(
           results,
           chalk,
           printValidators,
-          printRuleNames,
+          verbose,
           reportingStats,
           originalFile,
           errorsOnly
         );
-        // fail on errors or if number of warnings exceeds warnings limit
-        if (results.error) {
-          exitCode = 1;
-        } else {
-          // Calculate number of warnings and set exit code to 1 if warning limit exceeded
-          let numWarnings = 0;
-          for (const key of Object.keys(results.warnings)) {
-            numWarnings += results.warnings[key].length;
-          }
-          if (numWarnings > limitsObject.warnings) {
-            exitCode = 1;
-            console.log(
-              chalk.red(
-                `Number of warnings (${numWarnings}) exceeds warnings limit (${
-                  limitsObject.warnings
-                }).`
-              )
-            );
-          }
-        }
       } else {
         console.log(chalk.green(`\n${validFile} passed the validator`));
         if (validFile === last(filesToValidate)) console.log();

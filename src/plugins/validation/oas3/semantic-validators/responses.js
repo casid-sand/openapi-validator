@@ -1,6 +1,7 @@
 // Assertation 1:
 // The Responses Object MUST contain at least one response code
 // https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#responsesObject
+// replaced by spectral : oas3-schema
 
 // Assertation 2:
 // At least one response "SHOULD be the response for a successful operation call"
@@ -43,26 +44,8 @@ module.exports.validate = function({ resolvedSpec }, config) {
         );
       }
 
-      if (!statusCodes.length) {
-        messages.addTypedMessage(
-          path,
-          'Each `responses` object MUST have at least one response code.',
-          config.no_response_codes,
-          'no_response_codes',
-          'structural'
-        );
-      } else {
+      if (statusCodes.length) {
         for (const statusCode of statusCodes) {
-          if (!obj[statusCode].description) {
-            messages.addTypedMessage(
-              path.concat([statusCode]),
-              `All responses must include a description.`,
-              'error',
-              'no_response_description',
-              'documentation',
-              'D19.15'
-            );
-          }
           // default warnings for discouraged status code per IBM API Handbook
           if (statusCode === '422') {
             messages.addMessage(
@@ -81,7 +64,7 @@ module.exports.validate = function({ resolvedSpec }, config) {
           }
         }
         // validate all success codes
-        if (!successCodes.length) {
+        if (!successCodes.length && !('101' in obj)) {
           messages.addMessage(
             path,
             'Each `responses` object SHOULD have at least one code for a successful response.',
@@ -89,6 +72,14 @@ module.exports.validate = function({ resolvedSpec }, config) {
             'no_success_response_codes'
           );
         } else {
+          if (successCodes.length && '101' in obj) {
+            messages.addMessage(
+              path,
+              'A `responses` object MUST NOT support 101 and any success (2xx) code.',
+              config.protocol_switching_and_success_code,
+              'protocol_switching_and_success_code'
+            );
+          }
           for (const statusCode of successCodes) {
             let hasLocationHeader = false;
             const headers = obj[statusCode].headers;

@@ -1,5 +1,4 @@
 // Assertations are in the following order ( bailing as soon as we hit the firs assertation )
-//
 
 // Assertation typo
 // If a paramter with `in: formdata` exists, warn about typo ( it should be formData )
@@ -14,15 +13,16 @@
 
 // Assertation 3:
 // If a parameter with `in: formData` exists a consumes property ( inherited or inline ) my contain `application/x-www-form-urlencoded` or `multipart/form-data`
+// Assertation 3 checked with Spectral rule oas2-operation-formData-consume-check
 
-const isObject = require('lodash/isObject');
+const isPlainObject = require('lodash/isPlainObject');
 const getIn = require('lodash/get');
 const MessageCarrier = require('../../../utils/messageCarrier');
 
 module.exports.validate = function({ resolvedSpec }) {
   const messages = new MessageCarrier();
 
-  if (!isObject(resolvedSpec)) {
+  if (!isPlainObject(resolvedSpec)) {
     return;
   }
 
@@ -51,7 +51,8 @@ module.exports.validate = function({ resolvedSpec }) {
       assertationOne(obj, path);
 
       return (
-        assertationTwo(obj, path, opItem) || assertationThree(obj, path, opItem)
+        // assertationOne(obj, path)
+        assertationTwo(obj, path, opItem)
       );
     }
 
@@ -74,7 +75,7 @@ module.exports.validate = function({ resolvedSpec }) {
   // Checks the operation for the presences of a consumes
   function hasConsumes(operation, consumes) {
     return (
-      isObject(operation) &&
+      isPlainObject(operation) &&
       Array.isArray(operation.consumes) &&
       operation.consumes.some(c => c === consumes)
     );
@@ -83,7 +84,7 @@ module.exports.validate = function({ resolvedSpec }) {
   // Warn about a typo, formdata => formData
   function assertationTypo(params, path) {
     const formDataWithTypos = params.filter(
-      p => isObject(p) && p['in'] === 'formdata'
+      p => isPlainObject(p) && p['in'] === 'formdata'
     );
 
     if (formDataWithTypos.length) {
@@ -106,9 +107,11 @@ module.exports.validate = function({ resolvedSpec }) {
   function assertationOne(params, path) {
     // Assertation 1
     const inBodyIndex = params.findIndex(
-      p => isObject(p) && p['in'] === 'body'
+      p => isPlainObject(p) && p['in'] === 'body'
     );
-    const formData = params.filter(p => isObject(p) && p['in'] === 'formData');
+    const formData = params.filter(
+      p => isPlainObject(p) && p['in'] === 'formData'
+    );
     const hasFormData = !!formData.length;
 
     if (~inBodyIndex && hasFormData) {
@@ -128,7 +131,7 @@ module.exports.validate = function({ resolvedSpec }) {
   // - b. The consumes property must have `multipart/form-data`
   function assertationTwo(params, path, operation) {
     const typeFileIndex = params.findIndex(
-      p => isObject(p) && p.type === 'file'
+      p => isPlainObject(p) && p.type === 'file'
     );
     // No type: file?
     if (!~typeFileIndex) {
@@ -159,30 +162,6 @@ module.exports.validate = function({ resolvedSpec }) {
     }
 
     return hasErrors;
-  }
-
-  // If a parameter with `in: formData` exists, a consumes property ( inherited or inline ) my contain `application/x-www-form-urlencoded` or `multipart/form-data`
-  function assertationThree(params, path, operation) {
-    const hasFormData = params.some(p => isObject(p) && p['in'] === 'formData');
-
-    if (!hasFormData) {
-      return;
-    }
-
-    if (
-      hasConsumes(operation, 'multipart/form-data') ||
-      hasConsumes(operation, 'application/x-www-form-urlencoded')
-    ) {
-      return;
-    }
-
-    const pathStr = path.slice(0, -1).join('.'); // Blame the operation, not the parameter0
-    messages.addMessage(
-      pathStr,
-      'Operations with Parameters of `in` "formData" must include "application/x-www-form-urlencoded" or "multipart/form-data" in their "consumes" property',
-      'error'
-    );
-    return;
   }
 
   walk(resolvedSpec, []);

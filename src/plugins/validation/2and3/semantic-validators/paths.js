@@ -11,10 +11,8 @@
 // Paths must have unique (name + in combination) parameters
 
 // Assertation 5:
-// Paths cannot have partial templates. (/path/abc{123} is illegal)
-
-// Assertation 6:
 // Paths cannot have literal query strings in them.
+// Handled by the Spectral rule, path-not-include-query
 
 // Assertation 7:
 // Paths parts should be at plural : ending with s, x or z, or having first word ending with it
@@ -41,7 +39,7 @@
 
 const each = require('lodash/each');
 const findIndex = require('lodash/findIndex');
-const isObject = require('lodash/isObject');
+const isPlainObject = require('lodash/isPlainObject');
 const MessageCarrier = require('../../../utils/messageCarrier');
 
 const templateRegex = /\{(.*?)\}/g;
@@ -100,19 +98,6 @@ module.exports.validate = function({ resolvedSpec }, config) {
             depthPath += 1;
             substr = substr.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
             
-            // Assertation 5
-            if (
-                templateRegex.test(substr) &&
-                substr.replace(templateRegex, '').length > 0
-            ) {
-                messages.addMessage(
-                `paths.${pathName}`,
-                'Partial path templating is not allowed.',
-                'error',
-                'partial_path_templating'
-                );
-            }
-
             //check if root path (number 1), or if it's the version or if it's a reserved Word
             if (depthPath > 1) {
                 if (! (versionInPathRegex.test(substr.toLowerCase()))
@@ -241,20 +226,10 @@ module.exports.validate = function({ resolvedSpec }, config) {
             );
         }
 
-        // Assertation 6
-        if (pathName.indexOf('?') > -1) {
-            messages.addMessage(
-                `paths.${pathName}`,
-                'Query strings in paths are not allowed.',
-                'error',
-                'path_query_string'
-            );
-        }
-
         const parametersFromPath = path.parameters ? path.parameters.slice() : [];
 
         const availableParameters = parametersFromPath.map((param, i) => {
-            if (!isObject(param)) {
+            if (!isPlainObject(param)) {
                 return;
             }
             param.$$path = `paths.${pathName}.parameters[${i}]`;
@@ -269,7 +244,7 @@ module.exports.validate = function({ resolvedSpec }, config) {
             ) {
                 availableParameters.push(
                 ...operation.parameters.map((param, i) => {
-                    if (!isObject(param)) {
+                    if (!isPlainObject(param)) {
                         return;
                     }
                     param.$$path = `paths.${pathName}.${operationName}.parameters[${i}]`;
@@ -319,7 +294,7 @@ module.exports.validate = function({ resolvedSpec }, config) {
         // Assertation 1
         each(availableParameters, (parameterDefinition, i) => {
             if (
-                isObject(parameterDefinition) &&
+                isPlainObject(parameterDefinition) &&
                 parameterDefinition.in === 'path' &&
                 pathTemplates.indexOf(parameterDefinition.name) === -1
             ) {

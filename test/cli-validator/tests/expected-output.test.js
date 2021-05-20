@@ -78,14 +78,44 @@ describe('cli tool - test expected output - Swagger 2 @skip-local', function() {
     expect(messageCount).toEqual(ruleCount);
   });
 
+  it('should include the validator version in JSON output', async function() {
+    const program = {};
+    program.args = ['./test/cli-validator/mockFiles/clean.yml'];
+    program.default_mode = true;
+    program.json = true;
+
+    const exitcode = await commandLineValidator(program);
+    expect(exitcode).toBe(0);
+
+    const capturedText = getCapturedText(consoleSpy.mock.calls);
+    const jsonOutput = JSON.parse(capturedText);
+    const expectedValidatorVersion = require('../../../package.json').version;
+    expect(jsonOutput.version).toBeTruthy();
+    expect(jsonOutput.version).toBe(expectedValidatorVersion);
+  });
+
+  it('should include the validator version in JSON output for the inCodeValidator', async function() {
+    const content = fs
+      .readFileSync('./test/cli-validator/mockFiles/clean.yml')
+      .toString();
+    const spec = yaml.load(content);
+
+    const defaultMode = true;
+    const validationResults = await inCodeValidator(spec, defaultMode);
+
+    const expectedValidatorVersion = require('../../../package.json').version;
+    expect(validationResults.version).toBeTruthy();
+    expect(validationResults.version).toBe(expectedValidatorVersion);
+  });
+
   it('should include the associated rule with each error and warning in JSON output', async function() {
     const program = {};
     program.args = ['./test/cli-validator/mockFiles/err-and-warn.yaml'];
     program.default_mode = true;
     program.json = true;
 
-    await commandLineValidator(program);
-    // exit code is not set for JSON output
+    const exitcode = await commandLineValidator(program);
+    expect(exitcode).toBe(1);
 
     const capturedText = getCapturedText(consoleSpy.mock.calls);
     const jsonOutput = JSON.parse(capturedText);
@@ -141,7 +171,8 @@ describe('cli tool - test expected output - Swagger 2 @skip-local', function() {
     //   example output would be [ 'Line', ':', '59' ]
 
     // errors
-    expect(capturedText[4].match(/\S+/g)[2]).toEqual('32');
+    //TODO MBC : to remove after tests
+    /*expect(capturedText[4].match(/\S+/g)[2]).toEqual('32');
     expect(capturedText[8].match(/\S+/g)[2]).toEqual('55');
     expect(capturedText[12].match(/\S+/g)[2]).toEqual('60');
     expect(capturedText[16].match(/\S+/g)[2]).toEqual('109');
@@ -156,7 +187,22 @@ describe('cli tool - test expected output - Swagger 2 @skip-local', function() {
     expect(capturedText[54].match(/\S+/g)[2]).toEqual('109');
     expect(capturedText[58].match(/\S+/g)[2]).toEqual('132');
     expect(capturedText[64].match(/\S+/g)[2]).toEqual('135');
-    expect(capturedText[70].match(/\S+/g)[2]).toEqual('127');
+    expect(capturedText[70].match(/\S+/g)[2]).toEqual('127');*/
+    expect(capturedText[4].match(/\S+/g)[2]).toEqual('59');
+    expect(capturedText[8].match(/\S+/g)[2]).toEqual('31');
+    expect(capturedText[12].match(/\S+/g)[2]).toEqual('54');
+    expect(capturedText[16].match(/\S+/g)[2]).toEqual('108');
+    expect(capturedText[20].match(/\S+/g)[2]).toEqual('172');
+
+    // warnings
+    expect(capturedText[25].match(/\S+/g)[2]).toEqual('36');
+    expect(capturedText[29].match(/\S+/g)[2]).toEqual('59');
+    expect(capturedText[33].match(/\S+/g)[2]).toEqual('15');
+    expect(capturedText[37].match(/\S+/g)[2]).toEqual('15');
+    expect(capturedText[41].match(/\S+/g)[2]).toEqual('197');
+    expect(capturedText[45].match(/\S+/g)[2]).toEqual('131');
+    expect(capturedText[49].match(/\S+/g)[2]).toEqual('134');
+    expect(capturedText[53].match(/\S+/g)[2]).toEqual('126');
   });
 
   it('should return exit code of 0 if there are only warnings', async function() {
@@ -276,7 +322,7 @@ describe('test expected output - OpenAPI 3 @skip-local', function() {
 
     expect(exitCode).toEqual(1);
     expect(allOutput).toContain('errors');
-    expect(allOutput).toContain('API definition must have an `info` object');
+    expect(allOutput).toContain('Object should have required property `info`.');
     expect(allOutput).toContain('warnings');
     expect(allOutput).toContain(
       'Operations must have a non-empty `operationId`.'
@@ -305,8 +351,8 @@ describe('test expected output - OpenAPI 3 @skip-local', function() {
     program.default_mode = true;
     program.json = true;
 
-    await commandLineValidator(program);
-    // exit code is not set for JSON output
+    const exitCode = await commandLineValidator(program);
+    expect(exitCode).toEqual(1);
 
     const capturedText = getCapturedText(consoleSpy.mock.calls);
     const jsonOutput = JSON.parse(capturedText);
@@ -346,5 +392,42 @@ describe('test expected output - OpenAPI 3 @skip-local', function() {
     validationResults.warnings.forEach(msg =>
       expect(msg).toHaveProperty('rule')
     );
+  });
+
+  it('should include the path to the component (if it exists) when in verbose mode', async function() {
+    const program = {};
+    program.args = ['./test/cli-validator/mockFiles/oas3/testoneof.yaml'];
+    program.default_mode = true;
+    program.verbose = 1;
+
+    const exitCode = await commandLineValidator(program);
+    expect(exitCode).toEqual(1);
+
+    const capturedText = getCapturedText(consoleSpy.mock.calls);
+    const allText = capturedText.join();
+    expect(allText).toContain('Component Path');
+    expect(allText).toContain('Component Line');
+  });
+
+  it('should include the path to the component (if it exists) when in verbose mode and json mode', async function() {
+    const program = {};
+    program.args = ['./test/cli-validator/mockFiles/oas3/testoneof.yaml'];
+    program.default_mode = true;
+    program.verbose = 1;
+    program.json = true;
+
+    const exitCode = await commandLineValidator(program);
+    expect(exitCode).toEqual(1);
+
+    const capturedText = getCapturedText(consoleSpy.mock.calls);
+    const jsonOutput = JSON.parse(capturedText);
+    expect(jsonOutput.warnings[4].componentPath).toEqual([
+      'components',
+      'responses',
+      'Ok',
+      'content',
+      'application/json'
+    ]);
+    expect(jsonOutput.warnings[4].componentLine).toEqual(6);
   });
 });

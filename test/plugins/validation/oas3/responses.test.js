@@ -83,45 +83,6 @@ describe('validation plugin - semantic - responses - oas3', function() {
     );
   });
 
-  it('should complain when a response is missing a description', function() {
-    const spec = {
-      paths: {
-        '/pets': {
-          get: {
-            summary: 'this is a summary',
-            operationId: 'operationId',
-            responses: {
-              '200': {
-                content: {
-                  'multipart/form-data': {
-                    schema: {
-                      type: 'string',
-                      format: 'binary'
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    };
-
-    const res = validate({ resolvedSpec: spec }, config);
-    expect(res.warnings.length).toEqual(0);
-    expect(res.errors.length).toEqual(1);
-    expect(res.errors[0].path).toEqual([
-      'paths',
-      '/pets',
-      'get',
-      'responses',
-      '200'
-    ]);
-    expect(res.errors[0].message).toEqual(
-      'All responses must include a description.'
-    );
-  });
-
   it('should complain when 422 response code used', function() {
     const spec = {
       paths: {
@@ -380,58 +341,6 @@ describe('validation plugin - semantic - responses - oas3', function() {
     );
   });
 
-  it('should complain when response object only has a default', function() {
-    const spec = {
-      paths: {
-        '/pets': {
-          get: {
-            summary: 'this is a summary',
-            operationId: 'operationId',
-            responses: {
-              default: {
-                description: 'the default response'
-              }
-            }
-          }
-        }
-      }
-    };
-
-    const res = validate({ resolvedSpec: spec }, config);
-    expect(res.errors.length).toEqual(1);
-    expect(res.errors[0].path).toEqual(['paths', '/pets', 'get', 'responses']);
-    expect(res.errors[0].message).toEqual(
-      'Each `responses` object MUST have at least one response code.'
-    );
-    expect(res.warnings.length).toEqual(0);
-  });
-
-  it('should complain when no response codes are valid', function() {
-    const spec = {
-      paths: {
-        '/pets': {
-          get: {
-            summary: 'this is a summary',
-            operationId: 'operationId',
-            responses: {
-              '2007': {
-                description: 'an invalid response'
-              }
-            }
-          }
-        }
-      }
-    };
-
-    const res = validate({ resolvedSpec: spec }, config);
-    expect(res.errors.length).toEqual(1);
-    expect(res.errors[0].path).toEqual(['paths', '/pets', 'get', 'responses']);
-    expect(res.errors[0].message).toEqual(
-      'Each `responses` object MUST have at least one response code.'
-    );
-    expect(res.warnings.length).toEqual(0);
-  });
-
   it('should not complain when there are no problems', function() {
     const spec = {
       paths: {
@@ -686,6 +595,57 @@ describe('validation plugin - semantic - responses - oas3', function() {
       'Each `responses` object SHOULD have at least one code for a successful response.'
     );
     expect(res.errors.length).toEqual(0);
+  });
+
+  it('should not complain about having only a 101 response', function() {
+    const spec = {
+      paths: {
+        '/pets': {
+          get: {
+            summary: 'this is a summary',
+            operationId: 'operationId',
+            responses: {
+              '101': {
+                description: 'switching protocols'
+              }
+            }
+          }
+        }
+      }
+    };
+
+    const res = validate({ resolvedSpec: spec }, config);
+    expect(res.warnings.length).toEqual(0);
+    expect(res.errors.length).toEqual(0);
+  });
+
+  it('should complain about having a 101 along with any 2xx code', function() {
+    const spec = {
+      paths: {
+        '/pets': {
+          get: {
+            summary: 'this is a summary',
+            operationId: 'operationId',
+            responses: {
+              '101': {
+                description: 'switching protocols'
+              },
+              '204': {
+                description: 'no content'
+              }
+            }
+          }
+        }
+      }
+    };
+
+    const res = validate({ resolvedSpec: spec }, config);
+    expect(res.warnings.length).toEqual(0);
+    expect(res.errors.length).toEqual(1);
+    expect(res.errors[0].path).toEqual(['paths', '/pets', 'get', 'responses']);
+    expect(res.errors[0].message).toEqual(
+      'A `responses` object MUST NOT support 101 and any success (2xx) code.'
+    );
   });
 
   it('should complain about 204 response that defines a response body', function() {

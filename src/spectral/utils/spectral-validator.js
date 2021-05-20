@@ -4,6 +4,7 @@ const { Spectral } = require('@stoplight/spectral');
 const { isOpenApiv2, isOpenApiv3 } = require('@stoplight/spectral');
 const { mergeRules } = require('@stoplight/spectral/dist/rulesets');
 const fs = require('fs');
+const path = require('path');
 // default spectral ruleset file
 const defaultSpectralRulesetURI =
   __dirname + '/../rulesets/.defaultsForSpectral.yaml';
@@ -68,21 +69,20 @@ const setup = async function(spectral, rulesetFileOverride, configObject) {
     return Promise.reject(message);
   }
 
-  // Add IBM default ruleset to static assets to allow extends to reference it
-  const staticAssets = require('@stoplight/spectral/rulesets/assets/assets.json');
-  const content = fs.readFileSync(defaultSpectralRulesetURI, 'utf8');
-  staticAssets['ibm:oas'] = content;
-  Spectral.registerStaticAssets(staticAssets);
-
-  // Register formats
-  spectral.registerFormat('oas2', isOpenApiv2);
-  spectral.registerFormat('oas3', isOpenApiv3);
-
   // load the spectral ruleset, either a user's or the default ruleset
   const spectralRulesetURI = await config.getSpectralRuleset(
     rulesetFileOverride,
     defaultSpectralRulesetURI
   );
+
+  // Add IBM default ruleset to static assets to allow extends to reference it
+  const staticAssets = require('@stoplight/spectral/rulesets/assets/assets.json');
+  setupStaticAssets(staticAssets, defaultSpectralRulesetURI);
+  Spectral.registerStaticAssets(staticAssets);
+
+  // Register formats
+  spectral.registerFormat('oas2', isOpenApiv2);
+  spectral.registerFormat('oas3', isOpenApiv3);
 
   // Load either the user-defined ruleset or our default ruleset
   await spectral.loadRuleset(spectralRulesetURI);
@@ -98,6 +98,35 @@ const setup = async function(spectral, rulesetFileOverride, configObject) {
     return Promise.reject(err);
   }
 };
+
+function setupStaticAssets(staticAssets, defaultSpectralRulesetURI) {
+  // register ruleset
+  staticAssets['ibm:oas'] = addDataToSpectralConfig(defaultSpectralRulesetURI);
+
+  const parentDirectory = path.parse(defaultSpectralRulesetURI).dir;
+
+  // register custom functions
+  const customFunctionsDirURI = path.join(parentDirectory, 'ibm-oas');
+  fs.readdirSync(customFunctionsDirURI).forEach(function(customFunctionFile) {
+    const customFunctionURI = path.join(
+      customFunctionsDirURI,
+      customFunctionFile
+    );
+    const customFunctionRelativeURI = path.join('ibm-oas', customFunctionFile);
+    staticAssets[customFunctionRelativeURI] = fs.readFileSync(
+      customFunctionURI,
+      'utf8'
+    );
+  });
+}
+
+function addDataToSpectralConfig(defaultSpectralRulesetURI) {
+  const content = fs.readFileSync(defaultSpectralRulesetURI, 'utf8');
+  return content.replace(
+    '\\./schemas',
+    path.join(__dirname, '../rulesets/schemas')
+  );
+}
 
 module.exports = {
   parseResults,

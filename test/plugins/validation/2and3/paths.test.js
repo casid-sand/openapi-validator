@@ -59,8 +59,7 @@ describe('validation plugin - semantic - paths', function() {
               }
             ]
           }
-        }
-      };
+        };
 
       const res = validate({ resolvedSpec: spec }, defaultConfig);
       expect(res.errors.length).toEqual(0);
@@ -407,7 +406,6 @@ describe('validation plugin - semantic - paths', function() {
       expect(res.errors[1].message).toEqual("Path parameter was defined but never used: unusedSecondParameterName.");
       expect(res.warnings).toEqual([]);
     });
-  });
 
   describe('Paths must contains resources name in the plural', () => {
   
@@ -991,7 +989,6 @@ describe('validation plugin - semantic - paths', function() {
         expect(res.errors.length).toEqual(0);
         expect(res.warnings.length).toEqual(0);
     });
-  });
 
   describe('Paths must 6 or less depths', () => {
 

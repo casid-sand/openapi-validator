@@ -2,8 +2,9 @@ const chalk = require('chalk');
 const config = require('../cli-validator/utils/processConfiguration');
 const buildSwaggerObject = require('../cli-validator/utils/buildSwaggerObject');
 const validator = require('../cli-validator/utils/validator');
-const getOutput = require('./utils/printForMachine');
+const { formatResultsAsObject } = require('../cli-validator/utils/jsonResults');
 const spectralValidator = require('../spectral/utils/spectral-validator');
+const dedupFunction = require('../cli-validator/utils/noDeduplication');
 const { Spectral } = require('@stoplight/spectral');
 
 module.exports = async function(input, defaultMode = false) {
@@ -12,7 +13,9 @@ module.exports = async function(input, defaultMode = false) {
   // or the default ruleset
   let configObject;
   let spectralResults;
-  const spectral = new Spectral();
+  const spectral = new Spectral({
+    computeFingerprint: dedupFunction
+  });
 
   try {
     configObject = await config.get(defaultMode, chalk);
@@ -31,5 +34,5 @@ module.exports = async function(input, defaultMode = false) {
   const results = validator(swagger, configObject, spectralResults);
 
   // return a json object containing the errors/warnings
-  return getOutput(results);
+  return formatResultsAsObject(results);
 };

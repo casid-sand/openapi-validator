@@ -6,6 +6,7 @@
 // Assertation 5: "oauth2" security flow "accessCode" must have required string "tokenUrl", string "authorizationUrl" and object "scopes" parameters
 // Assertation 6: "oauth2" security flow "application" must have required string "tokenUrl", string "authorizationUrl" and object "scopes" parameters
 
+const isPlainObject = require('lodash/isPlainObject');
 const MessageCarrier = require('../../../utils/messageCarrier');
 
 module.exports.validate = function({ jsSpec }) {
@@ -155,7 +156,7 @@ module.exports.validate = function({ jsSpec }) {
           }
         }
 
-        if (!scopes || typeof scopes !== 'object') {
+        if (!isPlainObject(scopes)) {
           messages.addMessageWithAuthId(
             path,
             "'scopes' is required property type object. The available scopes for the OAuth2 security scheme.",

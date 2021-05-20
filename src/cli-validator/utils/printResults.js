@@ -1,6 +1,7 @@
 const each = require('lodash/each');
 const pad = require('pad');
 const processConfiguration = require('./processConfiguration');
+const getPathAsArray = require('./getPathAsArray');
 
 // get line-number-producing, 'magic' code from Swagger Editor
 const getLineNumberForPath = require(__dirname + '/../../plugins/ast/ast')
@@ -11,7 +12,7 @@ module.exports = function print(
   results,
   chalk,
   printValidators,
-  printRuleNames,
+  verbose,
   reportingStats,
   originalFile,
   errorsOnly
@@ -96,7 +97,7 @@ module.exports = function print(
         // print the path array as a dot-separated string
 
         console.log(chalk[color](`  Message :   ${problem.message}`));
-        if (printRuleNames) {
+        if (verbose && problem.rule) {
           console.log(chalk[color](`  Rule    :   ${problem.rule}`));
         }
         console.log(chalk[color](`  Path    :   ${path.join('.')}`));
@@ -106,6 +107,17 @@ module.exports = function print(
         }
         if (problem.customizedRule) {
             console.log(chalk[color](`  Customized rule :      ${problem.customizedRule}`));
+        }
+        if (verbose && problem.componentPath) {
+          const componentPath = getPathAsArray(problem.componentPath);
+          const componentLine = getLineNumberForPath(
+            originalFile,
+            componentPath
+          );
+          console.log(
+            chalk[color](`  Component Path    :   ${componentPath.join('.')}`)
+          );
+          console.log(chalk[color](`  Component Line    :   ${componentLine}`));
         }
         console.log();
       });

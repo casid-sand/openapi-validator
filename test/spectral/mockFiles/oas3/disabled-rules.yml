@@ -71,17 +71,21 @@ paths:
       responses:
         '405':
           description: "Invalid input"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: unexpected error
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /anotherpet/path?query=true:
+  /anotherpet/path:
     get:
-      summary: List all pets
-      description: List all pets
-      operationId: list_pets
+      summary: List all other pets
+      description: List all other pets
+      operationId: list_other_pets
       tags:
         - pets
       parameters:
@@ -130,11 +134,6 @@ paths:
         - name: pet_id
           in: path
           required: true
-          schema:
-            type: string
-        - name: pet_id
-          in: path
-          required: true
           description: The id of the pet to retrieve
           schema:
             type: string
@@ -153,7 +152,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /given/{}:
+  /given/{id_path_param}:
     post:
       summary: "bad path"
       description: Invalid path
@@ -161,21 +160,25 @@ paths:
       tags:
         - pets
       parameters:
-        - name: incorrect_id
+        - name: id_path_param
+          description: 'incorrect id parameter'
           in: path
           required: true
           schema:
             type: string
-        - name: module_id
-          in: bar
-          required: true
-          schema:
-            type: ['string', 'number']
       responses:
         405:
           description: "Invalid input"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: "Invalid input"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 components:
   schemas:
     Sibling:
@@ -200,6 +203,10 @@ components:
         tag:
           type: string
           description: "tag property"
+      example:
+        id: 1
+        name: doggie
+        tag: dog
     Pets:
       description:
         A list of pets
@@ -228,18 +235,42 @@ components:
         next_token:
           type: string
           description: next token
+      example:
+        pets:
+        - id: 1
+          name: doggie
+          tag: dog
+        next_url: 'https://www.nexturl.com'
+        limit: 50
+        offset: 20
+        next_token: TOKEN_STRING
 
     Error:
       description:
         An error in processing a service request
       required:
-        - code
-        - message
+        - error
+        - trace
       properties:
-        code:
-          type: integer
-          format: int32
-          description: "code property"
-        message:
+        error:
+          type: 'object'
+          properties:
+            code:
+              type: string
+              enum:
+              - 'error1'
+              - 'error2'
+              description: "code property"
+            message:
+              type: string
+              description: "message property"
+            more_info:
+              type: string
+        trace:
           type: string
-          description: "message property"
+          format: uuid
+      example:
+        error:
+          code: 'error1'
+          message: "error occurred"
+        trace: "00112233-4455-6677-8899-aabbccddeeff"

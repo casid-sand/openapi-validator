@@ -1,5 +1,9 @@
 // find the circular references,
 // correct them,
+
+const isPlainObject = require('lodash/isPlainObject');
+const isObject = require('lodash/isObject');
+
 // and return them as problems if applicable
 const validate = function({ jsSpec, resolvedSpec }, config) {
   const result = { error: [], warning: [] };
@@ -28,7 +32,8 @@ const correctSpec = function(resolvedSpec) {
       return null;
     }
 
-    if (typeof object !== 'object') {
+    // we need to catch arrays here, in addition to plain objects
+    if (!isObject(object)) {
       return null;
     }
 
@@ -39,7 +44,7 @@ const correctSpec = function(resolvedSpec) {
     }
 
     return keys.forEach(function(key) {
-      if (typeof object[key] === 'object' && !Array.isArray(object[key])) {
+      if (isPlainObject(object[key])) {
         if (visitedObjects.includes(object[key])) {
           paths.push([...path, key]);
           object[key] = '[Circular]';

@@ -123,33 +123,28 @@ describe('validation plugin - semantic - form data', function() {
         );
         expect(res.errors[0].path).toEqual('paths./some.post.parameters.0');
       });
-
-      it("should complain if 'in:formData` and no consumes - 'multipart/form-data' or 'application/x-www-form-urlencoded'", function() {
-        const spec = {
-          paths: {
-            '/some': {
-              post: {
-                parameters: [
-                  {
-                    in: 'formData'
-                  }
-                ]
-              }
-            }
-          }
-        };
-
-        const res = validate({ resolvedSpec: spec });
-        expect(res.errors.length).toEqual(1);
-        expect(res.errors[0].message).toEqual(
-          'Operations with Parameters of `in` "formData" must include "application/x-www-form-urlencoded" or "multipart/form-data" in their "consumes" property'
-        );
-        expect(res.errors[0].path).toEqual('paths./some.post');
-      });
     });
   });
 
   describe('/pathitems/...', function() {
+    // Already covered in validators/operations.js
+    it.skip('should complain about having both in the same parameter', function() {
+      const spec = {
+        pathitems: {
+          CoolPathItem: {
+            parameters: [{ in: 'formData' }, { in: 'body' }]
+          }
+        }
+      };
+
+      const res = validate({ resolvedSpec: spec });
+      expect(res.errors.length).toEqual(1);
+      expect(res.errors[0].message).toEqual(
+        'Parameters cannot have `in` values of both "body" and "formData", as "formData" _will_ be the body'
+      );
+      expect(res.errors[0].path).toEqual('pathitems.CoolPathItem.parameters.1');
+    });
+
     it("should complain if 'type:file` and no 'in: formData", function() {
       const spec = {
         pathitems: {
