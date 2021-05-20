@@ -8,7 +8,7 @@ let exitcode;
 let dir_path = './test/mock-validation/input/';
 let swagger_file_name;
 
-swagger_file_name = 'swagger_SourceWebRH-v0.2-12_05_2021.yaml';
+swagger_file_name = 'swagger2-SOURCEWEB-APIRH-v1-20210519.yaml';
 
 
 //dir_path = "./test/cli-validator/mockFiles/";

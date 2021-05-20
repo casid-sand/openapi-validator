@@ -672,7 +672,6 @@ describe('validation plugin - semantic - responses', function() {
       it('should not complain about non-json response that defines an inline schema', function() {
         const config = {
           responses: {
-            no_response_codes: 'error',
             no_success_response_codes: 'warning'
           }
         };

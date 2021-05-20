@@ -66,11 +66,7 @@ The default configuration uses both OpenAPI 3.0 rules as well as Spectral rules.
 
 ### Customization
 
-<<<<<<< HEAD
 You can modify the behavior of the validator for your project to meet your preferred standards. Specific validation "rules" can be turned off, or configured to trigger an error, warning, notice, info, or hint message in the validator output.
-=======
-You can modify the behavior of the validator for your project to meet your preferred standards. Specific validation "rules" can be turned off, or configured to trigger an error, warning, info, or hint message in the validator output.
->>>>>>> b0f65c3aa6b3996f4747a33240cebcd531dbe890
 
 Some validations can be configured even further, such as switching the case convention for parameter names.
 There are also currently some validations that cannot be disabled or configured to a different severity.
@@ -78,11 +74,7 @@ You can see the rule associated with each message produced by the validator with
 **Rules that are not configurable will show the name `builtin`.**
 
 The validator also employs the [`Spectral`](https://github.com/stoplightio/spectral) validation/linting engine to detect certain issues in the API document.
-<<<<<<< HEAD
 Spectral rules can also be configured to trigger an error, warning, notice, info, or hint message in the validator output with the `.spectral.yaml` configuration file.
-=======
-Spectral rules can also be configured to trigger an error, warning, info, or hint message in the validator output with the `.spectral.yaml` configuration file.
->>>>>>> b0f65c3aa6b3996f4747a33240cebcd531dbe890
 When the validator issues a message as the result of a Spectral rule, the rule name displayed will correspond to the Spectral rule. You must add a Spectral configuration if you want to create a new rule, as opposed to modifying an existing one.
 
 To get started configuring the validator, [set up](#setup) a [configuration file](#configuration-file).  See the [Spectral configuration](#spectral-configuration) section for more details on customization with Spectral.
@@ -341,10 +333,6 @@ The supported rules are described below:
 | Rule                      | Description                                                  | Spec |
 | ------------------------- | ------------------------------------------------------------ | ---- |
 | inline_response_schema    | Flag any response object with a schema that doesn't reference a named model. Even if the model is only used once, naming it offers significant benefits for SDK generation. | shared |
-<<<<<<< HEAD
-| no_response_codes         | Flag any response object that has no valid response codes.   | oas3 |
-=======
->>>>>>> b0f65c3aa6b3996f4747a33240cebcd531dbe890
 | no_success_response_codes | Flag any response object that has no success response codes. | oas3 |
 | no_response_body          | Flag any non-204 success responses without a response body.  | oas3 |
 | ibm_status_code_guidelines| Flag any violations of status code conventions per IBM API Handbook  | oas3 |
@@ -393,11 +381,7 @@ The supported rules are described below:
 
 #### Statuses
 
-<<<<<<< HEAD
 Each rule can be assigned a status. The supported statuses are `error`, `warning`, `notice`, `info`, `hint` and `off`.
-=======
-Each rule can be assigned a status. The supported statuses are `error`, `warning`, `info`, `hint` and `off`.
->>>>>>> b0f65c3aa6b3996f4747a33240cebcd531dbe890
 Some rules can be configured further with configuration options. The format of this configuration is to provide an array, rather than just a string. e.g.
 `"param_name_case_convention": ["error", "lower_camel_case"]`
 If just a string is provided for these rule, the default configuration option will be used. If only one value is provided in the array, it **MUST** be a status. The default configuration option will be used in this case as well. The rules that support configuration options will have **two** values in the [defaults](#default-values) table.
@@ -467,11 +451,6 @@ The default values for each rule are described below.
 | Rule                        | Default |
 | --------------------------- | ------- |
 | no_request_body_name        | warning |
-
-###### parameters
-| Rule                        | Default |
-| --------------------------- | ------- |
-| has_schema_and_content      | error   |
 
 ##### responses
 | Rule                      | Default |
@@ -572,18 +551,12 @@ no-eval-in-markdown: true
 no-script-tags-in-markdown: true
 openapi-tags: true
 operation-description: true
-<<<<<<< HEAD
-operation-tags: true
-operation-tag-defined: true
-path-keys-no-trailing-slash: true
-=======
 operation-operationId-unique: true
 operation-parameters: true
 operation-tags: true
 operation-tag-defined: true
 path-keys-no-trailing-slash: true
 path-not-include-query: true
->>>>>>> b0f65c3aa6b3996f4747a33240cebcd531dbe890
 typed-enum: true
 oas2-api-host: true
 oas2-api-schemes: true
@@ -592,17 +565,11 @@ oas2-valid-example: true
 oas2-valid-definition-example: true
 oas2-anyOf: true
 oas2-oneOf: true
-<<<<<<< HEAD
-oas3-api-servers: true
-oas3-examples-value-or-externalValue: true
-oas3-server-trailing-slash: true
-=======
 oas2-operation-formData-consume-check: true
 oas3-api-servers: true
 oas3-examples-value-or-externalValue: true
 oas3-server-trailing-slash: true
 oas3-schema: true
->>>>>>> b0f65c3aa6b3996f4747a33240cebcd531dbe890
 oas3-valid-example: true
 oas3-valid-schema-example: true
 ```
@@ -611,21 +578,14 @@ This ruleset has the alias `ibm:oas`, and you can "extend" this ruleset or speci
 with a [Spectral ruleset file](https://meta.stoplight.io/docs/spectral/docs/getting-started/3-rulesets.md).
 Note that all of the rules in the `spectral:oas` ruleset are defined in `ibm:oas` but only the rules listed above are enabled by default.
 
-<<<<<<< HEAD
-=======
 The `ibm:oas` ruleset also includes custom Spectral rules, [documented here](docs/spectral-rules.md). These are configurable rules in the `ibm:oas` ruleset that are not part of the `spectral:oas` ruleset.
 
->>>>>>> b0f65c3aa6b3996f4747a33240cebcd531dbe890
 You can provide a Spectral ruleset file to the IBM OpenAPI validator in a file named `.spectral.yaml`
 in the current directory or with the `--ruleset` command line option of the validator.
 
 #### Changing Spectral rule severity
 
-<<<<<<< HEAD
 Any rule in the `ibm:oas` ruleset can be configured to trigger an error, warning, notice, info, or hint message in the validator output.
-=======
-Any rule in the `ibm:oas` ruleset can be configured to trigger an error, warning, info, or hint message in the validator output.
->>>>>>> b0f65c3aa6b3996f4747a33240cebcd531dbe890
 For example, to configure the `openapi-tags` rule to trigger an `info` message instead of a `warning`, specify the following in your Spectral ruleset file:
 ```
 extends: ibm:oas
@@ -649,24 +609,17 @@ rules:
   info-contact: true
 ```
 
-<<<<<<< HEAD
 You could also set the severity of `info-contact` explicitly to `error`, `warn`, `notice`, `info`, or `hint`.
-=======
-You could also set the severity of `info-contact` explicitly to `error`, `warn`, `info`, or `hint`.
->>>>>>> b0f65c3aa6b3996f4747a33240cebcd531dbe890
 
 #### Custom Spectral rules
 
 New custom rules can be specified using a simple but powerful yaml syntax or with custom Javascript functions.
 Use the documentation on [Spectral custom rules](https://meta.stoplight.io/docs/spectral/docs/guides/4-custom-rulesets.md) in order to add these to your __.spectral.yaml__ file.
 
-<<<<<<< HEAD
-=======
 #### Spectral exceptions
 
 Rather than turning off a Spectral rule entirely, Spectral exceptions allow you to exclude some directories/files from being validated against a rule.
 Use the documentation on [Spectral exceptions](https://meta.stoplight.io/docs/spectral/docs/guides/6-exceptions.md) to add exceptions to your __.spectral.yaml__ file.
->>>>>>> b0f65c3aa6b3996f4747a33240cebcd531dbe890
 
 
 ## Warnings Limit
