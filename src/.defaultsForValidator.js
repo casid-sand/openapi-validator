@@ -113,6 +113,9 @@ const defaults = {
       'get_op_has_consumes': 'warning',
       'no_produces': 'warning',
       'wrong_content_type': 'off'
+    },
+    'parameters': {
+      'parameter_definition': 'off'
     }
   },
   'oas3': {

@@ -129,6 +129,9 @@
       "get_op_has_consumes": "notice",
       "no_produces": "warning",
       "wrong_content_type": "warning"
+    },
+    "parameters": {
+      "parameter_definition": "error"
     }
   },
   "oas3": {
