@@ -72,7 +72,7 @@ rules:
   # Enable with same severity as Spectral
   oas2-oneOf: true
   # Turn off
-  oas2-schema: off
+  oas2-schema: true
   # Turn off - duplicates non-configurable validation in base validator
   oas2-unused-definition: off
   # Enable with same severity as Spectral

@@ -327,6 +327,7 @@ The supported rules are described below:
 | duplicate_parameter       | Flag any path with duplicate parameters | shared |
 | unused_parameter       | Flag any path with an unused parameter | shared |
 | empty_path_parameter       | Flag any path with an empty parameter | shared |
+| partial_path_templating       | Flag any path with a partial templating, like 'user-{id}' | shared |
 
 
 ##### [responses][4]
@@ -502,6 +503,8 @@ The default values for each rule are described below.
 | missing_path_parameter      | error   |
 | snake_case_only             | off     |
 | paths_case_convention       | error, lower_snake_case |
+| partial_path_templating     | off     |
+
 
 ##### responses
 | Rule                      | Default |

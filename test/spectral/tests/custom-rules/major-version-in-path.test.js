@@ -30,6 +30,10 @@ describe('spectral - test major-version-in-path rule', function() {
       }
     });
 
+    console.log(`major-version-in-path.foundOtherValidator=${foundOtherValidator}`);
+    console.log(`major-version-in-path.validatorsText=${validatorsText}`);
+    console.log(`major-version-in-path.allOutput=${allOutput}`);
+
     expect(exitCode).toEqual(0);
     expect(foundOtherValidator).toBe(false);
 

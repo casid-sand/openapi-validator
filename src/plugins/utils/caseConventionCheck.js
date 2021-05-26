@@ -184,50 +184,68 @@ if (processConfiguration.isLevelUpperThan(defaultCheckLevel, alternativeCheckLev
   return stringHasCorrectCase;
 }
 
-module.exports.getCaseConventionExample = function (convention) {
+module.exports.getCaseConventionExample = function (convention, for_mock_value = false) {
+  const start_appendix = for_mock_value ? "" : "'" ;
+  const end_appendix = for_mock_value ? "" : "'" ;
   switch (convention) {
     case 'lower_snake_case':
-      return "'lower_snake_case'";
+      return `${start_appendix}lower_snake_case${end_appendix}`;
 
     case 'upper_snake_case':
-      return "'UPPER_SNAKE_CASE'";
+      return `${start_appendix}UPPER_SNAKE_CASE${end_appendix}`;
 
     case 'all_snake_case':
-      return "'lower_snake_case' or 'UPPER_SNAKE_CASE'";
+      if (for_mock_value) {
+        return `${start_appendix}lower_snake_case_or_UPPER_SNAKE_CASE${end_appendix}`;
+      } else {
+        return `${start_appendix}lower_snake_case${end_appendix} or ${start_appendix}UPPER_SNAKE_CASE${end_appendix}`;
+      }
 
     case 'upper_camel_case':
-      return "'UpperCamelCase'";
+      return `${start_appendix}UpperCamelCase${end_appendix}`;
 
     case 'lower_camel_case':
-      return "'camelCase'";
+      return `${start_appendix}camelCase${end_appendix}`;
 
     case 'all_camel_case':
-      return "'camelCase' or 'UpperCamelCase'";
+      if (for_mock_value) {
+        return `${start_appendix}camelCaseOrUpperCamelCase${end_appendix}`;
+      } else {
+        return `${start_appendix}camelCase${end_appendix} or ${start_appendix}UpperCamelCase${end_appendix}`;
+      }
 
     case 'k8s_camel_case':
-      return "'kubernetesAPICase'";
+      return `${start_appendix}kubernetesAPICase${end_appendix}`;
 
     case 'k8s_upper_camel_case':
-        return "'UpperKubernetesAPICase'";
+        return `${start_appendix}UpperKubernetesAPICase${end_appendix}`;
 
     case 'k8s_all_camel_case':
-      return "'kubernetesAPICase' or 'UpperKubernetesAPICase'";
+      if (for_mock_value) {
+        return `${start_appendix}kubernetesAPICaseOrUpperKubernetesAPICase${end_appendix}`;
+      } else {
+        return `${start_appendix}kubernetesAPICase${end_appendix} or ${start_appendix}UpperKubernetesAPICase${end_appendix}`;
+      }
 
     case 'spinal_first_upper_case':  
     case 'dash_first_upper_case':
-      return "'Spinal-FirstLetterUpper-Case'";
+      return `${start_appendix}Spinal-FirstLetterUpper-Case${end_appendix}`;
 
     case 'lower_spinal_case':  
     case 'lower_dash_case':
-      return "'spinal-case'";
+      return `${start_appendix}spinal-case${end_appendix}`;
 
     case 'upper_dash_case':
     case 'upper_spinal_case':
-      return "'UPPER-SPINAL-CASE'";
+      return `${start_appendix}UPPER-SPINAL-CASE${end_appendix}`;
 
     case 'all_dash_case':
     case 'all_spinal_case':
-      return "'spinal-case' or 'UPPER-SPINAL-CASE'";
+      if (for_mock_value) {
+        return `${start_appendix}spinal-case-or-UPPER-SPINAL-CASE${end_appendix}`;
+      } else {
+        return `${start_appendix}spinal-case${end_appendix} or ${start_appendix}UPPER-SPINAL-CASE${end_appendix}`;
+      }
 
     default:
       // this should never happen, the convention is validated in the config processor

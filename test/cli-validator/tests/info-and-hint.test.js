@@ -32,8 +32,7 @@ describe('test info and hint rules - OAS3', function() {
 
     consoleSpy.mockRestore();
 
-    // Verify errors
-    expect(jsonOutput['errors']['operation-ids'].length).toBe(1);
+    /*// Verify errors
     expect(jsonOutput['errors']['operations-shared'].length).toBe(2);
     expect(jsonOutput['errors']['schema-ibm'].length).toBe(1);
 
@@ -59,6 +58,30 @@ describe('test info and hint rules - OAS3', function() {
     // Verify hints
     expect(jsonOutput['hints']['operations-shared'].length).toBe(2);
     expect(jsonOutput['hints']['operations-shared'][0]['message']).toEqual(
+      'A tag is defined but never used: store'
+    );*/
+
+    // errors for non-unique operation ids
+    expect(jsonOutput['errors'].length).toBe(4);
+
+    // Verify warnings
+    expect(jsonOutput['warnings'].length).toBe(13);
+
+    // Verify infos
+    expect(jsonOutput['infos'].length).toBe(1);
+    expect(jsonOutput['infos'][0]['message']).toEqual(
+      'Schema must have a non-empty description.'
+    );
+
+    // Verify notices
+    expect(jsonOutput['notices'].length).toBe(1);
+    expect(jsonOutput['notices'][0]['message']).toContain(
+      `'contact.email' object must have domain `
+    );
+
+    // Verify hints
+    expect(jsonOutput['hints'].length).toBe(2);
+    expect(jsonOutput['hints'][0]['message']).toEqual(
       'A tag is defined but never used: store'
     );
   });

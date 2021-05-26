@@ -27,7 +27,7 @@ function formatResultsAsObject(
   // initialize the results with the validator version
   const formattedResults = { version: validatorVersion };
 
-  const allErrorCategories = ['errors', 'warnings', 'infos', 'hints'];
+  const allErrorCategories = ['errors', 'warnings', 'notices', 'infos', 'hints'];
   const types = errorsOnly ? ['errors'] : allErrorCategories;
   types.forEach(type => {
     each(results[type], problems => {

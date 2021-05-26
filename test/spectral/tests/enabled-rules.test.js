@@ -341,7 +341,6 @@ describe('spectral - test enabled rules - OAS3 @skip-local', function() {
 describe('spectral - test enabled rules - OAS3 In Memory @skip-local', function() {
   let errors;
   let warnings;
-  let errors;
 
   beforeAll(async () => {
     // set up mock user input

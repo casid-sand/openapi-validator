@@ -370,7 +370,7 @@ const processInput = async function(program) {
   } else if (jsonOutput) {
       printJson(results, originalFile, verbose, errorsOnly);
     } else {
-      if (results.error || results.warning || results.info || results.hint) {
+      if (results.error || results.warning || results.notice || results.info || results.hint) {
         print(
           results,
           chalk,
