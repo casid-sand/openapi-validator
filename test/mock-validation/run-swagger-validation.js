@@ -6,9 +6,10 @@ const program = {};
 let exitcode;
 
 let dir_path = './test/mock-validation/input/';
+dir_path = './test/spectral/mockFiles/oas3/'
 let swagger_file_name;
 
-swagger_file_name = '2021-02-12-swagger-ATRIUM.yaml';
+swagger_file_name = 'enabled-rules.yml';
 
 
 //dir_path = "./test/cli-validator/mockFiles/";
@@ -25,9 +26,12 @@ if (fileExtension.test(swagger_file_name)) {
 var dt = dateTime.create();
 var formattedDate = dt.format('Y-m-d');
 
+//Init - si besoin et commenter le reste
+//program.args = [`init`];
+
 //Validation Swagger
 program.args = [`${dir_path}${swagger_file_name}`];
-program.config = './test/mock-validation/validation-configuration.yaml';
+//program.config = './test/mock-validation/validation-configuration.yaml';
 program.report_statistics = true;
 program.output = `./test/mock-validation/output/rapport-analyse-${formattedDate}-${swagger_name}.json`;
 

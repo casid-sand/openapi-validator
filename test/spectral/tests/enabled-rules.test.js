@@ -182,9 +182,6 @@ describe('spectral - test enabled rules - Swagger 2 In Memory @skip-local', func
   });
 
   it('test typed-enum rule using mockFiles/swagger/enabled-rules-in-memory', function() {
-    expect(errors).not.toContain(
-      'Enum value does not respect the specified type : Enum value `a_string` does not respect the specified type `integer`.'
-    );
     expect(warnings).toContain(
       'Enum value does not respect the specified type : Enum value `a_string` does not respect the specified type `integer`.'
     );
@@ -203,9 +200,6 @@ describe('spectral - test enabled rules - Swagger 2 In Memory @skip-local', func
   });
 
   it('test oas2-valid-definition-example rule using mockFiles/swagger/enabled-rules-in-memory', function() {
-    expect(errors).not.toContain(
-      '`number_of_coins` property type should be integer'
-    );
     expect(warnings).toContain(
       '`number_of_coins` property type should be integer'
     );

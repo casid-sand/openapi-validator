@@ -203,22 +203,22 @@ describe('spectral - test config file changes with .validaterc @skip-local', fun
   });
 
   // One test should be an error instead of a warning compared to the enable-rules.test.js
-  it('test no-eval-in-markdown rule using mockFiles/oas3/enabled-rules-in-memory', function() {
+  it('test no-script-tags-in-markdown rule using mockFiles/oas3/enabled-rules-in-memory', function() {
     expect(errors).toContain(
-      'Markdown descriptions should not contain `eval(`.'
+      'Markdown descriptions should not contain `<script>` tags.'
     );
     expect(warnings).not.toContain(
-      'Markdown descriptions should not contain `eval(`.'
+      'Markdown descriptions should not contain `<script>` tags.'
     );
   });
 
   // Other tests should be their default severity levels
-  it('test no-script-tags-in-markdown rule using mockFiles/oas3/enabled-rules-in-memory', function() {
+  it('test no-eval-in-markdown rule using mockFiles/oas3/enabled-rules-in-memory', function() {
     expect(errors).not.toContain(
-      'Markdown descriptions should not contain `<script>` tags.'
+      'Markdown descriptions should not contain `eval(`.'
     );
     expect(warnings).toContain(
-      'Markdown descriptions should not contain `<script>` tags.'
+      'Markdown descriptions should not contain `eval(`.'
     );
   });
 });
