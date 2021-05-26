@@ -183,57 +183,62 @@ module.exports.validate = function({ resolvedSpec }, config) {
         // enforce path segments are lower snake case
         const checkStatus = config.snake_case_only;
         if (checkStatus != 'off') {
-        const segments = pathName.split('/');
-        segments.forEach(segment => {
-            // the first element will be "" since pathName starts with "/"
-            // also, ignore validating the path parameters
-            if (segment === '' || segment[0] === '{') {
-            return;
-            }
-            if (!checkCase(segment, 'lower_snake_case')) {
-            messages.addTypedMessage(
-                ['paths', pathName],
-                `Path segments must be lower snake case.`,
-                checkStatus,
-                'snake_case_only',
-                'convention'
-            );
-            }
-        });
-        } else {
-        // in the else block because usage of paths_case_convention is mutually
-        // exclusive with usage of config.snake_case_only since it is overlapping
-        // functionality
-        if (config.paths_case_convention) {
-            const checkStatusPath = config.paths_case_convention[0];
-            let checkAlternativePathCaseConvention = 'off';
-            let caseConventionAlternative;
-            if (config.paths_alternative_case_convention) {
-                checkAlternativePathCaseConvention = config.paths_alternative_case_convention[0];
-                if (checkAlternativePathCaseConvention != 'off') {
-                    caseConventionAlternative = config.paths_alternative_case_convention[1];
-                }
-        }
-
-        if (checkStatusPath !== 'off') {
-            const caseConvention = config.paths_case_convention[1];
-
             const segments = pathName.split('/');
             segments.forEach(segment => {
                 // the first element will be "" since pathName starts with "/"
                 // also, ignore validating the path parameters
-                if (segment !== '' && segment[0] !== '{') {
-                    checkCase.checkCaseConventionOrAlternativeCase(segment, caseConvention, checkStatusPath, 
-                        caseConventionAlternative, checkAlternativePathCaseConvention, 
-                        messages, ['paths', pathName], 'Path segments', 
-                        'paths_case_convention', 'CTMO.STANDARD-CODAGE-09/10');
+                if (segment === '' || segment[0] === '{') {
+                    return;
                 }
-
+                if (!checkCase(segment, 'lower_snake_case')) {
+                    messages.addTypedMessage(
+                        ['paths', pathName],
+                        `Path segments must be lower snake case.`,
+                        checkStatus,
+                        'snake_case_only',
+                        'convention'
+                    );
+                }
             });
+        } else {
+            // in the else block because usage of paths_case_convention is mutually
+            // exclusive with usage of config.snake_case_only since it is overlapping
+            // functionality
+            if (config.paths_case_convention) {
+                const checkStatusPath = config.paths_case_convention[0];
+                let checkAlternativePathCaseConvention = 'off';
+                let caseConventionAlternative;
+                if (config.paths_alternative_case_convention) {
+                    checkAlternativePathCaseConvention = config.paths_alternative_case_convention[0];
+                    if (checkAlternativePathCaseConvention != 'off') {
+                        caseConventionAlternative = config.paths_alternative_case_convention[1];
+                    }
+            }
+
+            if (checkStatusPath !== 'off') {
+                const caseConvention = config.paths_case_convention[1];
+
+                const segments = pathName.split('/');
+                segments.forEach(segment => {
+                    // the first element will be "" since pathName starts with "/"
+                    // also, ignore validating the path parameters
+
+                    //delete query parameters
+                    const regex_param = /\{(.*?)\}/g;
+                    const segment_parsed = segment.replace(regex_param, checkCase.getCaseConventionExample(caseConvention, true));
+
+                    if (segment_parsed !== '') {
+                        checkCase.checkCaseConventionOrAlternativeCase(segment_parsed, caseConvention, checkStatusPath, 
+                            caseConventionAlternative, checkAlternativePathCaseConvention, 
+                            messages, ['paths', pathName], 'Path segments', 
+                            'paths_case_convention', 'CTMO.STANDARD-CODAGE-09/10');
+                    }
+
+                });
+            }
         }
-    }
-    }
-});
+        }
+    });
   }
 
 

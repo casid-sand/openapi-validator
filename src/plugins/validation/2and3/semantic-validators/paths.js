@@ -11,6 +11,9 @@
 // Paths must have unique (name + in combination) parameters
 
 // Assertation 5:
+// Paths cannot have partial templates : /path/abc{123} is authorized, but rule can be activated
+
+// Assertation 6:
 // Paths cannot have literal query strings in them.
 // Handled by the Spectral rule, path-not-include-query
 
@@ -44,7 +47,7 @@ const MessageCarrier = require('../../../utils/messageCarrier');
 
 const templateRegex = /\{(.*?)\}/g;
 const versionInPathRegex = /^(?:v(?:ersion)?[\_\-\.]?)?(\d+)(\.\d+)?(\.\d+)?$/;
-const parameterRegex = /^{.*}$/;
+const parameterRegex = /{.*}/;
 
 const pluralFirstWordLowerCase = /^[a-z][a-z0-9]*[sxz](?:[\_\-\.][a-z0-9]+)*$/; // example : learnings_opt_out or learningx-opt-out or learningz.opt.Out
 const pluralFirstWordCamelCase = /^[a-zA-Z][a-z0-9]*[sxz](?:[A-Z][a-z0-9]+)*$/; // example : learningxOptOut or LearningsOptOut
@@ -83,6 +86,25 @@ module.exports.validate = function({ resolvedSpec }, config) {
     each(resolvedSpec.paths, (path, pathName) => {
         if (!path || !pathName) {
             return;
+        }
+
+        const partial_path_templating = config.partial_path_templating;
+        if (partial_path_templating != 'off' && partial_path_templating != undefined) {
+            pathName.split('/').map(substr => {
+                // Assertation 5
+                if (
+                    templateRegex.test(substr) &&
+                    substr.replace(templateRegex, '').length > 0
+                ) {
+                    messages.addMessage(
+                    `paths.${pathName}`,
+                    'Partial path templating is not recommended.',
+                    partial_path_templating,
+                    'partial_path_templating',
+                    'convention'
+                    );
+                }
+            });
         }
 
         let resourcesMalFormed = '';

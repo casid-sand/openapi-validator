@@ -59,7 +59,8 @@ describe('validation plugin - semantic - paths', function() {
               }
             ]
           }
-        };
+        }
+      };
 
       const res = validate({ resolvedSpec: spec }, defaultConfig);
       expect(res.errors.length).toEqual(0);
@@ -292,6 +293,12 @@ describe('validation plugin - semantic - paths', function() {
     });
 
     describe('Paths cannot have partial templates', () => {
+      const config_partial_path_templating = {
+        paths: {
+          partial_path_templating: 'warning'
+        }
+      };
+
       it('should return one problem for an illegal partial path template', function() {
         const spec = {
           paths: {
@@ -306,13 +313,40 @@ describe('validation plugin - semantic - paths', function() {
           }
         };
 
-        const res = validate({ resolvedSpec: spec }, defaultConfig);
-        expect(res.errors.length).toEqual(1);
-        expect(res.errors[0].message).toEqual(
-          'Partial path templating is not allowed.'
+        const res = validate({ resolvedSpec: spec }, config_partial_path_templating);
+        expect(res.warnings.length).toEqual(1);
+        expect(res.warnings[0].message).toEqual(
+          'Partial path templating is not recommended.'
         );
-        expect(res.errors[0].path).toEqual('paths./CoolPath/user{id}');
-        expect(res.warnings).toEqual([]);
+        expect(res.warnings[0].path).toEqual('paths./CoolPath/user{id}');
+        expect(res.errors).toEqual([]);
+      });
+
+      it('should return one problem for an illegal partial path template', function() {
+        const spec = {
+          paths: {
+            '/CoolPath/user-{service}-{id}': {
+              parameters: [
+                {
+                  name: 'id',
+                  in: 'path'
+                },
+                {
+                  name: 'service',
+                  in: 'path'
+                }
+              ]
+            }
+          }
+        };
+
+        const res = validate({ resolvedSpec: spec }, config_partial_path_templating);
+        expect(res.warnings.length).toEqual(1);
+        expect(res.warnings[0].message).toEqual(
+          'Partial path templating is not recommended.'
+        );
+        expect(res.warnings[0].path).toEqual('paths./CoolPath/user-{service}-{id}');
+        expect(res.errors).toEqual([]);
       });
 
       it('should return no problems for a correct path template', function() {
@@ -329,51 +363,14 @@ describe('validation plugin - semantic - paths', function() {
           }
         };
 
-      const res = validate({ resolvedSpec: spec }, defaultConfig);
+      const res = validate({ resolvedSpec: spec }, config_partial_path_templating);
       expect(res.errors.length).toEqual(0);
       expect(res.warnings.length).toEqual(0);
     });
   });
 
   describe('Paths cannot have query strings in them', () => {
-    it("should return one problem for an stray '?' in a path string", function() {
-      const spec = {
-        paths: {
-          '/report?': {}
-        }
-      };
-
-      const res = validate({ resolvedSpec: spec }, defaultConfig);
-      expect(res.errors).toEqual([
-        {
-          message: 'Query strings in paths are not allowed.',
-          path: 'paths./report?',
-          rule: 'path_query_string'
-        }
-      ]);
-      expect(res.errors[0].message).toEqual(
-        'Query strings in paths are not allowed.'
-      );
-      expect(res.errors[0].path).toEqual('paths./report?');
-      expect(res.warnings).toEqual([]);
-    });
-
-    describe('Paths cannot have query strings in them', () => {
-      it("should return one problem for an stray '?' in a path string", function() {
-        const spec = {
-          paths: {
-            '/report?': {}
-          }
-        };
-        const res = validate({ resolvedSpec: spec }, defaultConfig);
-        expect(res.errors.length).toEqual(1);
-        expect(res.errors[0].message).toEqual(
-          'Query strings in paths are not allowed.'
-        );
-        expect(res.errors[0].path).toEqual('paths./report?');
-      });
-    });
-
+    
     it('should return no problems for a correct path template', function() {
       const spec = {
         paths: {
@@ -406,6 +403,7 @@ describe('validation plugin - semantic - paths', function() {
       expect(res.errors[1].message).toEqual("Path parameter was defined but never used: unusedSecondParameterName.");
       expect(res.warnings).toEqual([]);
     });
+  });
 
   describe('Paths must contains resources name in the plural', () => {
   
@@ -1171,36 +1169,33 @@ describe('validation plugin - semantic - paths', function() {
     });
   });
 
-    describe('Integrations', () => {
-      it('should return two problems for an illegal query string in a path string', function() {
-        const spec = {
-          paths: {
-            '/report?rdate={relative_date}': {
-              parameters: [
-                {
-                  name: 'relative_date',
-                  in: 'path'
-                }
-              ]
-            }
-          }
-        };
+  describe('Integrations', () => {
+    it.skip('should return two problems for an equivalent path string missing a parameter definition', function() {
+      const spec = {
+        paths: {
+          '/CoolPath/{id}': {
+            parameters: [
+              {
+                name: 'id',
+                in: 'path'
+              }
+            ]
+          },
+          '/CoolPath/{count}': {}
+        }
+      };
 
-        const res = validate({ resolvedSpec: spec }, defaultConfig);
-        expect(res.errors.length).toEqual(2);
-        expect(res.errors[0].message).toEqual(
-          'Partial path templating is not allowed.'
-        );
-        expect(res.errors[0].path).toEqual(
-          'paths./report?rdate={relative_date}'
-        );
-        expect(res.errors[1].message).toEqual(
-          'Query strings in paths are not allowed.'
-        );
-        expect(res.errors[1].path).toEqual(
-          'paths./report?rdate={relative_date}'
-        );
-      });
+      const res = validate({ resolvedSpec: spec });
+      expect(res.errors.length).toEqual(2);
+      expect(res.errors[0].message).toEqual(
+        'Equivalent paths are not allowed.'
+      );
+      expect(res.errors[0].path).toEqual('paths./CoolPath/{count}');
+      expect(res.errors[1].message).toEqual(
+        'Declared path parameter "count" needs to be defined as a path parameter at either the path or operation level'
+      );
+      expect(res.errors[1].path).toEqual('paths./CoolPath/{count}');
+    });
 
       it('should return two problems for an equivalent path string missing a parameter definition', function() {
         const spec = {
@@ -1261,4 +1256,5 @@ describe('validation plugin - semantic - paths', function() {
       expect(res.errors.length).toBe(0);
       expect(res.warnings.length).toBe(0);
     });
+  });
 });

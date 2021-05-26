@@ -680,6 +680,23 @@ describe('Test of alternative case convention configurations', () => {
         expect(res.warnings.length).toEqual(0);
     });
 
+    it('should return no errors or warnings even with path templating', function() {
+      config.paths.paths_alternative_case_convention[0] = 'error';
+      const spec = {
+      paths: {
+          '/goodpath/user{service}{id}folder': {},
+          '/dash-path/user-{service}-{id}-folder': {},
+          '/camelPath/user{service}{id}Folder': {},
+          '/snake_path/user_{service}_{id}_folder': {},
+          '/': {}
+      }
+      };
+
+      const res = validate({ resolvedSpec: spec }, config);
+      expect(res.errors.length).toEqual(0);
+      expect(res.warnings.length).toEqual(0);
+    });
+
     it('should return 1 errors with 2 cases are in error mode', function() {
         config.paths.paths_case_convention[0] = 'error';
         config.paths.paths_alternative_case_convention[0] = 'error';
