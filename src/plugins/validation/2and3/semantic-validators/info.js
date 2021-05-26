@@ -126,16 +126,30 @@ module.exports.validate = function({ jsSpec }, config) {
     const contact = jsSpec.info.contact;
     const hasContact = contact && typeof contact === 'object';
       
-    if (!hasContact) {
-          messages.addTypedMessage(
-            ['info', 'contact'],
-            '`info` object must have a `contact` object',
-            'warning',
-            'missing_contact',
-            'structural',
-            'CTMO.STANDARD-CODAGE-22'
-          );
-    } else {
+    const missing_contact = config.info.missing_contact;
+    const check_contact = (missing_contact != 'off' && missing_contact != undefined) ? missing_contact : false;
+    let checkEmailAddress = "off";
+    let emailAddressDomain = "";
+    if (config.info.contact_email_domain) {
+      checkEmailAddress = config.info.contact_email_domain[0];
+      emailAddressDomain = config.info.contact_email_domain[1];
+    }
+    let isEmailOk = false;
+
+    if (check_contact) {
+      if (!hasContact) {
+        messages.addTypedMessage(
+          ['info', 'contact'],
+          '`info` object must have a `contact` object',
+          check_contact,
+          'missing_contact',
+          'structural',
+          'CTMO.STANDARD-CODAGE-22'
+        );
+      } 
+    }
+    
+    if (hasContact) {
       const contactName = contact.name;
         const hasContactName =
           typeof contactName === 'string' && contactName.toString().trim().length > 0;
@@ -144,55 +158,55 @@ module.exports.validate = function({ jsSpec }, config) {
         const hasContactEmail =
           typeof contactEmail === 'string' && contactEmail.toString().trim().length > 0;
           
-      if (!hasContactName) {
+      if (!hasContactName && check_contact) {
             messages.addTypedMessage(
               ['info', 'contact', 'name'],
               '`contact` object must have a string-type `name` field',
-              'warning',
+              check_contact,
               'wrong_contact_definition',
               'structural',
               'CTMO.STANDARD-CODAGE-22'
             );
       }
+
       if (!hasContactEmail) {
-            messages.addTypedMessage(
-              ['info', 'contact', 'email'],
-              '`contact` object must have a string-type `email` field',
-              'warning',
-              'wrong_contact_definition',
-              'structural',
-              'CTMO.STANDARD-CODAGE-22'
-            );
+        if (check_contact) {
+          messages.addTypedMessage(
+            ['info', 'contact', 'email'],
+            '`contact` object must have a string-type `email` field',
+            check_contact,
+            'wrong_contact_definition',
+            'structural',
+            'CTMO.STANDARD-CODAGE-22'
+          );
+        }
       } else {
-            if (config.info.contact_email_domain) {
-                const checkEmailAddress = config.info.contact_email_domain[0];
-                if (checkEmailAddress != 'off') {
-                    const emailAddressDomain = config.info.contact_email_domain[1];
-                    const emailDomainRegex = /^(.*)\@(.*)$/;
-                    let emailArray = null;
-                    let isEmailOk = false;
-                    if (emailDomainRegex.test(contactEmail)) {
-                        emailArray = emailDomainRegex.exec(contactEmail);
-                        if (emailArray != null && emailArray.length == 3) {
-                            if (emailArray[2] == emailAddressDomain) {
-                                isEmailOk = true;
-                            }
+        if (config.info.contact_email_domain) {
+            if (checkEmailAddress != 'off') {
+                const emailDomainRegex = /^(.*)\@(.*)$/;
+                let emailArray = null;
+                if (emailDomainRegex.test(contactEmail)) {
+                    emailArray = emailDomainRegex.exec(contactEmail);
+                    if (emailArray != null && emailArray.length == 3) {
+                        if (emailArray[2] == emailAddressDomain) {
+                            isEmailOk = true;
                         }
-                    }
-                    if (! isEmailOk) {
-                        messages.addTypedMessage(
-                            ['info', 'contact', 'email'],
-                            `'contact.email' object must have domain : ${emailAddressDomain} - ${emailArray}`,
-                            checkEmailAddress,
-                            'wrong_contact_definition',
-                            'structural',
-                            'CTMO.STANDARD-CODAGE-22'
-                        );
                     }
                 }
             }
+        }
       }
-          
+    }
+
+    if (checkEmailAddress != 'off' && !isEmailOk) {
+      messages.addTypedMessage(
+          ['info', 'contact', 'email'],
+          `'contact.email' object must have domain : ${emailAddressDomain}`,
+          checkEmailAddress,
+          'wrong_contact_definition',
+          'structural',
+          'CTMO.STANDARD-CODAGE-22'
+      );
     }
   }
   return messages;

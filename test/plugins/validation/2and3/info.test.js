@@ -4,7 +4,23 @@ const {
   validate
 } = require('../../../../src/plugins/validation/2and3/semantic-validators/info');
 
+const configForEmail = {
+  info: {
+    contact_email_domain: [
+        'error',
+        "test.com"
+    ]
+  }
+};
+const configForContact = {
+  info: {
+    missing_contact: 'warning'
+  }
+};
+
 describe('validation plugin - semantic - info', () => {
+
+
   //this is for openapi object
   it('should return an error when a parameter does not have info', () => {
     const spec = {
@@ -18,6 +34,7 @@ describe('validation plugin - semantic - info', () => {
       'API definition must have an `info` object'
     );
   });
+
   it('should return an error when a info is not defined as a proper object', () => {
     const spec = {
       openapi: '3.0.0',
@@ -31,16 +48,13 @@ describe('validation plugin - semantic - info', () => {
       'API definition must have an `info` object'
     );
   });
+
   it('should return an error when a title (and version) is not a string', () => {
     const spec = {
       openapi: '3.0.0',
       info: {
         title: 32,
-        version: '32',
-        contact: {
-          name: 'test',
-          email: 'test@def.gouv.fr'
-        }
+        version: '32'
       }
     };
 
@@ -51,6 +65,7 @@ describe('validation plugin - semantic - info', () => {
       '`info` object must have a string-type `title` field'
     );
   });
+
   it('should return an error when a (title and) version is not a string', () => {
     const spec = {
       openapi: '3.0.0',
@@ -58,8 +73,7 @@ describe('validation plugin - semantic - info', () => {
         title: '32',
         version: 32,
         contact: {
-          name: 'test',
-          email: 'test@def.gouv.fr'
+          name: 'contact name',
         }
       }
     };
@@ -77,8 +91,7 @@ describe('validation plugin - semantic - info', () => {
       info: {
         version: '32',
         contact: {
-          name: 'test',
-          email: 'test@def.gouv.fr'
+          email: 'test@google.com'
         }
       }
     };
@@ -289,7 +302,7 @@ describe('validation plugin - semantic - info', () => {
     expect(res.errors[1].path).toEqual(['info', 'version']);
   });
 
-  it('should return an error when contact object is missing', () => {
+  it('should return an error when contact object is missing', () => {  
     const spec = {
       swagger: '2.0',
       info: {
@@ -298,7 +311,7 @@ describe('validation plugin - semantic - info', () => {
       }
     };
 
-    const res = validate({ jsSpec: spec }, config);
+    const res = validate({ jsSpec: spec }, configForContact);
     expect(res.errors.length).toEqual(0);
     expect(res.warnings.length).toEqual(1);
     expect(res.warnings[0].path).toEqual(['info', 'contact']);
@@ -317,7 +330,7 @@ describe('validation plugin - semantic - info', () => {
       }
     };
 
-    const res = validate({ jsSpec: spec }, config);
+    const res = validate({ jsSpec: spec }, configForContact);
     expect(res.errors.length).toEqual(0);
     expect(res.warnings.length).toEqual(1);
     expect(res.warnings[0].path).toEqual(['info', 'contact']);
@@ -338,7 +351,7 @@ describe('validation plugin - semantic - info', () => {
       }
     };
 
-    const res = validate({ jsSpec: spec }, config);
+    const res = validate({ jsSpec: spec }, configForContact);
     expect(res.errors.length).toEqual(0);
     expect(res.warnings.length).toEqual(1);
     expect(res.warnings[0].path).toEqual(['info', 'contact', 'email']);
@@ -359,7 +372,7 @@ describe('validation plugin - semantic - info', () => {
       }
     };
 
-    const res = validate({ jsSpec: spec }, config);
+    const res = validate({ jsSpec: spec }, configForContact);
     expect(res.errors.length).toEqual(0);
     expect(res.warnings.length).toEqual(1);
     expect(res.warnings[0].path).toEqual(['info', 'contact', 'name']);
@@ -369,14 +382,6 @@ describe('validation plugin - semantic - info', () => {
   });
 
   it('should be ok if domain is ok', () => {
-    const emailConfig = {
-      info: {
-        contact_email_domain: [
-            'error',
-            "test.com"
-        ]
-      }
-    };
     
     const spec = {
       openapi: '3.0.0',
@@ -390,21 +395,13 @@ describe('validation plugin - semantic - info', () => {
       }
     };
 
-    const res = validate({ jsSpec: spec }, emailConfig);
+    const res = validate({ jsSpec: spec }, configForEmail);
     expect(res.errors.length).toEqual(0);
     expect(res.warnings.length).toEqual(0);
   });
 
   it('should return 1 error if domain is bad', () => {
-    const emailConfig = {
-      info: {
-        contact_email_domain: [
-            'error',
-            "@test.com"
-        ]
-      }
-    };
-    
+
     const spec = {
       openapi: '3.0.0',
       info: {
@@ -417,7 +414,7 @@ describe('validation plugin - semantic - info', () => {
       }
     };
 
-    const res = validate({ jsSpec: spec }, emailConfig);
+    const res = validate({ jsSpec: spec }, configForEmail);
     expect(res.errors.length).toEqual(1);
     expect(res.warnings.length).toEqual(0);
     expect(res.errors[0].path).toEqual(['info', 'contact', 'email']);
@@ -428,16 +425,58 @@ describe('validation plugin - semantic - info', () => {
     expect(res.errors[0].customizedRule).toEqual('CTMO.STANDARD-CODAGE-22');
   });
 
-it('should return 1 error if email is not email adress', () => {
-    const emailConfig = {
+  it('should return 1 error if domain is bad', () => {
+    
+    const spec = {
+      openapi: '3.0.0',
       info: {
-        contact_email_domain: [
-            'error',
-            "@test.com"
-        ]
+        title: '32',
+        version: 'v2.0',
+        contact: {
+            email: "totonotdomain",
+            name: 'toto'
+        }
       }
     };
-    
+
+    const res = validate({ jsSpec: spec }, configForEmail);
+    expect(res.errors.length).toEqual(1);
+    expect(res.warnings.length).toEqual(0);
+    expect(res.errors[0].path).toEqual(['info', 'contact', 'email']);
+    expect(res.errors[0].message).toContain(
+    	"'contact.email' object must have domain "
+    );
+    expect(res.errors[0].type).toEqual('structural');
+    expect(res.errors[0].customizedRule).toEqual('CTMO.STANDARD-CODAGE-22');
+  });
+
+  it('should return 1 error if no email is provided', () => {
+
+    const spec = {
+      openapi: '3.0.0',
+      info: {
+        title: '32',
+        version: 'v2.0',
+        contact: {
+            name: 'toto'
+        }
+      }
+    };
+
+    const res = validate({ jsSpec: spec }, configForEmail);
+
+    expect(res.errors.length).toEqual(1);
+    expect(res.warnings.length).toEqual(0);
+    expect(res.errors[0].path).toEqual(['info', 'contact', 'email']);
+    expect(res.errors[0].message).toContain(
+    	"'contact.email' object must have domain "
+    );
+    expect(res.errors[0].type).toEqual('structural');
+    expect(res.errors[0].customizedRule).toEqual('CTMO.STANDARD-CODAGE-22');
+  });
+
+  it('should return 1 error if email is not email adress', () => {
+
     const spec = {
       openapi: '3.0.0',
       info: {
@@ -450,7 +489,7 @@ it('should return 1 error if email is not email adress', () => {
       }
     };
 
-    const res = validate({ jsSpec: spec }, emailConfig);
+    const res = validate({ jsSpec: spec }, configForEmail);
     expect(res.errors.length).toEqual(1);
     expect(res.warnings.length).toEqual(0);
     expect(res.errors[0].path).toEqual(['info', 'contact', 'email']);
@@ -498,14 +537,11 @@ it('should return 1 error if email is not email adress', () => {
         title: '32',
         version: 'v2.0',
         description: 'shorter than 50 characters',
-        contact: {
-            email: "toto@test.com",
-            name: "toto"
-        }
       }
     };
 
     const res = validate({ jsSpec: spec }, config);
+
     expect(res.errors.length).toEqual(0);
     expect(res.warnings.length).toEqual(1);
     expect(res.warnings[0].path).toEqual(['info', 'description']);

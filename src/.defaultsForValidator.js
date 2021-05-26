@@ -29,6 +29,7 @@ const defaults = {
     'info': {
         'no_description': 'off',
         'version_regex_rule': 'off',
+        'missing_contact': 'off',
         'contact_email_domain': ['off', 'none']
     },
     'operations': {
@@ -62,6 +63,7 @@ const defaults = {
       'alternate_resources_and_identifiers': 'off',
       'plural_path_segments': 'off',
       'path_ending_with_slash': 'off',
+      'partial_path_templating': 'off',
       'max_path_levels': [
         'off',
         6

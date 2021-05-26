@@ -12,6 +12,7 @@
     "info": {
         "no_description": "error",
         "version_regex_rule": "error",
+        "missing_contact": "warning",
         "contact_email_domain": ["warning", "intradef.gouv.fr"]
     },
     "operations": {
@@ -54,6 +55,7 @@
       "alternate_resources_and_identifiers": "warning",
       "plural_path_segments": "hint",
       "path_ending_with_slash" : "warning",
+      "partial_path_templating" : "hint",
       "max_path_levels": [
         "notice",
         6
@@ -151,7 +153,8 @@
       "oas2-valid-definition-example": "warning",
       "oas3-valid-example": "warning",
       "oas3-valid-schema-example": "info",
-      "oas3-api-servers": "info"
+      "oas3-api-servers": "info",
+      "operation-operationId-unique": "warning"
     }
   }
 }
