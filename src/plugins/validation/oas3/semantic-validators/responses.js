@@ -92,26 +92,32 @@ module.exports.validate = function({ resolvedSpec }, config) {
                 });
             }
             
-            if (statusCode !== '204' && !obj[statusCode].content) {             
+            if (statusCode !== '204') {          
+                //check if content is ot here, or empty
+                if (!obj[statusCode].content || obj[statusCode].content === "" || JSON.stringify(obj[statusCode].content) === '{}') {
 
-                if (statusCode !== '201') {
-                    messages.addMessage(
-                        path.concat([statusCode]),
-                        `A ${statusCode} response should include a response body. Use 204 for responses without content.`,
-                        config.no_response_body,
-                        'no_response_body'
-                    );
-                } else {
+                  if (statusCode === '201') {
+                    //for 201 code : 'Location' header can be the response
                     if (!hasLocationHeader) {
-                        messages.addMessage(
-                            path.concat([statusCode]),
-                            `A 201 response should include a response body or a 'Location' header. Use 204 for responses without content.`,
-                            config.no_response_body,
-                            'no_response_body'
-                        );
+                      messages.addMessage(
+                          path.concat([statusCode]),
+                          `A 201 response should include a response body or a 'Location' header. Use 204 for responses without content.`,
+                          config.no_response_body,
+                          'no_response_body'
+                      );
                     }
+                  } else {
+                    //for other HTTP code, a content is needed
+                    messages.addMessage(
+                      path.concat([statusCode]),
+                      `A ${statusCode} response should include a response body. Use 204 for responses without content.`,
+                      config.no_response_body,
+                      'no_response_body'
+                    );
+                  }
                 }
             } else if (statusCode === '204' && obj[statusCode].content) {
+              //for 204, content is forbidden
               messages.addMessage(
                 path.concat(['204', 'content']),
                 `A 204 response MUST NOT include a message-body.`,
