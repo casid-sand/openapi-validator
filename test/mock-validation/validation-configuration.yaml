@@ -50,7 +50,7 @@
     },
     "paths": {
       "missing_path_parameter": "error",
-      "duplicate_path_parameter": "warning",
+      "duplicate_path_parameter": "notice",
       "snake_case_only": "off",
       "alternate_resources_and_identifiers": "warning",
       "plural_path_segments": "hint",
@@ -157,7 +157,9 @@
       "oas3-valid-example": "warning",
       "oas3-valid-schema-example": "info",
       "oas3-api-servers": "info",
-      "operation-operationId-unique": "warning"
+      "operation-operationId-unique": "warning",
+      "request-body-object": "hint",
+      "response-example-provided": "hint"
     }
   }
 }
