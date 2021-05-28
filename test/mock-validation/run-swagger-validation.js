@@ -6,10 +6,10 @@ const program = {};
 let exitcode;
 
 let dir_path = './test/mock-validation/input/';
-dir_path = './test/spectral/mockFiles/oas3/'
+//dir_path = './test/spectral/mockFiles/oas3/'
 let swagger_file_name;
 
-swagger_file_name = 'enabled-rules.yml';
+swagger_file_name = 'openapi3-ATRIUM-Demandes_logement-1.0-210507.yaml';
 
 
 //dir_path = "./test/cli-validator/mockFiles/";
@@ -31,7 +31,7 @@ var formattedDate = dt.format('Y-m-d');
 
 //Validation Swagger
 program.args = [`${dir_path}${swagger_file_name}`];
-//program.config = './test/mock-validation/validation-configuration.yaml';
+program.config = './test/mock-validation/validation-configuration.yaml';
 program.report_statistics = true;
 program.output = `./test/mock-validation/output/rapport-analyse-${formattedDate}-${swagger_name}.json`;
 
