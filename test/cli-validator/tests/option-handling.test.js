@@ -241,7 +241,7 @@ describe('cli tool - test option handling @skip-local', function() {
         }
       }
     });
-    expect(warningCount).toEqual(4); // without the config this value is 5
+    expect(warningCount).toEqual(3); // without the config this value is 5
     expect(errorCount).toEqual(3); // without the config this value is 0
   });
 
